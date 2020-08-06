@@ -12,7 +12,7 @@ It has implemented the basic authetication provided by laravel.
 
 ## Notes
 
-1. Please run "npm install && npm run dev" command to compile your assets.
+1. Please run "npm run dev" command to compile your assets.
 2. `Telescope` and other developer packages are accessible with universal username and password defined in .env file under `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD`.
 
 
