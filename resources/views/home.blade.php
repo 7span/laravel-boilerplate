@@ -13,12 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    @if(auth()->check() && auth()->user()->is_developer === 1)
-                        <a href="{{ url('/telescope') }}">Open Telescope</a>
-                    @else
-                        {{ __('You are logged in!') }}
-                    @endif
+                    {{ __('You are logged in!') }}
                 </div>
             </div>
         </div>

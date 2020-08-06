@@ -1,0 +1,141 @@
+.cards {
+    margin: 0 -10px;
+}
+
+.dash-card {
+    border: 2px solid transparent;
+    &:hover {
+        color: #FFF;
+        text-decoration: none;
+        border-color: #ef4430;
+    }
+    &.active {
+        color: #FFF;
+        text-decoration: none;
+        border-color: #ef4430;
+        box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+    }
+}
+
+.card-box__wrap {
+    margin-bottom: 20px;
+}
+
+.cards__block {
+    float: left;
+    width: 25%;
+    padding: 5px;
+    display: block;
+}
+
+.cards__block_20 {
+    float: left;
+    width: 20%;
+    padding: 5px;
+    display: block;
+}
+
+.card__title {
+    margin: 0;
+    font-weight: normal;
+}
+
+.card__value {
+    margin: 0;
+}
+
+
+/*=========================================
+~Colorful
+==========================================*/
+
+.card--colorful {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 30px 10px;
+    position: relative;
+    .card__value {
+        font-size: 25px;
+        font-weight: 600;
+    }
+    .card__title {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+    .card__icon {
+        position: absolute;
+        right: 20px;
+        top: 0px;
+        i {
+            font-size: 60px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+    }
+}
+
+.card--green {
+    background: $admin-green;
+}
+
+.card--blue {
+    background: $admin-blue;
+}
+
+.card--red {
+    background: $admin-red;
+}
+
+.card--purple {
+    background: $admin-purple;
+}
+
+.card--teal {
+    background: $admin-teal;
+}
+
+
+/*=========================================
+~White
+==========================================*/
+
+.card--white {
+    color: #000;
+    text-decoration: none;
+    display: block;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    .card__value {
+        font-size: 36px;
+        line-height: normal;
+    }
+    .card__title {
+        font-size: 16px;
+        display: inline-block;
+        vertical-align: top;
+    }
+    .card__icon {
+        font-size: 16px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eaeaea;
+    }
+}
+
+.cards__detail {
+    background: #fff;
+    padding: 10px;
+    min-height: 90px;
+    table {
+        width: 100%;
+        td {
+            &:first-child {
+                width: 80%;
+            }
+            &:last-child {
+                text-align: right;
+            }
+        }
+    }
+}

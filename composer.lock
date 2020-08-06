@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c54d0ce2bb58230aa1b2c53375bbc99",
+    "content-hash": "753d5544599f9a1334c7955e6136ba70",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2257,6 +2257,63 @@
                 "uuid"
             ],
             "time": "2020-07-28T16:51:01+00:00"
+        },
+        {
+            "name": "spatie/laravel-littlegatekeeper",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-littlegatekeeper.git",
+                "reference": "e89a921a3a256825a14ed87a342d1deee0bda6f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-littlegatekeeper/zipball/e89a921a3a256825a14ed87a342d1deee0bda6f4",
+                "reference": "e89a921a3a256825a14ed87a342d1deee0bda6f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\LittleGateKeeper\\LittleGateKeeperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LittleGateKeeper\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Protect pages from access with a universal username/password",
+            "homepage": "https://github.com/spatie/laravel-littlegatekeeper",
+            "keywords": [
+                "laravel-littlegatekeeper",
+                "spatie"
+            ],
+            "time": "2020-05-27T13:03:54+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

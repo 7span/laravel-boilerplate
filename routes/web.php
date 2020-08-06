@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'developer'], function () {
+    Route::get('login','Developer\DeveloperController@loginPage');
+    Route::post('login','Developer\DeveloperController@login')->name('developer.login');
+    Route::get('dashboard','Developer\DeveloperController@dashboard')->name('developer.dashboard')->middleware('developer');
+});

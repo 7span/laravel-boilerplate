@@ -1,0 +1,166 @@
+/*=========================================
+~7SPAN PROJECT CONFIGS
+==========================================*/
+
+$image-path: "..";
+$font-family: -apple-system,
+system-ui,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Oxygen-Sans,
+Ubuntu,
+Cantarell,
+"Open Sans",
+"Helvetica Neue",
+sans-serif,
+"Apple Color Emoji",
+"Segoe UI Emoji",
+"Segoe UI Symbol";
+
+/*=========================================
+~SIZE & SPACING
+==========================================*/
+
+$master-font-size: 16px;
+$input-height: 36px;
+$gray-border: #dadada;
+$border-radius: 3px;
+$border-color: #dadada;
+$table-border: #545454;
+
+/*=========================================
+~COLOR SCHEME
+==========================================*/
+
+$primary-color: #01aaf9;
+$accent-color: #673ab7;
+
+/*=========================================
+~MEDIA QUERIES
+==========================================*/
+
+$sm-up: #{"only screen and (min-width: 576px)"};
+$md-up: #{"only screen and (min-width: 768px)"};
+$lg-up: #{"only screen and (min-width: 992px)"};
+$xl-up: #{"only screen and (min-width: 1200px)"};
+$xs-down: #{"only screen and (max-width: 575px)"};
+$sm-down: #{"only screen and (max-width: 767px)"};
+$md-down: #{"only screen and (max-width: 991px)"};
+$lg-down: #{"only screen and (max-width: 1199px)"};
+$xs-only: #{"only screen and (max-width: 575px)"};
+$sm-only: #{"only screen and (min-width: 576px) and (max-width: 767px)"};
+$md-only: #{"only screen and (min-width: 768px) and (max-width: 991px)"};
+$lg-only: #{"only screen and (min-width: 992px) and (max-width: 1199px)"};
+$xl-only: #{"only screen and (min-width: 1200px)"};
+
+/*=========================================
+~MATERIAL COLORS
+==========================================*/
+
+$red: #f44336;
+$pink: #e91e63;
+$purple: #9c27b0;
+$deep-purple: #673ab7;
+$indigo: #3f51b5;
+$blue: #2196f3;
+$light-blue: #03a9f4;
+$cyan: #00bcd4;
+$teal: #009688;
+$green: #4caf50;
+$light-green: #8bc34a;
+$lime: #cddc39;
+$yellow: #ffeb3b;
+$amber: #ffc107;
+$orange: #ff9800;
+$deep-range: #ff5722;
+$brown: #795548;
+$grey: #9e9e9e;
+$blue-grey: #607d8b;
+
+/*=========================================
+~FLAT COLORS
+==========================================*/
+
+$orange-light: #e67e22;
+$orange-dark: #d35400;
+$green-light: #2ecc71;
+$green-dark: #27ae60;
+$turq-light: #1abc9c;
+$turq-dark: #16a085;
+$purple-light: #9b59b6;
+$purple-dark: #8e44ad;
+$yellow-light: #f1c40f;
+$yellow-dark: #f39c12;
+$red-light: #e74c3c;
+$red-dark: #c0392b;
+$blue-light: #3498db;
+$blue-dark: #2980b9;
+$midnight-blue: #2c3e50;
+$wet-asphalt: #34495e;
+$clouds: #ecf0f1;
+$silver: #bdc3c7;
+$concrete: #95a5a6;
+$asbestos: #7f8c8d;
+
+/*=========================================
+~Admin Colors
+==========================================*/
+
+$admin-blue: #00b6de;
+$admin-green: #56dea7;
+$admin-orange: #ff7659;
+$admin-red: #f26175;
+$admin-yellow: #f8cd36;
+$admin-purple: #9e7ac2;
+$admin-teal: #009688;
+
+/*=========================================
+~SOCIAL COLORS
+==========================================*/
+
+$twitter: #00aced;
+$facebook: #3b5998;
+$googleplus: #dd4b39;
+$pinterest: #cb2027;
+$linkedin: #007bb6;
+$youtube: #bb0000;
+$vimeo: #aad450;
+$tumblr: #32506d;
+$instagram: #517fa4;
+$flickr: #ff0084;
+$dribbble: #ea4c89;
+$quora: #a82400;
+$foursquare: #0072b1;
+$forrst: #5b9a68;
+$vk: #45668e;
+$wordpress: #21759b;
+$stumbleupon: #eb4823;
+$yahoo: #7b0099;
+$blogger: #fb8f3d;
+$soundcloud: #ff3a00;
+$reddit: #ff4500;
+
+/*=========================================
+~SPECIAL CHARACTERS
+==========================================*/
+
+$left: "â—€";
+$right: "â–º";
+$top: "â–²";
+$bottom: "â–¼";
+$forward: "Â»";
+$backward: "Â«";
+$close: "×";
+$close_bold: "âœ–";
+$copyright: "Â©";
+$registered: "Â®";
+$trademark: "â„¢";
+$star: "â˜…";
+$heart: "â¤";
+$search: "âš²";
+$warning: "âš ";
+$info: "ðŸ›ˆ";
+$success: "â˜‘";
+$danger: "â˜’";
+$menu: "â˜°";

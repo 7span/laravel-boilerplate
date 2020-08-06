@@ -1,0 +1,140 @@
+.ss-error {
+    color: $red-dark;
+    display: block;
+    margin-top: 3px;
+    text-align: left;
+    font-size: 13;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="email"],
+input[type="search"],
+select {
+    height: $input-height;
+    line-height: $input-height;
+    border: 1px solid $gray-border;
+    padding: 0px 10px;
+    vertical-align: top;
+    font-family: $font-family;
+    border-radius: $border-radius;
+}
+
+textarea {
+    border: 1px solid $gray-border;
+    padding: 10px;
+    vertical-align: top;
+    font-family: $font-family;
+    border-radius: $border-radius;
+}
+
+.button {
+    height: $input-height;
+    line-height: $input-height;
+    padding: 0px 10px;
+    border-radius: $border-radius;
+    display: inline-block;
+    white-space: nowrap;
+    text-align: center;
+    background: #fff;
+    color: #3207ffb5;
+    border: 1px solid $accent-color;
+    vertical-align: top;
+    text-decoration: none!important;
+    cursor: pointer;
+    outline: 0;
+    &:hover {
+        background: #3207ffb5;
+        color: #fff;
+        border-color: $accent-color;
+    }
+    &.active,
+    &:focus,
+    &:active {
+        background: $primary-color;
+        color: #fff;
+    }
+    &[disabled] {
+        background: #999;
+        color: #fff;
+    }
+    >i {
+        height: inherit;
+        line-height: inherit;
+    }
+}
+
+.button--accent {
+    background-color: $accent-color;
+    color: #fff;
+    &:hover {
+        background-color: $accent-color;
+        color: #fff;
+    }
+}
+
+.button--transparent {
+    background: transparent;
+    border: none;
+    &:hover,
+    &.active,
+    &:focus,
+    &:active {
+        background: transparent;
+        color: #999;
+    }
+}
+
+.button--small {
+    height: 24px;
+    line-height: 24px;
+    padding: 0px 10px;
+    font-size: 13;
+}
+
+.button--line {
+    border: 2px solid $primary-color;
+    color: $primary-color;
+    background: transparent;
+    line-height: $input-height - 4;
+    &:hover {
+        background: $primary-color;
+        color: #fff;
+    }
+}
+
+.button--rounded {
+    border-radius: 200px;
+    padding: 0px 30px;
+}
+
+.button--loader {
+    position: relative;
+    transition: all 0.3s ease 0s;
+    &:before {
+        display: none;
+        content: '';
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        bottom: 0;
+        margin: auto;
+        border-radius: 50%;
+        border-style: solid;
+        border-width: 3px;
+        border-color: transparent transparent #fff #fff;
+        animation: button-loader;
+        animation-timing-function: linear;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+    }
+    &.active {
+        padding-left: 35px;
+        &:before {
+            display: block;
+        }
+    }
+}

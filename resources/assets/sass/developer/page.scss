@@ -1,0 +1,61 @@
+.content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+}
+
+.page__row {
+    padding: 20px 30px;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    &+.page_row {
+        margin-top: 0;
+    }
+}
+
+.page__header {}
+
+.p_title {
+    font-size: 18px;
+    color: #999;
+    font-weight: 300;
+}
+
+.page__title {
+    float: left;
+}
+
+.page__title-text {
+    font-size: 25px;
+    margin: 0;
+}
+
+.page__title-desc {
+    font-size: 14px;
+    color: #999;
+    margin: 0;
+}
+
+.page__activity {
+    float: right;
+}
+
+.page__content {
+    padding: 20px;
+}
+
+.filter__button {
+    float: left;
+}
+
+.filter__result {
+    float: right;
+    width: 50%;
+}
+
+.filter__result .cards__block_20 {
+    width: 50%;
+}
