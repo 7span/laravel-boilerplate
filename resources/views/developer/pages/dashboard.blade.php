@@ -22,6 +22,11 @@
                         <h3 class="card__title">Telescope</h3>
                     </a>
                 </div>
+                <div class="col-xs-12 col-sm-6 col-md-3" align="center">
+                    <a class="card--colorful card--teal" target="_blank" href="{{ url('/log-viewer') }}" style="text-decoration: none;">
+                        <h3 class="card__title">Log Viewer</h3>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
