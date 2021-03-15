@@ -62,7 +62,6 @@ trait BaseModel
         $queryBuilder = QueryBuilder::for(self::class)
             ->allowedFields($this->getQueryFieldsWithRelationship())
             ->allowedIncludes($this->getIncludes());
-
         $filters = $this->getQueryFields();
         if (isset($this->scopedFilters)) {
             foreach ($this->scopedFilters as $key => $value) {
@@ -71,7 +70,6 @@ trait BaseModel
         }
         if (isset($this->exactFilters)) {
             foreach ($this->exactFilters as $key => $value) {
-                //unset($filters[array_search($value, $filters)]);
                 array_push($filters, AllowedFilter::exact($value));
             }
         }
