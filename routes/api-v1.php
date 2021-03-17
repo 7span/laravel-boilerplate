@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('signup', 'AuthController@signup');
+Route::post('login', 'AuthController@login');
+
+Route::post('forget-password', 'AuthController@forgetPassword');
+Route::post('reset-password', 'AuthController@resetPassword');
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('me', 'UserController@me');
 });
