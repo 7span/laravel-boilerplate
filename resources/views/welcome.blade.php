@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel Boilerplate</title>
+        <title>{!! config('app.name') !!}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -70,10 +70,10 @@
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ url('developer/login') }}">Login</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ url('developer/register') }}">Register</a>
                         @endif
                     @endauth
                 </div>
@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel Boilerplate
+                    {!! config('app.name') !!}
                 </div>
             </div>
         </div>

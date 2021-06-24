@@ -18,7 +18,9 @@
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
-        "spatie/laravel-littlegatekeeper": "^1.1",
+        "mll-lab/laravel-graphql-playground": "^2.5",
+        "rebing/graphql-laravel": "^7.2",
+        "spatie/laravel-littlegatekeeper": "1.1",
         "spatie/laravel-query-builder": "^3.3"
     },
     "require-dev": {
