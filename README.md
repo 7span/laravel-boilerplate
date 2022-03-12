@@ -1,16 +1,15 @@
 ## About Laravel Boilerplate
 
-The laravel boilerplate is project that uses the `Laravel` (Version 7.3) as a backend framework.It provides basic structure for starting any new laravel project.
+The laravel boilerplate is project that uses the `Laravel` (Version 9.0) as a backend framework.It provides basic structure for starting any new laravel project.
 It has implemented the basic authetication provided by laravel.
 
 
 ## Laravel Packages
 
-- [Laravel Auth](https://laravel.com/docs/7.x/authentication#included-routing) - Laravel Auth package
-- [Laravel Telescope](https://laravel.com/docs/7.x/telescope) - For Monitoring request
+- [Laravel Telescope](https://laravel.com/docs/9.x/telescope) - For Monitoring request
 - [Laravel Littlegatekeeper](https://github.com/spatie/laravel-littlegatekeeper) - Protect pages from access with a universal username/password combination.It is used for developer panel which includes `Telescope`.
 - [Log Viewer](https://github.com/ARCANEDEV/LogViewer) - To manage and keep track of each one of your log files
-- [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum) - It provides a featherweight authentication system for SPAs , mobile applications, and simple, token based APIs
+- [Laravel Sanctum](https://laravel.com/docs/9.x/sanctum) - It provides a featherweight authentication system for SPAs , mobile applications, and simple, token based APIs
 
 ## Supported APIs
 
