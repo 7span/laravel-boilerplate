@@ -34,6 +34,13 @@
 ~SPECIAL CHARACTERS
 ==========================================*/
 
+body{
+  --theme-color : #111;
+  --btn-color: #ea2027;
+  --btn-text-color: #fff;
+  --btn-hover-color: #c41319;
+}
+
 .ss-error {
   color: #c0392b;
   display: block;
@@ -73,9 +80,10 @@ textarea {
   display: inline-block;
   white-space: nowrap;
   text-align: center;
-  background: #fff;
-  color: #3207ffb5;
-  border: 1px solid #673ab7;
+  background: var(--btn-color);
+  border-radius: 40px;
+  color: var(--btn-text-color);
+  border: 1px solid var(--btn-color);
   vertical-align: top;
   text-decoration: none !important;
   cursor: pointer;
@@ -83,16 +91,17 @@ textarea {
 }
 
 .button:hover {
-  background: #3207ffb5;
-  color: #fff;
-  border-color: #673ab7;
+  background: var(--btn-hover-color);
+  border-color: var(--btn-hover-color);
+  color: var(--btn-text-color); 
 }
 
 .button.active,
 .button:focus,
 .button:active {
-  background: #01aaf9;
-  color: #fff;
+  background: var(--btn-color);
+  border-color: var(--btn-hover-color);
+  color: var(--btn-text-color);
 }
 
 .button[disabled] {
@@ -106,12 +115,12 @@ textarea {
 }
 
 .button--accent {
-  background-color: #673ab7;
+  background-color: var(--btn-color);
   color: #fff;
 }
 
 .button--accent:hover {
-  background-color: #673ab7;
+  background-color: var(--btn-color);
   color: #fff;
 }
 
@@ -196,7 +205,7 @@ textarea {
   left: 0;
   right: 0;
   overflow: auto;
-  background: #3207ffb5;
+  background: var(--theme-color);
 }
 
 .login__tbl {

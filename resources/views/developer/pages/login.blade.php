@@ -14,7 +14,7 @@
                     <form method="POST" action="{{ route('developer.login') }}">
                         {{ csrf_field() }}
                             <div class="login__logo">
-                                <img src="{!! asset('logo.png') !!}" alt="Developer Panel"/>
+                                <img src="{!! asset('img/logo.png') !!}" alt="Developer Panel"/>
                             </div>
 
                             <div class="login__header">
