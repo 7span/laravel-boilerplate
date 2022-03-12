@@ -65,9 +65,9 @@ class Handler extends ExceptionHandler
         }
 
         // Set common error message if any model not found in system.
-        // if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-        //     return $this->error(['message' =>  __('message.entityNotFound', [ 'entity' => Helper::getModelNameFromClassObj( $exception->getModel() ) ] ) ], 404);
-        // }
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            return $this->error(['message' =>  __('message.entityNotFound', [ 'entity' => Helper::getModelNameFromClassObj( $exception->getModel() ) ] ) ], 404);
+        }
 
         // Set an error message for any invalid url fired on server.
         if ($exception instanceof NotFoundHttpException) {
