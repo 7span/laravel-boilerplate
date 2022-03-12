@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,10 +21,3 @@ Route::post('reset-password', 'AuthController@resetPassword');
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('me', 'UserController@me');
 });
-
-Route::get('user/{id}', function($id)
-{
-    return User::findOrFail($id);
-});
-
-
