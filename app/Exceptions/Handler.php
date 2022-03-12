@@ -68,12 +68,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
             return $this->error(
                 [
-                    'message' =>  __(
-                        'message.entityNotFound',
-                        [
-                            'entity' => Helper::getModelNameFromClassObj($exception->getmodel())
-                        ]
-                    )
+                    'message' =>  __('entity.entityNotFound')
                 ],
                 404
             );
@@ -81,12 +76,22 @@ class Handler extends ExceptionHandler
 
         // Set an error message for any invalid url fired on server.
         if ($exception instanceof NotFoundHttpException) {
-            return $this->error(['message' =>  __('message.invalidUrl')], 404);
+            return $this->error(
+                [
+                    'message' =>  __('message.invalidUrl')
+                ],
+                404
+            );
         }
 
         // Set an error message for unauthorization errors.
         if ($exception instanceof AuthorizationException || $exception instanceof ValidationUnauthorizedException) {
-            return $this->error(['message' =>  __('message.unauthorizedAccess')], 401);
+            return $this->error(
+                [
+                    'message' =>  __('message.unauthorizedAccess')
+                ],
+                401
+            );
         }
         return parent::render($request, $exception);
     }

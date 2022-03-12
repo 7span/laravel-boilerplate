@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Helper
 {
-    public static function getModelNameFromClassObj($classObj)
+    public static function getModelNameFromClassName($class)
     {
-        dd(get_class($classObj));
-//        return last( explode("\\", get_class($classObj) ) );
+        return last( explode("\\", ($class) ) );
     }
 }
