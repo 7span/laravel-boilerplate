@@ -17,10 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::group(['prefix' => 'developer'], function () {
     Route::get('login','Developer\DeveloperController@loginPage');
     Route::post('login','Developer\DeveloperController@login')->name('developer.login');
