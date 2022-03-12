@@ -4,9 +4,11 @@ namespace App\Library;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Helper{
-    public static function getModelNameFromClassObj(Model $classObj)
+class Helper
+{
+    public static function getModelNameFromClassObj($classObj)
     {
-        return last( explode("\\", get_class($classObj) ) );
+        dd(get_class($classObj));
+//        return last( explode("\\", get_class($classObj) ) );
     }
 }
