@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ForgotPassword;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserOtp;
@@ -56,7 +57,7 @@ class AuthService
         $otp = mt_rand(1000, 9999);
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'forget_password']);
 
-        Mail::to($user->email)->send(new ForgetPassword(['otp' => $otp, 'name' => $user['name']]));
+        ForgotPassword::dispatch($user->id, $otp);
         $data['message'] = __('message.forgetPasswordEmailSuccess');
         return $data;
     }

@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         if (!empty($users)) {
             foreach (collect($users) as $user) {
                 User::create([
-                    'name' => $user->name,
+                    'name' => $user['name'],
                     'email' => $user['email'],
                     'email_verified_at' => $user['email_verified_at'],
                     'password' => $user['password'],
