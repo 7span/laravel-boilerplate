@@ -1,141 +1,150 @@
 <?php
 
-use Arcanedev\LogViewer\Contracts\Utilities\Filesystem;
+use Opcodes\LogViewer\Level;
 
 return [
 
-    /* -----------------------------------------------------------------
-     |  Log files storage path
-     | -----------------------------------------------------------------
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer
+    |--------------------------------------------------------------------------
+    | Log Viewer can be disabled, so it's no longer accessible via browser.
+    |
+    */
+    'enabled' => env('LOG_VIEWER_ENABLED', true),
 
-    'storage-path'  => storage_path('logs'),
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer Domain
+    |--------------------------------------------------------------------------
+    | You may change the domain where Log Viewer should be active.
+    | If the domain is empty, all domains will be valid.
+    |
+    */
 
-    /* -----------------------------------------------------------------
-     |  Log files pattern
-     | -----------------------------------------------------------------
-     */
+    'route_domain' => null,
 
-    'pattern'       => [
-        'prefix'    => Filesystem::PATTERN_PREFIX,    // 'laravel-'
-        'date'      => Filesystem::PATTERN_DATE,      // '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'
-        'extension' => Filesystem::PATTERN_EXTENSION, // '.log'
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer Route
+    |--------------------------------------------------------------------------
+    | Log Viewer will be available under this URL.
+    |
+    */
+
+    'route_path' => 'log-viewer',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Back to system URL
+    |--------------------------------------------------------------------------
+    | When set, displays a link to easily get back to this URL.
+    | Set to `null` to hide this link.
+    |
+    | Optional label to display for the above URL.
+    |
+    */
+
+    'back_to_system_url' => config('app.url', null),
+
+    'back_to_system_label' => null, // Displayed by default: "Back to {{ app.name }}"
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer route middleware.
+    |--------------------------------------------------------------------------
+    | The middleware should enable session and cookies support in order for the Log Viewer to work.
+    | The 'web' middleware will be applied automatically if empty.
+    |
+    */
+
+    'middleware' => [
+        'web','developer'
     ],
 
-    /* -----------------------------------------------------------------
-     |  Locale
-     | -----------------------------------------------------------------
-     |  Supported locales :
-     |    'auto', 'ar', 'bg', 'de', 'en', 'es', 'et', 'fa', 'fr', 'hu', 'hy', 'id', 'it', 'ja', 'ko', 'nl',
-     |    'pl', 'pt-BR', 'ro', 'ru', 'sv', 'th', 'tr', 'zh-TW', 'zh'
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Include file patterns
+    |--------------------------------------------------------------------------
+    |
+    */
 
-    'locale'        => 'auto',
+    'include_files' => [
+        '*.log',
+    ],
 
-    /* -----------------------------------------------------------------
-     |  Theme
-     | -----------------------------------------------------------------
-     |  Supported themes :
-     |    'bootstrap-3', 'bootstrap-4'
-     |  Make your own theme by adding a folder to the views directory and specifying it here.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Exclude file patterns.
+    |--------------------------------------------------------------------------
+    | This will take precedence over included files.
+    |
+    */
 
-    'theme'         => 'bootstrap-4',
+    'exclude_files' => [
+        //'my_secret.log'
+    ],
 
-    /* -----------------------------------------------------------------
-     |  Route settings
-     | -----------------------------------------------------------------
-     */
+    /*
+    |--------------------------------------------------------------------------
+    |  Shorter stack trace filters.
+    |--------------------------------------------------------------------------
+    | Lines containing any of these strings will be excluded from the full log.
+    | This setting is only active when the function is enabled via the user interface.
+    |
+    */
 
-    'route'         => [
-        'enabled'    => true,
+    'shorter_stack_trace_excludes' => [
+        '/vendor/symfony/',
+        '/vendor/laravel/framework/',
+        '/vendor/barryvdh/laravel-debugbar/',
+    ],
 
-        'attributes' => [
-            'prefix'     => 'log-viewer',
+    /*
+    |--------------------------------------------------------------------------
+    | Log matching patterns
+    |--------------------------------------------------------------------------
+    | Regexes for matching log files
+    |
+    */
 
-            'middleware' => ['web','developer'],
+    'patterns' => [
+        'laravel' => [
+            'log_matching_regex' => '/^\[(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}\.?(\d{6}([\+-]\d\d:\d\d)?)?)\].*/',
+
+            /**
+             * This pattern, used for processing Laravel logs, returns these results:
+             * $matches[0] - the full log line being tested.
+             * $matches[1] - full timestamp between the square brackets (includes microseconds and timezone offset)
+             * $matches[2] - timestamp microseconds, if available
+             * $matches[3] - timestamp timezone offset, if available
+             * $matches[4] - contents between timestamp and the severity level
+             * $matches[5] - environment (local, production, etc)
+             * $matches[6] - log severity (info, debug, error, etc)
+             * $matches[7] - the log text, the rest of the text.
+             */
+            'log_parsing_regex' => '/^\[(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}\.?(\d{6}([\+-]\d\d:\d\d)?)?)\](.*?(\w+)\.|.*?)('
+                .implode('|', array_filter(Level::caseValues()))
+                .')?: (.*?)( in [\/].*?:[0-9]+)?$/is',
         ],
     ],
 
-    /* -----------------------------------------------------------------
-     |  Log entries per page
-     | -----------------------------------------------------------------
-     |  This defines how many logs & entries are displayed per page.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Chunk size when scanning log files lazily
+    |--------------------------------------------------------------------------
+    | The size in MB of files to scan before updating the progress bar when searching across all files.
+    |
+    */
+    'cache_driver' => env('LOG_VIEWER_CACHE_DRIVER', null),
 
-    'per-page'      => 30,
+    /*
+    |--------------------------------------------------------------------------
+    | Chunk size when scanning log files lazily
+    |--------------------------------------------------------------------------
+    | The size in MB of files to scan before updating the progress bar when searching across all files.
+    |
+    */
 
-    /* -----------------------------------------------------------------
-     |  Download settings
-     | -----------------------------------------------------------------
-     */
-
-    'download'      => [
-        'prefix'    => 'laravel-',
-
-        'extension' => 'log',
-    ],
-
-    /* -----------------------------------------------------------------
-     |  Menu settings
-     | -----------------------------------------------------------------
-     */
-
-    'menu'  => [
-        'filter-route'  => 'log-viewer::logs.filter',
-
-        'icons-enabled' => true,
-    ],
-
-    /* -----------------------------------------------------------------
-     |  Icons
-     | -----------------------------------------------------------------
-     */
-
-    'icons' =>  [
-        /**
-         * Font awesome >= 4.3
-         * http://fontawesome.io/icons/
-         */
-        'all'       => 'fa fa-fw fa-list',                 // http://fontawesome.io/icon/list/
-        'emergency' => 'fa fa-fw fa-bug',                  // http://fontawesome.io/icon/bug/
-        'alert'     => 'fa fa-fw fa-bullhorn',             // http://fontawesome.io/icon/bullhorn/
-        'critical'  => 'fa fa-fw fa-heartbeat',            // http://fontawesome.io/icon/heartbeat/
-        'error'     => 'fa fa-fw fa-times-circle',         // http://fontawesome.io/icon/times-circle/
-        'warning'   => 'fa fa-fw fa-exclamation-triangle', // http://fontawesome.io/icon/exclamation-triangle/
-        'notice'    => 'fa fa-fw fa-exclamation-circle',   // http://fontawesome.io/icon/exclamation-circle/
-        'info'      => 'fa fa-fw fa-info-circle',          // http://fontawesome.io/icon/info-circle/
-        'debug'     => 'fa fa-fw fa-life-ring',            // http://fontawesome.io/icon/life-ring/
-    ],
-
-    /* -----------------------------------------------------------------
-     |  Colors
-     | -----------------------------------------------------------------
-     */
-
-    'colors' =>  [
-        'levels'    => [
-            'empty'     => '#D1D1D1',
-            'all'       => '#8A8A8A',
-            'emergency' => '#B71C1C',
-            'alert'     => '#D32F2F',
-            'critical'  => '#F44336',
-            'error'     => '#FF5722',
-            'warning'   => '#FF9100',
-            'notice'    => '#4CAF50',
-            'info'      => '#1976D2',
-            'debug'     => '#90CAF9',
-        ],
-    ],
-
-    /* -----------------------------------------------------------------
-     |  Strings to highlight in stack trace
-     | -----------------------------------------------------------------
-     */
-
-    'highlight' => [
-        '^#\d+',
-        '^Stack trace:',
-    ],
-
+    'lazy_scan_chunk_size_in_mb' => 200,
 ];
