@@ -59,7 +59,7 @@ return [
     */
 
     'middleware' => [
-        'web','developer'
+        'web', 'developer',
     ],
 
     /*

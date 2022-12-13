@@ -7,7 +7,6 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 trait ApiResponser
 {
-
     private function success($data, $code)
     {
         return response()->json($data, $code);

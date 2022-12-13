@@ -24,7 +24,7 @@ class Signup extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required|max:20',
+            'name' => 'required|max:20',
             'password' => 'required|min:8|confirmed',
             'email' => 'required|email|max:255|unique:users',
         ];

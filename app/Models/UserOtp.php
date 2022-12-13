@@ -14,15 +14,15 @@ class UserOtp extends Model
         'otp',
         'user_id',
         'otp_for',
-        'used_at'
+        'used_at',
     ];
 
     protected $hidden = [
-        'updated_at', 'deleted_at'
+        'updated_at', 'deleted_at',
     ];
 
     public $queryable = [
-        'id'
+        'id',
     ];
 
     public function user()

@@ -1,0 +1,13 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "ordered_imports": {"sort_algorithm" :"length"},
+        "no_unused_imports": true,
+        "blank_line_after_namespace": true,
+        "single_quote": true,
+        "single_blank_line_at_eof": true,
+        "braces": true,
+        "switch_case_semicolon_to_colon": true,
+        "switch_case_space": true
+    }
+}
