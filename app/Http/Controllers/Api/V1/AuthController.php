@@ -14,6 +14,7 @@ use App\Http\Resources\User\Resource as UserResource;
 class AuthController extends Controller
 {
     use ApiResponser;
+
     private $authService;
 
     public function __construct(AuthService $authService)
@@ -26,8 +27,9 @@ class AuthController extends Controller
         $user = $this->authService->signup($request->all());
         $data = [
             'user' => new UserResource($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken
+            'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
+
         return $this->success($data, 200);
     }
 
@@ -36,20 +38,23 @@ class AuthController extends Controller
         $user = $this->authService->login($request->all());
         $data = [
             'user' => new UserResource($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken
+            'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
+
         return $this->success($data, 200);
     }
 
     public function forgetPassword(ForgetPassword $request)
     {
         $data = $this->authService->forgetPassword($request->all());
+
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
     public function resetPassword(ResetPassword $request)
     {
         $data = $this->authService->resetPassword($request->all());
+
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 }

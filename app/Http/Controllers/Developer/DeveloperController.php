@@ -12,11 +12,12 @@ class DeveloperController extends Controller
         $auth = resolve('littlegatekeeper');
         $loginSuccess = $auth->attempt($request->only([
             'username',
-            'password'
+            'password',
         ]));
-        if (!$loginSuccess) {
+        if (! $loginSuccess) {
             return redirect()->back()->withErrors(['msg', 'Invalid credencials.']);
         }
+
         return redirect()->route('developer.dashboard');
     }
 

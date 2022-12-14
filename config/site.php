@@ -1,5 +1,5 @@
 <?php
 
 return [
-    "otpExpirationTimeInMinutes" => "10",
+    'otpExpirationTimeInMinutes' => '10',
 ];

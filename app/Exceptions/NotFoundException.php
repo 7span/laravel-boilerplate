@@ -12,6 +12,7 @@ class NotFoundException extends Exception
     {
         $this->message = $message;
     }
+
     public function report()
     {
         return '';
@@ -19,6 +20,6 @@ class NotFoundException extends Exception
 
     public function render()
     {
-        return response()->json(['message' =>  $this->message], 404);
+        return response()->json(['message' => $this->message], 404);
     }
 }

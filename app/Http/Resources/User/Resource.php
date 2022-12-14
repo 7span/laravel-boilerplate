@@ -8,11 +8,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class Resource extends JsonResource
 {
     use ResourceFilterable;
+
     protected $model = 'User';
 
     public function toArray($request)
     {
-        $data =  $this->fields();
+        $data = $this->fields();
+
         return $data;
     }
 }

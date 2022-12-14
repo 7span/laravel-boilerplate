@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'developer'], function () {
-    Route::get('login','Developer\DeveloperController@loginPage');
-    Route::post('login','Developer\DeveloperController@login')->name('developer.login');
-    Route::get('dashboard','Developer\DeveloperController@dashboard')->name('developer.dashboard')->middleware('developer');
+    Route::get('login', 'Developer\DeveloperController@loginPage');
+    Route::post('login', 'Developer\DeveloperController@login')->name('developer.login');
+    Route::get('dashboard', 'Developer\DeveloperController@dashboard')->name('developer.dashboard')->middleware('developer');
 });
