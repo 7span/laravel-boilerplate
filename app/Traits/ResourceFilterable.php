@@ -19,7 +19,7 @@ trait ResourceFilterable
     protected function prepareResponse()
     {
         $data = [];
-        $class = 'App\\Models\\'.$this->model;
+        $class = 'App\\Models\\' . $this->model;
         $classObj = new $class();
         $fields = $classObj->getQueryFields();
         $hiddenFields = $classObj->getHidden();

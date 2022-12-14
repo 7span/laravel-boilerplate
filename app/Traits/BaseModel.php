@@ -37,10 +37,10 @@ trait BaseModel
         foreach ($relationships as $relationshipName => $relationship) {
             $relationshipObj = new $relationship['model']();
             foreach ($relationshipObj->getFillable() as $field) {
-                $fields[] = $relationshipName.'.'.$field;
+                $fields[] = $relationshipName . '.' . $field;
             }
             foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $relationshipName.'.'.$field;
+                $fields[] = $relationshipName . '.' . $field;
             }
         }
 
