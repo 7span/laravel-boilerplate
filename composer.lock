@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c531f63d453538d29a8ea0963377314",
+    "content-hash": "11106df2db4e222965981cc5a072312e",
     "packages": [
         {
             "name": "brick/math",
@@ -1304,16 +1304,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "4.x-dev",
+            "version": "v4.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "222bbea975d9f3a10879af153db5c34ffac08034"
+                "reference": "88ca4cbeefea563b605cf3fd9c10ff5a623864b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/222bbea975d9f3a10879af153db5c34ffac08034",
-                "reference": "222bbea975d9f3a10879af153db5c34ffac08034",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/88ca4cbeefea563b605cf3fd9c10ff5a623864b1",
+                "reference": "88ca4cbeefea563b605cf3fd9c10ff5a623864b1",
                 "shasum": ""
             },
             "require": {
@@ -1330,7 +1330,6 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1370,9 +1369,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/4.x"
+                "source": "https://github.com/laravel/telescope/tree/v4.14.1"
             },
-            "time": "2023-04-19T15:24:14+00:00"
+            "time": "2023-03-17T18:13:19+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -3157,30 +3156,29 @@
         },
         {
             "name": "spatie/laravel-littlegatekeeper",
-            "version": "1.1.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-littlegatekeeper.git",
-                "reference": "f8602a22546363181c0640324d2d965ba9f49218"
+                "reference": "8bb3a9103c24b36c2351b32429dcb1eae9861938"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-littlegatekeeper/zipball/f8602a22546363181c0640324d2d965ba9f49218",
-                "reference": "f8602a22546363181c0640324d2d965ba9f49218",
+                "url": "https://api.github.com/repos/spatie/laravel-littlegatekeeper/zipball/8bb3a9103c24b36c2351b32429dcb1eae9861938",
+                "reference": "8bb3a9103c24b36c2351b32429dcb1eae9861938",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "illuminate/session": "^8.74|^9.0|^10.0",
+                "php": "^7.4|^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
+                "orchestra/testbench": "^6.23|^7.0|^8.0",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
                 "laravel": {
                     "providers": [
                         "Spatie\\LittleGateKeeper\\LittleGateKeeperServiceProvider"
@@ -3212,9 +3210,19 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-littlegatekeeper/issues",
-                "source": "https://github.com/spatie/laravel-littlegatekeeper/tree/master"
+                "source": "https://github.com/spatie/laravel-littlegatekeeper/tree/2.0.2"
             },
-            "time": "2019-06-17T12:43:56+00:00"
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-04-05T09:32:43+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -8085,13 +8093,11 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "laravel/telescope": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0.2"
+        "php": "^8.1"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
