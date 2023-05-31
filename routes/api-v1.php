@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\V1\AuthController;
+use App\Http\Controllers\API\V1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('signup', 'AuthController@signup');
-Route::post('login', 'AuthController@login');
+Route::post('signup', [AuthController::class, 'signup']);
+Route::post('login', [AuthController::class, 'login']);
 
-Route::post('forget-password', 'AuthController@forgetPassword');
-Route::post('reset-password', 'AuthController@resetPassword');
+Route::post('forget-password', [AuthController::class, 'forgetPassword']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('me', 'UserController@me');
+    Route::get('me', [UserController::class, 'me']);
 });

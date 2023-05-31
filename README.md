@@ -1,13 +1,12 @@
 ## About Laravel Boilerplate
 
-The laravel boilerplate is project that uses the `Laravel` (Version 9.0) as a backend framework.It provides basic structure for starting any new laravel project.
-It has implemented the basic authetication provided by laravel.
+The laravel boilerplate is project that uses the `Laravel` (Version 10.10) as a backend framework. It provides basic structure for starting any new laravel project. It has implemented the basic authetication provided by laravel.
 
 
 ## Laravel Packages
 
 - [Laravel Telescope](https://laravel.com/docs/9.x/telescope) - For Monitoring request
-- [Laravel Littlegatekeeper](https://github.com/spatie/laravel-littlegatekeeper) - Protect pages from access with a universal username/password combination.It is used for developer panel which includes `Telescope`.
+- [Laravel Littlegatekeeper](https://github.com/spatie/laravel-littlegatekeeper) - Protect pages from access with a universal username/password combination. It is used for developer panel which includes `Telescope`.
 - [Log Viewer](https://github.com/ARCANEDEV/LogViewer) - To manage and keep track of each one of your log files
 - [Laravel Sanctum](https://laravel.com/docs/9.x/sanctum) - It provides a featherweight authentication system for SPAs , mobile applications, and simple, token based APIs
 - [Laravel Pint](https://laravel.com/docs/9.x/pint) - It provides an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.
@@ -19,7 +18,7 @@ It has implemented the basic authetication provided by laravel.
 		```
 	
 	- __VS Code - Add Keyboard Shortcut to run Laravel Pint__
-        1. Open VS Code.
+    1. Open VS Code.
 		2. Open Keyboard shortcut panel, either from `file -> preferences -> keyboard Shortcuts` or `Ctrl+k Ctrl+s`
 		3. Ones open click on the file icon on the top to open the json file of the keyboard shortcuts.
 		4. Ones open add the following lines to the file.
@@ -39,9 +38,8 @@ It has implemented the basic authetication provided by laravel.
 - Register
 - Login
 - Get Profile
-- Forget and reset password
+- Forget and Reset Password
 
 ## Notes
 
-1. Please run "npm run dev" command to compile your assets.
-2. `Telescope` , `Log Viewer` and other developer packages are accessible with universal username and password defined in .env file under `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD`.
+1. `Telescope` , `Log Viewer` and other developer packages are accessible with universal username and password defined in .env file under `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD`.

@@ -15,7 +15,7 @@ class DeveloperController extends Controller
             'password',
         ]));
         if (! $loginSuccess) {
-            return redirect()->back()->withErrors(['msg', 'Invalid credencials.']);
+            return redirect()->back()->withErrors(['message', 'Invalid credencials.']);
         }
 
         return redirect()->route('developer.dashboard');

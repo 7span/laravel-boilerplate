@@ -1,53 +1,41 @@
-@extends('developer.layouts.login')
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Developer Panel</title>
 
-@section('contentHeader')
-<title>Login | Developer Panel </title>
-@stop
+    <!-- META -->
+	<meta charset="utf-8"/>
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
 
-@section('content')
-    <!-- HOME -->
-    <div class="content">
-        <div class="login">
-            <div class="login__tbl">
-                <div class="login__tblcl">
-                    <div class="login__box">
-                    <form method="POST" action="{{ route('developer.login') }}">
-                        {{ csrf_field() }}
-                            <div class="login__logo">
-                                <img src="{!! asset('img/logo.png') !!}" alt="Developer Panel"/>
-                            </div>
-
-                            <div class="login__header">
-                                <h1 class="login__title">Welcome Back!</h1>
-                                <p class="login__subtitle">Please login to your account</p>
-                            </div>
-                            @if($errors->any())
-                                <p class="login__error">
-                                <i class="material-icons">error_outline</i>
-                                <span>Username/Password is incorrect!</span>
-                            </p>
-                            @endif
-                            <ul class="login__form">
-                                <li>
-                                    <label for="">Username/Email</label>
-                                    <input type="text" name="username" class="lw_username" value="{{ old('username') }}" required>
-                                </li>
-                                <li>
-                                    <label for="">Password</label>
-                                    <input id="password" type="password" class="lw_password" name="password" required>
-                                </li>
-                                <li>
-                                    <button type="submit" class="button login__submit" name="button">Login</button>
-                                </li>
-                            </ul>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<link rel="shortcut icon" href="{{ asset('assets/img/favicon.png')}}"/>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex h-screen bg-black">
+	<div class="w-full max-w-sm m-auto bg-white rounded p-5">   
+      	<header>
+        	<img class="w-40 mx-auto mb-5" src="{{ asset('assets/img/logo.png')}}" />
+      	</header>   
+    	<div class="mt-1 mb-4">
+    		<h2 class="font-bold text-2xl text-black-500">Welcome Back!</h2>
+  			<i class="text-xs text-black-500">Please login to your account</i>
+    	</div>
+      	<form method="POST" action="{{ route('developer.login') }}">
+      		@csrf
+        	<div>
+          		<label class="block mb-2 text-gray-300" for="username">Username/Email</label>
+          		<input class="w-full p-2 mb-6 text-black-700 border-b-2 border-zinc-400 outline-none focus:bg-red-50" type="text" name="username">
+        	</div>
+	        <div>
+	          	<label class="block mb-2 text-gray-300" for="password">Password</label>
+	          	<input class="w-full p-2 mb-6 text-black-700 border-b-2 border-zinc-400 outline-none focus:bg-red-50" type="password" name="password">
+	        </div>
+	        <div>          
+	          	<input class="w-full bg-red-600 hover:bg-black text-white font-bold py-2 px-4 mb-6 rounded" type="submit" value="Login">
+	        </div>       
+      	</form>  
     </div>
-@stop
-
-@section('contentFooter')
-
-@stop
+</body>
+</html>
