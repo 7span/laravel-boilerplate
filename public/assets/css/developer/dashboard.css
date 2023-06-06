@@ -1,0 +1,129 @@
+.max-h-full {
+	max-height: 100%;
+}
+
+.bg-white {
+	background-color: white;
+}
+
+.shadow {
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.max-w-7xl {
+	max-width: 80rem;
+}
+
+.mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.lg-divide-gray-200 {
+	border-color: rgba(229, 231, 235, 0.5);
+}
+
+.h-20 {
+	height: 5rem;
+}
+
+.relative {
+	position: relative;
+
+}
+
+.z-0 {
+	z-index: 0;
+
+}
+
+.flex-1 {
+	flex: 1;
+
+}
+
+.px-2 {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+
+}
+
+.items-center {
+	align-items: center;
+
+}
+
+.sm-absolute {
+	position: absolute;
+
+}
+
+.sm-inset-0 {
+	inset: 0;
+}
+
+
+.h-12 {
+	height: 3rem;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.pt-5 {
+	padding-top: 1.25rem;
+}
+
+.p-5 {
+	padding: 1.25rem;
+}
+
+.p-6 {
+	padding: 1.5rem;
+}
+
+a {
+	text-decoration: none;
+}
+
+.log-viewer .block {
+	display: block;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1), 0 2px 4px -1px rgba(9, 9, 16, 0.06);
+	max-width: 20rem;
+	text-align: center;
+	background-color: #2563eb;
+	height: 100%;
+}
+
+.log-viewer .block h5,
+.telescope .block h5 {
+	color: white;
+	font-size: 1.60rem;
+	font-weight: 500;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.log-viewer .block p,
+.telescope .block p {
+	color: white;
+	font-size: 1rem;
+	margin-top: 1.5rem;
+	margin-bottom: 1rem;
+	font-family: cursive;
+}
+
+.telescope .block {
+	display: block;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1), 0 2px 4px -1px rgba(9, 9, 16, 0.06);
+	background-color: #7c3aed;
+	max-width: 20rem;
+	text-align: center;
+}
