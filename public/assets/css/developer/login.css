@@ -1,0 +1,203 @@
+body {
+	display: flex;
+	height: 100vh;
+	background-color: black;
+}
+
+.w-full {
+	width: 100%;
+}
+
+.max-w-sm {
+	max-width: 20rem;
+}
+
+.m-auto {
+	margin: auto;
+}
+
+.bg-white {
+	background-color: white;
+}
+
+.rounded {
+	border-radius: 0.25rem;
+}
+
+.p-5 {
+	padding: 1.25rem;
+}
+
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.w-40 {
+	width: 10rem;
+}
+
+.mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.mb-5 {
+	margin-bottom: 1.25rem;
+}
+
+.mt-1 {
+	margin-top: 0.25rem;
+}
+
+.mb-4 {
+	margin-bottom: 1rem;
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.text-2xl {
+	font-size: 1.5rem;
+}
+
+.bg-red-50 {
+	background-color: #fef2f2;
+}
+
+.border {
+	border-width: 1px;
+}
+
+.border-red-400 {
+	border-color: #f87171;
+}
+
+.text-red-800 {
+	color: #9b2c2c;
+}
+
+.text-sm {
+	font-size: 0.875rem;
+}
+
+.p-4 {
+	padding: 1rem;
+}
+
+form {
+	display: block;
+}
+
+.block {
+	display: block;
+}
+
+.mb-2 {
+	margin-bottom: 0.5rem;
+}
+
+label {
+	color: #9d9d9d;
+}
+
+.w-full {
+	width: 100%;
+}
+
+.p-2 {
+	padding: 0.5rem;
+}
+
+.mb-6 {
+	margin-bottom: 1.5rem;
+}
+
+.text-black-700 {
+	color: #4b5563;
+}
+
+.border-b-2 {
+	border-bottom-width: 2px;
+}
+
+.border-zinc-400 {
+	border-color: #fbbf24;
+}
+
+.outline-none {
+	outline: none;
+}
+
+.bg-red-50-focus:focus {
+	background-color: #fef2f2;
+}
+
+.type-text {
+	font-size: 1rem;
+}
+
+.w-full {
+	width: 100%;
+}
+
+.w-98 {
+	width: 98%;
+}
+
+.w-92 {
+	width: 92%;
+}
+
+.bg-red-600 {
+	background-color: #dc2626;
+}
+
+.bg-black-hover:hover {
+	background-color: black;
+}
+
+.text-white {
+	color: white;
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.py-2 {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.px-4 {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.mb-6 {
+	margin-bottom: 1.5rem;
+}
+
+.rounded {
+	border-radius: 0.25rem;
+}
+
+.b-none {
+	border: none;
+}
+
+.b-input {
+	border: none;
+	border-bottom: 1px solid #7f7373;
+}
+
+.mb-10px {
+	margin-bottom: 10px;
+}
+
+.mt-45px {
+	margin-top: 45px;
+}

@@ -18,7 +18,7 @@ The laravel boilerplate is project that uses the `Laravel` (Version 10.10) as a 
 		```
 	
 	- __VS Code - Add Keyboard Shortcut to run Laravel Pint__
-    1. Open VS Code.
+        1. Open VS Code.
 		2. Open Keyboard shortcut panel, either from `file -> preferences -> keyboard Shortcuts` or `Ctrl+k Ctrl+s`
 		3. Ones open click on the file icon on the top to open the json file of the keyboard shortcuts.
 		4. Ones open add the following lines to the file.
