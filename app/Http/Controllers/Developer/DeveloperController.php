@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Developer;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Developer\Login;
 
 class DeveloperController extends Controller
 {
-    public function login(Request $request)
+    public function login(Login $request)
     {
         $auth = resolve('littlegatekeeper');
         $loginSuccess = $auth->attempt($request->only([
@@ -21,12 +21,12 @@ class DeveloperController extends Controller
         return redirect()->route('developer.dashboard');
     }
 
-    public function loginPage(Request $request)
+    public function loginPage()
     {
         return view('developer.pages.login');
     }
 
-    public function dashboard(Request $request)
+    public function dashboard()
     {
         return view('developer.pages.dashboard');
     }

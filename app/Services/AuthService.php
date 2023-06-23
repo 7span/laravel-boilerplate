@@ -6,9 +6,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserOtp;
 use Illuminate\Support\Arr;
-use App\Mail\ForgetPassword;
+use App\Jobs\ForgetPasswordMail;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -59,7 +58,7 @@ class AuthService
         $otp = mt_rand(1000, 9999);
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'forget_password']);
 
-        Mail::to($user->email)->send(new ForgetPassword(['otp' => $otp, 'name' => $user['name']]));
+        ForgetPasswordMail::dispatch($user, $otp);
         $data['message'] = __('message.forgetPasswordEmailSuccess');
 
         return $data;
