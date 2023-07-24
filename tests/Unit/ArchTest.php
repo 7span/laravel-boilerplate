@@ -20,7 +20,3 @@ test('validator class should be not used in controllers')
 test('mail should be sent via queue only')
     ->expect('Illuminate\Support\Facades\Mail')
     ->toOnlyBeUsedIn('App\Jobs');
-
-// test('ApiResponser trait should be added to the API controllers')
-//     ->expect('App\Traits\ApiResponser')
-//     ->toBeUsedIn('App\Http\Controllers');
