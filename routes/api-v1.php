@@ -15,7 +15,7 @@ use App\Http\Controllers\API\V1\UserController;
 |
 */
 
-Route::post('signup', [AuthController::class, 'signup']);
+Route::post('signup', [AuthController::class, 'signUp']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('forget-password', [AuthController::class, 'forgetPassword']);

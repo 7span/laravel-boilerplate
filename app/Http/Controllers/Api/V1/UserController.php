@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Data\UserData;
 use App\Traits\ApiResponser;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\User\Resource as UserResource;
 
 class UserController extends Controller
 {
@@ -23,6 +23,6 @@ class UserController extends Controller
     {
         $user = $this->userService->resource(Auth::id());
 
-        return $this->resource(new UserResource($user));
+        return $this->resource(UserData::from($user));
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Data\UserData;
+use App\Data\Auth\LoginData;
 use App\Traits\ApiResponser;
+use App\Data\Auth\SignUpData;
 use App\Services\AuthService;
-use App\Http\Requests\Auth\Login;
-use App\Http\Requests\Auth\Signup;
+use App\Data\Auth\ResetPasswordData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\ResetPassword;
-use App\Http\Requests\Auth\ForgetPassword;
-use App\Http\Resources\User\Resource as UserResource;
+use App\Data\Auth\ForgetPasswordData;
 
 class AuthController extends Controller
 {
@@ -22,36 +22,36 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function signup(Signup $request)
+    public function signUp(SignUpData $request)
     {
         $user = $this->authService->signup($request->all());
         $data = [
-            'user' => new UserResource($user),
+            'user' => UserData::from($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
 
         return $this->success($data, 200);
     }
 
-    public function login(Login $request)
+    public function login(LoginData $request)
     {
         $user = $this->authService->login($request->all());
         $data = [
-            'user' => new UserResource($user),
+            'user' => UserData::from($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
 
         return $this->success($data, 200);
     }
 
-    public function forgetPassword(ForgetPassword $request)
+    public function forgetPassword(ForgetPasswordData $request)
     {
         $data = $this->authService->forgetPassword($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function resetPassword(ResetPassword $request)
+    public function resetPassword(ResetPasswordData $request)
     {
         $data = $this->authService->resetPassword($request->all());
 
