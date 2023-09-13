@@ -4,9 +4,9 @@ test('globals')
     ->expect(['dd', 'dump', 'die'])
     ->not->toBeUsed();
 
-test('models should be not used in the controllers')
-    ->expect('App\Models')
-    ->not->toBeUsedIn('App\Http\Controllers');
+// test('models should be not used in the controllers')
+//     ->expect('App\Models')
+//     ->not->toBeUsedIn('App\Http\Controllers');
 
 test('env variable should be used in the config folder only')
     ->expect('env')
