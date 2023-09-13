@@ -16,7 +16,7 @@ class UserData extends Data
         public string $name,
         #[Email,
             Unique('users', 'email')]
-
+        public string $email,
         public ?string $password,
         public ?DateTime $created_at
     ) {
