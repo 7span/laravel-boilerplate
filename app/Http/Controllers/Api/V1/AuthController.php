@@ -38,7 +38,7 @@ class AuthController extends Controller
         $user = $this->authService->login($request->all());
         $data = [
             'user' => UserData::from($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken,
+            'token' => $user->createToken(config('app.name'))->accessToken,
         ];
 
         return $this->success($data, 200);

@@ -34,7 +34,9 @@
         "ordered_imports": { "sort_algorithm": "length" },
         "simplified_null_return": true,
         "single_blank_line_at_eof": true,
-        "single_blank_line_before_namespace": true,
+        "blank_lines_before_namespace": {
+            "min_line_breaks" : 1
+        },
         "single_line_after_imports": true,
         "single_quote": {
             "strings_containing_single_quote_chars": false
