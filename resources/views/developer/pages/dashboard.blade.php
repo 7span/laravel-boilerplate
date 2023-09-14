@@ -53,6 +53,19 @@
 	                </div>
 	            </a>
 	        </div>
+
+            <div class="telescope p-5">
+	            <a href="{{ url('horizon/dashboard') }}" target="_blank">
+	                <div class="block">
+	                    <div class="p-6">
+	                        <h5>Horizon</h5>
+	                        <p>
+	                            Laravel Horizon provides a beautiful dashboard and code-driven configuration for your Laravel powered Redis queues. Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
+	                        </p>
+	                    </div>
+	                </div>
+	            </a>
+	        </div>
 	    </div>
 	</div>
 </body>
