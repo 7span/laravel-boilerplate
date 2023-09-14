@@ -12,6 +12,7 @@
         "laravel/telescope": "^4.14",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^2.4",
+        "spatie/laravel-data": "^3.8",
         "spatie/laravel-littlegatekeeper": "^2.0",
         "spatie/laravel-query-builder": "^5.2"
     },
