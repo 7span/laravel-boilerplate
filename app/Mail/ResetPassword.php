@@ -8,20 +8,21 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 
-class ForgetPassword extends Mailable
+class ResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $data;
+    private $user;
+
+    private $password;
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
-    public function __construct($data)
+    public function __construct($user, $password)
     {
-        $this->data = $data;
+        $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -30,7 +31,7 @@ class ForgetPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('email.forgetPasswordEmailSubject'),
+            subject: config('app.name') . ' | Password Reset',
         );
     }
 
@@ -40,8 +41,18 @@ class ForgetPassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.forget-password',
-            with : ['data' => $this->data]
+            markdown: 'emails.reset_password',
+            with : ['user' => $this->user, 'password' => $this->password]
         );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

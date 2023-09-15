@@ -2,26 +2,25 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 
-class ForgetPassword extends Mailable
+class WelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $data;
+    private $user;
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
-    public function __construct($data)
+    public function __construct(User $user)
     {
-        $this->data = $data;
+        $this->user = $user->toArray();
     }
 
     /**
@@ -30,7 +29,7 @@ class ForgetPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('email.forgetPasswordEmailSubject'),
+            subject: 'Welcome to ' . config('app.name'),
         );
     }
 
@@ -40,8 +39,18 @@ class ForgetPassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.forget-password',
-            with : ['data' => $this->data]
+            markdown: 'emails.welcome',
+            with : ['user' => $this->user]
         );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

@@ -58,7 +58,7 @@ class AuthService
         $otp = mt_rand(1000, 9999);
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'forget_password']);
 
-        ForgetPasswordMail::dispatch($user, $otp);
+        ForgetPasswordMail::dispatch($user, $otp)->onQueue('email');
         $data['message'] = __('message.forgetPasswordEmailSuccess');
 
         return $data;
@@ -91,6 +91,7 @@ class AuthService
         $user->password = $inputs['password'];
         $user->save();
         $data['message'] = __('message.passwordChangeSuccess');
+        $data['user'] = $user;
 
         return $data;
     }

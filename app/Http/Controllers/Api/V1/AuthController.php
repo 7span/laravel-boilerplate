@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Data\UserData;
+use App\Jobs\WelcomeEmail;
+use App\Jobs\ResetPassword;
 use App\Data\Auth\LoginData;
 use App\Traits\ApiResponser;
 use App\Data\Auth\SignUpData;
@@ -27,8 +29,10 @@ class AuthController extends Controller
         $user = $this->authService->signup($request->all());
         $data = [
             'user' => UserData::from($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken,
+            'token' => $user->createToken(config('app.name'))->accessToken,
         ];
+
+        WelcomeEmail::dispatch($user)->onQueue('email');
 
         return $this->success($data, 200);
     }
@@ -54,6 +58,9 @@ class AuthController extends Controller
     public function resetPassword(ResetPasswordData $request)
     {
         $data = $this->authService->resetPassword($request->all());
+        if (! isset($data['errors'])) {
+            ResetPassword::dispatch($data['user'], $request->password)->onQueue('email');
+        }
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }

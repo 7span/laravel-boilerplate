@@ -3,27 +3,24 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\Notifications\ForgotPassword;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Notifications\WelcomeEmail as NotificationsWelcomeEmail;
 
-class ForgetPasswordMail implements ShouldQueue
+class WelcomeEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $user;
 
-    private $otp;
-
     /**
      * Create a new job instance.
      */
-    public function __construct($user, $otp)
+    public function __construct($user)
     {
         $this->user = $user;
-        $this->otp = $otp;
     }
 
     /**
@@ -31,7 +28,6 @@ class ForgetPasswordMail implements ShouldQueue
      */
     public function handle(): void
     {
-        $data = ['otp' => $this->otp, 'name' => $this->user->name];
-        $this->user->notify(new ForgotPassword($data, $this->user));
+        $this->user->notify(new NotificationsWelcomeEmail($this->user));
     }
 }
