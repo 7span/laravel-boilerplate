@@ -55,4 +55,11 @@ class User extends Authenticatable
     ];
 
     protected $relationship = [];
+
+    public function routeNotificationFor()
+    {
+        $user = User::where('id', $this->id)->first();
+
+        return [$user->one_signal_player_id];
+    }
 }

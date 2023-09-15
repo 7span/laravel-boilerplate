@@ -171,6 +171,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        NotificationChannels\OneSignal\OneSignalServiceProvider::class,
     ])->toArray(),
 
     /*

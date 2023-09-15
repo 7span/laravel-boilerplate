@@ -6,7 +6,10 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserOtp;
 use Illuminate\Support\Arr;
+use App\Jobs\ChangePassword;
 use App\Jobs\ForgetPasswordMail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -92,6 +95,39 @@ class AuthService
         $user->save();
         $data['message'] = __('message.passwordChangeSuccess');
         $data['user'] = $user;
+
+        return $data;
+    }
+
+    public function changePassword($inputs)
+    {
+        $currentPassword = trim($inputs['current_password']);
+        $newPassword = trim($inputs['new_password']);
+
+        $user = Auth::user();
+
+        if (strcmp($currentPassword, $newPassword) == 0) {
+            // Current password and new password same
+            $data['errors']['message'] = __('message.newPasswordMatchedWithCurrentPassword');
+
+            return $data;
+        }
+
+        $user->password = $newPassword;
+        $user->save();
+
+        try {
+            ChangePassword::dispatch($user);
+        } catch (\Exception $e) {
+            Log::info('Change Password Notification Error : ' . $e->getMessage());
+        }
+
+        if (Auth::check()) {
+            Auth::user()->tokens()->delete();
+        }
+
+        $data['is_logout'] = true;
+        $data['message'] = __('message.changePasswordSuccess');
 
         return $data;
     }

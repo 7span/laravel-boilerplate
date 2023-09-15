@@ -23,4 +23,5 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('me', [UserController::class, 'me']);
+    Route::post('change-password', [AuthController::class, 'changePassword']);
 });

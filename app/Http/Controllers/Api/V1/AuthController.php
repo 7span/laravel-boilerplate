@@ -11,6 +11,7 @@ use App\Data\Auth\SignUpData;
 use App\Services\AuthService;
 use App\Data\Auth\ResetPasswordData;
 use App\Http\Controllers\Controller;
+use App\Data\Auth\ChangePasswordData;
 use App\Data\Auth\ForgetPasswordData;
 
 class AuthController extends Controller
@@ -61,6 +62,13 @@ class AuthController extends Controller
         if (! isset($data['errors'])) {
             ResetPassword::dispatch($data['user'], $request->password)->onQueue('email');
         }
+
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
+
+    public function changePassword(ChangePasswordData $request)
+    {
+        $data = $this->authService->changePassword($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }

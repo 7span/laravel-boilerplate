@@ -7,4 +7,6 @@ return [
     'passwordChangeSuccess' => 'Password changed successfully.',
     'invalidOtp' => 'Invalid OTP. Please try again.',
     'invalidUrl' => 'The resource you are looking for could not be found.',
+    'newPasswordMatchedWithCurrentPassword' => 'New password and current password must not be same.',
+    'changePasswordSuccess' => 'Password changed successfully.',
 ];
