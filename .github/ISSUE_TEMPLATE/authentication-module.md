@@ -31,14 +31,17 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
+| created_by | int | Yes | |
+| updated_by | int | No |  |
+| deleted_by | int | No |  |
 
 > [!NOTE]  
-> The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`profile`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
+> The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`user_profiles`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
 
-#### 2. Table : `profile`
+#### 2. Table : `user_profiles`
 
 > [!WARNING]  
-> **Please note that the `profile` table is optional,  you should only create it if you intend to include additional user-related fields.**
+> **Please note that the `user_profiles` table is optional,  you should only create it if you intend to include additional user-related fields.**
 
 | Field | Datatype | Required |Note |
 | --- | --- | --- | ------ |
@@ -47,6 +50,9 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
+| created_by | int | Yes | |
+| updated_by | int | No |  |
+| deleted_by | int | No |  |
 | ...  | ... | ... | All the other additional user-related fields | 
 
 ## Role and Permission
