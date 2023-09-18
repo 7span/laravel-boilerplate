@@ -31,9 +31,9 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
-| created_by | int | Yes | |
-| updated_by | int | No |  |
-| deleted_by | int | No |  |
+| created_by | Int(8) | Yes | |
+| updated_by | Int(8) | No |  |
+| deleted_by | Int(8) | No |  |
 
 > [!NOTE]  
 > The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`user_profiles`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
@@ -50,9 +50,9 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
-| created_by | int | Yes | |
-| updated_by | int | No |  |
-| deleted_by | int | No |  |
+| created_by | Int(8) | Yes | |
+| updated_by | Int(8) | No |  |
+| deleted_by | Int(8) | No |  |
 | ...  | ... | ... | All the other additional user-related fields | 
 
 ## Role and Permission
