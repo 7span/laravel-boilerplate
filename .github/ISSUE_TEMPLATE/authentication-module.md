@@ -65,7 +65,7 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 | send-otp | Post |  [Send OTP](#send-otp)  | [Send OTP response](#success-response)  | No |  Send the OTP to verify the mobile number.  |
 | verify-otp | Post | [Verify OTP](#verify-otp) | [Verify OTP Response](#success-response)  | No |  Verify the OTP |
 | signup | Post | [SignUp Request](#signup)  | [SignUp response](#login-response)  | No | In the signup process, an OTP will be initially sent to the registered phone number using **Send OTP API**, the user will add the received OTP on a signup process and this OTP should be included in the signup request. If the provided OTP is valid, the signup process will be successfully completed. There is no requirement to use a separate **Verify OTP** step in the signup process. |
-| login |  Post |   [Login Request](#login-request)  | [Login response](#login-response)  | No | This endpoint is intended for user login using an **email** . |
+| login |  Post |   [Login Request](#login)  | [Login response](#login-response)  | No | This endpoint is intended for user login using an **email** . |
 | login/mobile |  Post |   [Login Request](#login-with-mobile)  | [Login response](#login-response)  | No | This endpoint is intended for user login using a **mobile number**. |
 | forgot-password | Post |  [Forgot Password Request](#forgot-password) | [Forgot Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | reset-password |  Post |   [Reset password Request](#reset-password) | [Reset Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
