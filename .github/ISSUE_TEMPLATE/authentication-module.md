@@ -27,21 +27,19 @@ An authentication module's task is to verify the identity of users or entities a
 | mobile_number | varchar(32) | No ||
 | otp |  varchar(32) | No ||
 | opt_generated_at |  timestamp | No | Timestamp when the OTP has been generated. |
+| opt_expired_at |  timestamp | No | Define the expiration timestamp of the OTP as 15 minutes after its creation time. |
 | forget_password_code | varchar(8) | No | The passcode will be stored here when a user attempts to reset their password. | 
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
-| created_by | Int(8) | Yes | |
-| updated_by | Int(8) | No |  |
-| deleted_by | Int(8) | No |  |
 
 > [!NOTE]  
-> The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`user_profiles`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
+> The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`profile`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
 
-#### 2. Table : `user_profiles`
+#### 2. Table : `profile`
 
 > [!WARNING]  
-> **Please note that the `user_profiles` table is optional,  you should only create it if you intend to include additional user-related fields.**
+> **Please note that the `profile` table is optional,  you should only create it if you intend to include additional user-related fields.**
 
 | Field | Datatype | Required |Note |
 | --- | --- | --- | ------ |
@@ -50,9 +48,6 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
-| created_by | Int(8) | Yes | |
-| updated_by | Int(8) | No |  |
-| deleted_by | Int(8) | No |  |
 | ...  | ... | ... | All the other additional user-related fields | 
 
 ## Role and Permission
@@ -71,12 +66,12 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 | send-otp | Post |  [Send OTP](#send-otp)  | [Send OTP response](#success-response)  | No |  Send the OTP to verify the mobile number.  |
 | verify-otp | Post | [Verify OTP](#verify-otp) | [Verify OTP Response](#success-response)  | No |  Verify the OTP |
 | signup | Post | [SignUp Request](#signup)  | [SignUp response](#login-response)  | No | In the signup process, an OTP will be initially sent to the registered phone number using **Send OTP API**, the user will add the received OTP on a signup process and this OTP should be included in the signup request. If the provided OTP is valid, the signup process will be successfully completed. There is no requirement to use a separate **Verify OTP** step in the signup process. |
-| login |  Post |   [Login Request](#login)  | [Login response](#login-response)  | No | This endpoint is intended for user login using an **email** . |
+| login |  Post |   [Login Request](#login-request)  | [Login response](#login-response)  | No | This endpoint is intended for user login using an **email** . |
 | login/mobile |  Post |   [Login Request](#login-with-mobile)  | [Login response](#login-response)  | No | This endpoint is intended for user login using a **mobile number**. |
 | forgot-password | Post |  [Forgot Password Request](#forgot-password) | [Forgot Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | reset-password |  Post |   [Reset password Request](#reset-password) | [Reset Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | me |  Get |  |  [User Response](#user-object) | Yes | To retrieve the profile of the logged-in user, please include the token in the Authorization header of the API request. |
-| me |  Post | [Update Profile Request](#update-profile) |  [User Response](#user-object) | Yes | |
+| me |  Post | [Update Profile Request](#update-profile) |  [User Response](#user-object) | Yes | If the login flow includes the option to log in with a mobile number, users can update their email, and if the login flow includes the option to log in with an email, users can update their mobile number. Both scenarios are governed by the 'required_if' validation. |
 | change-password |  Post | [Change Password Request](#change-password) |  [Success Response](#success-response) | Yes |  |
 
 
@@ -159,18 +154,15 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 {
     firstname: String
     lastname: String
-    email: String 
-    username: String 
-    country_code: Integer
-    mobile_number: String 
-    otp: String
+    email: String ## Users can update their email address only if they have logged in using their mobile number.
+    country_code: Integer ## Users can update their country code only if they have logged in using their email.
+    mobile_number: String ## Users can update their mobile number only if they have logged in using their email.
 }
 ```
 
 9. <span id="change-password">**Change Password Request**</span>
 ```yaml
 {
-    current_password: String
     password: String
     confirm_password: String
 }
