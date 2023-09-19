@@ -27,11 +27,13 @@ An authentication module's task is to verify the identity of users or entities a
 | mobile_number | varchar(32) | No ||
 | otp |  varchar(32) | No ||
 | opt_generated_at |  timestamp | No | Timestamp when the OTP has been generated. |
-| opt_expired_at |  timestamp | No | Define the expiration timestamp of the OTP as 15 minutes after its creation time. |
 | forget_password_code | varchar(8) | No | The passcode will be stored here when a user attempts to reset their password. | 
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
+| created_by | Int(8) | No | |
+| updated_by | Int(8) | No |  |
+| deleted_by | Int(8) | No |  |
 
 > [!NOTE]  
 > The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`profile`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
@@ -48,6 +50,9 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
+| created_by | Int(8) | No | |
+| updated_by | Int(8) | No |  |
+| deleted_by | Int(8) | No |  |
 | ...  | ... | ... | All the other additional user-related fields | 
 
 ## Role and Permission
@@ -71,7 +76,7 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 | forgot-password | Post |  [Forgot Password Request](#forgot-password) | [Forgot Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | reset-password |  Post |   [Reset password Request](#reset-password) | [Reset Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | me |  Get |  |  [User Response](#user-object) | Yes | To retrieve the profile of the logged-in user, please include the token in the Authorization header of the API request. |
-| me |  Post | [Update Profile Request](#update-profile) |  [User Response](#user-object) | Yes | If the login flow includes the option to log in with a mobile number, users can update their email, and if the login flow includes the option to log in with an email, users can update their mobile number. Both scenarios are governed by the 'required_if' validation. |
+| me |  Post | [Update Profile Request](#update-profile) |  [User Response](#user-object) | Yes |  |
 | change-password |  Post | [Change Password Request](#change-password) |  [Success Response](#success-response) | Yes |  |
 
 
@@ -154,9 +159,11 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 {
     firstname: String
     lastname: String
-    email: String ## Users can update their email address only if they have logged in using their mobile number.
-    country_code: Integer ## Users can update their country code only if they have logged in using their email.
-    mobile_number: String ## Users can update their mobile number only if they have logged in using their email.
+    email: String
+    country_code: Integer
+    mobile_number: String
+    username: String
+    otp: String
 }
 ```
 
