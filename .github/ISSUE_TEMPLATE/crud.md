@@ -48,6 +48,9 @@ assignees: ''
 | updated_by | Int(8) | No |  |
 | deleted_by | Int(8) | No |  |
 
+## Relationship with Other Models
+<!-- List of tables which have a relation with Module. -->
+
 ## Endpoints
 
 **Base URL: `api/v1/`**
