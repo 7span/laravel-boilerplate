@@ -130,7 +130,7 @@ assignees: ''
 }
 ```
 
-6. <span id="export-history-request">**Export History Request**</span>
+6. <span id="export-history">**Export History Request**</span>
 ```yaml
 {
     page: Int               ## Page number for pagination
@@ -146,7 +146,7 @@ assignees: ''
 }
 ```
 
-7. <span id="import-history-request">**Import History Request**</span>
+7. <span id="import-history">**Import History Request**</span>
 ```yaml
 {
     page: Int               ## Page number for pagination
