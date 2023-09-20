@@ -10,7 +10,7 @@ assignees: ''
 # Module <!-- Please replace this with the actual module name. -->
 <!-- Provide a description of the module here.-->
 
-> [!IMPORTANT}
+> [!IMPORTANT]
 > **To save time, you can utilize a [Code-Generator](https://codegen.preview.im/) that provides pre-generated basic code files available. The code generator has been developed in accordance with our coding standards.**
 
 ## Naming Convention
