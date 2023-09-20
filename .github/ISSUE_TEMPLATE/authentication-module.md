@@ -25,9 +25,6 @@ An authentication module's task is to verify the identity of users or entities a
 | username | varchar(128) | No | Index |
 | country_code | int(8) | No ||
 | mobile_number | varchar(32) | No ||
-| otp |  varchar(32) | No ||
-| opt_generated_at |  timestamp | No | Timestamp when the OTP has been generated. |
-| forget_password_code | varchar(8) | No | The passcode will be stored here when a user attempts to reset their password. | 
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
@@ -40,7 +37,7 @@ An authentication module's task is to verify the identity of users or entities a
 
 #### 2. Table : `profile`
 
-> [!WARNING]  
+> [!WARNING] 
 > **Please note that the `profile` table is optional,  you should only create it if you intend to include additional user-related fields.**
 
 | Field | Datatype | Required |Note |
@@ -54,6 +51,24 @@ An authentication module's task is to verify the identity of users or entities a
 | updated_by | Int(8) | No |  |
 | deleted_by | Int(8) | No |  |
 | ...  | ... | ... | All the other additional user-related fields | 
+
+#### 3. Table : `mobile_otps`
+
+| Field | Datatype | Required |Note |
+| --- | --- | --- | ------ |
+| id | Int(8) | Yes | Primary Key |
+| user_id | Int(8) | No | Index |
+| country_code | int(8) | Yes ||
+| mobile_number | varchar(32) | Yes ||
+| otp | varchar(32) | Yes ||
+| used_for | enum('registration','forget_password') | Yes | | 
+| verified_at | timestamp | No |  |
+| created_at | timestamp | Yes | Created timestamp |
+| updated_at | timestamp | No |  |
+| deleted_at | timestamp | No |  |
+| created_by | Int(8) | No | |
+| updated_by | Int(8) | No |  |
+| deleted_by | Int(8) | No |  |
 
 ## Role and Permission
 
@@ -148,7 +163,7 @@ By default, the system should have an admin and user role. Kindly use the [Larav
       country_code: Integer
       mobile_number: String
       email: String
-      passcode: String
+      otp: String
       password: String
 }
 ```
