@@ -52,14 +52,12 @@ An authentication module's task is to verify the identity of users or entities a
 | deleted_by | Int(8) | No |  |
 | ...  | ... | ... | All the other additional user-related fields | 
 
-#### 3. Table : `mobile_otps`
+#### 3. Table : `user_otps`
 
 | Field | Datatype | Required |Note |
 | --- | --- | --- | ------ |
 | id | Int(8) | Yes | Primary Key |
 | user_id | Int(8) | No | Index |
-| country_code | int(8) | Yes ||
-| mobile_number | varchar(32) | Yes ||
 | otp | varchar(32) | Yes ||
 | used_for | enum('verification','reset_password') | Yes |Index | 
 | verified_at | timestamp | No |  |
@@ -80,33 +78,36 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 
 | Endpoint  |  Method | Argument  | Response | Authentication Required | Description |
 |---|---|---|---|---|---|
-| send-otp | Post |  [Send OTP](#send-otp)  | [Send OTP response](#success-response)  | No |  Send the OTP to verify the mobile number.  |
+| send-otp | Post |  [Send OTP](#send-otp)  | [Send OTP response](#success-response)  | No |  Send the OTP to the mobile number or email.  |
 | verify-otp | Post | [Verify OTP](#verify-otp) | [Verify OTP Response](#success-response)  | No |  Verify the OTP |
-| signup | Post | [SignUp Request](#signup)  | [SignUp response](#login-response)  | No | In the signup process, an OTP will be initially sent to the registered phone number using **Send OTP API**, the user will add the received OTP on a signup process and this OTP should be included in the signup request. If the provided OTP is valid, the signup process will be successfully completed. There is no requirement to use a separate **Verify OTP** step in the signup process. |
+| signup | Post | [SignUp Request](#signup)  | [SignUp response](#login-response)  | No | We will require email during the signup process, and to verify it the generated token will be stored in the `user_otps` table. |
 | login |  Post |   [Login Request](#login-request)  | [Login response](#login-response)  | No | This endpoint is intended for user login using an **email** . |
-| login/mobile |  Post |   [Login Request](#login-with-mobile)  | [Login response](#login-response)  | No | This endpoint is intended for user login using a **mobile number**. |
 | forgot-password | Post |  [Forgot Password Request](#forgot-password) | [Forgot Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | reset-password |  Post |   [Reset password Request](#reset-password) | [Reset Password Response](#success-response) | No | It requires either a mobile number or an email address to be provided. |
 | me |  Get |  |  [User Response](#user-object) | Yes | To retrieve the profile of the logged-in user, please include the token in the Authorization header of the API request. |
 | me |  Post | [Update Profile Request](#update-profile) |  [User Response](#user-object) | Yes |  |
 | change-password |  Post | [Change Password Request](#change-password) |  [Success Response](#success-response) | Yes |  |
 
+To verify the email address we don't need to develop an API. We'll have to generate a web endpoint 
+
+
+| Endpoint  |  Method | Argument  | Response | Authentication Required | Description |
+|---|---|---|---|---|---|
+| user/verify/{token} | Get |   | [Success response](#success-response)  | No |  |
 
 ### Request Object
 
 1. <span id="send-otp">**Send OTP params**</span>
 ```yaml
 {
-    country_code: Integer
-    mobile_number: String 
+    email: String
 }
 ```
 
 2. <span id="verify-otp">**Verify OTP params**</span>
 ```yaml
 {
-    country_code: Integer
-    mobile_number: String
+    email: String
     used_for: String
     otp: String
 }
@@ -122,10 +123,8 @@ By default, the system should have an admin and user role. Kindly use the [Larav
     username: String
     country_code: Integer
     mobile_number: String
-    otp: String
 }
 ```
-> It requires either a mobile number or an email address to be provided.
 
 4. <span id="login">**Login Request**</span>
 ```yaml
@@ -135,39 +134,23 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 }
 ```
 
-5. <span id="login-with-mobile">**Login Request (With Mobile)**</span>
+5. <span id="forgot-password">**Forgot Password Request**</span>
 ```yaml
 {
-    country_code: Integer
-    mobile_number: String
-    password: String
-}
-```
-
-6. <span id="forgot-password">**Forgot Password Request**</span>
-```yaml
-{
-      country_code: Integer
-      mobile_number: String
       email: String
 }
 ```
 
-> It requires either a mobile number or an email address to be provided.
-
-7. <span id="reset-password">**Reset Password Request**</span>
+6. <span id="reset-password">**Reset Password Request**</span>
 ```yaml
 {
-      country_code: Integer
-      mobile_number: String
       email: String
       otp: String
       password: String
 }
 ```
-> It requires either a mobile number or an email address to be provided.
 
-8. <span id="update-profile">**Update Profile Request**</span>
+7. <span id="update-profile">**Update Profile Request**</span>
 ```yaml
 {
     firstname: String
@@ -183,6 +166,7 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 9. <span id="change-password">**Change Password Request**</span>
 ```yaml
 {
+    current_password: String
     password: String
     confirm_password: String
 }
