@@ -88,7 +88,7 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 | me |  Post | [Update Profile Request](#update-profile) |  [User Response](#user-object) | Yes |  |
 | change-password |  Post | [Change Password Request](#change-password) |  [Success Response](#success-response) | Yes |  |
 
-To verify the email address we don't need to develop an API. We'll have to generate a web endpoint 
+We don't need to create an API to verify the email address. Instead, we will need to generate a web endpoint.
 
 
 | Endpoint  |  Method | Argument  | Response | Authentication Required | Description |
