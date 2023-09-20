@@ -61,7 +61,7 @@ An authentication module's task is to verify the identity of users or entities a
 | country_code | int(8) | Yes ||
 | mobile_number | varchar(32) | Yes ||
 | otp | varchar(32) | Yes ||
-| used_for | enum('registration','forget_password') | Yes | | 
+| used_for | enum('verification','reset_password') | Yes |Index | 
 | verified_at | timestamp | No |  |
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
