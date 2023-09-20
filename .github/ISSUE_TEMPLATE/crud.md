@@ -10,46 +10,45 @@ assignees: ''
 # Module <!-- Please replace this with the actual module name. -->
 <!-- Provide a description of the module here.-->
 
-## Modifications to Current Functionality
-- [ ] We have a class called `App/Jobs/ExportData.php`, which will handle all the logic for exporting data based on different modules. To enable data export for a specific module, you should make adjustments within the 'ExportData' class by incorporating a switch case. Inside this switch case, please add your module and implement the export logic accordingly. In essence, you'll be required to call the `{ModuleExport.php}` from the newly defined switch case within `ExportData.php`.
-- [ ] We have a class called `App/Jobs/ImportData.php`, which handles data import operations for different modules, including Excel validation. To enable data import for a specific module, you should make adjustments within the 'ProcessData' class by incorporating a switch case. Inside this switch case, please add your module and implement the import logic accordingly. In essence, you'll be required to call the `{ModuleImport.php}` from the newly defined switch case within `ImportData.php`.
-- [ ] We have a service named `App/Services/ExportHistoryService.php` responsible for retrieving Export History based on the module. To obtain the Export History for {this} module, you should incorporate a switch case within the method of this service.
-- [ ] We have a service named `App/Services/ImportExcelService.php` responsible for retrieving Import History based on the module. To obtain the Import History for {this} module, you should incorporate a switch case within the method of this service.
-<!-- Describe all the necessary changes resulting from this modification. -->
+> [!IMPORTANT}
+> **To save time, you can utilize a [Code-Generator](https://codegen.preview.im/) that provides pre-generated basic code files available. The code generator has been developed in accordance with our coding standards.**
 
 ## Naming Convention
 
-| Entity | Filename | Location |
-| --- | --- | --- | 
-| Model | {Module.php}| App/Models |
-| HTTP Request | {ModuleInsertRequest.php} | App/Http/Requests/{Module} | 
-| HTTP Request | {ModuleUpdateRequest.php} | App/Http/Requests/{Module} | 
-| HTTP Response | {ModuleCollection.php} | App/Http/Resources/{Module} | 
-| HTTP Response | {ModuleResource.php} | App/Http/Resources/{Module} |
-| Controller | {ModuleController.php} | App/Http/Controllers/Api/V1 | 
-| Service | {ModuleService.php} | App/Services | 
-| Observer | {ModuleObserver.php} | App/Observers |
-| Imports | {ModuleImport.php} | App/Imports |
-| Exports | {ModuleExport.php} | App/Exports |
+| Entity | Filename | Location | Note | 
+| --- | --- | --- | --- | 
+| Model | {Module.php}| App/Models | | 
+| HTTP Request | {ModuleInsertRequest.php} | App/Http/Requests/{Module} | |
+| HTTP Request | {ModuleUpdateRequest.php} | App/Http/Requests/{Module} | |
+| HTTP Response | {ModuleCollection.php} | App/Http/Resources/{Module} | |
+| HTTP Response | {ModuleResource.php} | App/Http/Resources/{Module} | |
+| Controller | {ModuleController.php} | App/Http/Controllers/Api/V1 | |
+| Service | {ModuleService.php} | App/Services | |
+| Observer | {ModuleObserver.php} | App/Observers | Please disregard if it is not necessary for this module. |
+| Imports | {ModuleImport.php} | App/Imports | Please disregard if it is not necessary for this module. |
+| Exports | {ModuleExport.php} | App/Exports | Please disregard if it is not necessary for this module. |
 
 ## Database Design
 
-#### 1. Table : <!-- Table Name -->
+> [!WARNING]
+> **Please ensure that the following tables exist in your schema. If they are not present, please add the necessary migration and remember to include them in the database diagram schema in `dbdiagram.io`.**
 
-| Field | Datatype | Required |Note |
-| --- | --- | --- | ------ |
-| id | Int(8) | Yes | Primary Key |
-| ... | ... | ... | ... |
-| ... | ... | ... | ... |
-| created_at | timestamp | Yes | Created timestamp |
-| updated_at | timestamp | No |  |
-| deleted_at | timestamp | No |  |
-| created_by | Int(8) | Yes |  |
-| updated_by | Int(8) | No |  |
-| deleted_by | Int(8) | No |  |
+<!--
+1. Table1
+2. Table2
+-->
 
 ## Relationship with Other Models
-<!-- List of tables which have a relation with Module. -->
+<!-- 
+List of tables which have a relation with Module. 
+
+Let's consider a scenario where we have a Post module with a One-to-Many relationship to the Comment module. Here is an example of how this relationship should be documented:
+
+| Relationship | Model | Foreign Key | Owner Key | Note | 
+| --- | --- | --- | --- | --- | 
+| One To Many | Comment| post_id | | |
+
+-->
 
 ## Endpoints
 
@@ -83,7 +82,8 @@ assignees: ''
         order: String       ## Sorting order: "asc" (ascending) or "desc" (descending)
     ]
     filters: [
-                            ## List of additional filters to be applied to the listing API
+        name: String
+        ## List of additional filters to be applied to the listing API
     ]
 }
 ```
@@ -120,6 +120,7 @@ assignees: ''
 {
      search: String
      filters: [
+           name: String
            ## List of filters to be applied to the export API
      ]
 }
@@ -144,6 +145,7 @@ assignees: ''
         order: String       ## Sorting order: "asc" (ascending) or "desc" (descending)
     ]
     filters: [
+        name: String
                             ## List of additional filters to be applied to the listing API
     ]
 }
@@ -160,6 +162,7 @@ assignees: ''
         order: String       ## Sorting order: "asc" (ascending) or "desc" (descending)
     ]
     filters: [
+        name: String
                             ## List of additional filters to be applied to the listing API
     ]
 }
@@ -242,3 +245,10 @@ assignees: ''
     }
 }
 ```
+
+## Modifications to Current Functionality
+- [ ] We have a class called `App/Jobs/ExportData.php`, which will handle all the logic for exporting data based on different modules. To enable data export for a specific module, you should make adjustments within the 'ExportData' class by incorporating a switch case. Inside this switch case, please add your module and implement the export logic accordingly. In essence, you'll be required to call the `{ModuleExport.php}` from the newly defined switch case within `ExportData.php`.
+- [ ] We have a class called `App/Jobs/ImportData.php`, which handles data import operations for different modules, including Excel validation. To enable data import for a specific module, you should make adjustments within the 'ProcessData' class by incorporating a switch case. Inside this switch case, please add your module and implement the import logic accordingly. In essence, you'll be required to call the `{ModuleImport.php}` from the newly defined switch case within `ImportData.php`.
+- [ ] We have a service named `App/Services/ExportHistoryService.php` responsible for retrieving Export History based on the module. To obtain the Export History for {this} module, you should incorporate a switch case within the method of this service.
+- [ ] We have a service named `App/Services/ImportExcelService.php` responsible for retrieving Import History based on the module. To obtain the Import History for {this} module, you should incorporate a switch case within the method of this service.
+<!-- Describe all the necessary changes resulting from this modification. -->
