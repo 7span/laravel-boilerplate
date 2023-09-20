@@ -66,9 +66,6 @@ An authentication module's task is to verify the identity of users or entities a
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
-| created_by | Int(8) | No | |
-| updated_by | Int(8) | No |  |
-| deleted_by | Int(8) | No |  |
 
 ## Role and Permission
 
