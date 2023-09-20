@@ -107,6 +107,7 @@ By default, the system should have an admin and user role. Kindly use the [Larav
 {
     country_code: Integer
     mobile_number: String
+    used_for: String
     otp: String
 }
 ```
