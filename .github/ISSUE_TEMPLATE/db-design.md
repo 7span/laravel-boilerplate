@@ -16,9 +16,9 @@ We use [DBDiagram](https://dbdiagram.io/home) to generate our database schema. Y
 
    ![Database Schema](https://github.com/7span/patidar-melap/assets/19200178/fd6dab12-cfe9-486c-b635-1790c378f192)
 
-2. Additionally, save this SQL file in the `Docs/Database` folder with the name `database.sql`.
+2. Additionally, save this SQL file in the `docs/database` folder with the name `database.sql`.
 
-3. In parallel, store the native format in the `Docs/Database` folder, naming it `database.dbml`. The native format refers to the code located on the left side used to generate the schema.
+3. In parallel, store the native format in the `docs/database` folder, naming it `database.dbml`. The native format refers to the code located on the left side used to generate the schema.
 <img width="987" alt="image" src="https://github.com/7span/laravel-boilerplate/assets/19200178/bafb9978-b727-43dd-8a42-86ea5b8f16c0">
 
 
@@ -34,7 +34,7 @@ If there are any future changes to the database structure, it is essential to en
 
      - Make the necessary adjustments to the `DBDiagram` schema to accommodate the changes.
      - Export both the SQL file and the native format from `DBDiagram`.
-     - Save these updated files in the "**Docs/Database**" folder.
+     - Save these updated files in the "**docs/database**" folder.
      
 > [!IMPORTANT]
 > **This is our preferred approach.**
@@ -50,7 +50,7 @@ If there are any future changes to the database structure, it is essential to en
 
 By following these procedures, you maintain synchronization between your codebase and database schema, allowing for effective management of future changes.
 
-**After these changes please ensure that you update both files, namely `database.sql` and `database.dbml`, located in the `Docs/Database` folder.**
+**After these changes please ensure that you update both files, namely `database.sql` and `database.dbml`, located in the `docs/database` folder.**
 
 ### Why Store Files in the "Docs" Folder?
 

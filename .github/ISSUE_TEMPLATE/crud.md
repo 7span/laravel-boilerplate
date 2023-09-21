@@ -59,15 +59,15 @@ Let's consider a scenario where we have a Post module with a One-to-Many relatio
 
 | Endpoint         | Method | Input Argument            | Response             | Authentication Required | Description           |
 |----------|--------|---------------|-------------------|-------------------|------------|
-| /{module}        | Get    | [Listing Request](#listing) | [Listing Response](#listing-response) | Yes | The data will be returned with pagination by default. To retrieve all the data without pagination, simply provide **`per_page = -1`** as a parameter; this will bypass the pagination system. |
-| /{module}        | Post   | [Insert Request](#insert)   | [Module](#module) | Yes | When inserting data, create an observer for the insertion process that automatically records the current timestamp as `created_at` and the ID of the authenticated user as `created_by`. |
-| /{module}/{id}   | Get    |   | [Module](#module) | Yes | This is used to retrieve details about a specific object or item. |
-| /{module}/{id}   | Put    | [Update Request](#update)   | [Module](#module) | Yes | When updating data, create an observer for the updation process that automatically records the current timestamp as `updated_at` and the ID of the authenticated user as `updated_by`|
-| /{module}/{id}   | Delete |                         | [Success](#success) | Yes | When deleting data, create an observer for the deletion process that automatically records the current timestamp as `deleted_at` and the ID of the authenticated user as `deleted_by` |
-| /{module}/export | Get | [Export Request](#export) | [Success](#success)  | Yes | The export process should be executed using queue jobs. **Users will receive the exported data in their email addresses.** |
-| /{module}/import | Post | [Import Request](#import) | [Success](#success)  | Yes | The import process should be executed using queue jobs. |
-|/{module}/export-history | Get | [Export History Request](#export-history)| [Export History](#export-history-response) | Yes | |
-|/{module}/import-history | Get | [Import History Request](#import-history)| [Import History](#import-history-response) | Yes | |
+| /{modules}        | Get    | [Listing Request](#listing) | [Listing Response](#listing-response) | Yes | The data will be returned with pagination by default. To retrieve all the data without pagination, simply provide **`per_page = -1`** as a parameter; this will bypass the pagination system. |
+| /{modules}        | Post   | [Insert Request](#insert)   | [Module](#module) | Yes | When inserting data, create an observer for the insertion process that automatically records the current timestamp as `created_at` and the ID of the authenticated user as `created_by`. |
+| /{modules}/{module}   | Get    |   | [Module](#module) | Yes | This is used to retrieve details about a specific object or item. |
+| /{modules}/{module}   | Put    | [Update Request](#update)   | [Module](#module) | Yes | When updating data, create an observer for the updation process that automatically records the current timestamp as `updated_at` and the ID of the authenticated user as `updated_by`|
+| /{modules}/{module}   | Delete |                         | [Success](#success) | Yes | When deleting data, create an observer for the deletion process that automatically records the current timestamp as `deleted_at` and the ID of the authenticated user as `deleted_by` |
+| /{modules}/export | Get | [Export Request](#export) | [Success](#success)  | Yes | The export process should be executed using queue jobs. **Users will receive the exported data in their email addresses.** |
+| /{modules}/import | Post | [Import Request](#import) | [Success](#success)  | Yes | The import process should be executed using queue jobs. |
+|/{modules}/export-history | Get | [Export History Request](#export-history)| [Export History](#export-history-response) | Yes | |
+|/{modules}/import-history | Get | [Import History Request](#import-history)| [Import History](#import-history-response) | Yes | |
 
 ## Request Object
 
