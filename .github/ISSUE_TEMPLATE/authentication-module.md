@@ -25,6 +25,7 @@ An authentication module's task is to verify the identity of users or entities a
 | username | varchar(128) | No | Index |
 | country_code | int(8) | No ||
 | mobile_number | varchar(32) | No ||
+| verified_at | timestamp | No ||
 | created_at | timestamp | Yes | Created timestamp |
 | updated_at | timestamp | No |  |
 | deleted_at | timestamp | No |  |
@@ -57,7 +58,7 @@ An authentication module's task is to verify the identity of users or entities a
 | Field | Datatype | Required |Note |
 | --- | --- | --- | ------ |
 | id | Int(8) | Yes | Primary Key |
-| user_id | Int(8) | No | Index |
+| user_id | Int(8) | Yes | Index |
 | otp | varchar(32) | Yes ||
 | used_for | enum('verification','reset_password') | Yes |Index | 
 | verified_at | timestamp | No |  |
