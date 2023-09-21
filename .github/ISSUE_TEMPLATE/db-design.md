@@ -19,7 +19,8 @@ We use [DBDiagram](https://dbdiagram.io/home) to generate our database schema. Y
 2. Additionally, save this SQL file in the `Docs/Database` folder with the name `database.sql`.
 
 3. In parallel, store the native format in the `Docs/Database` folder, naming it `database.dbml`. The native format refers to the code located on the left side used to generate the schema.
-<img width="1125" alt="image" src="https://github.com/7span/patidar-melap/assets/19200178/c7ca3f2c-cb1d-477d-8899-b7c384c678fe">
+<img width="987" alt="image" src="https://github.com/7span/laravel-boilerplate/assets/19200178/bafb9978-b727-43dd-8a42-86ea5b8f16c0">
+
 
 ### Handling Future Changes:
 
