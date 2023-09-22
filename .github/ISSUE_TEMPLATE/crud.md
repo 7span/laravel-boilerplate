@@ -18,15 +18,15 @@ assignees: ''
 | Entity | Filename | Location | Note | 
 | --- | --- | --- | --- | 
 | Model | {Module.php}| App/Models | | 
-| HTTP Request | {ModuleInsertRequest.php} | App/Http/Requests/{Module} | |
-| HTTP Request | {ModuleUpdateRequest.php} | App/Http/Requests/{Module} | |
-| HTTP Response | {ModuleCollection.php} | App/Http/Resources/{Module} | |
-| HTTP Response | {ModuleResource.php} | App/Http/Resources/{Module} | |
-| Controller | {ModuleController.php} | App/Http/Controllers/Api/V1 | |
-| Service | {ModuleService.php} | App/Services | |
-| Observer | {ModuleObserver.php} | App/Observers | Please disregard if it is not necessary for this module. |
-| Imports | {ModuleImport.php} | App/Imports | Please disregard if it is not necessary for this module. |
-| Exports | {ModuleExport.php} | App/Exports | Please disregard if it is not necessary for this module. |
+| HTTP Request | {Module}InsertRequest.php | App/Http/Requests/{Module} | |
+| HTTP Request | {Module}UpdateRequest.php | App/Http/Requests/{Module} | |
+| HTTP Response | {Module}Collection.php | App/Http/Resources/{Module} | |
+| HTTP Response | {Module}Resource.php | App/Http/Resources/{Module} | |
+| Controller | {Module}Controller.php | App/Http/Controllers/Api/V1 | |
+| Service | {Module}Service.php | App/Services | |
+| Observer | {Module}Observer.php | App/Observers | Please disregard if it is not necessary for this module. |
+| Imports | {Module}Import.php | App/Imports | Please disregard if it is not necessary for this module. |
+| Exports | {Module}Export.php | App/Exports | Please disregard if it is not necessary for this module. |
 
 ## Database Design
 
@@ -59,14 +59,14 @@ Let's consider a scenario where we have a Post module with a One-to-Many relatio
 
 | Endpoint         | Method | Input Argument            | Response             | Authentication Required | Description           |
 |----------|--------|---------------|-------------------|-------------------|------------|
-| /{modules}        | Get    | [Listing Request](#listing) | [Listing Response](#listing-response) | Yes | The data will be returned with pagination by default. To retrieve all the data without pagination, simply provide **`per_page = -1`** as a parameter; this will bypass the pagination system. |
-| /{modules}        | Post   | [Insert Request](#insert)   | [Module](#module) | Yes | When inserting data, create an observer for the insertion process that automatically records the current timestamp as `created_at` and the ID of the authenticated user as `created_by`. |
-| /{modules}/{module}   | Get    |   | [Module](#module) | Yes | This is used to retrieve details about a specific object or item. |
-| /{modules}/{module}   | Put    | [Update Request](#update)   | [Module](#module) | Yes | When updating data, create an observer for the updation process that automatically records the current timestamp as `updated_at` and the ID of the authenticated user as `updated_by`|
-| /{modules}/{module}   | Delete |                         | [Success](#success) | Yes | When deleting data, create an observer for the deletion process that automatically records the current timestamp as `deleted_at` and the ID of the authenticated user as `deleted_by` |
-| /{modules}/export | Get | [Export Request](#export) | [Success](#success)  | Yes | The export process should be executed using queue jobs. **Users will receive the exported data in their email addresses.** |
-| /{modules}/import | Post | [Import Request](#import) | [Success](#success)  | Yes | The import process should be executed using queue jobs. |
-|/{modules}/export-history | Get | [Export History Request](#export-history)| [Export History](#export-history-response) | Yes | |
+| /{module}s        | Get    | [Listing Request](#listing) | [Listing Response](#listing-response) | Yes | The data will be returned with pagination by default. To retrieve all the data without pagination, simply provide **`per_page = -1`** as a parameter; this will bypass the pagination system. |
+| /{module}s        | Post   | [Insert Request](#insert)   | [Module](#module) | Yes | When inserting data, create an observer for the insertion process that automatically records the current timestamp as `created_at` and the ID of the authenticated user as `created_by`. |
+| /{module}s/{module}   | Get    |   | [Module](#module) | Yes | This is used to retrieve details about a specific object or item. |
+| /{module}s/{module}   | Put    | [Update Request](#update)   | [Module](#module) | Yes | When updating data, create an observer for the updation process that automatically records the current timestamp as `updated_at` and the ID of the authenticated user as `updated_by`|
+| /{module}s/{module}   | Delete |                         | [Success](#success) | Yes | When deleting data, create an observer for the deletion process that automatically records the current timestamp as `deleted_at` and the ID of the authenticated user as `deleted_by` |
+| /{module}s/export | Get | [Export Request](#export) | [Success](#success)  | Yes | The export process should be executed using queue jobs. **Users will receive the exported data in their email addresses.** |
+| /{module}s/import | Post | [Import Request](#import) | [Success](#success)  | Yes | The import process should be executed using queue jobs. |
+|/{module}s/export-history | Get | [Export History Request](#export-history)| [Export History](#export-history-response) | Yes | |
 |/{modules}/import-history | Get | [Import History Request](#import-history)| [Import History](#import-history-response) | Yes | |
 
 ## Request Object
@@ -96,7 +96,7 @@ Let's consider a scenario where we have a Post module with a One-to-Many relatio
 ```
 
 > [!NOTE]
-> **Create an HTTP Request class and name it {ModuleInsertRequest.php} to handle the validation of insert requests.**
+> **Create an HTTP Request class and name it {Module}InsertRequest.php to handle the validation of insert requests.**
 
 | Input Field | Validation | 
 | --- | --- |
@@ -109,7 +109,7 @@ Let's consider a scenario where we have a Post module with a One-to-Many relatio
 }
 ```
 > [!NOTE]
-> **Create an HTTP Request class and name it {ModuleUpdateRequest.php} to handle the validation of update requests.**
+> **Create an HTTP Request class and name it {Module}UpdateRequest.php to handle the validation of update requests.**
 
 | Input Field | Validation | 
 | --- | --- |
@@ -247,8 +247,8 @@ Let's consider a scenario where we have a Post module with a One-to-Many relatio
 ```
 
 ## Modifications to Current Functionality
-- [ ] We have a class called `App/Jobs/ExportData.php`, which will handle all the logic for exporting data based on different modules. To enable data export for a specific module, you should make adjustments within the 'ExportData' class by incorporating a switch case. Inside this switch case, please add your module and implement the export logic accordingly. In essence, you'll be required to call the `{ModuleExport.php}` from the newly defined switch case within `ExportData.php`.
-- [ ] We have a class called `App/Jobs/ImportData.php`, which handles data import operations for different modules, including Excel validation. To enable data import for a specific module, you should make adjustments within the 'ProcessData' class by incorporating a switch case. Inside this switch case, please add your module and implement the import logic accordingly. In essence, you'll be required to call the `{ModuleImport.php}` from the newly defined switch case within `ImportData.php`.
-- [ ] We have a service named `App/Services/ExportHistoryService.php` responsible for retrieving Export History based on the module. To obtain the Export History for {this} module, you should incorporate a switch case within the method of this service.
-- [ ] We have a service named `App/Services/ImportExcelService.php` responsible for retrieving Import History based on the module. To obtain the Import History for {this} module, you should incorporate a switch case within the method of this service.
+- [ ] We have a class called `App/Jobs/ExportData.php`, which will handle all the logic for exporting data based on different modules. To enable data export for a specific module, you should make adjustments within the 'ExportData' class by incorporating a switch case. Inside this switch case, please add your module and implement the export logic accordingly. In essence, you'll be required to call the `{Module}Export.php` from the newly defined switch case within `ExportData.php`.
+- [ ] We have a class called `App/Jobs/ImportData.php`, which handles data import operations for different modules, including Excel validation. To enable data import for a specific module, you should make adjustments within the 'ProcessData' class by incorporating a switch case. Inside this switch case, please add your module and implement the import logic accordingly. In essence, you'll be required to call the `{Module}Import.php` from the newly defined switch case within `ImportData.php`.
+- [ ] We have a service named `App/Services/ExportHistoryService.php` responsible for retrieving Export History based on the module. To obtain the Export History for {Module} module, you should incorporate a switch case within the method of this service.
+- [ ] We have a service named `App/Services/ImportExcelService.php` responsible for retrieving Import History based on the module. To obtain the Import History for {Module} module, you should incorporate a switch case within the method of this service.
 <!-- Describe all the necessary changes resulting from this modification. -->
