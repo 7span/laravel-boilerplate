@@ -7,4 +7,8 @@ return [
     'passwordChangeSuccess' => 'Password changed successfully.',
     'invalidOtp' => 'Invalid OTP. Please try again.',
     'invalidUrl' => 'The resource you are looking for could not be found.',
+    'invalidCountryCode' => 'Invalid Country code. Please try again',
+    'userVerifySuccess' => 'User verified successfuly.',
+    'userVerifyFailure' => 'Verify your account from mail.',
+    'userProfileUpdate' => 'Your profile updated successfully'
 ];

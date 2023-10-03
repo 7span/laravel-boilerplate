@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Data\UserData;
 use App\Traits\ApiResponser;
+use App\Data\Auth\SignUpData;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -24,5 +25,12 @@ class UserController extends Controller
         $user = $this->userService->resource(Auth::id());
 
         return $this->resource(UserData::from($user));
+    }
+
+    public function update(SignUpData $request)
+    {
+        $data = $this->userService->update(Auth::id(), $request->all());
+
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 }

@@ -12,12 +12,21 @@ class UserData extends Data
 {
     public function __construct(
         public ?int $id,
-        #[Max(10)]
-        public string $name,
-        #[Email,
-            Unique('users', 'email')]
+        #[
+            Email,
+            Unique('users', 'email')
+        ]
         public string $email,
-        public ?string $password,
+        #[Max(20)]
+        public string $firstname,
+        #[Max(20)]
+        public string $lastname,
+        #[Max(20)]
+        public string $username,
+        #[Max(10)]
+        public string $country_code,
+        #[Max(10)]
+        public string $mobile_number,
         public ?DateTime $created_at
     ) {
     }
