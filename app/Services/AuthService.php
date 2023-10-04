@@ -38,9 +38,7 @@ class AuthService
             Mail::to($user->email)->send(new SignUp(['otp' => $otp, 'used_for' => 'SignUp']));
             $data = [
                 'status' => true,
-                'message' => 'Otp sent to your mail.Please Verify your account via mail.',
-                'user' => UserData::from($user),
-                'token' => $user->createToken(config('app.name'))->plainTextToken,
+                'message' => __('message.userSignUpSuccess')
             ];
         } catch (Exception $e) {
             $data = [
@@ -82,7 +80,7 @@ class AuthService
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-        $this->userObj->where('id', $user['id'])->update(['verified_at' => date('Y-m-d h:i:s')]);
+        $this->userObj->where('id', $user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
 
         $data = [
             'status' => true,
@@ -99,7 +97,7 @@ class AuthService
                 'email' => [__('auth.failed')],
             ]);
         }
-        if (!$user['verified_at']) {
+        if (!$user['email_verified_at']) {
             $data = [
                 'status' => false,
                 'message' =>  __('message.userVerifyFailure')
@@ -195,8 +193,24 @@ class AuthService
         }
 
         $otp = mt_rand(100000, 999999);
+
+        switch ($inputs['otp_for']) {
+            case 'verification':
+                $usedFor = 'SignUp';
+                break;
+            case 'update_profile':
+                $usedFor = 'Update Profile';
+                break;
+            case 'reset_password':
+                $usedFor = 'Forgot Password';
+                break;
+            default:
+                $usedFor = '';
+                break;
+        }
+
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user['id'], 'otp_for' => $inputs['otp_for']]);
-        Mail::to($inputs['email'])->send(new SignUp(['otp' => $otp, 'used_for' => 'Update profile']));
+        Mail::to($inputs['email'])->send(new SignUp(['otp' => $otp, 'used_for' => $usedFor]));
         $data['otp'] = $otp;
 
         $data = [
@@ -209,7 +223,6 @@ class AuthService
 
     public function changePassword($inputs)
     {
-        $currentPassword = $inputs['current_password'];
         $newPassword = $inputs['password'];
         $user = Auth::user();
         $user->password = $newPassword;

@@ -10,5 +10,6 @@ return [
     'invalidCountryCode' => 'Invalid Country code. Please try again',
     'userVerifySuccess' => 'User verified successfuly.',
     'userVerifyFailure' => 'Verify your account from mail.',
-    'userProfileUpdate' => 'Your profile updated successfully'
+    'userProfileUpdate' => 'Your profile updated successfully',
+    'userSignUpSuccess' => 'Otp sent to your mail.Please Verify your account via mail.'
 ];

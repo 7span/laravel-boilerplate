@@ -31,30 +31,31 @@ class UserService
 
     public function update($id, $inputs = null)
     {
-        $userOtp = $this->userOtpObj->whereUserId(Auth::user()->id)->whereOtp($inputs['otp'])->where('otp_for', 'update_profile')->first();
+        if (!empty($inputs['email']) && !empty($inputs['otp'])) {
+            $userOtp = $this->userOtpObj->whereUserId(Auth::user()->id)->whereOtp($inputs['otp'])->where('otp_for', 'update_profile')->first();
 
-        if ($userOtp == null) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.invalidOtp')
-            ];
-            return $data;
+            if ($userOtp == null) {
+                $data = [
+                    'status' => false,
+                    'message' =>  __('message.invalidOtp')
+                ];
+                return $data;
+            }
+
+            $expirationTime = config('site.otpExpirationTimeInMinutes');
+            $expirationDate = Carbon::parse($userOtp['created_at'])->addMinutes($expirationTime)->format('Y-m-d H:i:s');
+
+            if ($userOtp['verified_at'] != null || date('Y-m-d h:i:s') > $expirationDate) {
+                $data = [
+                    'status' => false,
+                    'message' => __('message.invalidOtp')
+                ];
+
+                return $data;
+            }
+
+            $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
         }
-
-        $expirationTime = config('site.otpExpirationTimeInMinutes');
-        $expirationDate = Carbon::parse($userOtp['created_at'])->addMinutes($expirationTime)->format('Y-m-d H:i:s');
-
-        if ($userOtp['verified_at'] != null || date('Y-m-d h:i:s') > $expirationDate) {
-            $data = [
-                'status' => false,
-                'message' => __('message.invalidOtp')
-            ];
-
-            return $data;
-        }
-
-        $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-
         $data = $this->resource($id);
         $data->update($inputs);
 

@@ -2,10 +2,7 @@
 
 namespace App\Data\Auth;
 
-use App\Models\User;
 use Spatie\LaravelData\Data;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\Email;
@@ -30,15 +27,15 @@ class SignUpData extends Data
         ]
         public ?string $password,
         #[Max(20)]
-        public string $firstname,
+        public ?string $firstname,
         #[Max(20)]
-        public string $lastname,
+        public ?string $lastname,
         #[Max(20)]
         public string $username,
         #[Max(20)]
-        public string $country_code,
-        #[Max(20)]
-        public string $mobile_number,
+        public ?string $country_code,
+        #[Max(10)]
+        public ?string $mobile_number,
         #[Digits(6)]
         public ?int $otp
     ) {
@@ -55,10 +52,16 @@ class SignUpData extends Data
                 'password' => 'required|confirmed'
             ];
         } else {
-            $rules = [
-                'email' => 'required|email|unique:users,email,' . $user->id,
-                'otp' => 'required',
-            ];
+            if ($context->payload['email'] != $user->email) {
+                $rules = [
+                    'email' => 'required|email|unique:users,email,' . $user->id,
+                    'otp' => 'required_with:email',
+                ];
+            } else {
+                $rules = [
+                    'email' => 'required|email|unique:users,email,' . $user->id,
+                ];
+            }
         }
         return $rules;
     }

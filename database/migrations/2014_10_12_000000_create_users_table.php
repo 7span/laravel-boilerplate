@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('username', 128)->index()->nullable();
             $table->integer('country_code')->nullable();
             $table->string('mobile_number', 32)->nullable();
-            $table->timestamp('verified_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
