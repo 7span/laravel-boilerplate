@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
+use Exception;
 use App\Models\User;
+use App\Mail\SignUp;
 use App\Models\UserOtp;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserService
 {
@@ -31,38 +33,36 @@ class UserService
 
     public function update($id, $inputs = null)
     {
-        if (!empty($inputs['email']) && !empty($inputs['otp'])) {
-            $userOtp = $this->userOtpObj->whereUserId(Auth::user()->id)->whereOtp($inputs['otp'])->where('otp_for', 'update_profile')->first();
+        $user = Auth::user();
 
-            if ($userOtp == null) {
+        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
+            $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);
+
+            try {
+                $otp = mt_rand(100000, 999999);
+                $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
+                Mail::to($user->email)->send(new SignUp(['otp' => $otp, 'used_for' => 'Verify User']));
+                $data = $this->resource($id);
+                $data->update($inputs);
+                $data = [
+                    'status' => true,
+                    'message' => __('message.updateUserVerifySuccess'),
+                ];
+            } catch (Exception $e) {
                 $data = [
                     'status' => false,
-                    'message' =>  __('message.invalidOtp')
+                    'message' => 'Something went wrong'
                 ];
-                return $data;
             }
+        } else {
+            $data = $this->resource($id);
+            $data->update($inputs);
 
-            $expirationTime = config('site.otpExpirationTimeInMinutes');
-            $expirationDate = Carbon::parse($userOtp['created_at'])->addMinutes($expirationTime)->format('Y-m-d H:i:s');
-
-            if ($userOtp['verified_at'] != null || date('Y-m-d h:i:s') > $expirationDate) {
-                $data = [
-                    'status' => false,
-                    'message' => __('message.invalidOtp')
-                ];
-
-                return $data;
-            }
-
-            $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
+            $data = [
+                'status' => true,
+                'message' => __('message.userProfileUpdate')
+            ];
         }
-        $data = $this->resource($id);
-        $data->update($inputs);
-
-        $data = [
-            'status' => true,
-            'message' => __('message.userProfileUpdate')
-        ];
 
         return $data;
     }

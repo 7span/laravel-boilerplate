@@ -3,13 +3,13 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 
-class SignUp extends Mailable
+class VerifyUser extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -35,8 +35,7 @@ class SignUp extends Mailable
 
     public function build()
     {
-        return $this->subject(__('email.signUpEmailSubject'))
-            ->markdown('emails.signup', ['data' => $this->data]);
+        return $this->markdown('emails.verify-user', ['data' => $this->data]);
     }
 
     /**

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Data\Auth\LoginData;
 use App\Traits\ApiResponser;
-use App\Data\Auth\SignUpData;
 use App\Services\AuthService;
-use App\Data\Auth\SendOtpData;
-use App\Data\Auth\VerifyOtpData;
-use App\Data\Auth\ResetPasswordData;
+use App\Http\Requests\Auth\Login;
+use App\Http\Requests\Auth\SignUp;
+use App\Http\Requests\Auth\SendOtp;
 use App\Http\Controllers\Controller;
-use App\Data\Auth\ForgetPasswordData;
-use App\Data\Auth\ChangePasswordData;
+use App\Http\Requests\Auth\VerifyOtp;
+use App\Http\Requests\Auth\ResetPassword;
+use App\Http\Requests\Auth\ForgetPassword;
+use App\Http\Requests\Auth\ChangePassword;
 
 class AuthController extends Controller
 {
@@ -24,49 +24,49 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function signUp(SignUpData $request)
+    public function signUp(SignUp $request)
     {
         $data = $this->authService->signup($request->all());
 
-        return $this->success($data, 200);
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function verifyOtp(VerifyOtpData $request)
+    public function verifyOtp(VerifyOtp $request)
     {
         $data = $this->authService->verifyOtp($request->all());
 
-        return $this->success($data, 200);
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function login(LoginData $request)
+    public function login(Login $request)
     {
         $data = $this->authService->login($request->all());
 
-        return $this->success($data, 200);
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function forgetPassword(ForgetPasswordData $request)
+    public function forgetPassword(ForgetPassword $request)
     {
         $data = $this->authService->forgetPassword($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function resetPassword(ResetPasswordData $request)
+    public function resetPassword(ResetPassword $request)
     {
         $data = $this->authService->resetPassword($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function sendOtp(SendOtpData $request)
+    public function sendOtp(SendOtp $request)
     {
         $data = $this->authService->generateOtp($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    public function changePassword(ChangePasswordData $request)
+    public function changePassword(ChangePassword $request)
     {
         $data = $this->authService->changePassword($request->all());
 

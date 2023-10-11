@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Data\UserData;
 use App\Traits\ApiResponser;
-use App\Data\Auth\SignUpData;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Auth\UpdateProfile;
+use App\Http\Resources\User\Resource as UserResource;
 
 class UserController extends Controller
 {
@@ -24,10 +24,10 @@ class UserController extends Controller
     {
         $user = $this->userService->resource(Auth::id());
 
-        return $this->resource(UserData::from($user));
+        return $this->resource(new UserResource($user));
     }
 
-    public function update(SignUpData $request)
+    public function update(UpdateProfile $request)
     {
         $data = $this->userService->update(Auth::id(), $request->all());
 

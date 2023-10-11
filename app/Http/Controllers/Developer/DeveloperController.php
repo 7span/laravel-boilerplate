@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Developer;
 
-use App\Data\Developer\LoginData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Developer\Login;
 
 class DeveloperController extends Controller
 {
-    public function login(LoginData $request)
+    public function login(Login $request)
     {
         $auth = resolve('littlegatekeeper');
         $loginSuccess = $auth->attempt($request->toArray());
-        if (! $loginSuccess) {
+        if (!$loginSuccess) {
             return redirect()->back()->withErrors(['message', 'Invalid credencials.']);
         }
 
