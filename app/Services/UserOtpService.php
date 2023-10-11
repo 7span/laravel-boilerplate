@@ -6,11 +6,9 @@ use App\Models\UserOtp;
 
 class UserOtpService
 {
-    private $userOtpObj;
-
-    public function __construct(UserOtp $userOtpObj)
+    public function __construct(private UserOtp $userOtpObj)
     {
-        $this->userOtpObj = $userOtpObj;
+        //
     }
 
     public function resource($id, $inputs = null)

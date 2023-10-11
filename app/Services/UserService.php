@@ -6,11 +6,9 @@ use App\Models\User;
 
 class UserService
 {
-    private $userObj;
-
-    public function __construct(User $userObj)
+    public function __construct(private User $userObj)
     {
-        $this->userObj = $userObj;
+        //
     }
 
     public function resource($id, $inputs = null)
