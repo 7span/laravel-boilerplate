@@ -8,7 +8,7 @@ return [
     'invalidOtp' => 'Invalid OTP. Please try again.',
     'invalidUrl' => 'The resource you are looking for could not be found.',
     'invalidCountryCode' => 'Invalid Country code. Please try again',
-    'userVerifySuccess' => 'User verified successfuly.',
+    'userVerifySuccess' => 'User verified successfully.',
     'userProfileUpdate' => 'Your profile updated successfully',
     'userSignUpSuccess' => 'Otp sent to your mail.Please Verify your account via mail.',
     'newPasswordMatchedWithCurrentPassword' => 'New Password can not be same as your current password.',

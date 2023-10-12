@@ -12,5 +12,6 @@ return [
     'signInRequestSubject' => 'OTP Receieved for Sign-in',
     'signInRequestEmailLine1' => 'You requested to sign-in request, please use this code to verify your detail for sign-in process.',
     'signInRequestEmailLine2' => 'If you have not requested to sign-in code, please ignore this mail.',
-    'signUpEmailSubject' => 'SignUp'
+    'verifyUserSubject' => 'Verify User',
+    'updateProfileSubject' => 'Update Profile',
 ];

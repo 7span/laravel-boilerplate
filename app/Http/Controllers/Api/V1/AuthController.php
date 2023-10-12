@@ -61,7 +61,7 @@ class AuthController extends Controller
 
     public function sendOtp(SendOtp $request)
     {
-        $data = $this->authService->generateOtp($request->all());
+        $data = $this->authService->sendOtp($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }

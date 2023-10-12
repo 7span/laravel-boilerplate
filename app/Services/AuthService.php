@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserOtp;
-use App\Mail\VerifyUser;
+use App\Jobs\SendOtpMail;
+use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\User\Resource as UserResource;
 
@@ -31,29 +31,30 @@ class AuthService
 
     public function signup($inputs)
     {
+        $user = $this->userObj->create($inputs);
+        $otp = mt_rand(100000, 999999);
+        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
+
         try {
-            $user = $this->userObj->create($inputs);
-            $otp = mt_rand(100000, 999999);
-            $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-            Mail::to($user->email)->send(new VerifyUser(['otp' => $otp, 'used_for' => 'SignUp']));
-            $data = [
-                'status' => true,
-                'message' => __('message.userSignUpSuccess'),
-                'user' => new UserResource($user),
-                'token' => $user->createToken(config('app.name'))->plainTextToken,
-            ];
-        } catch (Exception $e) {
-            $data = [
-                'status' => false,
-                'message' => 'Something went wrong'
-            ];
+            VerifyUserMail::dispatch($user, $otp);
+        } catch (\Exception $e) {
+            Log::info('User verification mail failed.' . $e->getMessage());
         }
+
+        $data = [
+            'status' => true,
+            'message' => __('message.userSignUpSuccess'),
+            'user' => new UserResource($user),
+            'token' => $user->createToken(config('app.name'))->plainTextToken,
+        ];
+
         return $data;
     }
 
     public function verifyOtp($inputs)
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
+
         if (empty($user)) {
             $data = [
                 'status' => false,
@@ -63,6 +64,7 @@ class AuthService
         }
 
         $userOtp = $this->userOtpObj->whereUserId($user['id'])->whereOtp($inputs['otp'])->where('otp_for', 'verification')->first();
+
         if (empty($userOtp)) {
             $data = [
                 'status' => false,
@@ -73,6 +75,7 @@ class AuthService
 
         $expirationTime = config('site.otpExpirationTimeInMinutes');
         $expirationDate = Carbon::parse($userOtp['created_at'])->addMinutes($expirationTime)->format('Y-m-d H:i:s');
+
         if ($userOtp['verified_at'] != null || date('Y-m-d h:i:s') > $expirationDate) {
             $data = [
                 'status' => false,
@@ -121,22 +124,19 @@ class AuthService
 
         $this->userOtpObj->whereUserId($user['id'])->where('otp_for', 'reset_password')->delete();
 
+        $otp = mt_rand(100000, 999999);
+        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'reset_password']);
+
         try {
-            $otp = mt_rand(100000, 999999);
-            $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'reset_password']);
-
             ForgetPasswordMail::dispatch($user, $otp);
-
-            $data = [
-                'status' => true,
-                'message' => __('message.forgetPasswordEmailSuccess')
-            ];
-        } catch (Exception $e) {
-            $data = [
-                'status' => false,
-                'message' => 'Something went wrong'
-            ];
+        } catch (\Exception $e) {
+            Log::info('Forget Password mail failed.' . $e->getMessage());
         }
+
+        $data = [
+            'status' => true,
+            'message' => __('message.forgetPasswordEmailSuccess')
+        ];
 
         return $data;
     }
@@ -144,6 +144,7 @@ class AuthService
     public function resetPassword($inputs)
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
+
         if (empty($user)) {
             $data = [
                 'status' => false,
@@ -153,6 +154,7 @@ class AuthService
         }
 
         $userOtp = $this->userOtpObj->whereUserId($user['id'])->whereOtp($inputs['otp'])->where('otp_for', 'reset_password')->first();
+
         if (empty($userOtp)) {
             $data = [
                 'status' => false,
@@ -186,9 +188,10 @@ class AuthService
         return $data;
     }
 
-    public function generateOtp($inputs)
+    public function sendOtp($inputs)
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
+
         if (empty($user)) {
             $data = [
                 'status' => false,
@@ -197,38 +200,37 @@ class AuthService
             return $data;
         }
 
-        try {
-            $otp = mt_rand(100000, 999999);
+        $otp = mt_rand(100000, 999999);
 
-            switch ($inputs['otp_for']) {
-                case 'verification':
-                    $usedFor = 'SignUp';
-                    break;
-                case 'update_profile':
-                    $usedFor = 'Update Profile';
-                    break;
-                case 'reset_password':
-                    $usedFor = 'Forgot Password';
-                    break;
-                default:
-                    $usedFor = '';
-                    break;
-            }
-
-            $this->userOtpService->store(['otp' => $otp, 'user_id' => $user['id'], 'otp_for' => $inputs['otp_for']]);
-            Mail::to($inputs['email'])->send(new VerifyUser(['otp' => $otp, 'used_for' => $usedFor]));
-            $data['otp'] = $otp;
-
-            $data = [
-                'status' => true,
-                'message' => 'Otp Send Successfully'
-            ];
-        } catch (Exception $e) {
-            $data = [
-                'status' => false,
-                'message' => 'Something went wrong'
-            ];
+        switch ($inputs['otp_for']) {
+            case 'verification':
+                $subject = __('email.signUpEmailSubject');
+                break;
+            case 'update_profile':
+                $subject = __('email.updateProfileSubject');
+                break;
+            case 'reset_password':
+                $subject = __('email.forgetPasswordEmailSubject');
+                break;
+            default:
+                $subject = '';
+                break;
         }
+
+        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user['id'], 'otp_for' => $inputs['otp_for']]);
+
+        try {
+            SendOtpMail::dispatch($user, $otp, $subject);
+        } catch (\Exception $e) {
+            Log::info('Send Otp mail failed.' . $e->getMessage());
+        }
+
+        $data['otp'] = $otp;
+
+        $data = [
+            'status' => true,
+            'message' => 'Otp Send Successfully'
+        ];
 
         return $data;
     }
@@ -247,16 +249,17 @@ class AuthService
 
         if (!Hash::check($inputs['current_password'], $user->password)) {
             $data['errors']['message'] = __('message.wrongCurrentPassword');
-
             return $data;
         }
 
         $user->password = $newPassword;
         $user->save();
+
         $data = [
             'status' => true,
             'message' =>  __('message.passwordChangeSuccess')
         ];
+
         return $data;
     }
 }

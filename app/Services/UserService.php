@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use Exception;
 use App\Models\User;
-use App\Mail\SignUp;
 use App\Models\UserOtp;
+use App\Jobs\VerifyUserMail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -38,22 +37,20 @@ class UserService
         if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
             $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);
 
+            $otp = mt_rand(100000, 999999);
+            $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
             try {
-                $otp = mt_rand(100000, 999999);
-                $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-                Mail::to($user->email)->send(new SignUp(['otp' => $otp, 'used_for' => 'Verify User']));
-                $data = $this->resource($id);
-                $data->update($inputs);
-                $data = [
-                    'status' => true,
-                    'message' => __('message.updateUserVerifySuccess'),
-                ];
-            } catch (Exception $e) {
-                $data = [
-                    'status' => false,
-                    'message' => 'Something went wrong'
-                ];
+                VerifyUserMail::dispatch($user, $otp);
+            } catch (\Exception $e) {
+                Log::info('Verify user mail failed.' . $e->getMessage());
             }
+
+            $data = $this->resource($id);
+            $data->update($inputs);
+            $data = [
+                'status' => true,
+                'message' => __('message.updateUserVerifySuccess'),
+            ];
         } else {
             $data = $this->resource($id);
             $data->update($inputs);
