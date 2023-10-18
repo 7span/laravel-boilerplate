@@ -12,17 +12,9 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-    private $userObj;
-
-    private $userOtpObj;
-
-    private $userOtpService;
-
-    public function __construct(User $userObj)
+    public function __construct(private User $userObj, private UserOtp $userOtpObj, private UserOtpService $userOtpService)
     {
-        $this->userObj = $userObj;
-        $this->userOtpObj = new UserOtp();
-        $this->userOtpService = new UserOtpService($this->userOtpObj);
+        //
     }
 
     public function signup($inputs)
