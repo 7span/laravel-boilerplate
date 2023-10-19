@@ -14,7 +14,7 @@ Create an artisan command for...
 
 ## Steps to Create an Artisan Command
 
-1. Generate an Artisan command using `php artisan make:command {JOBNAME}`, which will generate a file inside the `app/Console` folder.
+1. Generate an Artisan command using `php artisan make:command {COMMANDNAME}`, which will generate a file inside the `app/Console` folder.
 2. Add a signature to the command, like `{project-short-form}:{feature}`, e.g., `vepaar:send-reminder`.
 3. Utilize the Queue for execution instead of directly coding within the handle method.
 4. Define the list of supported arguments. 

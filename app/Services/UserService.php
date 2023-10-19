@@ -11,17 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    private $userObj;
-
-    private $userOtpObj;
-
-    private $userOtpService;
-
-    public function __construct(User $userObj)
+    public function __construct(private User $userObj, private UserOtp $userOtpObj, private UserOtpService $userOtpService)
     {
-        $this->userObj = $userObj;
-        $this->userOtpObj = new UserOtp();
-        $this->userOtpService = new UserOtpService($this->userOtpObj);
+        //
     }
 
     public function resource($id, $inputs = null)
@@ -41,6 +33,7 @@ class UserService
             $otp = Helper::generateOTP(config('site.generateOtpLength'));
 
             $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
+
             try {
                 VerifyUserMail::dispatch($user, $otp);
             } catch (\Exception $e) {
