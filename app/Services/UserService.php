@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserOtp;
+use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -37,7 +38,8 @@ class UserService
         if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
             $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);
 
-            $otp = mt_rand(100000, 999999);
+            $otp = Helper::generateOTP(config('site.generateOtpLength'));
+
             $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
             try {
                 VerifyUserMail::dispatch($user, $otp);

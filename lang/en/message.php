@@ -13,5 +13,6 @@ return [
     'userSignUpSuccess' => 'Otp sent to your mail.Please Verify your account via mail.',
     'newPasswordMatchedWithCurrentPassword' => 'New Password can not be same as your current password.',
     'wrongCurrentPassword' => 'Current password is incorrect.',
-    'updateUserVerifySuccess' => 'Your profile updated successfully. Otp sent to your mail.Please Verify your account via mail. '
+    'updateUserVerifySuccess' => 'Your profile updated successfully. Otp sent to your mail.Please Verify your account via mail. ',
+    'otpExpired' => 'Otp expired.'
 ];

@@ -5,6 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserOtp;
+use App\Helpers\Helper;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
@@ -32,7 +33,7 @@ class AuthService
     public function signup($inputs)
     {
         $user = $this->userObj->create($inputs);
-        $otp = mt_rand(100000, 999999);
+        $otp = Helper::generateOTP(config('site.generateOtpLength'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
 
         try {
@@ -63,7 +64,7 @@ class AuthService
             return $data;
         }
 
-        $userOtp = $this->userOtpObj->whereUserId($user['id'])->whereOtp($inputs['otp'])->where('otp_for', 'verification')->first();
+        $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
 
         if (empty($userOtp)) {
             $data = [
@@ -73,13 +74,12 @@ class AuthService
             return $data;
         }
 
-        $expirationTime = config('site.otpExpirationTimeInMinutes');
-        $expirationDate = Carbon::parse($userOtp['created_at'])->addMinutes($expirationTime)->format('Y-m-d H:i:s');
+        $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
-        if ($userOtp['verified_at'] != null || date('Y-m-d h:i:s') > $expirationDate) {
+        if ($isExpired) {
             $data = [
                 'status' => false,
-                'message' =>  __('message.invalidOtp')
+                'message' =>  __('message.otpExpired')
             ];
             return $data;
         }
@@ -124,7 +124,7 @@ class AuthService
 
         $this->userOtpObj->whereUserId($user['id'])->where('otp_for', 'reset_password')->delete();
 
-        $otp = mt_rand(100000, 999999);
+        $otp = Helper::generateOTP(config('site.generateOtpLength'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'reset_password']);
 
         try {
@@ -153,7 +153,7 @@ class AuthService
             return $data;
         }
 
-        $userOtp = $this->userOtpObj->whereUserId($user['id'])->whereOtp($inputs['otp'])->where('otp_for', 'reset_password')->first();
+        $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'reset_password');
 
         if (empty($userOtp)) {
             $data = [
@@ -164,13 +164,12 @@ class AuthService
             return $data;
         }
 
-        $expirationTime = config('site.otpExpirationTimeInMinutes');
-        $expirationDate = Carbon::parse($userOtp['created_at'])->addMinutes($expirationTime)->format('Y-m-d H:i:s');
+        $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
-        if ($userOtp['verified_at'] != null || date('Y-m-d h:i:s') > $expirationDate) {
+        if ($isExpired) {
             $data = [
                 'status' => false,
-                'message' => __('message.invalidOtp')
+                'message' => __('message.otpExpired')
             ];
 
             return $data;
@@ -200,11 +199,11 @@ class AuthService
             return $data;
         }
 
-        $otp = mt_rand(100000, 999999);
+        $otp = Helper::generateOTP(config('site.generateOtpLength'));
 
         switch ($inputs['otp_for']) {
             case 'verification':
-                $subject = __('email.signUpEmailSubject');
+                $subject = __('email.verifyUserSubject');
                 break;
             case 'update_profile':
                 $subject = __('email.updateProfileSubject');

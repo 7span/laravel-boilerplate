@@ -24,6 +24,6 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
     Route::get('me', [UserController::class, 'me']);
-    Route::post('me', [UserController::class, 'update']);
+    Route::post('me', [UserController::class, 'updateProfile']);
     Route::post('change-password', [AuthController::class, 'changePassword']);
 });

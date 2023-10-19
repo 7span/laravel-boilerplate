@@ -27,7 +27,7 @@ class UserController extends Controller
         return $this->resource(new UserResource($user));
     }
 
-    public function update(UpdateProfile $request)
+    public function updateProfile(UpdateProfile $request)
     {
         $data = $this->userService->update(Auth::id(), $request->all());
 

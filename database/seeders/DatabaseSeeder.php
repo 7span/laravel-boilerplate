@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::unprepared(file_get_contents('storage/seeder_data/country.sql'));
+        //
     }
 }

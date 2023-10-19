@@ -21,10 +21,11 @@ class VerifyOtp extends FormRequest
      */
     public function rules(): array
     {
+        $otpLength = config('site.generateOtpLength');
+
         return [
             'email' => 'required|email|max:120',
-            'otp_for' => 'required|max:20',
-            'otp' => 'required|digits:6',
+            'otp' => 'required|digits:' . $otpLength,
         ];
     }
 }
