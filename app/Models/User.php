@@ -28,8 +28,7 @@ class User extends Authenticatable
         'username',
         'country_code',
         'mobile_number',
-        'email_verified_at',
-        'created_at'
+        'email_verified_at'
     ];
 
     /**
@@ -51,6 +50,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected $dates = ['created_at'];
 
     public function setPasswordAttribute($password)
     {

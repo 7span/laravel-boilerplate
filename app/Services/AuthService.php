@@ -43,6 +43,53 @@ class AuthService
         return $data;
     }
 
+    public function sendOtp($inputs)
+    {
+        $user = $this->userObj->whereEmail($inputs['email'])->first();
+
+        if (empty($user)) {
+            $data = [
+                'status' => false,
+                'message' =>  __('message.emailNotExist')
+            ];
+            return $data;
+        }
+
+        $otp = Helper::generateOTP(config('site.generateOtpLength'));
+
+        switch ($inputs['otp_for']) {
+            case 'verification':
+                $subject = __('email.verifyUserSubject');
+                break;
+            case 'update_profile':
+                $subject = __('email.updateProfileSubject');
+                break;
+            case 'reset_password':
+                $subject = __('email.forgetPasswordEmailSubject');
+                break;
+            default:
+                $subject = '';
+                break;
+        }
+
+        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user['id'], 'otp_for' => $inputs['otp_for']]);
+
+        try {
+            SendOtpMail::dispatch($user, $otp, $subject);
+        } catch (\Exception $e) {
+            Log::info('Send Otp mail failed.' . $e->getMessage());
+        }
+
+        $data['otp'] = $otp;
+
+        $data = [
+            'status' => true,
+            'message' => 'Otp Send Successfully'
+        ];
+
+        return $data;
+    }
+
     public function verifyOtp($inputs)
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
@@ -173,53 +220,6 @@ class AuthService
         $data = [
             'status' => true,
             'message' => __('message.passwordChangeSuccess')
-        ];
-
-        return $data;
-    }
-
-    public function sendOtp($inputs)
-    {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
-
-        if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.emailNotExist')
-            ];
-            return $data;
-        }
-
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
-
-        switch ($inputs['otp_for']) {
-            case 'verification':
-                $subject = __('email.verifyUserSubject');
-                break;
-            case 'update_profile':
-                $subject = __('email.updateProfileSubject');
-                break;
-            case 'reset_password':
-                $subject = __('email.forgetPasswordEmailSubject');
-                break;
-            default:
-                $subject = '';
-                break;
-        }
-
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user['id'], 'otp_for' => $inputs['otp_for']]);
-
-        try {
-            SendOtpMail::dispatch($user, $otp, $subject);
-        } catch (\Exception $e) {
-            Log::info('Send Otp mail failed.' . $e->getMessage());
-        }
-
-        $data['otp'] = $otp;
-
-        $data = [
-            'status' => true,
-            'message' => 'Otp Send Successfully'
         ];
 
         return $data;

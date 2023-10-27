@@ -15,20 +15,12 @@ class SendOtpMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $user;
-
-    private $otp;
-
-    private $subject;
-
     /**
      * Create a new job instance.
      */
-    public function __construct($user, $otp, $subject)
+    public function __construct(private $user, private $otp, private $subject)
     {
-        $this->user = $user;
-        $this->otp = $otp;
-        $this->subject = $subject;
+        //
     }
 
     /**

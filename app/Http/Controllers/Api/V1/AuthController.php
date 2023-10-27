@@ -29,6 +29,13 @@ class AuthController extends Controller
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
+    public function sendOtp(SendOtp $request)
+    {
+        $data = $this->authService->sendOtp($request->all());
+
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
+
     public function verifyOtp(VerifyOtp $request)
     {
         $data = $this->authService->verifyOtp($request->all());
@@ -53,13 +60,6 @@ class AuthController extends Controller
     public function resetPassword(ResetPassword $request)
     {
         $data = $this->authService->resetPassword($request->all());
-
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
-    }
-
-    public function sendOtp(SendOtp $request)
-    {
-        $data = $this->authService->sendOtp($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }

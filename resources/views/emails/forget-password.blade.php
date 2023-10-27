@@ -14,7 +14,7 @@
                 <a href="{{ config('app.url') }}"
                     style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">{{ config('app.name') }}</a>
             </div>
-            <p style="font-size:1.1em; margin-top:20px; ">Hi {{ $data['firstname'] }}{{ $data['lastname'] }},</p>
+            <p style="font-size:1.1em; margin-top:20px; ">Hi {{ $data['firstname'] }} {{ $data['lastname'] }},</p>
 
             <p>Thank you for choosing {{ config('app.name') }}. Use the following OTP to complete your Reset Password
                 procedures. OTP is valid for 10 minutes.</p>

@@ -16,16 +16,12 @@ class VerifyUserMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $user;
-
-    private $otp;
     /**
      * Create a new job instance.
      */
-    public function __construct($user, $otp)
+    public function __construct(private $user, private $otp)
     {
-        $this->user = $user;
-        $this->otp = $otp;
+        //
     }
 
     /**
