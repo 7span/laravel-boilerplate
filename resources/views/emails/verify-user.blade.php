@@ -15,9 +15,9 @@
                     style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">{{ config('app.name') }}</a>
             </div>
             <p style="font-size:1.1em; margin-top:20px; ">Hi {{ $data['firstname'] }} {{ $data['lastname'] }},</p>
-
-            <p>Thank you for choosing {{ config('app.name') }}. Use the following OTP to complete your Reset Password
-                procedures. OTP is valid for 10 minutes.</p>
+            <p>Thank you for choosing {{ config('app.name') }}. Use the following OTP to complete your
+                {{ $data['subject'] }} process.
+                OTP is valid for 10 minutes.</p>
 
             <h2
                 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">

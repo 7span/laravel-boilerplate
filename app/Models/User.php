@@ -6,12 +6,13 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, BaseModel;
+    use HasApiTokens, HasFactory, Notifiable, BaseModel, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'firstname',
+        'lastname',
+        'username',
+        'country_code',
+        'mobile_number',
+        'email_verified_at'
     ];
 
     /**
@@ -43,6 +50,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected $dates = ['created_at'];
 
     public function setPasswordAttribute($password)
     {

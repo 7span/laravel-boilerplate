@@ -2,15 +2,17 @@
 
 namespace App\Jobs;
 
-use App\Mail\ForgetPassword;
+
+use App\Mail\VerifyUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class ForgetPasswordMail implements ShouldQueue
+class VerifyUserMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -27,7 +29,7 @@ class ForgetPasswordMail implements ShouldQueue
      */
     public function handle(): void
     {
-        $data = ['otp' => $this->otp, 'firstname' => $this->user->firstname, 'lastname' => $this->user->lastname];
-        Mail::to($this->user->email)->send(new ForgetPassword($data));
+        $data = ['otp' => $this->otp, 'firstname' => $this->user->firstname, 'lastname' => $this->user->lastname, 'subject' => __('email.verifyUserSubject')];
+        Mail::to($this->user->email)->send(new VerifyUser($data));
     }
 }

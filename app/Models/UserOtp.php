@@ -14,7 +14,7 @@ class UserOtp extends Model
         'otp',
         'user_id',
         'otp_for',
-        'used_at',
+        'verified_at',
     ];
 
     protected $hidden = [

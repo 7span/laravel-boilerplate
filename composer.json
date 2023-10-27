@@ -12,8 +12,8 @@
         "laravel/telescope": "^4.14",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^2.4",
-        "spatie/laravel-data": "^3.8",
         "spatie/laravel-littlegatekeeper": "^2.0",
+        "spatie/laravel-permission": "^5.11",
         "spatie/laravel-query-builder": "^5.2"
     },
     "require-dev": {
@@ -26,6 +26,9 @@
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
+        "files": [
+            "app/Helpers/Helper.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

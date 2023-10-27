@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_otps', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('otp', 50)->nullable();
-            $table->string('otp_for', 250)->nullable();
-            $table->timestamp('used_at')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('otp', 32);
+            $table->enum('otp_for', ['verification', 'reset_password', 'update_profile']);
+            $table->timestamp('verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
