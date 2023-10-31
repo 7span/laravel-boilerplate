@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\SignedUrlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('me', [UserController::class, 'updateProfile']);
     Route::post('change-password', [AuthController::class, 'changePassword']);
 });
+
+Route::post('generate-signed-url', SignedUrlController::class);
