@@ -14,5 +14,7 @@ return [
     'newPasswordMatchedWithCurrentPassword' => 'New Password can not be same as your current password.',
     'wrongCurrentPassword' => 'Current password is incorrect.',
     'updateUserVerifySuccess' => 'Your profile updated successfully. Otp sent to your mail.Please Verify your account via mail. ',
-    'otpExpired' => 'Otp expired.'
+    'otpExpired' => 'Otp expired.',
+    'userInactiveFound' => 'Account Inactive: Please contact administrator to reactivate your account.',
+    'changeStatusSuccess' => 'User status has been updated to :status.',
 ];

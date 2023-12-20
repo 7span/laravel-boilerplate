@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\UserOtp;
 use App\Helpers\Helper;
+use App\Models\UserOtp;
 use App\Jobs\VerifyUserMail;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -27,7 +27,7 @@ class UserService
     {
         $user = Auth::user();
 
-        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
+        if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
             $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);
 
             $otp = Helper::generateOTP(config('site.generateOtpLength'));
@@ -52,9 +52,22 @@ class UserService
 
             $data = [
                 'status' => true,
-                'message' => __('message.userProfileUpdate')
+                'message' => __('message.userProfileUpdate'),
             ];
         }
+
+        return $data;
+    }
+
+    public function changeStatus($inputs)
+    {
+        $user = $this->userObj->findOrFail($inputs['user_id']);
+        $user->status = $inputs['status'];
+        $user->save();
+
+        $data = [
+            'message' => __('message.changeStatusSuccess', ['status' => $inputs['status']]),
+        ];
 
         return $data;
     }
