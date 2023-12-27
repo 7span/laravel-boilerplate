@@ -23,8 +23,6 @@ class AuthService
     public function signup($inputs)
     {
         $user = $this->userObj->create($inputs);
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
 
         try {
             $user->sendEmailVerificationNotification();
@@ -33,7 +31,6 @@ class AuthService
         }
 
         $data = [
-            'status' => true,
             'message' => __('message.userSignUpSuccess'),
             'user' => new UserResource($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
@@ -80,7 +77,6 @@ class AuthService
         $data['otp'] = $otp;
 
         $data = [
-            'status' => true,
             'message' => 'Otp Send Successfully',
         ];
 
@@ -140,7 +136,6 @@ class AuthService
         }
 
         $data = [
-            'status' => true,
             'message' => 'Login successfully',
             'user' => new UserResource($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
@@ -170,7 +165,6 @@ class AuthService
         }
 
         $data = [
-            'status' => true,
             'message' => __('message.forgetPasswordEmailSuccess'),
         ];
 
