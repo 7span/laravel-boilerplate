@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
-use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +27,7 @@ class AuthService
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
 
         try {
-            VerifyUserMail::dispatch($user, $otp);
+            $user->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::info('User verification mail failed.' . $e->getMessage());
         }

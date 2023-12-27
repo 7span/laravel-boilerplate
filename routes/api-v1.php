@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\UserStatusController;
+use App\Http\Controllers\Api\V1\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('change-status', UserStatusController::class);
 });
+
+Route::get('/verify-email/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
