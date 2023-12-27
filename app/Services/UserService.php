@@ -23,31 +23,23 @@ class UserService
 
     public function update($id, $inputs = null)
     {
-        $user = Auth::user();
+        $user = $user = $this->userObj->find(Auth::user()->id);
 
         if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
-            $user = $this->userObj->find($user->id);
-            $user->email_verified_at = null;
-            $user->save();
+            $inputs['email_verified_at'] = null;
 
             try {
                 $user->sendEmailVerificationNotification();
             } catch (\Exception $e) {
                 Log::info('User verification mail failed.' . $e->getMessage());
             }
-            $user->update($inputs);
-
-            $data = [
-                'message' => __('message.updateUserVerifySuccess'),
-            ];
-        } else {
-            $data = $this->resource($id);
-            $data->update($inputs);
-
-            $data = [
-                'message' => __('message.userProfileUpdate'),
-            ];
         }
+
+        $user->update($inputs);
+
+        $data = [
+            'message' => __('message.userProfileUpdate'),
+        ];
 
         return $data;
     }

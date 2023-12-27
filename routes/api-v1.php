@@ -35,4 +35,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('change-status', UserStatusController::class);
 });
 
-Route::get('/verify-email/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::get('/verify-email/{user}', [VerificationController::class, 'verify'])->name('verification.verify');

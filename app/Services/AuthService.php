@@ -202,7 +202,6 @@ class AuthService
         $user->save();
 
         $data = [
-            'status' => true,
             'message' => __('message.passwordChangeSuccess'),
         ];
 
@@ -231,7 +230,6 @@ class AuthService
         $user->save();
 
         $data = [
-            'status' => true,
             'message' => __('message.passwordChangeSuccess'),
         ];
 

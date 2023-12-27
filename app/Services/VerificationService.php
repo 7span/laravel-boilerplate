@@ -11,10 +11,8 @@ class VerificationService
         //
     }
 
-    public function verify($userId, $inputs = null)
+    public function verify($user, $inputs = null)
     {
-        $user = User::findOrFail($userId);
-
         if (! $user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
         }
