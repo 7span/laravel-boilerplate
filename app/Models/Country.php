@@ -2,14 +2,25 @@
 
 namespace App\Models;
 
+use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Country extends Model
 {
-    use HasFactory;
+    use BaseModel, HasFactory;
 
     protected $fillable = [
-        'country_code',
+        'iso',
+        'name',
+        'iso3',
+        'numcode',
+        'phonecode',
     ];
+
+    public $queryable = [
+        'id',
+    ];
+
+    protected $relationship = [];
 }

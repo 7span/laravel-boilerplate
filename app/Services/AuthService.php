@@ -3,10 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\UserOtp;
 use App\Helpers\Helper;
+use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
-use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -24,17 +23,14 @@ class AuthService
     public function signup($inputs)
     {
         $user = $this->userObj->create($inputs);
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
 
         try {
-            VerifyUserMail::dispatch($user, $otp);
+            $user->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::info('User verification mail failed.' . $e->getMessage());
         }
 
         $data = [
-            'status' => true,
             'message' => __('message.userSignUpSuccess'),
             'user' => new UserResource($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
@@ -48,10 +44,8 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.emailNotExist')
-            ];
+            $data['errors']['message'] = __('message.emailNotExist');
+
             return $data;
         }
 
@@ -83,8 +77,7 @@ class AuthService
         $data['otp'] = $otp;
 
         $data = [
-            'status' => true,
-            'message' => 'Otp Send Successfully'
+            'message' => 'Otp Send Successfully',
         ];
 
         return $data;
@@ -95,30 +88,24 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.emailNotExist')
-            ];
+            $data['errors']['message'] = __('message.emailNotExist');
+
             return $data;
         }
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
 
         if (empty($userOtp)) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.invalidOtp')
-            ];
+            $data['errors']['message'] = __('message.invalidOtp');
+
             return $data;
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
         if ($isExpired) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.otpExpired')
-            ];
+            $data['errors']['message'] = __('message.otpExpired');
+
             return $data;
         }
 
@@ -126,9 +113,9 @@ class AuthService
         $this->userObj->whereId($user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
 
         $data = [
-            'status' => true,
-            'message' => __('message.userVerifySuccess')
+            'message' => __('message.userVerifySuccess'),
         ];
+
         return $data;
     }
 
@@ -136,18 +123,24 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (!$user || !Hash::check($inputs['password'], $user->password)) {
+        if (! $user || ! Hash::check($inputs['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => [__('auth.failed')],
             ]);
         }
 
+        if ($user->status == config('site.user_status.inactive')) {
+            $data['errors']['message'] = __('message.userInactiveFound');
+
+            return $data;
+        }
+
         $data = [
-            'status' => true,
             'message' => 'Login successfully',
             'user' => new UserResource($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
+
         return $data;
     }
 
@@ -155,7 +148,7 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
         if (empty($user)) {
-            $data['errors']['email'][] = __('message.emailNotExist');
+            $data['errors']['message'] = __('message.emailNotExist');
 
             return $data;
         }
@@ -172,8 +165,7 @@ class AuthService
         }
 
         $data = [
-            'status' => true,
-            'message' => __('message.forgetPasswordEmailSuccess')
+            'message' => __('message.forgetPasswordEmailSuccess'),
         ];
 
         return $data;
@@ -184,20 +176,15 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' =>  __('message.emailNotExist')
-            ];
+            $data['errors']['message'] = __('message.emailNotExist');
+
             return $data;
         }
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'reset_password');
 
         if (empty($userOtp)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.invalidOtp')
-            ];
+            $data['errors']['message'] = __('message.invalidOtp');
 
             return $data;
         }
@@ -205,10 +192,7 @@ class AuthService
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
         if ($isExpired) {
-            $data = [
-                'status' => false,
-                'message' => __('message.otpExpired')
-            ];
+            $data['errors']['message'] = __('message.otpExpired');
 
             return $data;
         }
@@ -218,8 +202,7 @@ class AuthService
         $user->save();
 
         $data = [
-            'status' => true,
-            'message' => __('message.passwordChangeSuccess')
+            'message' => __('message.passwordChangeSuccess'),
         ];
 
         return $data;
@@ -237,8 +220,9 @@ class AuthService
             return $data;
         }
 
-        if (!Hash::check($inputs['current_password'], $user->password)) {
+        if (! Hash::check($inputs['current_password'], $user->password)) {
             $data['errors']['message'] = __('message.wrongCurrentPassword');
+
             return $data;
         }
 
@@ -246,8 +230,7 @@ class AuthService
         $user->save();
 
         $data = [
-            'status' => true,
-            'message' =>  __('message.passwordChangeSuccess')
+            'message' => __('message.passwordChangeSuccess'),
         ];
 
         return $data;

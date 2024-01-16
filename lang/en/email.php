@@ -14,4 +14,7 @@ return [
     'signInRequestEmailLine2' => 'If you have not requested to sign-in code, please ignore this mail.',
     'verifyUserSubject' => 'Verify User',
     'updateProfileSubject' => 'Update Profile',
+    'verifyEmailSubject' => 'Verify Email Address',
+    'verifyEmailLine1' => 'Click the button below to verify your email address.',
+    'verifyEmailAction' => 'Verify Email Address',
 ];

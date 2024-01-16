@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\CountryController;
+use App\Http\Controllers\Api\V1\UserStatusController;
+use App\Http\Controllers\Api\V1\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +24,15 @@ Route::post('send-otp', [AuthController::class, 'sendOtp']);
 Route::post('forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
+Route::apiResource('countries', CountryController::class)->only('index');
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
     Route::get('me', [UserController::class, 'me']);
     Route::post('me', [UserController::class, 'updateProfile']);
     Route::post('change-password', [AuthController::class, 'changePassword']);
+
+    Route::post('change-status', UserStatusController::class);
 });
+
+Route::get('/verify-email/{user}', [VerificationController::class, 'verify'])->name('verification.verify');

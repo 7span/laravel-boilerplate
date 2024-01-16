@@ -11,6 +11,12 @@ trait ApiResponser
 
     private function error($data, $code = 400)
     {
+        if (isset($data['errors'])) {
+            $data['message'] = $data['errors']['message'];
+
+            unset($data['errors']);
+        }
+
         return response()->json($data, $code);
     }
 
