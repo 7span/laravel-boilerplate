@@ -16,10 +16,17 @@ class LanguageController extends Controller
         //
     }
 
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $data = $this->langService->collection();
 
         return $this->success($data, 200);
+    }
+
+    public function show($language)
+    {
+        $data = $this->langService->resource($language);
+
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 }
