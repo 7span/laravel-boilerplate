@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, BaseModel, SoftDeletes;
+    use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +28,7 @@ class User extends Authenticatable
         'username',
         'country_code',
         'mobile_number',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     /**

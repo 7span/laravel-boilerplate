@@ -20,7 +20,7 @@ class SignUp extends FormRequest
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
             'country_code' => 'nullable|max:8',
-            'mobile_number' =>  'nullable|digits:10',
+            'mobile_number' => 'nullable|digits:10',
         ];
     }
 }

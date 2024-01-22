@@ -10,8 +10,8 @@ use App\Http\Requests\Auth\SendOtp;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\VerifyOtp;
 use App\Http\Requests\Auth\ResetPassword;
-use App\Http\Requests\Auth\ForgetPassword;
 use App\Http\Requests\Auth\ChangePassword;
+use App\Http\Requests\Auth\ForgetPassword;
 
 class AuthController extends Controller
 {

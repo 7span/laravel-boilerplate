@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserOtp extends Model
 {
-    use HasFactory, BaseModel;
+    use BaseModel, HasFactory;
 
     protected $fillable = [
         'otp',

@@ -15,6 +15,7 @@ class Resource extends JsonResource
     public function toArray(Request $request): array
     {
         $data = $this->fields();
+
         return $data;
     }
 }
