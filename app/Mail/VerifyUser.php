@@ -20,8 +20,6 @@ class VerifyUser extends Mailable
         $this->data = $data;
     }
 
-
-
     public function build()
     {
         return $this->subject($this->data['subject'])->markdown('emails.verify-user', ['data' => $this->data]);

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('send-otp', [AuthController::class, 'sendOtp']);
 Route::post('forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
+Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);

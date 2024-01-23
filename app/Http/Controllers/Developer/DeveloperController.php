@@ -11,7 +11,7 @@ class DeveloperController extends Controller
     {
         $auth = resolve('littlegatekeeper');
         $loginSuccess = $auth->attempt($request->toArray());
-        if (!$loginSuccess) {
+        if (! $loginSuccess) {
             return redirect()->back()->withErrors(['message', 'Invalid credencials.']);
         }
 
