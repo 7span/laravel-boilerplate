@@ -6,4 +6,5 @@ return [
         'name' => 'English',
         'rtl' => false,
     ],
+
 ];
