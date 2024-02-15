@@ -61,6 +61,4 @@ class User extends Authenticatable
     public $queryable = [
         'id',
     ];
-
-    protected $relationship = [];
 }
