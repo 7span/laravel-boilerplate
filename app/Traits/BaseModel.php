@@ -49,12 +49,14 @@ trait BaseModel
 
     public function getRelationship()
     {
-        return $this->relationship;
+        $relationship = $this->relationship;
+
+        return $relationship ? $relationship : [];
     }
 
     public function getIncludes()
     {
-        return array_keys($this->relationship);
+        return array_keys($this->getRelationship());
     }
 
     public function getQB()
