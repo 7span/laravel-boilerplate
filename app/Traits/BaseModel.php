@@ -9,7 +9,7 @@ trait BaseModel
 {
     private function getQueryable()
     {
-        return $this->queryable;
+        return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
 
     public function getQueryFields()
