@@ -8,6 +8,7 @@ use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
+use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -96,34 +97,19 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.emailNotExist'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'), 401);
         }
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
 
         if (empty($userOtp)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.invalidOtp'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.invalidOtp'), 401);
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
         if ($isExpired) {
-            $data = [
-                'status' => false,
-                'message' => __('message.otpExpired'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.otpExpired'), 401);
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
@@ -161,9 +147,7 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
         if (empty($user)) {
-            $data['errors']['email'][] = __('message.emailNotExist');
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'), 401);
         }
 
         $this->userOtpObj->whereUserId($user['id'])->where('otp_for', 'reset_password')->delete();
@@ -190,34 +174,19 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.emailNotExist'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'), 401);
         }
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'reset_password');
 
         if (empty($userOtp)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.invalidOtp'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.invalidOtp'), 401);
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
         if ($isExpired) {
-            $data = [
-                'status' => false,
-                'message' => __('message.otpExpired'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.otpExpired'), 401);
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
@@ -239,15 +208,11 @@ class AuthService
         $newPassword = trim($inputs['password']);
 
         if (strcmp($currentPassword, $newPassword) == 0) {
-            $data['errors']['message'] = __('message.newPasswordMatchedWithCurrentPassword');
-
-            return $data;
+            throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'), 401);
         }
 
         if (! Hash::check($inputs['current_password'], $user->password)) {
-            $data['errors']['message'] = __('message.wrongCurrentPassword');
-
-            return $data;
+            throw new CustomException(__('message.wrongCurrentPassword'), 401);
         }
 
         $user->password = $newPassword;

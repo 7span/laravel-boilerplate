@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\File;
 
 class LanguageService
@@ -11,9 +12,7 @@ class LanguageService
         $languages['data'] = collect(config('language'))->values()->all();
 
         if (empty($languages['data'])) {
-            $data['errors']['message'] = __('entity.entityNotFound', ['entity' => 'Languages']);
-
-            return $data;
+            throw new CustomException(__('entity.entityNotFound', ['entity' => 'Languages']), 404);
         }
 
         return $languages;
@@ -24,9 +23,7 @@ class LanguageService
         $path = base_path("lang/$input.json");
 
         if (! File::exists($path)) {
-            $data['errors']['message'] = __('entity.entityNotFound', ['entity' => 'Language file']);
-
-            return $data;
+            throw new CustomException(__('entity.entityNotFound', ['entity' => 'Language file']), 404);
         }
 
         return json_decode(File::get($path), true);
