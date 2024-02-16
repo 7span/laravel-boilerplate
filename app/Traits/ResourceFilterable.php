@@ -10,7 +10,7 @@ trait ResourceFilterable
     protected function fields(): array
     {
         return collect($this->prepareResponse())
-            ->only(array_keys($this->resource->getAttributes()))
+            ->only(array_merge(array_keys($this->resource->getAttributes()), $this->resource->getAppends()))
             ->toArray();
     }
 
@@ -21,6 +21,7 @@ trait ResourceFilterable
         $classObj = new $class();
         $fields = $classObj->getQueryFields();
         $hiddenFields = $classObj->getHidden();
+        $appends = $classObj->getAppends();
         $casts = $classObj->getCasts();
         foreach ($fields as $field) {
             if (! in_array($field, $hiddenFields)) {
@@ -38,6 +39,11 @@ trait ResourceFilterable
                 } else {
                     $data[$field] = $this->$field;
                 }
+            }
+        }
+        if (! empty($appends)) {
+            foreach ($appends as $field) {
+                $data[$field] = $this->$field;
             }
         }
 
