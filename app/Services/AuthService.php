@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\CustomException;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
@@ -26,7 +27,7 @@ class AuthService
         $user = $this->userObj->create($inputs);
         $otp = Helper::generateOTP(config('site.generateOtpLength'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-
+        
         try {
             VerifyUserMail::dispatch($user, $otp);
         } catch (\Exception $e) {
@@ -34,9 +35,8 @@ class AuthService
         }
 
         $data = [
-            'status' => true,
             'message' => __('message.userSignUpSuccess'),
-            'user' => new UserResource($user),
+            'data' => new UserResource($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
 
@@ -48,12 +48,7 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.emailNotExist'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'));
         }
 
         $otp = Helper::generateOTP(config('site.generateOtpLength'));
@@ -81,11 +76,9 @@ class AuthService
             Log::info('Send Otp mail failed.' . $e->getMessage());
         }
 
-        $data['otp'] = $otp;
-
         $data = [
-            'status' => true,
             'message' => 'Otp Send Successfully',
+            'data' => [ 'otp' => $otp],
         ];
 
         return $data;
@@ -93,44 +86,28 @@ class AuthService
 
     public function verifyOtp($inputs)
     {
+        
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.emailNotExist'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'));
         }
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
-
         if (empty($userOtp)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.invalidOtp'),
-            ];
-
-            return $data;
+            throw new CustomException( __('message.invalidOtp'));
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
-
+        
         if ($isExpired) {
-            $data = [
-                'status' => false,
-                'message' => __('message.otpExpired'),
-            ];
-
-            return $data;
+            throw new CustomException( __('message.otpExpired'));
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
         $this->userObj->whereId($user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
 
         $data = [
-            'status' => true,
             'message' => __('message.userVerifySuccess'),
         ];
 
@@ -142,13 +119,10 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (! $user || ! Hash::check($inputs['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => [__('auth.failed')],
-            ]);
+            throw new CustomException(__('auth.failed'));
         }
 
         $data = [
-            'status' => true,
             'message' => 'Login successfully',
             'user' => new UserResource($user),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
@@ -161,9 +135,7 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
         if (empty($user)) {
-            $data['errors']['email'][] = __('message.emailNotExist');
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'));
         }
 
         $this->userOtpObj->whereUserId($user['id'])->where('otp_for', 'reset_password')->delete();
@@ -178,7 +150,6 @@ class AuthService
         }
 
         $data = [
-            'status' => true,
             'message' => __('message.forgetPasswordEmailSuccess'),
         ];
 
@@ -190,34 +161,19 @@ class AuthService
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.emailNotExist'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.emailNotExist'));
         }
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'reset_password');
 
         if (empty($userOtp)) {
-            $data = [
-                'status' => false,
-                'message' => __('message.invalidOtp'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.invalidOtp'));
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
         if ($isExpired) {
-            $data = [
-                'status' => false,
-                'message' => __('message.otpExpired'),
-            ];
-
-            return $data;
+            throw new CustomException(__('message.otpExpired'));
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
@@ -225,7 +181,6 @@ class AuthService
         $user->save();
 
         $data = [
-            'status' => true,
             'message' => __('message.passwordChangeSuccess'),
         ];
 
@@ -239,25 +194,30 @@ class AuthService
         $newPassword = trim($inputs['password']);
 
         if (strcmp($currentPassword, $newPassword) == 0) {
-            $data['errors']['message'] = __('message.newPasswordMatchedWithCurrentPassword');
-
-            return $data;
+            throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
         }
 
         if (! Hash::check($inputs['current_password'], $user->password)) {
-            $data['errors']['message'] = __('message.wrongCurrentPassword');
-
-            return $data;
+            throw new CustomException(__('message.wrongCurrentPassword'));
         }
 
         $user->password = $newPassword;
         $user->save();
 
         $data = [
-            'status' => true,
             'message' => __('message.passwordChangeSuccess'),
         ];
 
+        return $data;
+    }
+    public function logout()
+    {
+        if (Auth::check()) {
+            Auth::user()->currentAccessToken()->delete();
+        }
+        $data = [
+            'message' => __('message.logoutSuccess'),
+        ];
         return $data;
     }
 }

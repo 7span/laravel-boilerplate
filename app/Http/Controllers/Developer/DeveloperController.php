@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Developer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Developer\Login;
+use Illuminate\Http\Request;
 
 class DeveloperController extends Controller
 {
@@ -14,7 +15,6 @@ class DeveloperController extends Controller
         if (! $loginSuccess) {
             return redirect()->back()->withErrors(['message', 'Invalid credencials.']);
         }
-
         return redirect()->route('developer.dashboard');
     }
 

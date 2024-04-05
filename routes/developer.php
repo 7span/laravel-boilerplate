@@ -13,7 +13,9 @@ use App\Http\Controllers\Developer\DeveloperController;
 |
 */
 
+
 Route::redirect('/', 'login');
 Route::get('login', [DeveloperController::class, 'loginPage']);
 Route::post('login', [DeveloperController::class, 'login'])->name('developer.login');
 Route::get('dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard')->middleware('developer');
+
