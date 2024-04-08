@@ -61,9 +61,7 @@ return [
              * Middleware allows to prevent unexpected access to API documentation
             */
             'middleware' => [
-                'api' => [
-                    'developer'
-                ],
+                'api' => ['web', 'developer'],
                 'asset' => [],
                 'docs' => [],
                 'oauth2_callback' => [],
@@ -214,7 +212,7 @@ return [
 
                     'passport' => []
                     */
-                    'developer' => \Spatie\LittleGateKeeper\AuthMiddleware::class
+                    'developer' => \Spatie\LittleGateKeeper\AuthMiddleware::class,
                 ],
             ],
         ],
