@@ -22,6 +22,7 @@ Route::post('send-otp', [AuthController::class, 'sendOtp']);
 Route::post('forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
+Route::get('users/{user}', [AuthController::class, 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use App\Traits\ApiResponser;
 use App\Services\AuthService;
 use App\Http\Requests\Auth\Login;
@@ -69,5 +70,12 @@ class AuthController extends Controller
         $data = $this->authService->changePassword($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
+
+    public function show(User $user)
+    {
+        $user = User::whereId($user->id);
+
+        return $user;
     }
 }

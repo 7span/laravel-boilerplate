@@ -53,6 +53,18 @@
 	                </div>
 	            </a>
 	        </div>
+            <div class="scramble p-5">
+	            <a href="{{ url('docs/api') }}" target="_blank">
+	                <div class="block">
+	                    <div class="p-6">
+	                        <h5>Scramble API Document</h5>
+	                        <p>
+                                Scramble generates API documentation for Laravel project. Without requiring you to manually write PHPDoc annotations. Docs are generated in OpenAPI 3.1.0 format.
+	                        </p>
+	                    </div>
+	                </div>
+	            </a>
+	        </div>
 	    </div>
 	</div>
 </body>

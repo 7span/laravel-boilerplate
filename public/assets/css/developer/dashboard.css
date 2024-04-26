@@ -102,7 +102,8 @@ a {
 }
 
 .log-viewer .block h5,
-.telescope .block h5 {
+.telescope .block h5,
+.scramble .block h5 {
 	color: white;
 	font-size: 1.60rem;
 	font-weight: 500;
@@ -111,7 +112,8 @@ a {
 }
 
 .log-viewer .block p,
-.telescope .block p {
+.telescope .block p,
+.scramble .block p {
 	color: white;
 	font-size: 1rem;
 	margin-top: 1.5rem;
@@ -124,6 +126,15 @@ a {
 	border-radius: 0.5rem;
 	box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1), 0 2px 4px -1px rgba(9, 9, 16, 0.06);
 	background-color: #7c3aed;
+	max-width: 20rem;
+	text-align: center;
+}
+
+.scramble .block {
+	display: block;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1), 0 2px 4px -1px rgba(9, 9, 16, 0.06);
+	background-color: #eb70eb;
 	max-width: 20rem;
 	text-align: center;
 }
