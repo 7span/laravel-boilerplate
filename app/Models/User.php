@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use BaseModel,HasApiTokens,HasFactory,Notifiable,SoftDeletes;
+    use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -56,11 +56,10 @@ class User extends Authenticatable
     }
     protected $dates = ['created_at'];
 
-    public function setPasswordAttribute($password)
+    public function setPasswordAttribute(?string $password): void
     {
         $this->attributes['password'] = bcrypt($password);
     }
 
     protected $relationship = [];
-
 }

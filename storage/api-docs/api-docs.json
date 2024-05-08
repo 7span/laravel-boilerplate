@@ -90,7 +90,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Register successful",
+                        "description": "Register successful.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -186,7 +186,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OTP sent successfully",
+                        "description": "Login successful.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -220,7 +220,7 @@
                         "description": "Bad Request - Validation errors"
                     },
                     "422": {
-                        "description": "Unprocessable Entity - Other errors (e.g., OTP generation failure)"
+                        "description": "Unprocessable Entity - Other errors (e.g., OTP generation failure"
                     }
                 }
             }
@@ -265,7 +265,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OTP verification successful",
+                        "description": "Login successful.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -309,8 +309,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "email",
-                                    "password"
+                                    "email"
                                 ],
                                 "properties": {
                                     "email": {
@@ -334,7 +333,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login successful",
+                        "description": "Login successful.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -428,7 +427,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Reset link sent successfully",
+                        "description": "Reset link sent successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -761,5 +760,10 @@
                 "scheme": "bearer"
             }
         }
-    }
+    },
+    "security": [
+        {
+            "developer": "Spatie\\LittleGateKeeper\\AuthMiddleware"
+        }
+    ]
 }

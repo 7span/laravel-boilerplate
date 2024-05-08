@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserOtp extends Model
 {
@@ -18,23 +19,29 @@ class UserOtp extends Model
     ];
 
     protected $hidden = [
-        'updated_at', 'deleted_at',
+        'updated_at', 
+        'deleted_at',
     ];
 
     public $queryable = [
         'id',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    protected $exactFilters = ['id', 'otp', 'otp_for', 'user_id'];
+    protected $exactFilters = [
+        'id', 
+        'otp', 
+        'otp_for', 
+        'user_id'
+    ];
 
     protected $relationship = [
         'user' => [
-            'model' => 'App\\Models\\User',
+            'model' => User::class,
         ],
     ];
 

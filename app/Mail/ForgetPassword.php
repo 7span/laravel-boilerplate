@@ -16,7 +16,7 @@ class ForgetPassword extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private $data)
+    public function __construct(private ?array $data)
     {
         //
     }

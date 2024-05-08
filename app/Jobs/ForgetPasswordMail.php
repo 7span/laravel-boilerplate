@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class ForgetPasswordMail implements ShouldQueue
 {
@@ -17,7 +18,7 @@ class ForgetPasswordMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $user, private $otp)
+    public function __construct(private object $user, private int|string $otp)
     {
         //
     }
@@ -27,7 +28,15 @@ class ForgetPasswordMail implements ShouldQueue
      */
     public function handle(): void
     {
-        $data = ['otp' => $this->otp, 'firstname' => $this->user->firstname, 'lastname' => $this->user->lastname];
-        Mail::to($this->user->email)->send(new ForgetPassword($data));
+        try {
+            $data = [
+                'otp' => $this->otp,
+                'firstname' => $this->user->firstname,
+                'lastname' => $this->user->lastname
+            ];
+            Mail::to($this->user->email)->send(new ForgetPassword(data: $data));
+        } catch (\Exception $e) {
+            Log::error("Forgot Password Error : " . $e);
+        }
     }
 }

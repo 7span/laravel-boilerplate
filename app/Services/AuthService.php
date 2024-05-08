@@ -12,8 +12,8 @@ use App\Jobs\ForgetPasswordMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\User\Resource as UserResource;
+use Illuminate\Support\Facades\DB;
 
 class AuthService
 {
@@ -22,12 +22,13 @@ class AuthService
         //
     }
 
-    public function signup($inputs)
+    public function signup(array $inputs): array
     {
+        DB::beginTransaction();
         $user = $this->userObj->create($inputs);
         $otp = Helper::generateOTP(config('site.generateOtpLength'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-        
+        DB::commit();
         try {
             VerifyUserMail::dispatch($user, $otp);
         } catch (\Exception $e) {
@@ -43,7 +44,7 @@ class AuthService
         return $data;
     }
 
-    public function sendOtp($inputs)
+    public function sendOtp(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
@@ -78,15 +79,15 @@ class AuthService
 
         $data = [
             'message' => 'Otp Send Successfully',
-            'data' => [ 'otp' => $otp],
+            'data' => ['otp' => $otp],
         ];
 
         return $data;
     }
 
-    public function verifyOtp($inputs)
+    public function verifyOtp(array $inputs): array
     {
-        
+
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
@@ -95,13 +96,13 @@ class AuthService
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
         if (empty($userOtp)) {
-            throw new CustomException( __('message.invalidOtp'));
+            throw new CustomException(__('message.invalidOtp'));
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
-        
+
         if ($isExpired) {
-            throw new CustomException( __('message.otpExpired'));
+            throw new CustomException(__('message.otpExpired'));
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
@@ -114,11 +115,11 @@ class AuthService
         return $data;
     }
 
-    public function login($inputs)
+    public function login(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (! $user || ! Hash::check($inputs['password'], $user->password)) {
+        if (!$user || !Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -131,7 +132,7 @@ class AuthService
         return $data;
     }
 
-    public function forgetPassword($inputs)
+    public function forgetPassword(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
         if (empty($user)) {
@@ -156,7 +157,7 @@ class AuthService
         return $data;
     }
 
-    public function resetPassword($inputs)
+    public function resetPassword(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
@@ -187,9 +188,9 @@ class AuthService
         return $data;
     }
 
-    public function changePassword($inputs)
+    public function changePassword(array $inputs): array
     {
-        $user = Auth::user();
+        $user = User::find(auth()->id());
         $currentPassword = trim($inputs['current_password']);
         $newPassword = trim($inputs['password']);
 
@@ -197,7 +198,7 @@ class AuthService
             throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
         }
 
-        if (! Hash::check($inputs['current_password'], $user->password)) {
+        if (!Hash::check($inputs['current_password'], $user->password)) {
             throw new CustomException(__('message.wrongCurrentPassword'));
         }
 
@@ -210,7 +211,8 @@ class AuthService
 
         return $data;
     }
-    public function logout()
+
+    public function logout(): array
     {
         if (Auth::check()) {
             Auth::user()->currentAccessToken()->delete();

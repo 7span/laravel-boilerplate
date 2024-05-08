@@ -14,10 +14,10 @@ trait ResourceFilterable
             ->toArray();
     }
 
-    protected function prepareResponse()
+    protected function prepareResponse(): array
     {
         $data = [];
-        $class = 'App\\Models\\' . $this->model;
+        $class = $this->model;
         $classObj = new $class();
         $fields = $classObj->getQueryFields();
         $hiddenFields = $classObj->getHidden();
