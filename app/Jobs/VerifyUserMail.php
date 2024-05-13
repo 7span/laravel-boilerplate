@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class VerifyUserMail implements ShouldQueue
 {
@@ -19,14 +20,20 @@ class VerifyUserMail implements ShouldQueue
      */
     public function __construct(private $user, private $otp)
     {
-        //
+        // Log::info($this->user);
+
+        // $this->user = $user;
+        // $this->otp = $otp;
+
     }
 
     /**
      * Execute the job.
      */
     public function handle(): void
-    {
+    {           
+        Log::info($this->user);
+
         $data = ['otp' => $this->otp, 'firstname' => $this->user->firstname, 'lastname' => $this->user->lastname, 'subject' => __('email.verifyUserSubject')];
         Mail::to($this->user->email)->send(new VerifyUser($data));
     }

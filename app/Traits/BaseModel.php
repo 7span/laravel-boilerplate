@@ -9,7 +9,7 @@ trait BaseModel
 {
     private function getQueryable()
     {
-        return $this->queryable;
+        return !empty($this->queryable) ? $this->queryable : ['id'];
     }
 
     public function getQueryFields()
@@ -25,7 +25,6 @@ trait BaseModel
         foreach ($_this->getFillable() as $field) {
             $fields[] = $field;
         }
-
         return $fields;
     }
 
@@ -34,13 +33,14 @@ trait BaseModel
         $fields = $this->getQueryFields();
         $relationships = $this->getRelationship();
 
-        foreach ($relationships as $relationshipName => $relationship) {
+        foreach ($relationships as $relationship) {
             $relationshipObj = new $relationship['model']();
+            $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
-                $fields[] = $relationshipName . '.' . $field;
+                $fields[] = $tableName . '.' . $field;
             }
             foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $relationshipName . '.' . $field;
+                $fields[] = $tableName . '.' . $field;
             }
         }
 

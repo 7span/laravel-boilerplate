@@ -43,16 +43,16 @@ class UserService
             $data = $this->resource($id);
             $data->update($inputs);
             $data = [
-                'status' => true,
                 'message' => __('message.updateUserVerifySuccess'),
+                'data' => $user->refresh(),
             ];
         } else {
             $data = $this->resource($id);
             $data->update($inputs);
 
             $data = [
-                'status' => true,
                 'message' => __('message.userProfileUpdate'),
+                'data' => $user->refresh(),
             ];
         }
 

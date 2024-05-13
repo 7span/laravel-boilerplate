@@ -37,4 +37,12 @@ class UserOtp extends Model
             'model' => 'App\\Models\\User',
         ],
     ];
+
+    protected $cast = [
+        'created_at' => 'timestamp'
+    ];
+
+    protected $dates = [
+        'created_at'
+    ];
 }

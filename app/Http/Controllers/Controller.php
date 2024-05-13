@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+/**
+ * @OA\Info(
+ *    title="Swagger with Laravel",
+ *    version="1.0.0",
+ * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     securityScheme="bearerAuth",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ */
 
-class Controller extends BaseController
+abstract class Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
+    //
 }
