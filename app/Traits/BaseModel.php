@@ -2,14 +2,14 @@
 
 namespace App\Traits;
 
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 trait BaseModel
 {
     private function getQueryable(): array
     {
-        return !empty($this->queryable) ? $this->queryable : ['id'];
+        return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
 
     public function getQueryFields(): array
@@ -25,6 +25,7 @@ trait BaseModel
         foreach ($_this->getFillable() as $field) {
             $fields[] = $field;
         }
+
         return $fields;
     }
 
@@ -37,10 +38,10 @@ trait BaseModel
             $relationshipObj = new $relationship['model']();
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
-                $fields[] = $tableName . '.' . $field;
+                $fields[] = $tableName.'.'.$field;
             }
             foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $tableName . '.' . $field;
+                $fields[] = $tableName.'.'.$field;
             }
         }
 
@@ -49,12 +50,14 @@ trait BaseModel
 
     public function getRelationship(): array
     {
-        return $this->relationship;
+        $relationship = $this->relationship;
+
+        return $relationship ? $relationship : [];
     }
 
     public function getIncludes(): array
     {
-        return array_keys($this->relationship);
+        return array_keys($this->getRelationship());
     }
 
     public function getQB(): QueryBuilder
