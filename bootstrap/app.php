@@ -1,16 +1,16 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Helpers\ExceptionHelper;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        commands: __DIR__.'/../routes/console.php',
+        commands: __DIR__ . '/../routes/console.php',
         using: function () {
             Route::middleware('api')
                 ->prefix('api/v1')
@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'developer' => \Spatie\LittleGateKeeper\AuthMiddleware::class,
+            'developer' => Spatie\LittleGateKeeper\AuthMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

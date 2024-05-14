@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use App\Traits\ApiResponser;
 use Exception;
+use App\Traits\ApiResponser;
 
 class CustomException extends Exception
 {

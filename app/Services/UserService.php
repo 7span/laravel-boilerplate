@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Helpers\Helper;
-use App\Jobs\VerifyUserMail;
 use App\Models\User;
+use App\Helpers\Helper;
 use App\Models\UserOtp;
-use Illuminate\Support\Facades\Auth;
+use App\Jobs\VerifyUserMail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -37,7 +37,7 @@ class UserService
             try {
                 VerifyUserMail::dispatch($user, $otp);
             } catch (\Exception $e) {
-                Log::info('Verify user mail failed.'.$e->getMessage());
+                Log::info('Verify user mail failed.' . $e->getMessage());
             }
 
             $data = $this->resource($id);

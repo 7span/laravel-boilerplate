@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Exceptions\CustomException;
+use App\Models\User;
 use App\Helpers\Helper;
-use App\Http\Resources\User\Resource as UserResource;
-use App\Jobs\ForgetPasswordMail;
+use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
-use App\Models\User;
-use App\Models\UserOtp;
+use App\Jobs\ForgetPasswordMail;
+use App\Exceptions\CustomException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use App\Http\Resources\User\Resource as UserResource;
 
 class AuthService
 {
@@ -30,7 +30,7 @@ class AuthService
         try {
             VerifyUserMail::dispatch($user, $otp);
         } catch (\Exception $e) {
-            Log::info('User verification mail failed.'.$e->getMessage());
+            Log::info('User verification mail failed.' . $e->getMessage());
         }
 
         $data = [
@@ -72,7 +72,7 @@ class AuthService
         try {
             SendOtpMail::dispatch($user, $otp, $subject);
         } catch (\Exception $e) {
-            Log::info('Send Otp mail failed.'.$e->getMessage());
+            Log::info('Send Otp mail failed.' . $e->getMessage());
         }
 
         $data = [
@@ -85,7 +85,6 @@ class AuthService
 
     public function verifyOtp($inputs)
     {
-
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
@@ -145,7 +144,7 @@ class AuthService
         try {
             ForgetPasswordMail::dispatch($user, $otp);
         } catch (\Exception $e) {
-            Log::info('Forget Password mail failed.'.$e->getMessage());
+            Log::info('Forget Password mail failed.' . $e->getMessage());
         }
 
         $data = [

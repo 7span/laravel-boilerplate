@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 trait BaseModel
 {
@@ -38,10 +38,10 @@ trait BaseModel
             $relationshipObj = new $relationship['model']();
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
-                $fields[] = $tableName.'.'.$field;
+                $fields[] = $tableName . '.' . $field;
             }
             foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $tableName.'.'.$field;
+                $fields[] = $tableName . '.' . $field;
             }
         }
 
