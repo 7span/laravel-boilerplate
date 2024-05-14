@@ -8,3 +8,12 @@ if echo "$files" | grep --quiet "\.php$"; then
  echo "Running Laravel Pint..."
  ./vendor/bin/pint $files && git add $files
 fi
+
+# Run Duster fix
+./vendor/bin/duster fix
+
+# Check if Duster fix failed
+if [ $? -ne 0 ]; then
+    echo "Duster fix failed. Aborting commit."
+    exit 1
+fi
