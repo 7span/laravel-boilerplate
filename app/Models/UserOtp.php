@@ -39,10 +39,10 @@ class UserOtp extends Model
     ];
 
     protected $cast = [
-        'created_at' => 'timestamp'
+        'created_at' => 'timestamp',
     ];
 
     protected $dates = [
-        'created_at'
+        'created_at',
     ];
 }

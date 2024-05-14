@@ -21,17 +21,21 @@ class AuthController extends Controller
     {
         //
     }
+
     /**
      * @OA\Post(
      *     path="/api/v1/signup",
      *     operationId="authSignup",
      *     tags={"Auth"},
      *     summary="Register new user",
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="Pass user credentials",
+     *
      *         @OA\JsonContent(
      *             required={"first_name","last_name","username","country_code","mobile_number","email","password","password_confirmation"},
+     *
      *             @OA\Property(
      *                 property="first_name",
      *                 type="string",
@@ -83,7 +87,9 @@ class AuthController extends Controller
      *             ),
      *         ),
      *     ),
+     *
      *   @OA\Response(response="200", description="Register successful", @OA\JsonContent(
+     *
      *         @OA\Property(
      *             property="message",
      *             type="string",
@@ -134,12 +140,15 @@ class AuthController extends Controller
      *             example="11|o9sindzp0o4hWRhGldLWEDuFLG89GWYomNwGisOBd20d28c6"
      *         )
      *     )),
+     *
      *     @OA\Response(response="401", description="Validation errors!"),
+     *
      *     @OA\Parameter(
      *         name="X-Requested-With",
      *         in="header",
      *         required=true,
      *         description="Custom header for XMLHttpRequest",
+     *
      *         @OA\Schema(
      *             type="string",
      *             default="XMLHttpRequest"
@@ -153,18 +162,22 @@ class AuthController extends Controller
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
+
     /**
      * @OA\Post(
-     *   path="/api/v1/send-otp",  
+     *   path="/api/v1/send-otp",
      *   operationId="sendOtp",
      *   tags={"Auth"},
      *   summary="Send One-Time Password (OTP)",
      *   description="Sends an OTP to a user's email address for verification purposes.",
+     *
      *   @OA\RequestBody(
      *     required=true,
      *     description="User email and purpose for requesting OTP",
+     *
      *     @OA\JsonContent(
      *       required={"email", "otp_for"},
+     *
      *       @OA\Property(
      *         property="email",
      *         type="string",
@@ -180,10 +193,13 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="200",
      *     description="OTP sent successfully",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -207,6 +223,7 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(response="400", description="Bad Request - Validation errors"),
      *   @OA\Response(response="422", description="Unprocessable Entity - Other errors (e.g., OTP generation failure)")
      * )
@@ -220,16 +237,19 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/api/v1/verify-otp", 
+     *   path="/api/v1/verify-otp",
      *   operationId="verifyOtp",
      *   tags={"Auth"},
      *   summary="Verify One-Time Password (OTP)",
      *   description="Verifies an OTP submitted by a user for authentication or other purposes.",
+     *
      *   @OA\RequestBody(
      *     required=true,
      *     description="User email and OTP code",
+     *
      *     @OA\JsonContent(
      *       required={"email", "otp"},
+     *
      *       @OA\Property(
      *         property="email",
      *         type="string",
@@ -247,10 +267,13 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="200",
      *     description="OTP verification successful",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -258,13 +281,12 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(response="400", description="Bad Request - Validation errors"),
      *   @OA\Response(response="401", description="Unauthorized - Invalid OTP or email"),
      *   security={{"bearerAuth":{}}},
      * )
      */
-
-
     public function verifyOtp(VerifyOtp $request)
     {
         $data = $this->authService->verifyOtp($request->all());
@@ -274,16 +296,19 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/api/v1/login", 
+     *   path="/api/v1/login",
      *   operationId="loginUser",
      *   tags={"Auth"},
      *   summary="Login User",
      *   description="Logs in a user with email and password.",
+     *
      *   @OA\RequestBody(
      *     required=true,
      *     description="User email and password",
+     *
      *     @OA\JsonContent(
      *       required={"email", "password"},
+     *
      *       @OA\Property(
      *         property="email",
      *         type="string",
@@ -301,10 +326,13 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="200",
      *     description="Login successful",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -357,11 +385,11 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(response="400", description="Bad Request - Validation errors"),
      *   @OA\Response(response="401", description="Unauthorized - Invalid email or password")
      * )
      */
-
     public function login(Login $request)
     {
         $data = $this->authService->login($request->all());
@@ -371,16 +399,19 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/api/v1/forget-password", 
+     *   path="/api/v1/forget-password",
      *   operationId="forgetPassword",
      *   tags={"Auth"},
      *   summary="Forget Password",
      *   description="Initiates the process to reset the user's password by sending a reset link to the provided email address.",
+     *
      *   @OA\RequestBody(
      *     required=true,
      *     description="User email",
+     *
      *     @OA\JsonContent(
      *       required={"email"},
+     *
      *       @OA\Property(
      *         property="email",
      *         type="string",
@@ -390,10 +421,13 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="200",
      *     description="Reset link sent successfully",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -401,11 +435,11 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(response="400", description="Bad Request - Validation errors"),
      *   @OA\Response(response="404", description="Not Found - Email not found")
      * )
      */
-
     public function forgetPassword(ForgetPassword $request)
     {
         $data = $this->authService->forgetPassword($request->all());
@@ -415,16 +449,19 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/api/v1/reset-password", 
+     *   path="/api/v1/reset-password",
      *   operationId="resetPassword",
      *   tags={"Auth"},
      *   summary="Reset Password",
      *   description="Resets the user's password using the provided email, new password, and OTP code.",
+     *
      *   @OA\RequestBody(
      *     required=true,
      *     description="User email, new password, and OTP code",
+     *
      *     @OA\JsonContent(
      *       required={"email", "password", "password_confirmation", "otp"},
+     *
      *       @OA\Property(
      *         property="email",
      *         type="string",
@@ -458,10 +495,13 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="200",
      *     description="Password reset successful",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -469,11 +509,11 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(response="400", description="Bad Request - Validation errors"),
      *   @OA\Response(response="401", description="Unauthorized - Invalid email or OTP")
      * )
      */
-
     public function resetPassword(ResetPassword $request)
     {
         $data = $this->authService->resetPassword($request->all());
@@ -483,16 +523,19 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/api/v1/change-password", 
+     *   path="/api/v1/change-password",
      *   operationId="changePassword",
      *   tags={"Auth"},
      *   summary="Change Password",
      *   description="Changes the user's password by verifying the current password and setting a new one.",
+     *
      *   @OA\RequestBody(
      *     required=true,
      *     description="Current password and new password",
+     *
      *     @OA\JsonContent(
      *       required={"current_password", "password", "password_confirmation"},
+     *
      *       @OA\Property(
      *         property="current_password",
      *         type="string",
@@ -519,10 +562,13 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="200",
      *     description="Password changed successful",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -530,29 +576,33 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(response="400", description="Bad Request - Validation errors"),
      *   @OA\Response(response="401", description="Unauthorized - Invalid current password"),
      *   security={{"bearerAuth":{}}}
      * )
      */
-
     public function changePassword(ChangePassword $request)
     {
         $data = $this->authService->changePassword($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
+
     /**
      * @OA\Post(
-     *   path="/api/v1/logout", 
+     *   path="/api/v1/logout",
      *   operationId="logoutUser",
      *   tags={"Auth"},
      *   summary="Logout User",
      *   description="Logs out the currently authenticated user.",
+     *
      *   @OA\Response(
      *     response="200",
      *     description="Logout successful",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -560,11 +610,11 @@ class AuthController extends Controller
      *       )
      *     )
      *   ),
+     *
      *  @OA\Response(response="401", description="Unauthorized - User not authenticated"),
      *  security={{"bearerAuth":{}}}
      * )
      */
-
     public function logout()
     {
         $data = $this->authService->logout();

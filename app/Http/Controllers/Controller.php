@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
  *    title="Swagger with Laravel",
  *    version="1.0.0",
  * )
+ *
  * @OA\SecurityScheme(
  *     type="http",
  *     securityScheme="bearerAuth",
@@ -14,7 +15,6 @@ namespace App\Http\Controllers;
  *     bearerFormat="JWT"
  * )
  */
-
 abstract class Controller
 {
     //

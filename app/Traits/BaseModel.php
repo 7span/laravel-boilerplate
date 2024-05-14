@@ -9,7 +9,7 @@ trait BaseModel
 {
     private function getQueryable()
     {
-        return !empty($this->queryable) ? $this->queryable : ['id'];
+        return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
 
     public function getQueryFields()
@@ -25,6 +25,7 @@ trait BaseModel
         foreach ($_this->getFillable() as $field) {
             $fields[] = $field;
         }
+
         return $fields;
     }
 
@@ -49,12 +50,14 @@ trait BaseModel
 
     public function getRelationship()
     {
-        return $this->relationship;
+        $relationship = $this->relationship;
+
+        return $relationship ? $relationship : [];
     }
 
     public function getIncludes()
     {
-        return array_keys($this->relationship);
+        return array_keys($this->getRelationship());
     }
 
     public function getQB()

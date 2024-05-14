@@ -2,17 +2,16 @@
 
 namespace App\Services;
 
-use App\Exceptions\CustomException;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
+use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\User\Resource as UserResource;
 
 class AuthService
@@ -27,7 +26,7 @@ class AuthService
         $user = $this->userObj->create($inputs);
         $otp = Helper::generateOTP(config('site.generateOtpLength'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-        
+
         try {
             VerifyUserMail::dispatch($user, $otp);
         } catch (\Exception $e) {
@@ -78,7 +77,7 @@ class AuthService
 
         $data = [
             'message' => 'Otp Send Successfully',
-            'data' => [ 'otp' => $otp],
+            'data' => ['otp' => $otp],
         ];
 
         return $data;
@@ -86,7 +85,6 @@ class AuthService
 
     public function verifyOtp($inputs)
     {
-        
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
@@ -95,13 +93,13 @@ class AuthService
 
         $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
         if (empty($userOtp)) {
-            throw new CustomException( __('message.invalidOtp'));
+            throw new CustomException(__('message.invalidOtp'));
         }
 
         $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
-        
+
         if ($isExpired) {
-            throw new CustomException( __('message.otpExpired'));
+            throw new CustomException(__('message.otpExpired'));
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
@@ -210,6 +208,7 @@ class AuthService
 
         return $data;
     }
+
     public function logout()
     {
         if (Auth::check()) {
@@ -218,6 +217,7 @@ class AuthService
         $data = [
             'message' => __('message.logoutSuccess'),
         ];
+
         return $data;
     }
 }

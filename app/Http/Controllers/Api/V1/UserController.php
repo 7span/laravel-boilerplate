@@ -23,13 +23,16 @@ class UserController extends Controller
      *     path="/api/v1/me",
      *     tags={"Auth"},
      *     summary="Get logged-in user details",
+     *
      *     @OA\Response(response="200", description="Success"),
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="X-Requested-With",
      *         in="header",
      *         required=true,
      *         description="Custom header for XMLHttpRequest",
+     *
      *         @OA\Schema(
      *             type="string",
      *             default="XMLHttpRequest"
@@ -37,7 +40,6 @@ class UserController extends Controller
      *     )
      * )
      */
-
     public function me()
     {
         $user = $this->userService->resource(Auth::id());
@@ -51,10 +53,13 @@ class UserController extends Controller
      *     operationId="updateProfile",
      *     tags={"Auth"},
      *     summary="Update Profile",
+     *
      *      @OA\RequestBody(
      *           required=true,
+     *
      *           @OA\JsonContent(
      *               required={"first_name","last_name","username","email"},
+     *
      *               @OA\Property(
      *                     property="first_name",
      *                     type="string",
@@ -87,14 +92,17 @@ class UserController extends Controller
      *              ),
      *           ),
      *       ),
+     *
      *     @OA\Response(response="200", description="Profile updated successfully"),
      *     @OA\Response(response="401", description="Validation errors!"),
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="X-Requested-With",
      *         in="header",
      *         required=true,
      *         description="Custom header for XMLHttpRequest",
+     *
      *         @OA\Schema(
      *             type="string",
      *             default="XMLHttpRequest"

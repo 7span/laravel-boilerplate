@@ -7,8 +7,8 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -21,12 +21,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
         'first_name',
         'last_name',
         'username',
+        'email',
+        'password',
         'country_code',
         'mobile_number',
         'email_verified_at',
@@ -54,6 +53,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     protected $dates = ['created_at'];
 
     public function setPasswordAttribute($password)
@@ -62,5 +62,4 @@ class User extends Authenticatable
     }
 
     protected $relationship = [];
-
 }

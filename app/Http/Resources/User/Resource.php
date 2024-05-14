@@ -12,6 +12,7 @@ class Resource extends JsonResource
     use ResourceFilterable;
 
     protected $model = User::class;
+
     /**
      * Transform the resource into an array.
      *
@@ -20,6 +21,7 @@ class Resource extends JsonResource
     public function toArray(Request $request): array
     {
         $data = $this->fields();
+
         return $data;
     }
 }
