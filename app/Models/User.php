@@ -14,6 +14,10 @@ class User extends Authenticatable
 {
     use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public $queryable = [
+        'id',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -53,14 +57,10 @@ class User extends Authenticatable
 
     protected $dates = ['created_at'];
 
+    protected $relationship = [];
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
-
-    public $queryable = [
-        'id',
-    ];
-
-    protected $relationship = [];
 }

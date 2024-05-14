@@ -10,8 +10,8 @@
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
-	<link rel="shortcut icon" href="{{ asset('assets/img/favicon.png')}}"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/developer/dashboard.css')}}">
+	<link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/developer/dashboard.css') }}">
 </head>
 <body class="d-flex max-h-full bg-white justify-center">
 	<div class="justify-center">

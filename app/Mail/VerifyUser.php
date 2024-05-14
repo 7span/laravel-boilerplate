@@ -12,9 +12,6 @@ class VerifyUser extends Mailable
 
     private $data;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct($data)
     {
         $this->data = $data;

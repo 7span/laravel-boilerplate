@@ -10,6 +10,10 @@ class UserOtp extends Model
 {
     use BaseModel, HasFactory;
 
+    public $queryable = [
+        'id',
+    ];
+
     protected $fillable = [
         'otp',
         'user_id',
@@ -21,15 +25,6 @@ class UserOtp extends Model
         'updated_at', 'deleted_at',
     ];
 
-    public $queryable = [
-        'id',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     protected $exactFilters = ['id', 'otp', 'otp_for', 'user_id'];
 
     protected $relationship = [
@@ -37,4 +32,9 @@ class UserOtp extends Model
             'model' => 'App\\Models\\User',
         ],
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

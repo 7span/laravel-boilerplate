@@ -7,11 +7,6 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 trait BaseModel
 {
-    private function getQueryable()
-    {
-        return $this->queryable;
-    }
-
     public function getQueryFields()
     {
         $_this = new self();
@@ -76,5 +71,10 @@ trait BaseModel
         $queryBuilder->allowedFilters($filters);
 
         return $queryBuilder;
+    }
+
+    private function getQueryable()
+    {
+        return $this->queryable;
     }
 }
