@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'entityNotFound' => 'Entity not found.',
-    'entityCreated' => 'Entity created successfully.',
-    'entityUpdated' => 'Entity has been updated successfully.',
-    'entityDeleted' => 'Entity deleted successfully.',
+    'entityNotFound' => ':entity not found.',
+    'entityCreated' => ':entity created successfully.',
+    'entityUpdated' => ':entity has been updated successfully.',
+    'entityDeleted' => ':entity deleted successfully.',
 ];

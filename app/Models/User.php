@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use App\Traits\BaseModel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, BaseModel, SoftDeletes;
+    use BaseModel,HasApiTokens,HasFactory,Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,15 +21,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
         'password',
-        'firstname',
-        'lastname',
-        'username',
         'country_code',
         'mobile_number',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     /**
@@ -42,14 +42,17 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 
     protected $dates = ['created_at'];
 
@@ -57,10 +60,6 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($password);
     }
-
-    public $queryable = [
-        'id',
-    ];
 
     protected $relationship = [];
 }

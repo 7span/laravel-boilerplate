@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserOtp extends Model
 {
-    use HasFactory, BaseModel;
+    use BaseModel, HasFactory;
 
     protected $fillable = [
         'otp',
@@ -36,5 +36,13 @@ class UserOtp extends Model
         'user' => [
             'model' => 'App\\Models\\User',
         ],
+    ];
+
+    protected $cast = [
+        'created_at' => 'timestamp',
+    ];
+
+    protected $dates = [
+        'created_at',
     ];
 }

@@ -4,7 +4,9 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
 
 class ForgetPassword extends Mailable
 {
@@ -12,8 +14,6 @@ class ForgetPassword extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct(private $data)
     {
@@ -21,13 +21,33 @@ class ForgetPassword extends Mailable
     }
 
     /**
-     * Build the message.
-     *
-     * @return $this
+     * Get the message envelope.
      */
-    public function build()
+    public function envelope(): Envelope
     {
-        return $this->subject(__('email.forgetPasswordEmailSubject'))
-            ->markdown('emails.forget-password', ['data' => $this->data]);
+        return new Envelope(
+            subject: __('email.forgetPasswordEmailSubject'),
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.forget-password',
+            with: ['data' => $this->data],
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

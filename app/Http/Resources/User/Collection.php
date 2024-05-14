@@ -7,8 +7,13 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Collection extends ResourceCollection
 {
-    protected $model = 'App\Http\Resources\User\Resource';
+    protected $model = Resource::class;
 
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @return array<int|string, mixed>
+     */
     public function toArray(Request $request): array
     {
         return $this->collection;
