@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Traits\ApiResponser;
+use App\Services\AuthService;
+use App\Http\Requests\Auth\Login;
+use App\Http\Requests\Auth\SignUp;
+use App\Http\Requests\Auth\SendOtp;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\VerifyOtp;
+use App\Http\Requests\Auth\ResetPassword;
 use App\Http\Requests\Auth\ChangePassword;
 use App\Http\Requests\Auth\ForgetPassword;
-use App\Http\Requests\Auth\Login;
-use App\Http\Requests\Auth\ResetPassword;
-use App\Http\Requests\Auth\SendOtp;
-use App\Http\Requests\Auth\SignUp;
-use App\Http\Requests\Auth\VerifyOtp;
-use App\Services\AuthService;
-use App\Traits\ApiResponser;
 
 class AuthController extends Controller
 {
