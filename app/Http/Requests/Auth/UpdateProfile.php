@@ -17,7 +17,7 @@ class UpdateProfile extends FormRequest
             'first_name' => 'required|max:120',
             'last_name' => 'required|max:120',
             'username' => 'required|max:120',
-            'email' => 'required|email|max:255|unique:users,email,'.auth()->id(),
+            'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
             'country_code' => 'nullable|max:8',
             'mobile_number' => 'nullable|digits:10',
         ];

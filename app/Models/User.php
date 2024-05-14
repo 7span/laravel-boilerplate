@@ -41,6 +41,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $dates = ['created_at'];
+
+    protected $relationship = [];
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -53,13 +62,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    protected $dates = ['created_at'];
-
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = bcrypt($password);
-    }
-
-    protected $relationship = [];
 }
