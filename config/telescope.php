@@ -1,7 +1,6 @@
 <?php
 
 use Laravel\Telescope\Watchers;
-use Laravel\Telescope\Http\Middleware\Authorize;
 
 return [
 
@@ -77,7 +76,6 @@ return [
 
     'middleware' => [
         'web',
-        Authorize::class,
         'developer',
     ],
 
@@ -97,7 +95,9 @@ return [
     ],
 
     'ignore_paths' => [
+        'livewire*',
         'nova-api*',
+        'pulse*',
     ],
 
     'ignore_commands' => [

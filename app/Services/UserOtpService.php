@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
 use App\Models\UserOtp;
+use Carbon\Carbon;
 
 class UserOtpService
 {
@@ -35,7 +35,9 @@ class UserOtpService
 
     public function isOtpExpired($created_at, $verified_at)
     {
+
         $expirationTime = config('site.otpExpirationTimeInMinutes');
+
         $expirationDate = Carbon::parse($created_at)->addMinutes($expirationTime)->format('Y-m-d H:i:s');
 
         return $verified_at !== null || date('Y-m-d h:i:s') > $expirationDate;
@@ -43,6 +45,7 @@ class UserOtpService
 
     public function otpExists($userId, $otp, $otp_for)
     {
+
         return $this->userOtpObj->whereUserId($userId)->whereOtp($otp)->where('otp_for', $otp_for)->first();
     }
 }
