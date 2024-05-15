@@ -14,13 +14,20 @@ if [ -z "$DUSTER_FIXED" ]; then
         exit 1
     fi
 
-    # Set variable to indicate Duster fix has been run
-    export DUSTER_FIXED=true
+    # Check for untracked changes (using git status)
+    git status &> /dev/null  # Suppress output
 
-    # If Duster fix succeeded, commit the code
-    git add .
-    git commit -m "Auto-commit after successful Duster fix"
+    if [ $? -ne 0 ]; then
+        echo "No untracked changes. Skipping commit."
+    else
+        # Set variable to indicate Duster fix has been run
+        export DUSTER_FIXED=true
 
-    # Remove variable after successful commit
-    unset DUSTER_FIXED
+        # If Duster fix succeeded, commit the code
+        git add .
+        git commit -m "Auto-commit after successful Duster fix"
+
+         # Remove variable after successful commit
+        unset DUSTER_FIXED
+    fi
 fi
