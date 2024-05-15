@@ -14,10 +14,13 @@ if [ ! -f .duster.lock ]; then
         exit 1
     fi
 
+    # Create lock file to indicate Duster fix has been run
+    touch .duster.lock
+
     # If Duster fix succeeded, commit the code
     git add .
     git commit -m "Auto-commit after successful Duster fix"
 
-    # Remove lock file after successful commit
+     # Remove lock file after successful commit
     rm .duster.lock
 fi
