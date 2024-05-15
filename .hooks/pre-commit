@@ -10,7 +10,7 @@ if echo "$files" | grep --quiet "\.php$"; then
 fi
 
 # Run Duster fix
-./vendor/bin/duster fix
+./vendor/bin/duster lint
 
 # Check if Duster fix failed
 if [ $? -ne 0 ]; then
