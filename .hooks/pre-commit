@@ -14,12 +14,8 @@ if [ -z "$DUSTER_FIXED" ]; then
         exit 1
     fi
 
-    # Check for untracked changes (using git status)
-    git status &> /dev/null  # Suppress output
-
-    if [ $? -ne 0 ]; then
-        echo "No untracked changes. Skipping commit."
-    else
+   # Check for untracked files
+    if [ -n "$(git status --porcelain | grep '^??')" ]; then
         # Set variable to indicate Duster fix has been run
         export DUSTER_FIXED=true
 
