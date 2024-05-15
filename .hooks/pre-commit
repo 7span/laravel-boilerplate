@@ -9,8 +9,9 @@ if echo "$files" | grep --quiet "\.php$"; then
  ./vendor/bin/pint $files && git add $files
 fi
 
+
 # Run Duster fix
-./vendor/bin/duster lint
+./vendor/bin/duster fix
 
 # Check if Duster fix failed
 if [ $? -ne 0 ]; then
