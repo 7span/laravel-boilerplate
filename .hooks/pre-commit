@@ -3,27 +3,11 @@
 # Run Laravel Pint
 # This script will run Laravel Pint on newly staged PHP Files. 
 
-# Check if Duster fix is needed
-if [ -z "$DUSTER_FIXED" ]; then
-    # Run Duster fix
-    ./vendor/bin/duster fix
+# Run Duster fix
+./vendor/bin/duster fix --using="phpstan"
 
-    # Check if Duster fix failed
-    if [ $? -ne 0 ]; then
-        echo "Duster fix failed. Aborting commit."
-        exit 1
-    fi
-
-   # Check for untracked files
-    if [ -n "$(git status --porcelain | grep '^??')" ]; then
-        # Set variable to indicate Duster fix has been run
-        export DUSTER_FIXED=true
-
-        # If Duster fix succeeded, commit the code
-        git add .
-        git commit -m "Auto-commit after successful Duster fix"
-
-         # Remove variable after successful commit
-        unset DUSTER_FIXED
-    fi
+# Check if Duster fix failed
+if [ $? -ne 0 ]; then
+    echo "Duster fix failed. Aborting commit."
+    exit 1
 fi

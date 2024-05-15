@@ -10,6 +10,23 @@ class ExceptionHelper
     public static function notFoundHandler(NotFoundHttpException $e, Request $request)
     {
         if ($request->is('api/*')) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (method_exists($e->getPrevious(), 'getModel')) {
                 $modelName = last(explode('\\', $e->getPrevious()->getModel()));
                 // ... rest of your code
