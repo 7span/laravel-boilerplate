@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "aws/aws-sdk-php": "^3.306",
         "darkaonline/l5-swagger": "^8.6",
         "guzzlehttp/guzzle": "^7.8",
         "larastan/larastan": "^2.9",

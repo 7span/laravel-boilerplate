@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "lint": {
+        "fix": {
             "phpstan": ["./vendor/bin/phpstan", "analyse"]
         }
     },
