@@ -2,9 +2,7 @@
 
 namespace App\Library;
 
-use App\Models\Media;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {

@@ -3,13 +3,10 @@
 namespace App\Services;
 
 use Aws\S3\S3Client;
-use App\Traits\BaseModel;
 use App\Library\MediaHelper;
 
 class SignedUrlService
 {
-    use BaseModel;
-
     public function __construct()
     {
         //

@@ -212,7 +212,7 @@ class AuthService
     public function logout()
     {
         if (Auth::check()) {
-            Auth::user()->currentAccessToken()->delete();
+            Auth::user()->tokens()->delete();
         }
         $data = [
             'message' => __('message.logoutSuccess'),
