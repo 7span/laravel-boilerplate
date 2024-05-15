@@ -16,4 +16,6 @@ fi
 if [ $? -ne 0 ]; then
     echo "Duster fix failed. Aborting commit."
     exit 1
+else
+    echo "Duster fix failed. Aborting commit."
 fi

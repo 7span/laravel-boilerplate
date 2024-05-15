@@ -4,5 +4,5 @@
             "phpstan": ["./vendor/bin/phpstan", "analyse"]
         }
     },
-    "processTimeout": 10
+    "processTimeout": 120
 }
