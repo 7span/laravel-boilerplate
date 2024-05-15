@@ -3,6 +3,7 @@
 # Run Laravel Pint
 # This script will run Laravel Pint on newly staged PHP Files. 
 
+
 # Check if Duster fix is needed
 if [ -z "$DUSTER_FIXED" ]; then
     # Run Duster fix
