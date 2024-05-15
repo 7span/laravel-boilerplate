@@ -3,12 +3,6 @@
 # Run Laravel Pint
 # This script will run Laravel Pint on newly staged PHP Files. 
 
-files=$(git diff --cached --name-only --diff-filter=AMCR | grep "\.php$")
-if echo "$files" | grep --quiet "\.php$"; then
- echo "Running Laravel Pint..."
- ./vendor/bin/pint $files && git add $files
-fi
-
 # Check if Duster fix is needed
 if [ ! -f .duster.lock ]; then
     # Run Duster fix
@@ -20,10 +14,10 @@ if [ ! -f .duster.lock ]; then
         exit 1
     fi
 
-    # Create lock file to indicate Duster fix has been run
-    touch .duster.lock
-
     # If Duster fix succeeded, commit the code
     git add .
     git commit -m "Auto-commit after successful Duster fix"
+
+    # Remove lock file after successful commit
+    rm .duster.lock
 fi
