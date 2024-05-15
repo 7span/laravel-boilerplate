@@ -16,8 +16,4 @@ fi
 if [ $? -ne 0 ]; then
     echo "Duster fix failed. Aborting commit."
     exit 1
-else
-    # If Duster fix succeeded
-    git add .
-    git commit -m "Auto-commit after successful Duster fix"
 fi
