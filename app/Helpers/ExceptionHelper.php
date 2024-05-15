@@ -15,7 +15,7 @@ class ExceptionHelper
                 // ... rest of your code
             } else {
                 // Handle the case where there's no getModel() method
-                $modelName = "Resource"; // Or a default value
+                $modelName = 'Resource'; // Or a default value
             }
             $modelKey = strtolower(preg_replace('/([a-z])([A-Z])/s', '$1_$2', $modelName));
             $modelName = preg_replace('/([a-z])([A-Z])/s', '$1 $2', $modelName);
