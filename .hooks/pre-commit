@@ -4,10 +4,4 @@
 # This script will run Laravel Pint on newly staged PHP Files. 
 
 # Run Duster fix
-./vendor/bin/duster fix --using="phpstan"
-
-# Check if Duster fix failed
-if [ $? -ne 0 ]; then
-    echo "Duster fix failed. Aborting commit."
-    exit 1
-fi
+./vendor/bin/phpstan analyse
