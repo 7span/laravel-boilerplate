@@ -15,7 +15,7 @@ if [ -z "$DUSTER_FIXED" ]; then
     fi
 
    # Check for untracked files
-    if [ -n "$(git status --porcelain | grep '^??')" ]; then
+    # if [ -n "$(git status --porcelain | grep '^??')" ]; then
         # Set variable to indicate Duster fix has been run
         export DUSTER_FIXED=true
 
@@ -25,5 +25,5 @@ if [ -z "$DUSTER_FIXED" ]; then
 
          # Remove variable after successful commit
         unset DUSTER_FIXED
-    fi
+    # fi
 fi
