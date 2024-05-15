@@ -45,8 +45,6 @@ class User extends Authenticatable
 
     protected $relationship = [];
 
-
-
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
