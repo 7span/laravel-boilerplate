@@ -1,8 +1,0 @@
-{
-    "scripts": {
-        "fix": {
-            "phpstan": ["./vendor/bin/phpstan", "analyse"]
-        }
-    },
-    "processTimeout": 120
-}
