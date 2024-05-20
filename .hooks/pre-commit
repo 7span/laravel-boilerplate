@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# Run Laravel Pint
-# This script will run Laravel Pint on newly staged PHP Files. 
-
-# Run Duster fix
-./vendor/bin/phpstan analyse
