@@ -12,7 +12,6 @@
         "aws/aws-sdk-php": "^3.306",
         "darkaonline/l5-swagger": "^8.6",
         "guzzlehttp/guzzle": "^7.8",
-        "larastan/larastan": "^2.9",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.0",
