@@ -63,7 +63,22 @@
                         <div class="p-6">
                             <h5>Swagger API Document</h5>
                             <p>
-                                Swagger streamlines RESTful web service development by providing tools for easy documentation, enhancing accessibility and understanding for developers.
+                                Swagger streamlines RESTful web service development by providing tools for easy
+                                documentation, enhancing accessibility and understanding for developers.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="horizon p-5">
+                <a href="{{ url('developer/horizon') }}" target="_blank">
+                    <div class="block">
+                        <div class="p-6">
+                            <h5>Horizon</h5>
+                            <p>
+                                Horizon allows you to easily monitor key metrics of your queue system such as job
+                                throughput, runtime, and job failures.
                             </p>
                         </div>
                     </div>
