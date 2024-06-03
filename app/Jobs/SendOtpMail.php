@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Mail\VerifyUser as VerifyUserMail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Mail\VerifyUser as VerifyUserMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
 class SendOtpMail implements ShouldQueue
 {
@@ -33,11 +33,11 @@ class SendOtpMail implements ShouldQueue
                 'otp' => $this->otp,
                 'firstname' => $this->user->firstname,
                 'lastname' => $this->user->lastname,
-                'subject' => $this->subject
+                'subject' => $this->subject,
             ];
-            Mail::to($this->user->email)->send(new VerifyUserMail(data:$data));
+            Mail::to($this->user->email)->send(new VerifyUserMail(data: $data));
         } catch (\Exception $e) {
-            Log::error("Send OTP Error : " . $e);
+            Log::error('Send OTP Error : ' . $e);
         }
     }
 }

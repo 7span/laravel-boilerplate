@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserOtp extends Model
 {
@@ -31,7 +31,7 @@ class UserOtp extends Model
         'id',
         'otp',
         'otp_for',
-        'user_id'
+        'user_id',
     ];
 
     protected $relationship = [

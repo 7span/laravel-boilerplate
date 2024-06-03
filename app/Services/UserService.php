@@ -5,9 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -27,7 +25,7 @@ class UserService
     {
         $user = User::find(auth()->id());
 
-        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
+        if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
             $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);
 
             $otp = Helper::generateOTP(config('site.generateOtpLength'));

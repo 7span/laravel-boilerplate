@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Services\LanguageService;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 
 class LanguageController extends Controller
 {

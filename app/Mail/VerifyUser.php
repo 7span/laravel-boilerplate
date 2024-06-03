@@ -12,9 +12,6 @@ class VerifyUser extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(private ?array $data)
     {
         $this->data = $data;
