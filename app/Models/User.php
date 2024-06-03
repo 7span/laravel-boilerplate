@@ -5,11 +5,13 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\BaseModel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -21,12 +23,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
         'first_name',
         'last_name',
         'username',
+        'email',
+        'password',
         'country_code',
         'mobile_number',
         'email_verified_at',
@@ -42,6 +43,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $dates = ['created_at'];
+
+    protected $relationship = [];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -54,12 +59,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    protected $dates = ['created_at'];
 
-    public function setPasswordAttribute(?string $password): void
+    protected function password(): Attribute
     {
-        $this->attributes['password'] = bcrypt($password);
+        return Attribute::set(fn (string $password) => Hash::make($password));
     }
-
-    protected $relationship = [];
 }

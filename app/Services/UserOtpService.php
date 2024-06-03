@@ -36,7 +36,6 @@ class UserOtpService
 
     public function isOtpExpired(int|string $createdAt, int|string|null $verifiedAt): string
     {
-  
         $expirationTime = config('site.otpExpirationTimeInMinutes');
 
         $expirationDate = Carbon::parse($createdAt)->addMinutes($expirationTime)->format('Y-m-d H:i:s');

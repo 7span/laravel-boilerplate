@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Helpers\Helper;
-use App\Models\UserOtp;
 use App\Jobs\VerifyUserMail;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    public function __construct(private User $userObj, private UserOtp $userOtpObj, private UserOtpService $userOtpService)
+    public function __construct(private User $userObj, private UserOtpService $userOtpService)
     {
         //
     }

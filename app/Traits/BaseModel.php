@@ -7,11 +7,6 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 trait BaseModel
 {
-    private function getQueryable(): array
-    {
-        return ! empty($this->queryable) ? $this->queryable : ['id'];
-    }
-
     public function getQueryFields(): array
     {
         $_this = new self();
@@ -38,10 +33,10 @@ trait BaseModel
             $relationshipObj = new $relationship['model']();
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
-                $fields[] = $tableName.'.'.$field;
+                $fields[] = $tableName . '.' . $field;
             }
             foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $tableName.'.'.$field;
+                $fields[] = $tableName . '.' . $field;
             }
         }
 
@@ -79,5 +74,10 @@ trait BaseModel
         $queryBuilder->allowedFilters($filters);
 
         return $queryBuilder;
+    }
+
+    private function getQueryable()
+    {
+        return !empty($this->queryable) ? $this->queryable : ['id'];
     }
 }

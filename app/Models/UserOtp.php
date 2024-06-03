@@ -11,6 +11,10 @@ class UserOtp extends Model
 {
     use BaseModel, HasFactory;
 
+    public $queryable = [
+        'id',
+    ];
+
     protected $fillable = [
         'otp',
         'user_id',
@@ -19,23 +23,14 @@ class UserOtp extends Model
     ];
 
     protected $hidden = [
-        'updated_at', 
+        'updated_at',
         'deleted_at',
     ];
 
-    public $queryable = [
-        'id',
-    ];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     protected $exactFilters = [
-        'id', 
-        'otp', 
-        'otp_for', 
+        'id',
+        'otp',
+        'otp_for',
         'user_id'
     ];
 
@@ -46,10 +41,18 @@ class UserOtp extends Model
     ];
 
     protected $cast = [
-        'created_at' => 'timestamp'
+        'created_at' => 'timestamp',
     ];
 
     protected $dates = [
-        'created_at'
+        'created_at',
     ];
+
+    /**
+     * Model's relationships
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

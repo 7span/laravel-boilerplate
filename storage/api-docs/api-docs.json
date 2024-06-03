@@ -54,7 +54,7 @@
                                     "username": {
                                         "type": "string",
                                         "format": "username",
-                                        "example": "dhrumin12"
+                                        "example": "test"
                                     },
                                     "country_code": {
                                         "type": "integer",
@@ -90,57 +90,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Register successful.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Otp sent to your mail.Please Verify your account via mail."
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "dhrumin1215@gmail.com"
-                                                },
-                                                "firstname": {
-                                                    "type": "string",
-                                                    "example": "dhrumin"
-                                                },
-                                                "lastname": {
-                                                    "type": "string",
-                                                    "example": "patel"
-                                                },
-                                                "username": {
-                                                    "type": "string",
-                                                    "example": "dhrumin12"
-                                                },
-                                                "country_code": {
-                                                    "type": "string",
-                                                    "example": "91"
-                                                },
-                                                "mobile_number": {
-                                                    "type": "string",
-                                                    "example": "9898989898"
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "11|o9sindzp0o4hWRhGldLWEDuFLG89GWYomNwGisOBd20d28c6"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success"
                     },
                     "401": {
                         "description": "Validation errors!"

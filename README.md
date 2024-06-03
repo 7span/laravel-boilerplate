@@ -33,6 +33,14 @@ The laravel boilerplate is project that uses the `Laravel` (Version 11) as a bac
             ]
             ```
 		Now when you hit Ctrl + s and your laravel project will be formatted with laravel pint.
+-   [Larastan](https://github.com/larastan/larastan) - Adds static typing to Laravel to improve developer productivity and code quality , Discovers bugs in your code.
+  
+	- __Note:__
+		 In any case, if you are unable to commit the code to Git, then run the command below.
+   
+		```
+		chmod ug+x .hooks/pre-commit
+		```
 
 ## Supported APIs
 

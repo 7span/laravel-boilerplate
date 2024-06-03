@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Exceptions\CustomException;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
+use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -87,7 +87,6 @@ class AuthService
 
     public function verifyOtp(array $inputs): array
     {
-
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
         if (empty($user)) {
@@ -215,11 +214,12 @@ class AuthService
     public function logout(): array
     {
         if (Auth::check()) {
-            Auth::user()->currentAccessToken()->delete();
+            Auth::user()->tokens()->delete();
         }
         $data = [
             'message' => __('message.logoutSuccess'),
         ];
+
         return $data;
     }
 }

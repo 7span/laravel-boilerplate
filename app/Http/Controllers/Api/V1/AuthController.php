@@ -63,7 +63,7 @@ class AuthController extends Controller
                         property: "username",
                         type: "string",
                         format: "username",
-                        example: "dhrumin12"
+                        example: "test"
                     ),
                     new OA\Property(
                         property: "country_code",
@@ -102,62 +102,7 @@ class AuthController extends Controller
         responses: [
             new OA\Response(
                 response: "200",
-                description: "Register successful.",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Otp sent to your mail.Please Verify your account via mail."
-                        ),
-                        new OA\Property(
-                            property: "data",
-                            type: "object",
-                            properties: [
-                                new OA\Property(
-                                    property: "id",
-                                    type: "integer",
-                                    example: 10
-                                ),
-                                new OA\Property(
-                                    property: "email",
-                                    type: "string",
-                                    example: "dhrumin1215@gmail.com"
-                                ),
-                                new OA\Property(
-                                    property: "firstname",
-                                    type: "string",
-                                    example: "dhrumin"
-                                ),
-                                new OA\Property(
-                                    property: "lastname",
-                                    type: "string",
-                                    example: "patel"
-                                ),
-                                new OA\Property(
-                                    property: "username",
-                                    type: "string",
-                                    example: "dhrumin12"
-                                ),
-                                new OA\Property(
-                                    property: "country_code",
-                                    type: "string",
-                                    example: "91"
-                                ),
-                                new OA\Property(
-                                    property: "mobile_number",
-                                    type: "string",
-                                    example: "9898989898"
-                                )
-                            ]
-                        ),
-                        new OA\Property(
-                            property: "token",
-                            type: "string",
-                            example: "11|o9sindzp0o4hWRhGldLWEDuFLG89GWYomNwGisOBd20d28c6"
-                        )
-                    ]
-                )
+                description: "Success",
             ),
             new OA\Response(response: "401", description: "Validation errors!"),
         ],
