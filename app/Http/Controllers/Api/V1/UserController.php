@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
 use App\Services\UserService;
+use OpenApi\Attributes as OA;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Auth\UpdateProfile;
 use App\Http\Resources\User\Resource as UserResource;
-use Illuminate\Http\JsonResponse;
-use OpenApi\Attributes as OA;
 
 class UserController extends Controller
 {
