@@ -79,7 +79,6 @@ class AuthService
 
         $data = [
             'message' => 'Otp Send Successfully',
-            'data' => ['otp' => $otp],
         ];
 
         return $data;

@@ -101,10 +101,10 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Success",
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "401", description: "Validation errors!"),
+            new OA\Response(response: '400', description: 'Validation errors!'),
         ],
     )]
     public function signUp(SignUpRequest $request): JsonResponse
@@ -136,7 +136,7 @@ class AuthController extends Controller
                     new OA\Property(
                         property: "otp_for",
                         type: "string",
-                        description: "Purpose for requesting OTP (e.g., 'signup', 'password_reset')",
+                        enum: ["verification", "reset_password", "update_profile"],
                         example: "signup"
                     )
                 ]
@@ -144,38 +144,10 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Login successful.",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "OTP sent to your email address."
-                        ),
-                        new OA\Property(
-                            property: "data",
-                            type: "object",
-                            description: "OTP details (optional)",
-                            properties: [
-                                new OA\Property(
-                                    property: "otp",
-                                    type: "string",
-                                    description: "Generated OTP code"
-                                ),
-                                new OA\Property(
-                                    property: "expiry",
-                                    type: "string",
-                                    format: "date-time",
-                                    description: "OTP expiry time"
-                                )
-                            ]
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "400", description: "Bad Request - Validation errors"),
-            new OA\Response(response: "422", description: "Unprocessable Entity - Other errors (e.g., OTP generation failure"),
+            new OA\Response(response: '400', description: 'Validation errors!'),
         ],
     )]
     public function sendOtp(SendOtpRequest $request): JsonResponse
@@ -217,20 +189,10 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Login successful.",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "OTP verified successfully."
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "400", description: "Bad Request - Validation errors"),
-            new OA\Response(response: "401", description: "Unauthorized - Invalid OTP or email"),
+            new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
             "bearerAuth" => []
@@ -275,68 +237,11 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Login successful.",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Login Successful!"
-                        ),
-                        new OA\Property(
-                            property: "data",
-                            type: "object",
-                            description: "User data",
-                            properties: [
-                                new OA\Property(
-                                    property: "id",
-                                    type: "integer",
-                                    example: 10
-                                ),
-                                new OA\Property(
-                                    property: "email",
-                                    type: "string",
-                                    example: "dhrumin1215@gmail.com"
-                                ),
-                                new OA\Property(
-                                    property: "firstname",
-                                    type: "string",
-                                    example: "dhrumin"
-                                ),
-                                new OA\Property(
-                                    property: "lastname",
-                                    type: "string",
-                                    example: "patel"
-                                ),
-                                new OA\Property(
-                                    property: "username",
-                                    type: "string",
-                                    example: "username12"
-                                ),
-                                new OA\Property(
-                                    property: "country_code",
-                                    type: "string",
-                                    example: "91"
-                                ),
-                                new OA\Property(
-                                    property: "mobile_number",
-                                    type: "string",
-                                    example: "9898989898"
-                                )
-                            ]
-                        ),
-                        new OA\Property(
-                            property: "token",
-                            type: "string",
-                            example: "11|o9sindzp0o4hWRhGldLWEDuFLG89GWYomNwGisOBd20d28c6"
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "400", description: "Bad Request - Validation errors"),
-            new OA\Response(response: "401", description: "Unauthorized - Invalid email or password"),
-        ]
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
     )]
     public function login(LoginRequest $request): JsonResponse
     {
@@ -369,21 +274,11 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Reset link sent successfully.",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Forgot Password email has been sent successfully."
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "400", description: "Bad Request - Validation errors"),
-            new OA\Response(response: "404", description: "Not Found - Email not found"),
-        ]
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
     )]
     public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
     {
@@ -440,21 +335,11 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: 200,
-                description: "Password reset successful",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Password changed successfully."
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "400", description: "Bad Request - Validation errors"),
-            new OA\Response(response: "401", description: "Unauthorized - Invalid email or OTP"),
-        ]
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
     )]
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
@@ -504,20 +389,10 @@ class AuthController extends Controller
         ),
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Password changed successful",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Password changed successfully."
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: "400", description: "Bad Request - Validation errors"),
-            new OA\Response(response: "401", description: "Unauthorized - Invalid current password"),
+            new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
             "bearerAuth" => []
@@ -538,19 +413,10 @@ class AuthController extends Controller
         description: "Logs out the currently authenticated user.",
         responses: [
             new OA\Response(
-                response: "200",
-                description: "Logout successful",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Logout successful."
-                        )
-                    ]
-                )
+                response: '200',
+                description: 'Success.',
             ),
-            new OA\Response(response: 401, description: "Unauthorized - User not authenticated")
+            new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
             "bearerAuth" => []

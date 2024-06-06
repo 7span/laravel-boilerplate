@@ -10,7 +10,6 @@ class LanguageService
     public function collection(): array
     {
         $languages['data'] = collect(config('language'))->values()->all();
-
         if (empty($languages['data'])) {
             throw new CustomException(__('entity.entityNotFound', ['entity' => 'Languages']), 404);
         }
@@ -22,7 +21,7 @@ class LanguageService
     {
         $path = base_path("lang/$input.json");
 
-        if (! File::exists($path)) {
+        if (!File::exists($path)) {
             throw new CustomException(__('entity.entityNotFound', ['entity' => 'Language file']), 404);
         }
 

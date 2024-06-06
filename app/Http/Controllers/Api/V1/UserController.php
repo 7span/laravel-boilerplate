@@ -109,8 +109,11 @@ class UserController extends Controller
             ),
         ),
         responses: [
-            new OA\Response(response: "200", description: "Profile updated successfully"),
-            new OA\Response(response: "401", description: "Validation errors!"),
+            new OA\Response(
+                response: '200',
+                description: 'Success.',
+            ),
+            new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
             "bearerAuth" => []
