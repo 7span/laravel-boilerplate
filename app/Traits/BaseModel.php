@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 trait BaseModel
 {
@@ -78,6 +78,6 @@ trait BaseModel
 
     private function getQueryable()
     {
-        return !empty($this->queryable) ? $this->queryable : ['id'];
+        return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
 }

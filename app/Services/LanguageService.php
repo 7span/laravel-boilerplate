@@ -17,7 +17,7 @@ class LanguageService
         return $languages;
     }
 
-    public function resource(string $input = null): array
+    public function resource(?string $input = null): array
     {
         $path = base_path("lang/$input.json");
 

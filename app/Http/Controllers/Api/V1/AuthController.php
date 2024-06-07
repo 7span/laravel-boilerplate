@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Traits\ApiResponser;
+use App\Services\AuthService;
+use OpenApi\Attributes as OA;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\Login as LoginRequest;
+use App\Http\Requests\Auth\SignUp as SignUpRequest;
+use App\Http\Requests\Auth\SendOtp as SendOtpRequest;
+use App\Http\Requests\Auth\VerifyOtp as VerifyOtpRequest;
+use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
 use App\Http\Requests\Auth\ChangePassword as ChangePasswordRequest;
 use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
-use App\Http\Requests\Auth\Login as LoginRequest;
-use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
-use App\Http\Requests\Auth\SendOtp as SendOtpRequest;
-use App\Http\Requests\Auth\SignUp as SignUpRequest;
-use App\Http\Requests\Auth\VerifyOtp as VerifyOtpRequest;
-use App\Services\AuthService;
-use App\Traits\ApiResponser;
-use Illuminate\Http\JsonResponse;
-use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
@@ -25,76 +25,76 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/signup",
-        operationId: "authSignup",
-        tags: ["Auth"],
-        summary: "Register new user",
+        path: '/api/v1/signup',
+        operationId: 'authSignup',
+        tags: ['Auth'],
+        summary: 'Register new user',
         parameters: [
             new OA\Parameter(
-                name: "X-Requested-With",
-                in: "header",
+                name: 'X-Requested-With',
+                in: 'header',
                 required: true,
-                description: "Custom header for XMLHttpRequest",
+                description: 'Custom header for XMLHttpRequest',
                 schema: new OA\Schema(
-                    type: "string",
-                    default: "XMLHttpRequest"
+                    type: 'string',
+                    default: 'XMLHttpRequest'
                 )
-            )
+            ),
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            description: "Pass user credentials",
+            description: 'Pass user credentials',
             content: new OA\JsonContent(
-                required: ["first_name", "last_name", "username", "country_code", "mobile_number", "email", "password", "password_confirmation"],
+                required: ['first_name', 'last_name', 'username', 'country_code', 'mobile_number', 'email', 'password', 'password_confirmation'],
                 properties: [
                     new OA\Property(
-                        property: "first_name",
-                        type: "string",
-                        format: "first_name",
-                        example: "Test"
+                        property: 'first_name',
+                        type: 'string',
+                        format: 'first_name',
+                        example: 'Test'
                     ),
                     new OA\Property(
-                        property: "last_name",
-                        type: "string",
-                        format: "last_name",
-                        example: "User"
+                        property: 'last_name',
+                        type: 'string',
+                        format: 'last_name',
+                        example: 'User'
                     ),
                     new OA\Property(
-                        property: "username",
-                        type: "string",
-                        format: "username",
-                        example: "test"
+                        property: 'username',
+                        type: 'string',
+                        format: 'username',
+                        example: 'test'
                     ),
                     new OA\Property(
-                        property: "country_code",
-                        type: "integer",
+                        property: 'country_code',
+                        type: 'integer',
                         nullable: true,
                     ),
                     new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email",
-                        example: "test@gmail.com",
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
+                        example: 'test@gmail.com',
                     ),
                     new OA\Property(
-                        property: "password",
-                        type: "string",
+                        property: 'password',
+                        type: 'string',
                         minLength: 6,
                         writeOnly: true,
                         description: "The user's password for login (not stored in plain text, consider using Laravel's `Hash` helper for secure storage)."
                     ),
                     new OA\Property(
-                        property: "password_confirmation",
-                        type: "string",
+                        property: 'password_confirmation',
+                        type: 'string',
                         minLength: 6,
                         writeOnly: true,
                         description: "Confirmation of the user's password."
                     ),
                     new OA\Property(
-                        property: "mobile_number",
-                        type: "string",
-                        format: "mobile_number",
-                        example: "9974572182"
+                        property: 'mobile_number',
+                        type: 'string',
+                        format: 'mobile_number',
+                        example: '9974572182'
                     ),
                 ]
             ),
@@ -115,23 +115,23 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/send-otp",
-        operationId: "sendOtp",
-        tags: ["Auth"],
-        summary: "Send One-Time Password (OTP)",
+        path: '/api/v1/send-otp',
+        operationId: 'sendOtp',
+        tags: ['Auth'],
+        summary: 'Send One-Time Password (OTP)',
         description: "Sends an OTP to a user's email address for verification purposes.",
         requestBody: new OA\RequestBody(
             required: true,
-            description: "User email and purpose for requesting OTP",
+            description: 'User email and purpose for requesting OTP',
             content: new OA\JsonContent(
-                required: ["email", "otp_for"],
+                required: ['email', 'otp_for'],
                 properties: [
                     new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email",
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
                         description: "User's email address",
-                        example: "user@gmail.com"
+                        example: 'user@gmail.com'
                     ),
                     new OA\Property(
                         property: "otp_for",
@@ -158,32 +158,32 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/verify-otp",
-        operationId: "verifyOtp",
-        tags: ["Auth"],
-        summary: "Verify One-Time Password (OTP)",
-        description: "Verifies an OTP submitted by a user for authentication or other purposes.",
+        path: '/api/v1/verify-otp',
+        operationId: 'verifyOtp',
+        tags: ['Auth'],
+        summary: 'Verify One-Time Password (OTP)',
+        description: 'Verifies an OTP submitted by a user for authentication or other purposes.',
         requestBody: new OA\RequestBody(
             required: true,
-            description: "User email and OTP code",
+            description: 'User email and OTP code',
             content: new OA\JsonContent(
-                required: ["email", "otp"],
+                required: ['email', 'otp'],
                 properties: [
                     new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email",
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
                         description: "User's email address",
-                        example: "user@gmail.com"
+                        example: 'user@gmail.com'
                     ),
                     new OA\Property(
-                        property: "otp",
-                        type: "string",
-                        description: "OTP code submitted by the user",
-                        example: "123456",
+                        property: 'otp',
+                        type: 'string',
+                        description: 'OTP code submitted by the user',
+                        example: '123456',
                         minLength: 6,
                         maxLength: 6
-                    )
+                    ),
                 ]
             ),
         ),
@@ -195,7 +195,7 @@ class AuthController extends Controller
             new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
-            "bearerAuth" => []
+            'bearerAuth' => [],
         ]]
     )]
     public function verifyOtp(VerifyOtpRequest $request): JsonResponse
@@ -206,32 +206,32 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/login",
-        operationId: "loginUser",
-        tags: ["Auth"],
-        summary: "Login User",
-        description: "Logs in a user with email and password.",
+        path: '/api/v1/login',
+        operationId: 'loginUser',
+        tags: ['Auth'],
+        summary: 'Login User',
+        description: 'Logs in a user with email and password.',
         requestBody: new OA\RequestBody(
             required: true,
-            description: "User email and password",
+            description: 'User email and password',
             content: new OA\JsonContent(
-                required: ["email"],
+                required: ['email'],
                 properties: [
                     new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email",
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
                         description: "User's email address",
-                        example: "user@gmail.com"
+                        example: 'user@gmail.com'
                     ),
                     new OA\Property(
-                        property: "password",
-                        type: "string",
+                        property: 'password',
+                        type: 'string',
                         description: "User's password",
-                        example: "password123",
+                        example: 'password123',
                         minLength: 8,
                         maxLength: 255
-                    )
+                    ),
                 ]
             ),
         ),
@@ -251,24 +251,24 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/forget-password",
-        operationId: "forgetPassword",
-        tags: ["Auth"],
-        summary: "Forget Password",
+        path: '/api/v1/forget-password',
+        operationId: 'forgetPassword',
+        tags: ['Auth'],
+        summary: 'Forget Password',
         description: "Initiates the process to reset the user's password by sending a reset link to the provided email address.",
         requestBody: new OA\RequestBody(
             required: true,
-            description: "User email",
+            description: 'User email',
             content: new OA\JsonContent(
-                required: ["email"],
+                required: ['email'],
                 properties: [
                     new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email",
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
                         description: "User's email address",
-                        example: "user@gmail.com"
-                    )
+                        example: 'user@gmail.com'
+                    ),
                 ]
             ),
         ),
@@ -288,48 +288,48 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/reset-password",
-        operationId: "resetPassword",
-        tags: ["Auth"],
-        summary: "Reset Password",
+        path: '/api/v1/reset-password',
+        operationId: 'resetPassword',
+        tags: ['Auth'],
+        summary: 'Reset Password',
         description: "Resets the user's password using the provided email, new password, and OTP code.",
         requestBody: new OA\RequestBody(
             required: true,
-            description: "User email, new password, and OTP code",
+            description: 'User email, new password, and OTP code',
             content: new OA\JsonContent(
-                required: ["email", "password", "password_confirmation", "otp"],
+                required: ['email', 'password', 'password_confirmation', 'otp'],
                 properties: [
                     new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email",
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
                         description: "User's email address",
-                        example: "user@gmail.com"
+                        example: 'user@gmail.com'
                     ),
                     new OA\Property(
-                        property: "password",
-                        type: "string",
+                        property: 'password',
+                        type: 'string',
                         description: "User's new password",
-                        example: "newpassword123",
+                        example: 'newpassword123',
                         minLength: 8,
                         maxLength: 255
                     ),
                     new OA\Property(
-                        property: "password_confirmation",
-                        type: "string",
+                        property: 'password_confirmation',
+                        type: 'string',
                         description: "Confirmation of the user's new password",
-                        example: "newpassword123",
+                        example: 'newpassword123',
                         minLength: 8,
                         maxLength: 255
                     ),
                     new OA\Property(
-                        property: "otp",
-                        type: "string",
+                        property: 'otp',
+                        type: 'string',
                         description: "OTP code sent to the user's email",
-                        example: "123456",
+                        example: '123456',
                         minLength: 6,
                         maxLength: 6
-                    )
+                    ),
                 ]
             ),
         ),
@@ -349,41 +349,41 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/change-password",
-        operationId: "changePassword",
-        tags: ["Auth"],
-        summary: "Change Password",
+        path: '/api/v1/change-password',
+        operationId: 'changePassword',
+        tags: ['Auth'],
+        summary: 'Change Password',
         description: "Changes the user's password by verifying the current password and setting a new one.",
         requestBody: new OA\RequestBody(
             required: true,
-            description: "Current password and new password",
+            description: 'Current password and new password',
             content: new OA\JsonContent(
-                required: ["current_password", "password", "password_confirmation"],
+                required: ['current_password', 'password', 'password_confirmation'],
                 properties: [
                     new OA\Property(
-                        property: "current_password",
-                        type: "string",
+                        property: 'current_password',
+                        type: 'string',
                         description: "User's current password",
-                        example: "oldpassword123",
+                        example: 'oldpassword123',
                         minLength: 8,
                         maxLength: 255
                     ),
                     new OA\Property(
-                        property: "password",
-                        type: "string",
+                        property: 'password',
+                        type: 'string',
                         description: "User's new password",
-                        example: "newpassword123",
+                        example: 'newpassword123',
                         minLength: 8,
                         maxLength: 255
                     ),
                     new OA\Property(
-                        property: "password_confirmation",
-                        type: "string",
+                        property: 'password_confirmation',
+                        type: 'string',
                         description: "Confirmation of the user's new password",
-                        example: "newpassword123",
+                        example: 'newpassword123',
                         minLength: 8,
                         maxLength: 255
-                    )
+                    ),
                 ]
             ),
         ),
@@ -395,7 +395,7 @@ class AuthController extends Controller
             new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
-            "bearerAuth" => []
+            'bearerAuth' => [],
         ]]
     )]
     public function changePassword(ChangePasswordRequest $request): JsonResponse
@@ -406,11 +406,11 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/logout",
-        operationId: "logoutUser",
-        tags: ["Auth"],
-        summary: "Logout User",
-        description: "Logs out the currently authenticated user.",
+        path: '/api/v1/logout',
+        operationId: 'logoutUser',
+        tags: ['Auth'],
+        summary: 'Logout User',
+        description: 'Logs out the currently authenticated user.',
         responses: [
             new OA\Response(
                 response: '200',
@@ -419,7 +419,7 @@ class AuthController extends Controller
             new OA\Response(response: '400', description: 'Validation errors!'),
         ],
         security: [[
-            "bearerAuth" => []
+            'bearerAuth' => [],
         ]]
     )]
     public function logout(): JsonResponse

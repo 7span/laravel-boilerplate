@@ -43,7 +43,7 @@ class UserOtpService
         return $verifiedAt !== null || date('Y-m-d h:i:s') > $expirationDate;
     }
 
-    public function otpExists(int $userId, int|string $otp, int|string $otpFor): UserOtp|null
+    public function otpExists(int $userId, int|string $otp, int|string $otpFor): ?UserOtp
     {
         return $this->userOtpObj->whereUserId($userId)->whereOtp($otp)->where('otp_for', $otpFor)->first();
     }

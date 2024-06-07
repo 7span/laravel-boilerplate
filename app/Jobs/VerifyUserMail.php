@@ -34,11 +34,11 @@ class VerifyUserMail implements ShouldQueue
                 'otp' => $this->otp,
                 'firstname' => $this->user->firstname,
                 'lastname' => $this->user->lastname,
-                'subject' => __('email.verifyUserSubject')
+                'subject' => __('email.verifyUserSubject'),
             ];
             Mail::to($this->user->email)->send(new VerifyUser($data));
         } catch (\Exception $e) {
-            Log::error("Send OTP Error : " . $e);
+            Log::error('Send OTP Error : ' . $e);
         }
     }
 }

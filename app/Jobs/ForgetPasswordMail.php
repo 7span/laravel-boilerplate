@@ -4,12 +4,12 @@ namespace App\Jobs;
 
 use App\Mail\ForgetPassword;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
 class ForgetPasswordMail implements ShouldQueue
 {
@@ -32,11 +32,11 @@ class ForgetPasswordMail implements ShouldQueue
             $data = [
                 'otp' => $this->otp,
                 'firstname' => $this->user->firstname,
-                'lastname' => $this->user->lastname
+                'lastname' => $this->user->lastname,
             ];
             Mail::to($this->user->email)->send(new ForgetPassword(data: $data));
         } catch (\Exception $e) {
-            Log::error("Forgot Password Error : " . $e);
+            Log::error('Forgot Password Error : ' . $e);
         }
     }
 }
