@@ -373,6 +373,10 @@
                                                 "mobile_number": {
                                                     "type": "string",
                                                     "example": "9898989898"
+                                                },
+                                                "last_login_at": {
+                                                    "type": "string",
+                                                    "example": "07-06-2024 13:01:31"
                                                 }
                                             },
                                             "type": "object"
@@ -761,5 +765,10 @@
                 "scheme": "bearer"
             }
         }
-    }
+    },
+    "security": [
+        {
+            "developer": "Spatie\\LittleGateKeeper\\AuthMiddleware"
+        }
+    ]
 }

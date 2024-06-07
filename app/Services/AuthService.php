@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
@@ -119,6 +120,8 @@ class AuthService
         if (! $user || ! Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
         }
+
+        $user->update(['last_login_at' => Carbon::now()]);
 
         $data = [
             'message' => 'Login successfully',

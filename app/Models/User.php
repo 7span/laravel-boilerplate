@@ -29,6 +29,7 @@ class User extends Authenticatable
         'country_code',
         'mobile_number',
         'email_verified_at',
+        'last_login_at'
     ];
 
     /**
@@ -60,6 +61,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime'
         ];
     }
 }

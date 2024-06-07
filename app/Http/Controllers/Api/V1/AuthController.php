@@ -376,7 +376,12 @@ class AuthController extends Controller
      *           property="mobile_number",
      *           type="string",
      *           example="9898989898"
-     *         )
+     *         ),
+     *         @OA\Property(
+     *           property="last_login_at",
+     *           type="string",
+     *           example="07-06-2024 13:01:31"
+     *        ),
      *       ),
      *       @OA\Property(
      *         property="token",
