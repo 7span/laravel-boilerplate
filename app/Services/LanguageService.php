@@ -21,7 +21,7 @@ class LanguageService
     {
         $path = base_path("lang/$input.json");
 
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             throw new CustomException(__('entity.entityNotFound', ['entity' => 'Language file']), 404);
         }
 
