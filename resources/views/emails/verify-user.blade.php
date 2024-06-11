@@ -15,7 +15,7 @@
                     style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">{{ config('app.name') }}</a>
             </div>
             <p style="font-size:1.1em; margin-top:20px; ">
-                {{ __('email.hello') }} {{ $data['firstname'] }} {{ $data['lastname'] }}</p>
+                {{ __('email.hello') }} {{ $data['first_name'] }} {{ $data['last_name'] }}</p>
 
             <p>
                 {{ __('email.verifyUserLine1', [

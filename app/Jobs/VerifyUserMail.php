@@ -18,9 +18,7 @@ class VerifyUserMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private ?object $user, private int|string $otp)
-    {
-    }
+    public function __construct(private ?object $user, private int|string $otp) {}
 
     /**
      * Execute the job.
@@ -31,8 +29,8 @@ class VerifyUserMail implements ShouldQueue
         try {
             $data = [
                 'otp' => $this->otp,
-                'firstname' => $this->user->first_name,
-                'lastname' => $this->user->last_name,
+                'first_name' => $this->user->first_name,
+                'last_name' => $this->user->last_name,
                 'subject' => __('email.verifyUserSubject'),
             ];
             Mail::to($this->user->email)->send(new VerifyUser($data));
