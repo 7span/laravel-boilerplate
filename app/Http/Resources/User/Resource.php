@@ -23,9 +23,7 @@ class Resource extends JsonResource
     {
         $data = $this->fields();
 
-        // if ($this->hasMedia(config('site.media_tags.profile_image'))) {
-        //     $data['profile_image'] = new MediaResource($this->firstMedia(config('site.media_tags.profile_image')));
-        // }
+        $data['profile_image'] = new MediaResource($this->whenLoaded('media'));
 
         return $data;
     }

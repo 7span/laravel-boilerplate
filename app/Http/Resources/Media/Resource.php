@@ -4,6 +4,7 @@ namespace App\Http\Resources\Media;
 
 use App\Models\Media;
 use App\Traits\ResourceFilterable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Resource extends JsonResource
@@ -22,7 +23,7 @@ class Resource extends JsonResource
     {
         $data = $this->fields();
 
-        $data['url'] = $this->getUrl();
+        $data['url'] = Storage::disk('profile_image')->url($this->file_name);
 
         return $data;
     }

@@ -17,6 +17,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.9",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "opcodesio/log-viewer": "^3.6",
         "predis/predis": "^2.0",
         "spatie/laravel-littlegatekeeper": "^1.1",

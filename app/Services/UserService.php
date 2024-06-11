@@ -61,7 +61,7 @@ class UserService
 
             $mediaTag = config('site.media_tags.profile_image');
 
-            $mediaIds = MediaHelper::attachMedia($inputs['profile_image'], $mediaTag, $id);
+            $mediaIds = MediaHelper::attachMedia($inputs['profile_image'], $mediaTag, $id, User::class, 'profile_image');
 
             // if (!empty($inputs['profile_image'])) {
             //     Storage::disk('public')->delete($inputs['profile_image']);

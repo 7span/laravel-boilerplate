@@ -34,7 +34,7 @@ class MediaHelper
         return !empty($aggregateType) ? $aggregateType : 'all';
     }
 
-    public static function attachMedia($media, $mediaTag, $id)
+    public static function attachMedia($media, $mediaTag, $id, $model, $disk)
     {
         $mediaIds = [];
 
@@ -49,14 +49,14 @@ class MediaHelper
                     'file_name' => $fileName,
                 ],
                 [
-                    'disk' => config('filesystems.default'),
+                    'disk' => $disk ?? config('filesystems.default'),
                     'file_name' => $fileName,
                     'original_file_name' => $mediaObj['original_file_name'],
                     'extension' => $extension,
                     'mime_type' => $mediaObj['mime_type'],
                     'size' => $mediaObj['size'],
                     'aggregate_type' => $aggregateType,
-                    'mediable_type' => Media::class,
+                    'mediable_type' => $model,
                     'mediable_id' => $id,
                     'tag' => $mediaTag
                 ]

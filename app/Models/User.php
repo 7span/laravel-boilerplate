@@ -8,12 +8,13 @@ use App\Traits\BaseModel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use BaseModel,HasApiTokens,HasFactory,Notifiable,SoftDeletes;
+    use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -43,7 +44,11 @@ class User extends Authenticatable
 
     protected $dates = ['created_at'];
 
-    protected $relationship = [];
+    protected $relationship = [
+        'media' => [
+            'model' => 'App\Models\Media',
+        ]
+    ];
 
     public function setPasswordAttribute($password)
     {
@@ -61,5 +66,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function media(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'mediable');
     }
 }
