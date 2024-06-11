@@ -20,6 +20,11 @@ class UpdateProfile extends FormRequest
             'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
             'country_code' => 'nullable|max:8',
             'mobile_number' => 'nullable|digits:10',
+            'profile_image' => 'nullable|array',
+            'profile_image.*.file_name' => 'required_with:profile_image',
+            'profile_image.*.original_file_name' => 'required_with:profile_image',
+            'profile_image.*.mime_type' => 'required_with:profile_image',
+            'profile_image.*.size' => 'required_with:profile_image|integer'
         ];
     }
 }

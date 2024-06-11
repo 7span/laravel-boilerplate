@@ -2,7 +2,9 @@
 
 namespace App\Library;
 
+use App\Models\Media;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
@@ -14,6 +16,64 @@ class MediaHelper
         $fileName = $fileNameArr[0] . '-' . Str::random(10) . '.' . $extension;
 
         return $fileName;
+    }
+
+    public static function getAggregateType($mimeType)
+    {
+        $aggregateTypeLists = config('site.aggregate_types');
+
+        $aggregateType = '';
+
+        foreach ($aggregateTypeLists as $key => $aggregateTypes) {
+            if (in_array($mimeType, $aggregateTypes)) {
+                $aggregateType = $key;
+                break;
+            }
+        }
+
+        return !empty($aggregateType) ? $aggregateType : 'all';
+    }
+
+    public static function attachMedia($media, $mediaTag, $id)
+    {
+        $mediaIds = [];
+
+        foreach ($media as $mediaObj) {
+            $extension = self::getExtension($mediaObj['file_name'], $mediaObj['mime_type']);
+            $aggregateType = self::getAggregateType($mediaObj['mime_type']);
+            $fileName = explode('.', $mediaObj['file_name'])[0];
+
+
+            $media = Media::updateOrCreate(
+                [
+                    'file_name' => $fileName,
+                ],
+                [
+                    'disk' => config('filesystems.default'),
+                    'file_name' => $fileName,
+                    'original_file_name' => $mediaObj['original_file_name'],
+                    'extension' => $extension,
+                    'mime_type' => $mediaObj['mime_type'],
+                    'size' => $mediaObj['size'],
+                    'aggregate_type' => $aggregateType,
+                    'mediable_type' => Media::class,
+                    'mediable_id' => $id,
+                    'tag' => $mediaTag
+                ]
+            );
+            array_push($mediaIds, $media->id);
+        }
+        return $mediaIds;
+    }
+
+    public static function destoryMedia($fileObj)
+    {
+        $imageUrl = $fileObj['directory'] . '/' . $fileObj['file_name'] . '.' . $fileObj['extension'];
+        Storage::disk(config('filesystems.default'))->delete($imageUrl);
+        $fileObj->delete();
+        $data['message'] = __('message.mediaDeleteSuccess');
+
+        return $data;
     }
 
     public static function getExtension($fileName, $mimeType)

@@ -761,5 +761,10 @@
                 "scheme": "bearer"
             }
         }
-    }
+    },
+    "security": [
+        {
+            "developer": "Spatie\\LittleGateKeeper\\AuthMiddleware"
+        }
+    ]
 }
