@@ -66,9 +66,32 @@ class MediaHelper
         return $mediaIds;
     }
 
+    public static function detachMedia($fileObj, $disk)
+    {
+        $imageUrl = $fileObj['file_name'] . '.' . $fileObj['extension'];
+
+        Storage::disk($disk)->delete($imageUrl);
+
+        $fileObj->delete();
+        // $data['message'] = __('message.mediaDeleteSuccess');
+
+        // return $data;
+    }
+
+    public static function syncMedia($media, $mediaTag, $id, $model, $disk)
+    {
+        $userMedias = Media::whereMediableId($id)->whereTag($mediaTag)->get();
+
+        foreach ($userMedias as $userMedia) {
+            $aggregateType = self::detachMedia($userMedia, $disk);
+        }
+
+        self::attachMedia($media, $mediaTag, $id, $model, $disk);
+    }
+
     public static function destoryMedia($fileObj)
     {
-        $imageUrl = $fileObj['directory'] . '/' . $fileObj['file_name'] . '.' . $fileObj['extension'];
+        $imageUrl = $fileObj['directory'] . '/' . $fileObj['filename'] . '.' . $fileObj['extension'];
         Storage::disk(config('filesystems.default'))->delete($imageUrl);
         $fileObj->delete();
         $data['message'] = __('message.mediaDeleteSuccess');

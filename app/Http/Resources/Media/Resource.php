@@ -23,7 +23,7 @@ class Resource extends JsonResource
     {
         $data = $this->fields();
 
-        $data['url'] = Storage::disk('profile_image')->url($this->file_name);
+        $data['url'] = Storage::disk($this->disk)->url($this->file_name);
 
         return $data;
     }

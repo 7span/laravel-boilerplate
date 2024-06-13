@@ -16,4 +16,8 @@ return [
             'image/webp',
         ]
     ],
+
+    'disk' => [
+        'profile_image' => 'profile_image'
+    ]
 ];
