@@ -47,12 +47,17 @@ class User extends Authenticatable
     protected $relationship = [
         'media' => [
             'model' => 'App\Models\Media',
-        ]
+        ],
     ];
 
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function media(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'mediable');
     }
 
     /**
@@ -66,10 +71,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function media(): MorphOne
-    {
-        return $this->morphOne(Media::class, 'mediable');
     }
 }

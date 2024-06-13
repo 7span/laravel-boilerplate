@@ -5,7 +5,7 @@ return [
     'generateOtpLength' => '6',
 
     'media_tags' => [
-        'profile_image' => 'profile_image'
+        'profile_image' => 'profile_image',
     ],
 
     'aggregate_types' => [
@@ -14,10 +14,10 @@ return [
             'image/png',
             'image/gif',
             'image/webp',
-        ]
+        ],
     ],
 
     'disk' => [
-        'profile_image' => 'profile_image'
-    ]
+        'profile_image' => 'profile_image',
+    ],
 ];

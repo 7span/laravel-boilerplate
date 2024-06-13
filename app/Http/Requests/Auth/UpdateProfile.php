@@ -24,7 +24,7 @@ class UpdateProfile extends FormRequest
             'profile_image.*.file_name' => 'required_with:profile_image',
             'profile_image.*.original_file_name' => 'required_with:profile_image',
             'profile_image.*.mime_type' => 'required_with:profile_image',
-            'profile_image.*.size' => 'required_with:profile_image|integer'
+            'profile_image.*.size' => 'required_with:profile_image|integer',
         ];
     }
 }
