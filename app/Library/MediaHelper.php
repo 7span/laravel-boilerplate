@@ -31,7 +31,7 @@ class MediaHelper
             }
         }
 
-        return !empty($aggregateType) ? $aggregateType : 'all';
+        return ! empty($aggregateType) ? $aggregateType : 'all';
     }
 
     public static function attachMedia($media, $mediaTag, $id, $model, $disk)
@@ -42,7 +42,6 @@ class MediaHelper
             $extension = self::getExtension($mediaObj['file_name'], $mediaObj['mime_type']);
             $aggregateType = self::getAggregateType($mediaObj['mime_type']);
             $fileName = explode('.', $mediaObj['file_name'])[0];
-
 
             $media = Media::updateOrCreate(
                 [
@@ -59,11 +58,12 @@ class MediaHelper
                     'aggregate_type' => $aggregateType,
                     'mediable_type' => $model,
                     'mediable_id' => $id,
-                    'tag' => $mediaTag
+                    'tag' => $mediaTag,
                 ]
             );
             array_push($mediaIds, $media->id);
         }
+
         return $mediaIds;
     }
 

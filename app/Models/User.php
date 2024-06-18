@@ -47,7 +47,7 @@ class User extends Authenticatable
     protected $relationship = [
         'media' => [
             'model' => 'App\Models\Media',
-        ]
+        ],
     ];
 
     public function setPasswordAttribute($password)

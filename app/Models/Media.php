@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Media extends Model
 {
-    use HasFactory, BaseModel;
+    use BaseModel, HasFactory;
+
+    public $queryable = [
+        'id',
+    ];
+
+    public $collections = [];
 
     protected $fillable = [
         'disk',
@@ -27,16 +33,10 @@ class Media extends Model
         'updated_at',
     ];
 
-    public $queryable = [
-        'id',
-    ];
-
     protected $casts = [
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
     ];
-
-    public $collections = [];
 
     protected $relationship = [];
 

@@ -3,12 +3,12 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Media;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
 use App\Library\MediaHelper;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
@@ -28,7 +28,7 @@ class UserService
     {
         $user = Auth::user();
 
-        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
+        if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
             $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);
 
             $otp = Helper::generateOTP(config('site.generateOtpLength'));
@@ -58,7 +58,6 @@ class UserService
         }
 
         if (isset($inputs['profile_image'])) {
-
             $mediaTag = config('site.media_tags.profile_image');
 
             MediaHelper::syncMedia($inputs['profile_image'], $mediaTag, $id, User::class, config('site.disk.profile_image'));
