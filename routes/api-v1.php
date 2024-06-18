@@ -22,4 +22,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 Route::post('generate-signed-url', SignedUrlController::class);
-Route::apiResource('medias', MediaController::class)->only(['destroy']);
+Route::delete('medias/{id?}', [MediaController::class, 'destroy']);

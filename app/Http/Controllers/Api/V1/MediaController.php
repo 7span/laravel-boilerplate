@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Media;
 use App\Library\MediaHelper;
 use App\Traits\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Media\DeleteMedia;
 
 class MediaController extends Controller
 {
     use ApiResponser;
 
-    public function destroy($id)
+    public function destroy(DeleteMedia $request)
     {
-        $media = Media::find($id);
-
-        if (! $media) {
-            $data['errors']['media_id'][] = __('message.mediaNotFound');
-            $data['message'] = __('message.mediaNotFound');
-        } else {
-            $data = MediaHelper::destoryMedia($media);
-        }
+        $data = MediaHelper::destroyMedia($request->validated());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }

@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
 use App\Library\MediaHelper;
-use App\Models\Media;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -62,13 +61,7 @@ class UserService
 
             $mediaTag = config('site.media_tags.profile_image');
 
-            // $userProfileImage = Media::where('mediable_id', $id)->whereTag('profile_image')->first();
-
-            // if (!empty($userProfileImage)) {
-
-            //     MediaHelper::detachMedia($userProfileImage, config('site.disk.profile_image'));
-            // }
-            $mediaIds = MediaHelper::syncMedia($inputs['profile_image'], $mediaTag, $id, User::class, config('site.disk.profile_image'));
+            MediaHelper::syncMedia($inputs['profile_image'], $mediaTag, $id, User::class, config('site.disk.profile_image'));
         }
 
         return $data;

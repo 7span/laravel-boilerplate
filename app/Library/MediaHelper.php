@@ -50,6 +50,7 @@ class MediaHelper
                 ],
                 [
                     'disk' => $disk ?? config('filesystems.default'),
+                    'directory' => $mediaObj['directory'],
                     'file_name' => $fileName,
                     'original_file_name' => $mediaObj['original_file_name'],
                     'extension' => $extension,
@@ -73,9 +74,6 @@ class MediaHelper
         Storage::disk($disk)->delete($imageUrl);
 
         $fileObj->delete();
-        // $data['message'] = __('message.mediaDeleteSuccess');
-
-        // return $data;
     }
 
     public static function syncMedia($media, $mediaTag, $id, $model, $disk)
@@ -89,11 +87,30 @@ class MediaHelper
         self::attachMedia($media, $mediaTag, $id, $model, $disk);
     }
 
-    public static function destoryMedia($fileObj)
+    public static function destroyMedia($mediaIds)
     {
-        $imageUrl = $fileObj['directory'] . '/' . $fileObj['filename'] . '.' . $fileObj['extension'];
-        Storage::disk(config('filesystems.default'))->delete($imageUrl);
-        $fileObj->delete();
+        $ids = $mediaIds['media_ids'];
+
+        $mediaItems = Media::whereIn('id', $ids);
+
+        $fileArr = [];
+
+        foreach ($mediaItems->get() as $media) {
+            if ($media->disk == 's3') {
+                $fileArr[$media->disk][] = $media->directory . '/' . $media->file_name . '.' . $media->extension;
+            } else {
+                $fileArr[$media->disk][] = $media->file_name . '.' . $media->extension;
+            }
+        }
+
+        foreach ($fileArr as $disk => $files) {
+            if (!empty($files)) {
+                Storage::disk($disk)->delete($files);
+            }
+        }
+
+        Media::whereIn('id', $ids)->delete();
+
         $data['message'] = __('message.mediaDeleteSuccess');
 
         return $data;

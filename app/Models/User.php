@@ -8,7 +8,7 @@ use App\Traits\BaseModel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -68,8 +68,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function media(): MorphOne
+    public function media(): MorphMany
     {
-        return $this->morphOne(Media::class, 'mediable');
+        return $this->morphMany(Media::class, 'mediable');
     }
 }

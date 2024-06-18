@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->string('disk', 32);
+            $table->string('directory');
             $table->string('original_file_name');
             $table->string('file_name');
             $table->string('extension', 32);
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->morphs('mediable');
             $table->string('tag')->index();
             $table->timestamps();
-            $table->unique(['disk', 'file_name', 'extension']);
+            $table->unique(['disk', 'directory', 'file_name', 'extension']);
         });
     }
 
