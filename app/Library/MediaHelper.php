@@ -104,7 +104,7 @@ class MediaHelper
         }
 
         foreach ($fileArr as $disk => $files) {
-            if (!empty($files)) {
+            if (! empty($files)) {
                 Storage::disk($disk)->delete($files);
             }
         }
