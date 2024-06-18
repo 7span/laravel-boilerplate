@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Media;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
 use App\Library\MediaHelper;
