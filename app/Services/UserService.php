@@ -9,9 +9,13 @@ use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    public function __construct(private User $userObj, private UserOtpService $userOtpService)
+    private $userObj;
+    private $userOtpService;
+
+    public function __construct()
     {
-        //
+        $this->userObj = new User();
+        $this->userOtpService = new UserOtpService();
     }
 
     public function resource(int $id, array $inputs = []): User
@@ -53,6 +57,16 @@ class UserService
                 'data' => $user->refresh(),
             ];
         }
+
+        return $data;
+    }
+
+    public function changeStatus(object $user,array $inputs = [])
+    {
+        $user->update($inputs);
+        $data = [
+            'message' => __('message.changeStatusSuccess', ['status' => $inputs['status']]),
+        ];
 
         return $data;
     }
