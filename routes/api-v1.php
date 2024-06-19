@@ -2,11 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SignedUrlController;
-use App\Http\Controllers\Api\V1\UserStatusController;
 
 Route::post('signup', [AuthController::class, 'signUp']);
 Route::post('login', [AuthController::class, 'login']);

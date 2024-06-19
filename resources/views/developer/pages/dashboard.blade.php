@@ -84,7 +84,7 @@
                     </div>
                 </a>
             </div>
-            
+
         </div>
         <div class="d-flex pt-5">
             <div class="telescope p-5">
@@ -98,7 +98,7 @@
                         </div>
                     </div>
                 </a>
-            </div> 
+            </div>
         </div>
 </body>
 

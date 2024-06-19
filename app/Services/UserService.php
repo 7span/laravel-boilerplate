@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 class UserService
 {
     private $userObj;
+
     private $userOtpService;
 
     public function __construct()
@@ -61,7 +62,7 @@ class UserService
         return $data;
     }
 
-    public function changeStatus(object $user,array $inputs = [])
+    public function changeStatus(object $user, array $inputs = [])
     {
         $user->update($inputs);
         $data = [

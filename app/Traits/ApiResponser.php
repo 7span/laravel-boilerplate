@@ -2,8 +2,6 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\JsonResponse;
-
 trait ApiResponser
 {
     private function success($data, $code)

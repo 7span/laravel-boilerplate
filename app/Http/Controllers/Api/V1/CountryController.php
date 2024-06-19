@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use App\Services\CountryService;
 use App\Http\Controllers\Controller;
@@ -38,15 +37,15 @@ class CountryController extends Controller
                 name: 'limit',
                 in: 'query',
                 description: "Pagination limit, '-1' to get all data."
-            ), 
+            ),
             new OA\Parameter(
                 name: 'filter[iso]',
                 in: 'query',
-            ), 
+            ),
             new OA\Parameter(
                 name: 'filter[iso3]',
                 in: 'query',
-            ), 
+            ),
             new OA\Parameter(
                 name: 'filter[name]',
                 in: 'query',
@@ -70,6 +69,7 @@ class CountryController extends Controller
     public function index(Index $request)
     {
         $countries = $this->countryService->collection($request->all());
+
         return $this->collection(new CountryCollection($countries));
     }
 }

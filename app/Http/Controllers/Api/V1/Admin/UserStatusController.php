@@ -9,7 +9,6 @@ use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ChangeStatus;
 
-
 class UserStatusController extends Controller
 {
     use ApiResponser;
@@ -72,9 +71,9 @@ class UserStatusController extends Controller
             'bearerAuth' => [],
         ]],
     )]
-    public function __invoke(User $user,ChangeStatus $request)
+    public function __invoke(User $user, ChangeStatus $request)
     {
-        $user = $this->userService->changeStatus($user,$request->validated());
+        $user = $this->userService->changeStatus($user, $request->validated());
 
         return $this->success($user, 200);
     }
