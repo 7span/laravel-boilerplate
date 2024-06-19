@@ -54,7 +54,7 @@
                                     "username": {
                                         "type": "string",
                                         "format": "username",
-                                        "example": "dhrumin12"
+                                        "example": "test"
                                     },
                                     "country_code": {
                                         "type": "integer",
@@ -90,59 +90,9 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Register successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Otp sent to your mail.Please Verify your account via mail."
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "dhrumin1215@gmail.com"
-                                                },
-                                                "firstname": {
-                                                    "type": "string",
-                                                    "example": "dhrumin"
-                                                },
-                                                "lastname": {
-                                                    "type": "string",
-                                                    "example": "patel"
-                                                },
-                                                "username": {
-                                                    "type": "string",
-                                                    "example": "dhrumin12"
-                                                },
-                                                "country_code": {
-                                                    "type": "string",
-                                                    "example": "91"
-                                                },
-                                                "mobile_number": {
-                                                    "type": "string",
-                                                    "example": "9898989898"
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "11|o9sindzp0o4hWRhGldLWEDuFLG89GWYomNwGisOBd20d28c6"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
-                    "401": {
+                    "400": {
                         "description": "Validation errors!"
                     }
                 }
@@ -174,8 +124,12 @@
                                         "example": "user@gmail.com"
                                     },
                                     "otp_for": {
-                                        "description": "Purpose for requesting OTP (e.g., 'signup', 'password_reset')",
                                         "type": "string",
+                                        "enum": [
+                                            "verification",
+                                            "reset_password",
+                                            "update_profile"
+                                        ],
                                         "example": "signup"
                                     }
                                 },
@@ -186,41 +140,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OTP sent successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "OTP sent to your email address."
-                                        },
-                                        "data": {
-                                            "description": "OTP details (optional)",
-                                            "properties": {
-                                                "otp": {
-                                                    "description": "Generated OTP code",
-                                                    "type": "string"
-                                                },
-                                                "expiry": {
-                                                    "description": "OTP expiry time",
-                                                    "type": "string",
-                                                    "format": "date-time"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
                     "400": {
-                        "description": "Bad Request - Validation errors"
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity - Other errors (e.g., OTP generation failure)"
+                        "description": "Validation errors!"
                     }
                 }
             }
@@ -265,26 +188,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OTP verification successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "OTP verified successfully."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
                     "400": {
-                        "description": "Bad Request - Validation errors"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Invalid OTP or email"
+                        "description": "Validation errors!"
                     }
                 },
                 "security": [
@@ -309,8 +216,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "email",
-                                    "password"
+                                    "email"
                                 ],
                                 "properties": {
                                     "email": {
@@ -334,64 +240,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Login Successful!"
-                                        },
-                                        "data": {
-                                            "description": "User data",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "dhrumin1215@gmail.com"
-                                                },
-                                                "firstname": {
-                                                    "type": "string",
-                                                    "example": "dhrumin"
-                                                },
-                                                "lastname": {
-                                                    "type": "string",
-                                                    "example": "patel"
-                                                },
-                                                "username": {
-                                                    "type": "string",
-                                                    "example": "username12"
-                                                },
-                                                "country_code": {
-                                                    "type": "string",
-                                                    "example": "91"
-                                                },
-                                                "mobile_number": {
-                                                    "type": "string",
-                                                    "example": "9898989898"
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "11|o9sindzp0o4hWRhGldLWEDuFLG89GWYomNwGisOBd20d28c6"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
                     "400": {
-                        "description": "Bad Request - Validation errors"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Invalid email or password"
+                        "description": "Validation errors!"
                     }
                 }
             }
@@ -428,26 +280,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Reset link sent successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Forgot Password email has been sent successfully."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
                     "400": {
-                        "description": "Bad Request - Validation errors"
-                    },
-                    "404": {
-                        "description": "Not Found - Email not found"
+                        "description": "Validation errors!"
                     }
                 }
             }
@@ -508,26 +344,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Password reset successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Password changed successfully."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
                     "400": {
-                        "description": "Bad Request - Validation errors"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Invalid email or OTP"
+                        "description": "Validation errors!"
                     }
                 }
             }
@@ -581,26 +401,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Password changed successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Password changed successfully."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
                     "400": {
-                        "description": "Bad Request - Validation errors"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Invalid current password"
+                        "description": "Validation errors!"
                     }
                 },
                 "security": [
@@ -620,23 +424,10 @@
                 "operationId": "logoutUser",
                 "responses": {
                     "200": {
-                        "description": "Logout successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Logout successful."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Success."
                     },
-                    "401": {
-                        "description": "Unauthorized - User not authenticated"
+                    "400": {
+                        "description": "Validation errors!"
                     }
                 },
                 "security": [
@@ -644,6 +435,128 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/v1/languages": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Get list of languages",
+                "operationId": "getLanguages",
+                "parameters": [
+                    {
+                        "name": "X-Requested-With",
+                        "in": "header",
+                        "description": "Custom header for XMLHttpRequest",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "XMLHttpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/v1/languages/{language_id}": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Get detail of languages",
+                "operationId": "getLanguageId",
+                "parameters": [
+                    {
+                        "name": "X-Requested-With",
+                        "in": "header",
+                        "description": "Custom header for XMLHttpRequest",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "XMLHttpRequest"
+                        }
+                    },
+                    {
+                        "name": "language_id",
+                        "in": "path",
+                        "description": "ID of the language",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/v1/generate-signed-url": {
+            "post": {
+                "tags": [
+                    "SignedUrl"
+                ],
+                "summary": "Generate signed url",
+                "operationId": "generate-signed-url",
+                "parameters": [
+                    {
+                        "name": "X-Requested-With",
+                        "in": "header",
+                        "description": "Custom header for XMLHttpRequest",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "XMLHttpRequest"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "filename",
+                                    "directory",
+                                    "mime_type"
+                                ],
+                                "properties": {
+                                    "filename": {
+                                        "type": "string",
+                                        "format": "filename",
+                                        "example": "Test"
+                                    },
+                                    "directory": {
+                                        "type": "string",
+                                        "format": "directory",
+                                        "example": "User"
+                                    },
+                                    "mime_type": {
+                                        "type": "string",
+                                        "format": "mime_type",
+                                        "example": "test"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success."
+                    },
+                    "400": {
+                        "description": "Validation errors!"
+                    }
+                }
             }
         },
         "/api/v1/me": {
@@ -739,9 +652,9 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Profile updated successfully"
+                        "description": "Success."
                     },
-                    "401": {
+                    "400": {
                         "description": "Validation errors!"
                     }
                 },

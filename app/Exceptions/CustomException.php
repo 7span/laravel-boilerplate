@@ -9,14 +9,8 @@ class CustomException extends Exception
 {
     use ApiResponser;
 
-    public $message;
-
-    public $code;
-
-    public function __construct($message, $code = 400)
+    public function __construct(public string $messageStr, public int $resCode = 400)
     {
-        $this->message = $message;
-        $this->code = $code;
     }
 
     public function report()
@@ -26,9 +20,9 @@ class CustomException extends Exception
 
     public function render()
     {
-        $data['message'] = $this->message;
-        $data['errors']['message'][] = $this->message;
+        $data['message'] = $this->messageStr;
+        $data['errors']['message'][] = $this->messageStr;
 
-        return $this->error($data, $this->code);
+        return $this->error($data, $this->resCode);
     }
 }

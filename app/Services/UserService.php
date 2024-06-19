@@ -7,7 +7,6 @@ use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
 use App\Library\MediaHelper;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -16,16 +15,16 @@ class UserService
         //
     }
 
-    public function resource($id, $inputs = null)
+    public function resource(int $id, array $inputs = []): User
     {
         $user = $this->userObj->getQB()->findOrFail($id);
 
         return $user;
     }
 
-    public function update($id, $inputs = null)
+    public function update(int $id, array $inputs = []): array
     {
-        $user = Auth::user();
+        $user = User::find(auth()->id());
 
         if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
             $this->userObj->whereId($user->id)->update(['email_verified_at' => null]);

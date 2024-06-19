@@ -12,7 +12,7 @@ class ForgetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(private $data)
+    public function __construct(private ?array $data)
     {
         //
     }
