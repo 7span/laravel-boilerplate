@@ -13,6 +13,7 @@
         "darkaonline/l5-swagger": "^8.6",
         "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^11.0",
+        "laravel/horizon": "^5.24",
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.9",
