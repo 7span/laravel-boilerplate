@@ -10,16 +10,16 @@ class Country extends Model
 {
     use BaseModel,HasFactory;
 
+    public $queryable = [
+        'id',
+    ];
+
     protected $fillable = [
         'iso',
         'name',
         'iso3',
         'numcode',
         'phonecode',
-    ];
-
-    public $queryable = [
-        'id',
     ];
 
     protected $relationship = [];
