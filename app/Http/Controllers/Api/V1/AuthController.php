@@ -134,11 +134,11 @@ class AuthController extends Controller
                         example: 'user@gmail.com'
                     ),
                     new OA\Property(
-                        property: "otp_for",
-                        type: "string",
-                        enum: ["verification", "reset_password", "update_profile"],
-                        example: "signup"
-                    )
+                        property: 'otp_for',
+                        type: 'string',
+                        enum: ['verification', 'reset_password', 'update_profile'],
+                        example: 'signup'
+                    ),
                 ]
             ),
         ),
