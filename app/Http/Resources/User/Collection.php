@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection as JsonCollection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Collection extends ResourceCollection
@@ -12,7 +13,7 @@ class Collection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): ?JsonCollection
     {
         return $this->collection;
     }

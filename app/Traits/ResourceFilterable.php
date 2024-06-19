@@ -14,7 +14,7 @@ trait ResourceFilterable
             ->toArray();
     }
 
-    protected function prepareResponse()
+    protected function prepareResponse(): array
     {
         $data = [];
         $class = $this->model;

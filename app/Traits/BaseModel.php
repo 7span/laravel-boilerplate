@@ -7,7 +7,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 trait BaseModel
 {
-    public function getQueryFields()
+    public function getQueryFields(): array
     {
         $_this = new self();
         $fields = [];
@@ -24,7 +24,7 @@ trait BaseModel
         return $fields;
     }
 
-    public function getQueryFieldsWithRelationship()
+    public function getQueryFieldsWithRelationship(): array
     {
         $fields = $this->getQueryFields();
         $relationships = $this->getRelationship();
@@ -43,19 +43,19 @@ trait BaseModel
         return $fields;
     }
 
-    public function getRelationship()
+    public function getRelationship(): array
     {
         $relationship = $this->relationship;
 
         return $relationship ? $relationship : [];
     }
 
-    public function getIncludes()
+    public function getIncludes(): array
     {
         return array_keys($this->getRelationship());
     }
 
-    public function getQB()
+    public function getQB(): QueryBuilder
     {
         $queryBuilder = QueryBuilder::for(self::class)
             ->allowedFields($this->getQueryFieldsWithRelationship())

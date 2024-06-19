@@ -7,10 +7,9 @@ use Illuminate\Support\Facades\File;
 
 class LanguageService
 {
-    public function collection()
+    public function collection(): array
     {
         $languages['data'] = collect(config('language'))->values()->all();
-
         if (empty($languages['data'])) {
             throw new CustomException(__('entity.entityNotFound', ['entity' => 'Languages']), 404);
         }
@@ -18,7 +17,7 @@ class LanguageService
         return $languages;
     }
 
-    public function resource($input = null)
+    public function resource(?string $input = null): array
     {
         $path = base_path("lang/$input.json");
 
