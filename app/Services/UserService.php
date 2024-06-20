@@ -30,8 +30,7 @@ class UserService
     {
         $user = $this->resource($id);
 
-        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
-
+        if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
             $inputs['email_verified_at'] = null;
             $otp = Helper::generateOTP(config('site.generateOtpLength'));
             $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
@@ -48,7 +47,6 @@ class UserService
                 'data' => $user->refresh(),
             ];
         } else {
-            
             $user->update($inputs);
             $data = [
                 'message' => __('message.userProfileUpdate'),
