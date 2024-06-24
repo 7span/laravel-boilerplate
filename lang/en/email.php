@@ -14,4 +14,7 @@ return [
     'signInRequestEmailLine2' => 'If you have not requested to sign-in code, please ignore this mail.',
     'verifyUserSubject' => 'Verify User',
     'updateProfileSubject' => 'Update Profile',
+    'forgetPasswordLinkEmailLine1' => 'We hope this message finds you well. It appears that you have requested to reset the password associated with your ' . config('app.name') . ' account. If you did not initiate this request, please ignore this email.',
+    'forgetPasswordLinkEmailLine2' => 'To reset your password, please click on the following link:',
+    'link' => 'Password Reset Link',
 ];

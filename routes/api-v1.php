@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\SignedUrlController;
 Route::post('signup', [AuthController::class, 'signUp']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('send-otp', [AuthController::class, 'sendOtp']);
+Route::post('forget-password-otp', [AuthController::class, 'forgetPasswordOtp']);
 Route::post('forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);

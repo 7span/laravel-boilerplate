@@ -6,13 +6,16 @@ use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
+use Illuminate\Support\Str;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\ForgetPasswordOtpMail;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use App\Http\Resources\User\Resource as UserResource;
 
 class AuthService
@@ -117,7 +120,7 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (! $user || ! Hash::check($inputs['password'], $user->password)) {
+        if (!$user || !Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -130,7 +133,7 @@ class AuthService
         return $data;
     }
 
-    public function forgetPassword(array $inputs): array
+    public function forgetPasswordOtp(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
         if (empty($user)) {
@@ -143,7 +146,41 @@ class AuthService
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'reset_password']);
 
         try {
-            ForgetPasswordMail::dispatch($user, $otp);
+            ForgetPasswordOtpMail::dispatch($user, $otp);
+        } catch (\Exception $e) {
+            Log::info('Forget Password mail failed.' . $e->getMessage());
+        }
+
+        $data = [
+            'message' => __('message.forgetPasswordEmailSuccess'),
+        ];
+
+        return $data;
+    }
+
+    public function forgetPassword(array $inputs): array
+    {
+        // $emailStatus = Password::sendResetLink([
+        //     'email' => $inputs['email'],
+        // ]);
+
+        // if ($emailStatus == Password::RESET_LINK_SENT) {
+
+        //     $data['message'] = __('message.passwordResetSent');
+
+        //     return $data;
+        // }
+
+        $user = $this->userObj->whereEmail($inputs['email'])->first();
+
+        if (empty($user)) {
+            throw new CustomException(__('message.emailNotExist'));
+        }
+
+        try {
+            $user->reset_password_token = Str::random(64);
+            $user->save();
+            ForgetPasswordMail::dispatch($user);
         } catch (\Exception $e) {
             Log::info('Forget Password mail failed.' . $e->getMessage());
         }
@@ -196,7 +233,7 @@ class AuthService
             throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
         }
 
-        if (! Hash::check($inputs['current_password'], $user->password)) {
+        if (!Hash::check($inputs['current_password'], $user->password)) {
             throw new CustomException(__('message.wrongCurrentPassword'));
         }
 

@@ -251,6 +251,43 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
+        path: '/api/v1/forget-password-otp',
+        operationId: 'forgetPasswordWithOtp',
+        tags: ['Auth'],
+        summary: 'Forget Password with otp',
+        description: "Initiates the process to reset the user's password by otp.",
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'User email',
+            content: new OA\JsonContent(
+                required: ['email'],
+                properties: [
+                    new OA\Property(
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
+                        description: "User's email address",
+                        example: 'user@gmail.com'
+                    ),
+                ]
+            ),
+        ),
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Success.',
+            ),
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
+    )]
+    public function forgetPasswordOtp(ForgetPasswordRequest $request): JsonResponse
+    {
+        $data = $this->authService->forgetPasswordOtp($request->all());
+
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
+
+    #[OA\Post(
         path: '/api/v1/forget-password',
         operationId: 'forgetPassword',
         tags: ['Auth'],
