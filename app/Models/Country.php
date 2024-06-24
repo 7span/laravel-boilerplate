@@ -17,5 +17,4 @@ class Country extends Model
         'numcode',
         'phonecode',
     ];
-
 }
