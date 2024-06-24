@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class UserService
@@ -28,7 +29,7 @@ class UserService
 
     public function update(int $id, array $inputs = []): array
     {
-        $user = $this->resource($id);
+        $user = $this->userObj->find(Auth::id());
 
         if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
 
@@ -63,7 +64,7 @@ class UserService
     {
         $user->update($inputs);
         $data = [
-            'message' => __('message.changeStatusSuccess', ['status' => $inputs['status']]),
+          'message' =>  __('entity.entityUpdated', ['entity' => 'User status']),
         ];
 
         return $data;

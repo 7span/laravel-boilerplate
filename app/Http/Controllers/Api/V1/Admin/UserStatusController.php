@@ -15,9 +15,9 @@ class UserStatusController extends Controller
 
     private $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct()
     {
-        $this->userService = $userService;
+        $this->userService = new UserService;
     }
 
     #[OA\Post(
@@ -75,6 +75,6 @@ class UserStatusController extends Controller
     {
         $user = $this->userService->changeStatus($user, $request->validated());
 
-        return $this->success($user, 200);
+        return $this->success($user);
     }
 }

@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use App\Services\CountryService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Country\Index;
 use App\Http\Resources\Country\Collection as CountryCollection;
 
 class CountryController extends Controller
 {
     use ApiResponser;
 
-    public function __construct(private CountryService $countryService)
+    private $countryService;
+
+    public function __construct()
     {
+        $this->countryService = new CountryService;
     }
 
     #[OA\Get(
@@ -66,7 +69,7 @@ class CountryController extends Controller
             ),
         ],
     )]
-    public function index(Index $request)
+    public function index(Request $request)
     {
         $countries = $this->countryService->collection($request->all());
 

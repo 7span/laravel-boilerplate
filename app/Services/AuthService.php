@@ -122,7 +122,7 @@ class AuthService
         }
 
         if ($user->status == config('site.user_status.inactive')) {
-            throw new CustomException(__('message.userInactiveFound'));
+            throw new CustomException(__('message.inactiveUser'));
         }
 
         $data = [

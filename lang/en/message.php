@@ -17,6 +17,6 @@ return [
     'otpExpired' => 'Otp expired.',
     'logoutSuccess' => 'Logout successfully.',
     'otpExpired' => 'Otp expired.',
-    'userInactiveFound' => 'Account Inactive: Please contact administrator to reactivate your account.',
+    'inactiveUser' => 'Account Inactive: Please contact administrator to reactivate your account.',
     'changeStatusSuccess' => 'User status has been updated to :status.',
 ];
