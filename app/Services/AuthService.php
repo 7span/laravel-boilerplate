@@ -9,6 +9,7 @@ use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
+use Illuminate\Support\Facades\DB;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -22,12 +23,13 @@ class AuthService
         //
     }
 
-    public function signup($inputs)
+    public function signup(array $inputs): array
     {
+        DB::beginTransaction();
         $user = $this->userObj->create($inputs);
         $otp = Helper::generateOTP(config('site.generateOtpLength'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-
+        DB::commit();
         try {
             VerifyUserMail::dispatch($user, $otp);
         } catch (\Exception $e) {
@@ -43,7 +45,7 @@ class AuthService
         return $data;
     }
 
-    public function sendOtp($inputs)
+    public function sendOtp(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
@@ -78,13 +80,12 @@ class AuthService
 
         $data = [
             'message' => 'Otp Send Successfully',
-            'data' => ['otp' => $otp],
         ];
 
         return $data;
     }
 
-    public function verifyOtp($inputs)
+    public function verifyOtp(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
@@ -113,12 +114,16 @@ class AuthService
         return $data;
     }
 
-    public function login($inputs)
+    public function login(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (! $user || ! Hash::check($inputs['password'], $user->password)) {
+        if (!$user || !Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
+        }
+
+        if ($user->status == config('site.user_status.inactive')) {
+            throw new CustomException(__('message.inactiveUser'));
         }
 
         $user->update(['last_login_at' => Carbon::now()]);
@@ -132,7 +137,7 @@ class AuthService
         return $data;
     }
 
-    public function forgetPassword($inputs)
+    public function forgetPassword(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
         if (empty($user)) {
@@ -157,7 +162,7 @@ class AuthService
         return $data;
     }
 
-    public function resetPassword($inputs)
+    public function resetPassword(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
@@ -188,9 +193,9 @@ class AuthService
         return $data;
     }
 
-    public function changePassword($inputs)
+    public function changePassword(array $inputs): array
     {
-        $user = Auth::user();
+        $user = User::find(auth()->id());
         $currentPassword = trim($inputs['current_password']);
         $newPassword = trim($inputs['password']);
 
@@ -198,7 +203,7 @@ class AuthService
             throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
         }
 
-        if (! Hash::check($inputs['current_password'], $user->password)) {
+        if (!Hash::check($inputs['current_password'], $user->password)) {
             throw new CustomException(__('message.wrongCurrentPassword'));
         }
 
@@ -212,7 +217,7 @@ class AuthService
         return $data;
     }
 
-    public function logout()
+    public function logout(): array
     {
         if (Auth::check()) {
             Auth::user()->tokens()->delete();

@@ -16,4 +16,7 @@ return [
     'updateUserVerifySuccess' => 'Your profile updated successfully. Otp sent to your mail.Please Verify your account via mail. ',
     'otpExpired' => 'Otp expired.',
     'logoutSuccess' => 'Logout successfully.',
+    'otpExpired' => 'Otp expired.',
+    'inactiveUser' => 'Account Inactive: Please contact administrator to reactivate your account.',
+    'changeStatusSuccess' => 'User status has been updated to :status.',
 ];

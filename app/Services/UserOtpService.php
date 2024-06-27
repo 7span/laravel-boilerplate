@@ -4,46 +4,49 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use App\Models\UserOtp;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserOtpService
 {
-    public function __construct(private UserOtp $userOtpObj)
+    private $userOtpObj;
+
+    public function __construct()
     {
-        //
+        $this->userOtpObj = new UserOtp;
     }
 
-    public function resource($id, $inputs = null)
+    public function resource(int $id, array $inputs = []): JsonResource
     {
         $userOtp = $this->userOtpObj->getQB()->where('id', $id)->first();
 
         return $userOtp;
     }
 
-    public function store($inputs)
+    public function store(array $inputs): object
     {
         $userOtp = $this->userOtpObj->create($inputs);
 
         return $userOtp;
     }
 
-    public function update($id, $inputs)
+    public function update(int $id, array $inputs): bool
     {
         $userOtp = $this->userOtpObj->where('id', $id)->update($inputs);
 
         return $userOtp;
     }
 
-    public function isOtpExpired($created_at, $verified_at)
+    public function isOtpExpired(int|string $createdAt, int|string|null $verifiedAt): string
     {
         $expirationTime = config('site.otpExpirationTimeInMinutes');
 
-        $expirationDate = Carbon::parse($created_at)->addMinutes($expirationTime)->format('Y-m-d H:i:s');
+        $expirationDate = Carbon::parse($createdAt)->addMinutes($expirationTime)->format('Y-m-d H:i:s');
 
-        return $verified_at !== null || date('Y-m-d h:i:s') > $expirationDate;
+        return $verifiedAt !== null || date('Y-m-d h:i:s') > $expirationDate;
     }
 
-    public function otpExists($userId, $otp, $otp_for)
+    public function otpExists(int $userId, int|string $otp, int|string $otpFor): ?UserOtp
     {
-        return $this->userOtpObj->whereUserId($userId)->whereOtp($otp)->where('otp_for', $otp_for)->first();
+        return $this->userOtpObj->whereUserId($userId)->whereOtp($otp)->where('otp_for', $otpFor)->first();
     }
 }
