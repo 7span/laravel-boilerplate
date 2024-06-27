@@ -520,6 +520,11 @@
                         "description": "Pagination limit, '-1' to get all data."
                     },
                     {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of results to return."
+                    },
+                    {
                         "name": "filter[iso]",
                         "in": "query"
                     },

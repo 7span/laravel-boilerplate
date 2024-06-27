@@ -42,6 +42,11 @@ class CountryController extends Controller
                 description: "Pagination limit, '-1' to get all data."
             ),
             new OA\Parameter(
+                name: 'page',
+                in: 'query',
+                description: "The page of results to return."
+            ),
+            new OA\Parameter(
                 name: 'filter[iso]',
                 in: 'query',
             ),
