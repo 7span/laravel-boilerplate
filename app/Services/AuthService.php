@@ -118,7 +118,7 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (!$user || !Hash::check($inputs['password'], $user->password)) {
+        if (! $user || ! Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -203,7 +203,7 @@ class AuthService
             throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
         }
 
-        if (!Hash::check($inputs['current_password'], $user->password)) {
+        if (! Hash::check($inputs['current_password'], $user->password)) {
             throw new CustomException(__('message.wrongCurrentPassword'));
         }
 
