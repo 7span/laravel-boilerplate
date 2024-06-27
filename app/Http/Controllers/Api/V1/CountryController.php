@@ -44,7 +44,7 @@ class CountryController extends Controller
             new OA\Parameter(
                 name: 'page',
                 in: 'query',
-                description: "The page of results to return."
+                description: 'The page of results to return.'
             ),
             new OA\Parameter(
                 name: 'filter[iso]',
