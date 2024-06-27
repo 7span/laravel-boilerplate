@@ -121,6 +121,10 @@ class AuthService
             throw new CustomException(__('auth.failed'));
         }
 
+        if ($user->status == config('site.user_status.inactive')) {
+            throw new CustomException(__('message.inactiveUser'));
+        }
+
         $data = [
             'message' => 'Login successfully',
             'user' => new UserResource($user),

@@ -13,6 +13,7 @@
 
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/developer/dashboard.css') }}">
+
 </head>
 
 <body class="d-flex max-h-full bg-white justify-center">
@@ -23,8 +24,7 @@
                     <div class="relative z-0 flex-1 px-2 d-flex items-center justify-center sm-absolute sm-inset-0">
                         <div class="relative">
                             <a href="{{ config('app.url') }}">
-                                <img class="h-12" src="{{ asset('assets/img/logo.png') }}"
-                                    alt="{{ config('app.name') }}">
+                                <img class="h-12" src="{{ asset('assets/img/logo.png') }}" alt="{{ config('app.name') }}">
                             </a>
                         </div>
                     </div>
@@ -84,8 +84,22 @@
                     </div>
                 </a>
             </div>
+
         </div>
-    </div>
+        <div class="d-flex pt-5">
+            <div class="telescope p-5">
+                <a href="{{ url('developer/pulse') }}" target="_blank">
+                    <div class="block">
+                        <div class="p-6">
+                            <h5>Pulse</h5>
+                            <p>
+                                Laravel Pulse delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
 </body>
 
 </html>
