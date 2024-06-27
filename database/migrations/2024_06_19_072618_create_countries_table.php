@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['name','numcode','phonecode']);
+            $table->index(['name', 'numcode', 'phonecode']);
         });
     }
 
