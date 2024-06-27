@@ -29,7 +29,7 @@ class UserService
 
     public function update(int $id, array $inputs = []): array
     {
-        $user = $this->userObj->find(Auth::id());
+        $user = Auth::user();
 
         if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
             $inputs['email_verified_at'] = null;

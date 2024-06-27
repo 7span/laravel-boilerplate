@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('phonecode');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['name','numcode','phonecode']);
         });
     }
 

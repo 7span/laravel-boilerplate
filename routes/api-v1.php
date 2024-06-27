@@ -23,4 +23,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::post('generate-signed-url', SignedUrlController::class);
-Route::apiResource('countries', CountryController::class)->only('index');
+Route::get('countries', CountryController::class);

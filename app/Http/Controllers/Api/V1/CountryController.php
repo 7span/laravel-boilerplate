@@ -74,7 +74,7 @@ class CountryController extends Controller
             ),
         ],
     )]
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
         $countries = $this->countryService->collection($request->all());
 
