@@ -11,14 +11,12 @@ return new class extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->increments('id');
             $table->char('iso', 2);
-            $table->string('name', 80);
+            $table->string('name', 80)->index();
             $table->char('iso3', 3)->nullable();
-            $table->smallinteger('numcode')->nullable();
-            $table->integer('phonecode');
+            $table->smallinteger('numcode')->nullable()->index();
+            $table->integer('phonecode')->index();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->index(['name','numcode','phonecode']);
         });
     }
 
