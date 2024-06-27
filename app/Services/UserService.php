@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -62,7 +62,7 @@ class UserService
     {
         $user->update($inputs);
         $data = [
-          'message' =>  __('entity.entityUpdated', ['entity' => 'User status']),
+            'message' => __('entity.entityUpdated', ['entity' => 'User status']),
         ];
 
         return $data;
