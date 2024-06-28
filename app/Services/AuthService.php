@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
@@ -124,6 +125,8 @@ class AuthService
         if ($user->status == config('site.user_status.inactive')) {
             throw new CustomException(__('message.inactiveUser'));
         }
+
+        $user->update(['last_login_at' => Carbon::now()]);
 
         $data = [
             'message' => 'Login successfully',
