@@ -18,9 +18,7 @@ class VerifyUserMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private ?object $user, private int|string $otp)
-    {
-    }
+    public function __construct(private ?object $user, private int|string $otp) {}
 
     /**
      * Execute the job.

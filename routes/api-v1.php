@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\MediaController;
+use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SignedUrlController;
 
@@ -22,4 +23,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 Route::post('generate-signed-url', SignedUrlController::class);
+Route::get('countries', CountryController::class);
 Route::delete('medias/{id?}', [MediaController::class, 'destroy']);

@@ -17,4 +17,7 @@ return [
     'otpExpired' => 'Otp expired.',
     'logoutSuccess' => 'Logout successfully.',
     'mediaDeleteSuccess' => 'Media deleted successfully.',
+    'otpExpired' => 'Otp expired.',
+    'inactiveUser' => 'Account Inactive: Please contact administrator to reactivate your account.',
+    'changeStatusSuccess' => 'User status has been updated to :status.',
 ];

@@ -41,6 +41,16 @@ class UserController extends Controller
                     default: 'XMLHttpRequest'
                 )
             ),
+            new OA\Parameter(
+                name: 'include',
+                in: 'query',
+                required: false,
+                description: 'Include related resources',
+                schema: new OA\Schema(
+                    type: 'string',
+                    example: 'media'
+                )
+            ),
         ],
         security: [[
             'bearerAuth' => [],

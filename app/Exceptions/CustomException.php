@@ -9,9 +9,7 @@ class CustomException extends Exception
 {
     use ApiResponser;
 
-    public function __construct(public string $messageStr, public int $resCode = 400)
-    {
-    }
+    public function __construct(public string $messageStr, public int $resCode = 400) {}
 
     public function report()
     {
