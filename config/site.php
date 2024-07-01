@@ -24,5 +24,5 @@ return [
     'user_status' => [
         'active' => 'active',
         'inactive' => 'inactive',
-    ]
+    ],
 ];
