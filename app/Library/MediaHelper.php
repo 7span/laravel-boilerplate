@@ -2,7 +2,9 @@
 
 namespace App\Library;
 
+use App\Models\Media;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
@@ -14,6 +16,149 @@ class MediaHelper
         $fileName = $fileNameArr[0] . '-' . Str::random(10) . '.' . $extension;
 
         return $fileName;
+    }
+
+    public static function getAggregateType($mimeType)
+    {
+        $aggregateTypeLists = config('site.aggregate_types');
+
+        $aggregateType = '';
+
+        foreach ($aggregateTypeLists as $key => $aggregateTypes) {
+            if (in_array($mimeType, $aggregateTypes)) {
+                $aggregateType = $key;
+                break;
+            }
+        }
+
+        return ! empty($aggregateType) ? $aggregateType : 'all';
+    }
+
+    public static function attachMedia($media, $mediaTag, $userId, $model, $disk)
+    {
+        $disk = $disk ?? config('filesystems.default');
+        $mediaIds = [];
+
+        foreach ($media as $mediaObj) {
+            $extension = self::getExtension($mediaObj['file_name'], $mediaObj['mime_type']);
+            $aggregateType = self::getAggregateType($mediaObj['mime_type']);
+            $fileName = explode('.', $mediaObj['file_name'])[0];
+
+            $media = Media::updateOrCreate(
+                [
+                    'file_name' => $fileName,
+                ],
+                [
+                    'disk' => $disk ?? config('filesystems.default'),
+                    'directory' => $mediaObj['directory'],
+                    'file_name' => $fileName,
+                    'original_file_name' => $mediaObj['original_file_name'],
+                    'extension' => $extension,
+                    'mime_type' => $mediaObj['mime_type'],
+                    'size' => $mediaObj['size'],
+                    'aggregate_type' => $aggregateType,
+                    'mediable_type' => $model,
+                    'mediable_id' => $userId,
+                    'tag' => $mediaTag,
+                ]
+            );
+            array_push($mediaIds, $media->id);
+        }
+
+        return $mediaIds;
+    }
+
+    public static function detachMedia($fileObj, $disk)
+    {
+        $imageUrl = $fileObj['file_name'] . '.' . $fileObj['extension'];
+
+        Storage::disk($disk)->delete($imageUrl);
+
+        $fileObj->delete();
+    }
+
+    public static function syncMedia($media, $mediaTag, $userId, $model, $disk)
+    {
+        $existingMedia = Media::where('mediable_id', $userId)
+            ->where('tag', $mediaTag)
+            ->get()
+            ->keyBy('file_name');
+
+        $mediaIds = [];
+        foreach ($media as $mediaObj) {
+            $extension = self::getExtension($mediaObj['file_name'], $mediaObj['mime_type']);
+            $aggregateType = self::getAggregateType($mediaObj['mime_type']);
+            $fileName = explode('.', $mediaObj['file_name'])[0];
+
+            // Check if media already exists
+            if (isset($existingMedia[$fileName])) {
+                // Update existing media
+                $mediaRecord = $existingMedia[$fileName];
+
+                $mediaRecord->update([
+                    'disk' => $disk ?? config('filesystems.default'),
+                    'directory' => $mediaObj['directory'],
+                    'original_file_name' => $mediaObj['original_file_name'],
+                    'extension' => $extension,
+                    'mime_type' => $mediaObj['mime_type'],
+                    'size' => $mediaObj['size'],
+                    'aggregate_type' => $aggregateType,
+                ]);
+
+                // Remove from the existing media list to track remaining media for deletion
+                $existingMedia->forget($fileName);
+            } else {
+                $mediaRecord = Media::create([
+                    'disk' => $disk ?? config('filesystems.default'),
+                    'directory' => $mediaObj['directory'],
+                    'file_name' => $fileName,
+                    'original_file_name' => $mediaObj['original_file_name'],
+                    'extension' => $extension,
+                    'mime_type' => $mediaObj['mime_type'],
+                    'size' => $mediaObj['size'],
+                    'aggregate_type' => $aggregateType,
+                    'mediable_type' => $model,
+                    'mediable_id' => $userId,
+                    'tag' => $mediaTag,
+                ]);
+            }
+            array_push($mediaIds, $mediaRecord->id);
+        }
+
+        foreach ($existingMedia as $mediaRecord) {
+            self::detachMedia($mediaRecord, $disk);
+        }
+
+        return $mediaIds;
+    }
+
+    public static function destroyMedia($mediaIds)
+    {
+        $ids = $mediaIds['media_ids'];
+
+        $mediaItems = Media::whereIn('id', $ids);
+
+        $fileArr = [];
+
+        foreach ($mediaItems->get() as $media) {
+            if ($media->disk == 's3') {
+                $fileArr[$media->disk][] = $media->directory . '/' . $media->file_name . '.' . $media->extension;
+            } else {
+                $fileArr[$media->disk][] = $media->file_name . '.' . $media->extension;
+            }
+        }
+
+        foreach ($fileArr as $disk => $files) {
+            if (! empty($files)) {
+                Storage::disk($disk)->delete($files);
+            }
+        }
+
+        Media::whereIn('id', $ids)->delete();
+
+        $data['message'] = __('message.mediaDeleteSuccess');
+
+        return $data;
     }
 
     public static function getExtension($fileName, $mimeType)
