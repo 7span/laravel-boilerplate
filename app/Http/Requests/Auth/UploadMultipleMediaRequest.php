@@ -33,8 +33,6 @@ class UploadMultipleMediaRequest extends FormRequest
 
     /**
      * Get media validation rules.
-     *
-     * @return array
      */
     public function getMultipleMediaRules(): array
     {

@@ -21,7 +21,7 @@ class UpdateProfile extends FormRequest
             'username' => 'required|max:120',
             'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
             'country_code' => 'nullable|max:8',
-            'mobile_number' => 'nullable|digits:10'
+            'mobile_number' => 'nullable|digits:10',
         ], $mediaRequest->getSingleMediaRules());
     }
 }

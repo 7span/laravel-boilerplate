@@ -59,7 +59,6 @@ class User extends Authenticatable
         return $this->morphOne(Media::class, 'mediable');
     }
 
-
     /**
      * Get the attributes that should be cast.
      *
