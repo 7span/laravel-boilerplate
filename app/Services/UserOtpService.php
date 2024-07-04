@@ -8,9 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserOtpService
 {
-    public function __construct(private UserOtp $userOtpObj)
+    private $userOtpObj;
+
+    public function __construct()
     {
-        //
+        $this->userOtpObj = new UserOtp;
     }
 
     public function resource(int $id, array $inputs = []): JsonResource

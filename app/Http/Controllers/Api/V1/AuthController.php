@@ -243,7 +243,7 @@ class AuthController extends Controller
             new OA\Response(response: '400', description: 'Validation errors!'),
         ],
     )]
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request)
     {
         $data = $this->authService->login($request->all());
 

@@ -2,26 +2,24 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\JsonResponse;
-
 trait ApiResponser
 {
-    private function success($data, $code): JsonResponse
+    private function success($data, $code = 200)
     {
         return response()->json($data, $code);
     }
 
-    private function error($data, $code = 400): JsonResponse
+    private function error($data, $code = 400)
     {
         return response()->json($data, $code);
     }
 
-    private function resource($resource, $code = 200): JsonResponse
+    private function resource($resource, $code = 200)
     {
         return $this->success($resource, $code);
     }
 
-    private function collection($collection, $code = 200): JsonResponse
+    private function collection($collection, $code = 200)
     {
         return $collection;
     }
