@@ -32,7 +32,7 @@ class UserService
     {
         $user = Auth::user();
 
-        if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
+        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
             $inputs['email_verified_at'] = null;
             $otp = Helper::generateOTP(config('site.generateOtpLength'));
             $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
@@ -56,10 +56,10 @@ class UserService
             ];
         }
 
-        if (isset($inputs['profile_image'])) {
+        if (isset($inputs['media'])) {
             $mediaTag = config('site.media_tags.profile_image');
 
-            MediaHelper::syncMedia($inputs['profile_image'], $mediaTag, $id, User::class, config('site.disk.profile_image'));
+            MediaHelper::attachMedia($inputs['media'], $mediaTag, $id, User::class, config('site.disk.profile_image'), config('site.media_type.attach_media'));
         }
 
         return $data;

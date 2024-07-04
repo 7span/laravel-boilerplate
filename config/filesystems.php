@@ -68,7 +68,7 @@ return [
             'throw' => false,
 
             'visibility' => 'public',
-            'root' => 'profile_image',
+            'root' => 'profile',
         ],
 
     ],

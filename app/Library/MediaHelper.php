@@ -31,38 +31,55 @@ class MediaHelper
             }
         }
 
-        return ! empty($aggregateType) ? $aggregateType : 'all';
+        return !empty($aggregateType) ? $aggregateType : 'all';
     }
 
-    public static function attachMedia($media, $mediaTag, $userId, $model, $disk)
+    public static function attachMedia($data, $tag, $mediableId, $mediableType, $disk, $mediatype)
     {
         $disk = $disk ?? config('filesystems.default');
         $mediaIds = [];
+        $medias = [];
 
-        foreach ($media as $mediaObj) {
-            $extension = self::getExtension($mediaObj['file_name'], $mediaObj['mime_type']);
-            $aggregateType = self::getAggregateType($mediaObj['mime_type']);
-            $fileName = explode('.', $mediaObj['file_name'])[0];
+        if (isset($data[0])) {
+            $medias = $data;
+        } else {
+            $medias[] = $data;
+        }
 
-            $media = Media::updateOrCreate(
-                [
-                    'file_name' => $fileName,
-                ],
+        foreach ($medias as $media) {
+            $extension = self::getExtension($media['file_name'], $media['mime_type']);
+            $aggregateType = self::getAggregateType($media['mime_type']);
+            $fileName = explode('.', $media['file_name'])[0];
+
+            $conditions = [];
+
+            if ($mediatype === 'attach_media') {
+                $conditions = [
+                    'mediable_id' => $mediableId,
+                    'mediable_type' => $mediableType,
+                    'tag' => $tag,
+                ];
+            } else {
+                $conditions['file_name'] = $fileName;
+            }
+
+            $mediaObj = Media::updateOrCreate(
+                $conditions,
                 [
                     'disk' => $disk ?? config('filesystems.default'),
-                    'directory' => $mediaObj['directory'],
+                    'directory' => $media['directory'],
                     'file_name' => $fileName,
-                    'original_file_name' => $mediaObj['original_file_name'],
+                    'original_file_name' => $media['original_file_name'],
                     'extension' => $extension,
-                    'mime_type' => $mediaObj['mime_type'],
-                    'size' => $mediaObj['size'],
+                    'mime_type' => $media['mime_type'],
+                    'size' => $media['size'],
                     'aggregate_type' => $aggregateType,
-                    'mediable_type' => $model,
-                    'mediable_id' => $userId,
-                    'tag' => $mediaTag,
+                    'mediable_type' => $mediableType,
+                    'mediable_id' => $mediableId,
+                    'tag' => $tag,
                 ]
             );
-            array_push($mediaIds, $media->id);
+            array_push($mediaIds, $mediaObj->id);
         }
 
         return $mediaIds;
@@ -77,59 +94,15 @@ class MediaHelper
         $fileObj->delete();
     }
 
-    public static function syncMedia($media, $mediaTag, $userId, $model, $disk)
+    public static function syncMedia($data, $tag, $mediableId, $mediableType, $disk, $mediatype)
     {
-        $existingMedia = Media::where('mediable_id', $userId)
-            ->where('tag', $mediaTag)
-            ->get()
-            ->keyBy('file_name');
+        $userMedias = Media::whereMediableId($mediableId)->whereTag($tag)->get();
 
-        $mediaIds = [];
-        foreach ($media as $mediaObj) {
-            $extension = self::getExtension($mediaObj['file_name'], $mediaObj['mime_type']);
-            $aggregateType = self::getAggregateType($mediaObj['mime_type']);
-            $fileName = explode('.', $mediaObj['file_name'])[0];
-
-            // Check if media already exists
-            if (isset($existingMedia[$fileName])) {
-                // Update existing media
-                $mediaRecord = $existingMedia[$fileName];
-
-                $mediaRecord->update([
-                    'disk' => $disk ?? config('filesystems.default'),
-                    'directory' => $mediaObj['directory'],
-                    'original_file_name' => $mediaObj['original_file_name'],
-                    'extension' => $extension,
-                    'mime_type' => $mediaObj['mime_type'],
-                    'size' => $mediaObj['size'],
-                    'aggregate_type' => $aggregateType,
-                ]);
-
-                // Remove from the existing media list to track remaining media for deletion
-                $existingMedia->forget($fileName);
-            } else {
-                $mediaRecord = Media::create([
-                    'disk' => $disk ?? config('filesystems.default'),
-                    'directory' => $mediaObj['directory'],
-                    'file_name' => $fileName,
-                    'original_file_name' => $mediaObj['original_file_name'],
-                    'extension' => $extension,
-                    'mime_type' => $mediaObj['mime_type'],
-                    'size' => $mediaObj['size'],
-                    'aggregate_type' => $aggregateType,
-                    'mediable_type' => $model,
-                    'mediable_id' => $userId,
-                    'tag' => $mediaTag,
-                ]);
-            }
-            array_push($mediaIds, $mediaRecord->id);
+        foreach ($userMedias as $userMedia) {
+            $aggregateType = self::detachMedia($userMedia, $disk);
         }
 
-        foreach ($existingMedia as $mediaRecord) {
-            self::detachMedia($mediaRecord, $disk);
-        }
-
-        return $mediaIds;
+        self::attachMedia($data, $tag, $mediableId, $mediableType, $disk, $mediatype);
     }
 
     public static function destroyMedia($mediaIds)
@@ -149,7 +122,7 @@ class MediaHelper
         }
 
         foreach ($fileArr as $disk => $files) {
-            if (! empty($files)) {
+            if (!empty($files)) {
                 Storage::disk($disk)->delete($files);
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,5 +44,10 @@ class Media extends Model
     public function mediable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function getMediaUrlAttribute()
+    {
+        return Storage::disk($this->disk)->url($this->file_name);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Resources\Media;
 
 use App\Models\Media;
 use App\Traits\ResourceFilterable;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Resource extends JsonResource
@@ -23,7 +22,7 @@ class Resource extends JsonResource
     {
         $data = $this->fields();
 
-        $data['url'] = Storage::disk($this->disk)->url($this->file_name);
+        $data['url'] = $this->media_url;
 
         return $data;
     }

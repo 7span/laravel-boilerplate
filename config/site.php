@@ -4,7 +4,7 @@ return [
     'otpExpirationTimeInMinutes' => 10,
     'generateOtpLength' => '6',
     'media_tags' => [
-        'profile_image' => 'profile_image',
+        'profile_image' => 'profile_image'
     ],
     'aggregate_types' => [
         'image' => [
@@ -24,5 +24,10 @@ return [
     'user_status' => [
         'active' => 'active',
         'inactive' => 'inactive',
+    ],
+
+    'media_type' => [
+        'sync_media' => 'sync_media',
+        'attach_media' => 'attach_media'
     ]
 ];
