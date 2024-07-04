@@ -108,8 +108,7 @@ class MediaHelper
     public static function destroyMedia($mediaIds)
     {
         $ids = $mediaIds['media_ids'];
-
-        $mediaItems = Media::whereIn('id', $ids);
+        $mediaItems = Media::whereIn('id', $ids)->where('mediable_id', auth()->id());
 
         $fileArr = [];
 
@@ -127,7 +126,7 @@ class MediaHelper
             }
         }
 
-        Media::whereIn('id', $ids)->delete();
+        Media::whereIn('id', $ids)->where('mediable_id', auth()->id())->delete();
 
         $data['message'] = __('message.mediaDeleteSuccess');
 
