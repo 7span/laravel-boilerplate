@@ -14,14 +14,17 @@ use App\Http\Requests\Auth\VerifyOtp as VerifyOtpRequest;
 use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
 use App\Http\Requests\Auth\ChangePassword as ChangePasswordRequest;
 use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
+use App\Http\Requests\Auth\ResetPasswordOtp as ResetPasswordOtpRequest;
 
 class AuthController extends Controller
 {
     use ApiResponser;
 
-    public function __construct(private AuthService $authService)
+    private AuthService $authService;
+
+    public function __construct()
     {
-        //
+        $this->authService = new AuthService;
     }
 
     #[OA\Post(
@@ -325,8 +328,8 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/reset-password',
-        operationId: 'resetPassword',
+        path: '/api/v1/reset-password-otp',
+        operationId: 'resetPasswordWithOtp',
         tags: ['Auth'],
         summary: 'Reset Password',
         description: "Resets the user's password using the provided email, new password, and OTP code.",
@@ -364,6 +367,68 @@ class AuthController extends Controller
                         type: 'string',
                         description: "OTP code sent to the user's email",
                         example: '123456',
+                        minLength: 6,
+                        maxLength: 6
+                    ),
+                ]
+            ),
+        ),
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Success.',
+            ),
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
+    )]
+    public function resetPasswordOtp(ResetPasswordOtpRequest $request): JsonResponse
+    {
+        $data = $this->authService->resetPasswordOtp($request->all());
+
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
+
+
+    #[OA\Post(
+        path: '/api/v1/reset-password',
+        operationId: 'resetPassword',
+        tags: ['Auth'],
+        summary: 'Reset Password',
+        description: "Resets the user's password using the provided email, new password via link",
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'User email, new password, and token',
+            content: new OA\JsonContent(
+                required: ['email', 'password', 'password_confirmation', 'token'],
+                properties: [
+                    new OA\Property(
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
+                        description: "User's email address",
+                        example: 'user@gmail.com'
+                    ),
+                    new OA\Property(
+                        property: 'password',
+                        type: 'string',
+                        description: "User's new password",
+                        example: 'newpassword123',
+                        minLength: 8,
+                        maxLength: 255
+                    ),
+                    new OA\Property(
+                        property: 'password_confirmation',
+                        type: 'string',
+                        description: "Confirmation of the user's new password",
+                        example: 'newpassword123',
+                        minLength: 8,
+                        maxLength: 255
+                    ),
+                    new OA\Property(
+                        property: 'token',
+                        type: 'string',
+                        description: "token sent to the user's email link",
+                        example: '352a6ef197dd90f51b45e3db5bc6de',
                         minLength: 6,
                         maxLength: 6
                     ),
