@@ -15,7 +15,7 @@ class MasterSetting extends Model
         'key',
         'value',
         'collection',
-        'is_public'
+        'is_public',
     ];
 
     protected $casts = [

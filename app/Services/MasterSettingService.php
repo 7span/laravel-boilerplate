@@ -21,7 +21,7 @@ class MasterSettingService
     {
         $masterSettings = $this->masterSettingObj->getQB();
 
-        if (!Auth::guard('sanctum')->check()) {
+        if (! Auth::guard('sanctum')->check()) {
             $masterSettings = $masterSettings->where('is_public', true);
         }
 
@@ -32,11 +32,11 @@ class MasterSettingService
     {
         $query = $this->masterSettingObj->getQB();
 
-        if (!Auth::guard('sanctum')->check()) {
+        if (! Auth::guard('sanctum')->check()) {
             $query->where('is_public', true);
         }
 
-        $masterSetting =  $query->findOrFail($id);
+        $masterSetting = $query->findOrFail($id);
 
         return $masterSetting;
     }
