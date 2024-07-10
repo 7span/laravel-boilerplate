@@ -9,12 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MasterSetting extends Model
 {
-    use HasFactory, BaseModel, SoftDeletes;
+    use BaseModel, HasFactory, SoftDeletes;
 
     public $fillable = [
         'key',
         'value',
-        'collection'
+        'collection',
+    ];
+
+    public $queryable = [
+        'id',
     ];
 
     protected $casts = [
@@ -24,10 +28,6 @@ class MasterSetting extends Model
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-
-    public $queryable = [
-        'id',
-    ];
 
     protected $relationship = [];
 }
