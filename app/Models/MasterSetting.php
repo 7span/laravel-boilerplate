@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MasterSetting extends Model
 {
-    use HasFactory, BaseModel, SoftDeletes;
+    use BaseModel, HasFactory, SoftDeletes;
 
     public $fillable = [
         'key',
