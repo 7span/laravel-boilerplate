@@ -43,7 +43,20 @@ class MasterSettingController extends Controller
                     default: 'XMLHttpRequest'
                 )
             ),
+            new OA\Parameter(
+                name: 'limit',
+                in: 'query',
+                description: "Pagination limit, '-1' to get all data."
+            ),
+            new OA\Parameter(
+                name: 'page',
+                in: 'query',
+                description: 'The page of results to return.'
+            ),
         ],
+        security: [[
+            'bearerAuth' => [],
+        ]]
     )]
     public function index(Request $request)
     {
@@ -84,11 +97,14 @@ class MasterSettingController extends Controller
                 )
             ),
         ],
+        security: [[
+            'bearerAuth' => [],
+        ]]
     )]
     public function show($id)
     {
         $masterSettingObj = $this->masterSettingService->resource($id);
 
-        return isset($masterSettingObj['errors']) ? $this->error($masterSettingObj) : new Resource($masterSettingObj);
+        return $this->resource(new Resource($masterSettingObj));
     }
 }

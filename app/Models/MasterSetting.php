@@ -14,7 +14,8 @@ class MasterSetting extends Model
     public $fillable = [
         'key',
         'value',
-        'collection'
+        'collection',
+        'is_public'
     ];
 
     protected $casts = [
@@ -24,10 +25,6 @@ class MasterSetting extends Model
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-
-    public $queryable = [
-        'id',
-    ];
 
     protected $relationship = [];
 }
