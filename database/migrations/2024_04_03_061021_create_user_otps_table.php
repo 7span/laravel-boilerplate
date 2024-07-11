@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('otp', 32);
-            $table->enum('otp_for', ['verification', 'reset_password', 'update_profile']);
+            $table->enum('otp_for', ['reset_password', 'update_profile']);
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

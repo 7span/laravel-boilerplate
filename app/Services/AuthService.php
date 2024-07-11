@@ -46,6 +46,42 @@ class AuthService
         return $data;
     }
 
+    public function verifyEmail(object $request)
+    {
+        if (!$request->hasValidSignature()) {
+            throw new CustomException(__('message.verifyEmailInvalid'));
+        }
+
+        $user = User::findOrFail($request->id);
+
+        if (!empty($user->email_verified_at)) {
+            $data['message'] = __('message.emailAlreadyVerified');
+
+            return $data;
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+
+        $data['message'] = __('message.userVerifySuccess');
+
+        return $data;
+    }
+
+    public function resendVerifyEmail(array $inputs)
+    {
+        $user = $this->userObj->where('email', $inputs['email'])->firstOrFail();
+        if (!$user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+            $data['message'] = __('message.userSignUpSuccess');
+
+            return $data;
+        }
+
+        throw new CustomException(__('message.emailAlreadyVerified'));
+    }
+
     public function sendOtp(array $inputs): array
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
@@ -57,9 +93,9 @@ class AuthService
         $otp = Helper::generateOTP(config('site.generateOtpLength'));
 
         switch ($inputs['otp_for']) {
-            case 'verification':
-                $subject = __('email.verifyUserSubject');
-                break;
+                // case 'verification':
+                //     $subject = __('email.verifyUserSubject');
+                //     break;
             case 'update_profile':
                 $subject = __('email.updateProfileSubject');
                 break;
@@ -86,34 +122,34 @@ class AuthService
         return $data;
     }
 
-    public function verifyOtp(array $inputs): array
-    {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
+    // public function verifyOtp(array $inputs): array
+    // {
+    //     $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (empty($user)) {
-            throw new CustomException(__('message.emailNotExist'));
-        }
+    //     if (empty($user)) {
+    //         throw new CustomException(__('message.emailNotExist'));
+    //     }
 
-        $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
-        if (empty($userOtp)) {
-            throw new CustomException(__('message.invalidOtp'));
-        }
+    //     $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
+    //     if (empty($userOtp)) {
+    //         throw new CustomException(__('message.invalidOtp'));
+    //     }
 
-        $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
+    //     $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
-        if ($isExpired) {
-            throw new CustomException(__('message.otpExpired'));
-        }
+    //     if ($isExpired) {
+    //         throw new CustomException(__('message.otpExpired'));
+    //     }
 
-        $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-        $this->userObj->whereId($user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
+    //     $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
+    //     $this->userObj->whereId($user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
 
-        $data = [
-            'message' => __('message.userVerifySuccess'),
-        ];
+    //     $data = [
+    //         'message' => __('message.userVerifySuccess'),
+    //     ];
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
     public function login(array $inputs): array
     {
