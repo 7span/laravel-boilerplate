@@ -27,14 +27,15 @@ class AuthService
     {
         DB::beginTransaction();
         $user = $this->userObj->create($inputs);
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
+        $user->sendEmailVerificationNotification();
+        // $otp = Helper::generateOTP(config('site.generateOtpLength'));
+        // $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
         DB::commit();
-        try {
-            VerifyUserMail::dispatch($user, $otp);
-        } catch (\Exception $e) {
-            Log::info('User verification mail failed.' . $e->getMessage());
-        }
+        // try {
+        //     VerifyUserMail::dispatch($user, $otp);
+        // } catch (\Exception $e) {
+        //     Log::info('User verification mail failed.' . $e->getMessage());
+        // }
 
         $data = [
             'message' => __('message.userSignUpSuccess'),
@@ -118,7 +119,7 @@ class AuthService
     {
         $user = $this->userObj->whereEmail($inputs['email'])->first();
 
-        if (! $user || ! Hash::check($inputs['password'], $user->password)) {
+        if (!$user || !Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -203,7 +204,7 @@ class AuthService
             throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
         }
 
-        if (! Hash::check($inputs['current_password'], $user->password)) {
+        if (!Hash::check($inputs['current_password'], $user->password)) {
             throw new CustomException(__('message.wrongCurrentPassword'));
         }
 

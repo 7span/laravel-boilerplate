@@ -15,6 +15,12 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify');
+    })->name('verification.verify');
+
+
+
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
     Route::get('me', [UserController::class, 'me']);
     Route::post('me', [UserController::class, 'updateProfile']);
