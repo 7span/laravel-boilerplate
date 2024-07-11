@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SignedUrlController;
+use App\Http\Controllers\Api\V1\MasterSettingController;
 
 Route::post('signup', [AuthController::class, 'signUp']);
 Route::post('login', [AuthController::class, 'login']);
@@ -30,3 +31,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 Route::post('generate-signed-url', SignedUrlController::class);
 Route::get('countries', CountryController::class);
+Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);
