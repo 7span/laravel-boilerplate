@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserOtpService
 {
-    private $userOtpObj;
+    private UserOtp $userOtpObj;
 
     public function __construct()
     {

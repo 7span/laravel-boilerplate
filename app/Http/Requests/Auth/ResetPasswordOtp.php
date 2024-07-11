@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ResetPassword extends FormRequest
+class ResetPasswordOtp extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class ResetPassword extends FormRequest
         return [
             'email' => 'required|email|max:255',
             'password' => 'required|min:8|confirmed',
-            'token' => 'required'
+            'otp' => 'required|digits:6',
         ];
     }
 }

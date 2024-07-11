@@ -4,18 +4,14 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Content;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ForgetPassword extends Mailable
+class ForgetPasswordOtp extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(private ?array $data)
     {
         //
@@ -37,7 +33,7 @@ class ForgetPassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.forget-password',
+            view: 'emails.forget-password-otp',
             with: ['data' => $this->data],
         );
     }

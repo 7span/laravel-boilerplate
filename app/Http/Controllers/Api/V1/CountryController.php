@@ -13,7 +13,7 @@ class CountryController extends Controller
 {
     use ApiResponser;
 
-    private $countryService;
+    private CountryService $countryService;
 
     public function __construct()
     {

@@ -15,9 +15,11 @@ class UserController extends Controller
 {
     use ApiResponser;
 
-    public function __construct(private UserService $userService)
+    private UserService $userService;
+
+    public function __construct()
     {
-        //
+        $this->userService = new UserService;
     }
 
     #[OA\Get(

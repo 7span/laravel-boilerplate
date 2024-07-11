@@ -8,13 +8,13 @@ use App\Traits\PaginationTrait;
 
 class CountryService
 {
-    use BaseModel,PaginationTrait;
+    use BaseModel, PaginationTrait;
 
-    private $countryObj;
+    private Country $countryObj;
 
     public function __construct()
     {
-        $this->countryObj = new Country();
+        $this->countryObj = new Country;
     }
 
     public function collection(array $inputs)

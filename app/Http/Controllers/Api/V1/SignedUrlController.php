@@ -12,7 +12,7 @@ class SignedUrlController extends Controller
 {
     use ApiResponser;
 
-    private $signedUrlService;
+    private SignedUrlService $signedUrlService;
 
     public function __construct()
     {
