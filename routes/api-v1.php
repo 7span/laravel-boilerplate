@@ -25,4 +25,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 Route::post('generate-signed-url', SignedUrlController::class);
 Route::get('countries', CountryController::class);
-Route::apiResource('versions', MasterSettingController::class)->only(['index', 'show']);
+Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);

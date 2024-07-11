@@ -15,16 +15,14 @@ class MasterSetting extends Model
         'key',
         'value',
         'collection',
-        'is_public'
+        'is_public' // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
 
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-
-    protected $relationship = [];
 }

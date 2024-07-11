@@ -22,7 +22,7 @@ class MasterSettingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/versions',
+        path: '/api/v1/settings',
         operationId: 'getMasterSettings',
         tags: ['MasterSettings'],
         summary: 'Get list of settings',
