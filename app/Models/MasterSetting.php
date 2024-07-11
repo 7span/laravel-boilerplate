@@ -15,7 +15,7 @@ class MasterSetting extends Model
         'key',
         'value',
         'collection',
-        'is_public' // If key is false, visible only for authenticated user. If true, visible for every user.
+        'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
 
     protected $casts = [
