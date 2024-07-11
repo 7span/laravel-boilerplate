@@ -20,5 +20,5 @@ return [
     'inactiveUser' => 'Account Inactive: Please contact administrator to reactivate your account.',
     'changeStatusSuccess' => 'User status has been updated to :status.',
     'verifyEmailInvalid' => 'Invalid/Expired url provided.',
-    'emailAlreadyVerified' => 'Email is already verified, please continue to login.'
+    'emailAlreadyVerified' => 'Email is already verified, please continue to login.',
 ];
