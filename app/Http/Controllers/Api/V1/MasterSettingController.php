@@ -66,7 +66,7 @@ class MasterSettingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/settings/{masterSetting_id}',
+        path: '/api/v1/settings/{masterSettingId}',
         operationId: 'getVersionDetail',
         tags: ['MasterSettings'],
         summary: 'Get detail of settings',
@@ -88,7 +88,7 @@ class MasterSettingController extends Controller
                 )
             ),
             new OA\Parameter(
-                name: 'masterSetting_id',
+                name: 'masterSettingId',
                 in: 'path',
                 required: true,
                 description: 'Id of the setting',
