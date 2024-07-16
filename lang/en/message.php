@@ -20,5 +20,5 @@ return [
     'changeStatusSuccess' => 'User status has been updated to :status.',
     'verifyEmailInvalid' => 'Invalid/Expired url provided.',
     'emailAlreadyVerified' => 'Email is already verified, please continue to login.',
-    'userSignUpWithOtpSuccess' => 'Otp sent to your mail.Please Verify your account via mail.'
+    'userSignUpWithOtpSuccess' => 'Otp sent to your mail.Please Verify your account via mail.',
 ];
