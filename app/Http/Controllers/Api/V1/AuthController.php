@@ -242,53 +242,53 @@ class AuthController extends Controller
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
     }
 
-    // #[OA\Post(
-    //     path: '/api/v1/verify-otp',
-    //     operationId: 'verifyOtp',
-    //     tags: ['Auth'],
-    //     summary: 'Verify One-Time Password (OTP)',
-    //     description: 'Verifies an OTP submitted by a user for authentication or other purposes.',
-    //     requestBody: new OA\RequestBody(
-    //         required: true,
-    //         description: 'User email and OTP code',
-    //         content: new OA\JsonContent(
-    //             required: ['email', 'otp'],
-    //             properties: [
-    //                 new OA\Property(
-    //                     property: 'email',
-    //                     type: 'string',
-    //                     format: 'email',
-    //                     description: "User's email address",
-    //                     example: 'user@gmail.com'
-    //                 ),
-    //                 new OA\Property(
-    //                     property: 'otp',
-    //                     type: 'string',
-    //                     description: 'OTP code submitted by the user',
-    //                     example: '123456',
-    //                     minLength: 6,
-    //                     maxLength: 6
-    //                 ),
-    //             ]
-    //         ),
-    //     ),
-    //     responses: [
-    //         new OA\Response(
-    //             response: '200',
-    //             description: 'Success.',
-    //         ),
-    //         new OA\Response(response: '400', description: 'Validation errors!'),
-    //     ],
-    //     security: [[
-    //         'bearerAuth' => [],
-    //     ]]
-    // )]
-    // public function verifyOtp(VerifyOtpRequest $request): JsonResponse
-    // {
-    //     $data = $this->authService->verifyOtp($request->all());
+    #[OA\Post(
+        path: '/api/v1/verify-otp',
+        operationId: 'verifyOtp',
+        tags: ['Auth'],
+        summary: 'Verify One-Time Password (OTP)',
+        description: 'Verifies an OTP submitted by a user for authentication or other purposes.',
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'User email and OTP code',
+            content: new OA\JsonContent(
+                required: ['email', 'otp'],
+                properties: [
+                    new OA\Property(
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
+                        description: "User's email address",
+                        example: 'user@gmail.com'
+                    ),
+                    new OA\Property(
+                        property: 'otp',
+                        type: 'string',
+                        description: 'OTP code submitted by the user',
+                        example: '123456',
+                        minLength: 6,
+                        maxLength: 6
+                    ),
+                ]
+            ),
+        ),
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Success.',
+            ),
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
+        security: [[
+            'bearerAuth' => [],
+        ]]
+    )]
+    public function verifyOtp(VerifyOtpRequest $request): JsonResponse
+    {
+        $data = $this->authService->verifyOtp($request->all());
 
-    //     return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
-    // }
+        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
 
     #[OA\Post(
         path: '/api/v1/login',

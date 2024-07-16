@@ -22,7 +22,7 @@ Route::apiResource('settings', MasterSettingController::class)->only(['index', '
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    // Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
+    Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
     Route::get('me', [UserController::class, 'me']);
     Route::post('me', [UserController::class, 'updateProfile']);
     Route::post('change-password', [AuthController::class, 'changePassword']);
