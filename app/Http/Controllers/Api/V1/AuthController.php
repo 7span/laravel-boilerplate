@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
 use App\Services\AuthService;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ResendVerifyEmail;
 use App\Http\Requests\Auth\Login as LoginRequest;
 use App\Http\Requests\Auth\SignUp as SignUpRequest;
 use App\Http\Requests\Auth\SendOtp as SendOtpRequest;
@@ -112,6 +114,89 @@ class AuthController extends Controller
         $data = $this->authService->signup($request->all());
 
         return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+    }
+
+    #[OA\Get(
+        path: '/api/v1/email/verify',
+        operationId: 'authVerifyEmail',
+        tags: ['Auth'],
+        parameters: [
+            new OA\Parameter(
+                name: 'X-Requested-With',
+                in: 'header',
+                required: true,
+                description: 'Custom header for XMLHttpRequest',
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'XMLHttpRequest'
+                )
+            ),
+            new OA\Parameter(
+                name: 'id',
+                in: 'query',
+            ),
+            new OA\Parameter(
+                name: 'hash',
+                in: 'query',
+            ),
+            new OA\Parameter(
+                name: 'signature',
+                in: 'query',
+            ),
+            new OA\Parameter(
+                name: 'expires',
+                in: 'query',
+            ),
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Success.'),
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
+    )]
+    public function verifyEmail(Request $request)
+    {
+        $data = $this->authService->verifyEmail($request);
+
+        return $this->success($data);
+    }
+
+    #[OA\Post(
+        path: '/api/v1/email/resend-verification',
+        operationId: 'authResendEmailVerification',
+        tags: ['Auth'],
+        parameters: [
+            new OA\Parameter(
+                name: 'X-Requested-With',
+                in: 'header',
+                required: true,
+                description: 'Custom header for XMLHttpRequest',
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'XMLHttpRequest'
+                )
+            ),
+        ],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'email',
+                        type: 'string',
+                        example: 'test@yopmail.com'
+                    ),
+                ]
+            ),
+        ),
+        responses: [
+            new OA\Response(response: '200', description: 'Success.'),
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
+    )]
+    public function resendVerifyEmail(ResendVerifyEmail $request)
+    {
+        $data = $this->authService->resendVerifyEmail($request->validated());
+
+        return $this->success($data);
     }
 
     #[OA\Post(

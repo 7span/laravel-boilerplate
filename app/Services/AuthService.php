@@ -9,7 +9,6 @@ use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
 use App\Jobs\VerifyUserMail;
 use App\Jobs\ForgetPasswordMail;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -25,16 +24,26 @@ class AuthService
 
     public function signup(array $inputs): array
     {
-        DB::beginTransaction();
         $user = $this->userObj->create($inputs);
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-        DB::commit();
-        try {
-            VerifyUserMail::dispatch($user, $otp);
-        } catch (\Exception $e) {
-            Log::info('User verification mail failed.' . $e->getMessage());
-        }
+
+        /*
+        * NOTE: The code given below is for verifying email with link.
+        */
+        $user->sendEmailVerificationNotification();
+
+        /*
+        * NOTE: The code given below is for verifying email with OTP.
+        * If you want to use this code, please uncomment it.
+        */
+
+        // $otp = Helper::generateOTP(config('site.generateOtpLength'));
+        // $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
+
+        // try {
+        //     VerifyUserMail::dispatch($user, $otp);
+        // } catch (\Exception $e) {
+        //     Log::info('User verification mail failed.' . $e->getMessage());
+        // }
 
         $data = [
             'message' => __('message.userSignUpSuccess'),
@@ -43,6 +52,42 @@ class AuthService
         ];
 
         return $data;
+    }
+
+    public function verifyEmail(object $request)
+    {
+        if (! $request->hasValidSignature()) {
+            throw new CustomException(__('message.verifyEmailInvalid'));
+        }
+
+        $user = User::findOrFail($request->id);
+
+        if (! empty($user->email_verified_at)) {
+            $data['message'] = __('message.emailAlreadyVerified');
+
+            return $data;
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+
+        $data['message'] = __('message.userVerifySuccess');
+
+        return $data;
+    }
+
+    public function resendVerifyEmail(array $inputs)
+    {
+        $user = $this->userObj->where('email', $inputs['email'])->firstOrFail();
+        if (! $user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+            $data['message'] = __('message.userSignUpSuccess');
+
+            return $data;
+        }
+
+        throw new CustomException(__('message.emailAlreadyVerified'));
     }
 
     public function sendOtp(array $inputs): array
