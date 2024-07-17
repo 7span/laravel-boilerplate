@@ -187,25 +187,7 @@ class AuthService
             return $data;
         }
 
-        // $user = $this->userObj->whereEmail($inputs['email'])->first();
-
-        // if (empty($user)) {
-        //     throw new CustomException(__('message.emailNotExist'));
-        // }
-
-        // try {
-        //     $user->reset_password_token = Str::random(64);
-        //     $user->save();
-        //     ForgetPasswordMail::dispatch($user);
-        // } catch (\Exception $e) {
-        //     Log::info('Forget Password mail failed.' . $e->getMessage());
-        // }
-
-        // $data = [
-        //     'message' => __('message.forgetPasswordEmailSuccess'),
-        // ];
-
-        // return $data;
+        throw new CustomException(__($emailStatus));
     }
 
     public function resetPasswordOtp(array $inputs): array

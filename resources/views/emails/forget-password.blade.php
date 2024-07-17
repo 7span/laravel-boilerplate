@@ -23,7 +23,8 @@
                 <a href="{{ config('app.url') }}"
                     style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">{{ config('app.name') }}</a>
             </div>
-            <p style="font-size:1.1em; margin-top:20px; ">Hi {{ $data['firstname'] }} {{ $data['lastname'] }},</p>
+            <p style="font-size:1.1em; margin-top:20px; ">{{ __('email.hello') }} {{ $data['firstname'] }}
+                {{ $data['lastname'] }},</p>
 
             <p>{{ __('email.forgetPasswordLinkEmailLine1') }}</p>
 
@@ -31,7 +32,7 @@
 
             <a href="{{ $url }}" target="_blank">{{ __('email.link') }}</a>
 
-            <p style="font-size:0.9em;">Regards,<br />{{ config('app.name') }}</p>
+            <p style="font-size:0.9em;">{{ __('email.regards') }} <br />{{ config('app.name') }}</p>
         </div>
     </div>
 </body>

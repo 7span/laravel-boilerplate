@@ -32,7 +32,6 @@ class User extends Authenticatable
         'country_code',
         'mobile_number',
         'email_verified_at',
-        'reset_password_token',
         'last_login_at',
     ];
 

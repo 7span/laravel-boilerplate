@@ -114,7 +114,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->signup($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -157,7 +157,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->sendOtp($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -205,7 +205,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->verifyOtp($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -250,7 +250,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->login($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -287,7 +287,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->forgetPasswordOtp($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -324,7 +324,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->forgetPassword($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return  $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -385,7 +385,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->resetPasswordOtp($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
 
@@ -447,7 +447,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->resetPassword($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -504,7 +504,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->changePassword($request->all());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 
     #[OA\Post(
@@ -528,6 +528,6 @@ class AuthController extends Controller
     {
         $data = $this->authService->logout();
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 }

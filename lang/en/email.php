@@ -17,4 +17,6 @@ return [
     'forgetPasswordLinkEmailLine1' => 'We hope this message finds you well. It appears that you have requested to reset the password associated with your ' . config('app.name') . ' account. If you did not initiate this request, please ignore this email.',
     'forgetPasswordLinkEmailLine2' => 'To reset your password, please click on the following link:',
     'link' => 'Password Reset Link',
+    'forgetPasswordOtpEmailLine1' => 'Use the following OTP to complete your Reset Password procedures. OTP is valid for 10 minutes.',
+    'regards' => 'regards,'
 ];
