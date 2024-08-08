@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -47,7 +48,16 @@ class User extends Authenticatable
 
     protected $dates = ['created_at'];
 
-    protected $relationship = [];
+    protected $relationship = [
+        'profile' => [
+            'model' => 'App\Models\Media',
+        ],
+    ];
+
+    public function profile(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'mediable');
+    }
 
     /**
      * Get the attributes that should be cast.

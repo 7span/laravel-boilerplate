@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
+use App\Library\MediaHelper;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,6 +54,12 @@ class UserService
                 'message' => __('message.userProfileUpdate'),
                 'data' => $user->refresh(),
             ];
+        }
+
+        if (isset($inputs['media'])) {
+            $mediaTag = config('site.media_tags.profile_image');
+
+            MediaHelper::attachMedia($inputs['media'], $mediaTag, $id, User::class, config('site.disk.profile_image'), config('site.media_type.attach_media'));
         }
 
         return $data;

@@ -2,7 +2,9 @@
 
 namespace App\Library;
 
+use App\Models\Media;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
@@ -14,6 +16,121 @@ class MediaHelper
         $fileName = $fileNameArr[0] . '-' . Str::random(10) . '.' . $extension;
 
         return $fileName;
+    }
+
+    public static function getAggregateType($mimeType)
+    {
+        $aggregateTypeLists = config('site.aggregate_types');
+
+        $aggregateType = '';
+
+        foreach ($aggregateTypeLists as $key => $aggregateTypes) {
+            if (in_array($mimeType, $aggregateTypes)) {
+                $aggregateType = $key;
+                break;
+            }
+        }
+
+        return ! empty($aggregateType) ? $aggregateType : 'all';
+    }
+
+    public static function attachMedia($data, $tag, $mediableId, $mediableType, $disk, $mediatype)
+    {
+        $disk = $disk ?? config('filesystems.default');
+        $mediaIds = [];
+        $medias = [];
+
+        if (isset($data[0])) {
+            $medias = $data;
+        } else {
+            $medias[] = $data;
+        }
+
+        foreach ($medias as $media) {
+            $extension = self::getExtension($media['file_name'], $media['mime_type']);
+            $aggregateType = self::getAggregateType($media['mime_type']);
+            $fileName = explode('.', $media['file_name'])[0];
+
+            $conditions = [];
+
+            if ($mediatype === 'attach_media') {
+                $conditions = [
+                    'mediable_id' => $mediableId,
+                    'mediable_type' => $mediableType,
+                    'tag' => $tag,
+                ];
+            } else {
+                $conditions['file_name'] = $fileName;
+            }
+
+            $mediaObj = Media::updateOrCreate(
+                $conditions,
+                [
+                    'disk' => $disk ?? config('filesystems.default'),
+                    'directory' => $media['directory'],
+                    'file_name' => $fileName,
+                    'original_file_name' => $media['original_file_name'],
+                    'extension' => $extension,
+                    'mime_type' => $media['mime_type'],
+                    'size' => $media['size'],
+                    'aggregate_type' => $aggregateType,
+                    'mediable_type' => $mediableType,
+                    'mediable_id' => $mediableId,
+                    'tag' => $tag,
+                ]
+            );
+            array_push($mediaIds, $mediaObj->id);
+        }
+
+        return $mediaIds;
+    }
+
+    public static function detachMedia($fileObj, $disk)
+    {
+        $imageUrl = $fileObj['file_name'] . '.' . $fileObj['extension'];
+
+        Storage::disk($disk)->delete($imageUrl);
+
+        $fileObj->delete();
+    }
+
+    public static function syncMedia($data, $tag, $mediableId, $mediableType, $disk, $mediatype)
+    {
+        $userMedias = Media::whereMediableId($mediableId)->whereTag($tag)->get();
+
+        foreach ($userMedias as $userMedia) {
+            $aggregateType = self::detachMedia($userMedia, $disk);
+        }
+
+        self::attachMedia($data, $tag, $mediableId, $mediableType, $disk, $mediatype);
+    }
+
+    public static function destroyMedia($mediaIds)
+    {
+        $ids = $mediaIds['media_ids'];
+        $mediaItems = Media::whereIn('id', $ids)->where('mediable_id', auth()->id());
+
+        $fileArr = [];
+
+        foreach ($mediaItems->get() as $media) {
+            if ($media->disk == 's3') {
+                $fileArr[$media->disk][] = $media->directory . '/' . $media->file_name . '.' . $media->extension;
+            } else {
+                $fileArr[$media->disk][] = $media->file_name . '.' . $media->extension;
+            }
+        }
+
+        foreach ($fileArr as $disk => $files) {
+            if (! empty($files)) {
+                Storage::disk($disk)->delete($files);
+            }
+        }
+
+        Media::whereIn('id', $ids)->where('mediable_id', auth()->id())->delete();
+
+        $data['message'] = __('message.mediaDeleteSuccess');
+
+        return $data;
     }
 
     public static function getExtension($fileName, $mimeType)

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\ResourceFilterable;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Media\Resource as MediaResource;
 
 class Resource extends JsonResource
 {
@@ -21,6 +22,8 @@ class Resource extends JsonResource
     public function toArray(Request $request): array
     {
         $data = $this->fields();
+
+        $data['profile'] = new MediaResource($this->whenLoaded('profile'));
 
         return $data;
     }
