@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\MediaController;
 use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SignedUrlController;
+use App\Http\Controllers\Api\V1\MasterSettingController;
 
 Route::post('signup', [AuthController::class, 'signUp']);
 Route::post('login', [AuthController::class, 'login']);
@@ -16,6 +17,7 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 Route::post('generate-signed-url', SignedUrlController::class);
 Route::get('countries', CountryController::class);
+Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
@@ -25,3 +27,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::delete('medias/{id?}', [MediaController::class, 'destroy']);
 });
+
