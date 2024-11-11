@@ -285,7 +285,7 @@ class AuthController extends Controller
     )]
     public function forgetPasswordOtp(ForgetPasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->forgetPasswordOtp($request->all());
+        $data = $this->authService->forgetPasswordOtp($request->validated());
 
         return $this->success($data, 200);
     }
@@ -322,7 +322,7 @@ class AuthController extends Controller
     )]
     public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->forgetPassword($request->all());
+        $data = $this->authService->forgetPassword($request->validated());
 
         return  $this->success($data, 200);
     }

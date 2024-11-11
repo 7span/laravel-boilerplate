@@ -1,12 +1,3 @@
-@php
-    $url = url(
-        config('site.frontWebsiteUrl') .
-            '/reset-password?token=' .
-            $data['reset_password_token'] .
-            '&email=' .
-            $data['email'],
-    );
-@endphp
 <!DOCTYPE html>
 <html>
 

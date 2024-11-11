@@ -13,12 +13,20 @@ class ForgetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private string $url;
+
     /**
      * Create a new message instance.
      */
     public function __construct(private ?array $data)
     {
-        //
+        $this->url = url(
+            config('site.frontWebsiteUrl') .
+                '/reset-password?token=' .
+                $data['reset_password_token'] .
+                '&email=' .
+                $data['email']
+        );
     }
 
     /**
@@ -38,7 +46,10 @@ class ForgetPassword extends Mailable
     {
         return new Content(
             view: 'emails.forget-password',
-            with: ['data' => $this->data],
+            with: [
+                'data' => $this->data,
+                'url' => $this->url,
+            ],
         );
     }
 
