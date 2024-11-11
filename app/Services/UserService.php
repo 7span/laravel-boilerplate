@@ -10,14 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    private $userObj;
+    private User $userObj;
 
-    private $userOtpService;
+    private UserOtpService $userOtpService;
 
     public function __construct()
     {
-        $this->userObj = new User();
-        $this->userOtpService = new UserOtpService();
+        $this->userObj = new User;
+
+        $this->userOtpService = new UserOtpService;
     }
 
     public function resource(int $id, array $inputs = []): User
@@ -31,7 +32,7 @@ class UserService
     {
         $user = Auth::user();
 
-        if (! empty($inputs['email']) && $inputs['email'] != $user->email) {
+        if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
             $inputs['email_verified_at'] = null;
             $otp = Helper::generateOTP(config('site.generateOtpLength'));
             $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);

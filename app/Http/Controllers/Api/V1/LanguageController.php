@@ -13,9 +13,11 @@ class LanguageController extends Controller
 {
     use ApiResponser;
 
-    public function __construct(private LanguageService $langService)
+    private LanguageService $langService;
+
+    public function __construct()
     {
-        //
+        $this->langService = new LanguageService;
     }
 
     #[OA\Get(

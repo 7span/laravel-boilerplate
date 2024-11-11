@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Mail\ForgetPassword;
 use Illuminate\Bus\Queueable;
+use App\Mail\ForgetPasswordOtp;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
@@ -11,14 +11,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class ForgetPasswordMail implements ShouldQueue
+class ForgetPasswordOtpMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(private object $user)
+    public function __construct(private object $user, private int|string $otp)
     {
         //
     }
@@ -30,13 +30,11 @@ class ForgetPasswordMail implements ShouldQueue
     {
         try {
             $data = [
+                'otp' => $this->otp,
                 'firstname' => $this->user->first_name,
                 'lastname' => $this->user->last_name,
-                'email' => $this->user->email,
-                'reset_password_token' => $this->user->reset_password_token
             ];
-
-            Mail::to($this->user->email)->send(new ForgetPassword(data: $data));
+            Mail::to($this->user->email)->send(new ForgetPasswordOtp(data: $data));
         } catch (\Exception $e) {
             Log::error('Forgot Password Error : ' . $e);
         }

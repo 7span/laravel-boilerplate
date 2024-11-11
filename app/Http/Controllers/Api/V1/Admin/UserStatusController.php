@@ -13,7 +13,7 @@ class UserStatusController extends Controller
 {
     use ApiResponser;
 
-    private $userService;
+    private UserService $userService;
 
     public function __construct()
     {
