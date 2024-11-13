@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Country extends Model
 {
-    use BaseModel,HasFactory;
+    use BaseModel, HasFactory;
 
     protected $fillable = [
         'iso',
@@ -17,4 +17,13 @@ class Country extends Model
         'numcode',
         'phonecode',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+            'deleted_at' => 'timestamp',
+        ];
+    }
 }

@@ -7,6 +7,7 @@ use App\Helpers\Helper;
 use App\Jobs\VerifyUserMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\User\Resource;
 
 class UserService
 {
@@ -34,7 +35,7 @@ class UserService
 
         if (!empty($inputs['email']) && $inputs['email'] != $user->email) {
             $inputs['email_verified_at'] = null;
-            $otp = Helper::generateOTP(config('site.generateOtpLength'));
+            $otp = Helper::generateOTP(config('site.generate_otp_length'));
             $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
 
             try {
@@ -46,13 +47,13 @@ class UserService
             $user->update($inputs);
             $data = [
                 'message' => __('message.updateUserVerifySuccess'),
-                'data' => $user->refresh(),
+                'user' => new Resource($user),
             ];
         } else {
             $user->update($inputs);
             $data = [
                 'message' => __('message.userProfileUpdate'),
-                'data' => $user->refresh(),
+                'user' => new Resource($user),
             ];
         }
 
@@ -64,6 +65,7 @@ class UserService
         $user->update($inputs);
         $data = [
             'message' => __('entity.entityUpdated', ['entity' => 'User status']),
+            'user' => new Resource($user),
         ];
 
         return $data;

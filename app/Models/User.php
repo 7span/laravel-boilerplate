@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Traits\BaseModel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
@@ -45,7 +43,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $dates = ['created_at'];
+    // protected $dates = ['created_at'];
 
     protected $relationship = [];
 
@@ -60,11 +58,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+            'deleted_at' => 'timestamp',
         ];
-    }
-
-    protected function password(): Attribute
-    {
-        return Attribute::set(fn (string $password) => Hash::make($password));
     }
 }

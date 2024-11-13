@@ -123,8 +123,8 @@ class UserController extends Controller
     )]
     public function updateProfile(UpdateProfile $request): JsonResponse
     {
-        $data = $this->userService->update(Auth::id(), $request->all());
+        $data = $this->userService->update(Auth::id(), $request->validated());
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 }

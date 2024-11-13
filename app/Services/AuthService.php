@@ -37,11 +37,10 @@ class AuthService
 
     public function signup(array $inputs): array
     {
-        DB::beginTransaction();
         $user = $this->userObj->create($inputs);
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
+        $otp = Helper::generateOTP(config('site.generate_otp_length'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
-        DB::commit();
+
         try {
             VerifyUserMail::dispatch($user, $otp);
         } catch (\Exception $e) {
@@ -59,13 +58,13 @@ class AuthService
 
     public function sendOtp(array $inputs): array
     {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
 
         if (empty($user)) {
             throw new CustomException(__('message.emailNotExist'));
         }
 
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
+        $otp = Helper::generateOTP(config('site.generate_otp_length'));
 
         switch ($inputs['otp_for']) {
             case 'verification':
@@ -99,7 +98,7 @@ class AuthService
 
     public function verifyOtp(array $inputs): array
     {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
 
         if (empty($user)) {
             throw new CustomException(__('message.emailNotExist'));
@@ -117,7 +116,7 @@ class AuthService
         }
 
         $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-        $this->userObj->whereId($user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
+        $this->userObj->where('id', $user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
 
         $data = [
             'message' => __('message.userVerifySuccess'),
@@ -128,7 +127,7 @@ class AuthService
 
     public function login(array $inputs): array
     {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
 
         if (!$user || !Hash::check($inputs['password'], $user->password)) {
             throw new CustomException(__('auth.failed'));
@@ -151,14 +150,14 @@ class AuthService
 
     public function forgetPasswordOtp(array $inputs): array
     {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
         if (empty($user)) {
             throw new CustomException(__('message.emailNotExist'));
         }
 
-        $this->userOtpObj->whereUserId($user['id'])->where('otp_for', 'reset_password')->delete();
+        $this->userOtpObj->where('user_id', $user['id'])->where('otp_for', 'reset_password')->delete();
 
-        $otp = Helper::generateOTP(config('site.generateOtpLength'));
+        $otp = Helper::generateOTP(config('site.generate_otp_length'));
         $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'reset_password']);
 
         try {
@@ -192,7 +191,7 @@ class AuthService
 
     public function resetPasswordOtp(array $inputs): array
     {
-        $user = $this->userObj->whereEmail($inputs['email'])->first();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
 
         if (empty($user)) {
             throw new CustomException(__('message.emailNotExist'));
@@ -227,7 +226,6 @@ class AuthService
             'token' => $inputs['token'],
             'email' => $inputs['email'],
             'password' => $inputs['password'],
-            'password_confirmation' => $inputs['password_confirmation'],
         ], function (User $user, string $password) {
             $user->forceFill([
                 'password' => $password,

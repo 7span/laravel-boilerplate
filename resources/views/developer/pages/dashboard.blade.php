@@ -24,15 +24,16 @@
                     <div class="relative z-0 flex-1 px-2 d-flex items-center justify-center sm-absolute sm-inset-0">
                         <div class="relative">
                             <a href="{{ config('app.url') }}">
-                                <img class="h-12" src="{{ asset('assets/img/logo.png') }}" alt="{{ config('app.name') }}">
+                                <img class="h-12" src="{{ asset('assets/img/logo.png') }}"
+                                    alt="{{ config('app.name') }}">
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <div class="d-flex justify-center pt-5">
-            <div class="log-viewer p-5">
+        <div class="grid-container">
+            <div class="log-viewer">
                 <a href="{{ url('developer/log-viewer') }}" target="_blank">
                     <div class="block">
                         <div class="p-6">
@@ -44,7 +45,7 @@
                     </div>
                 </a>
             </div>
-            <div class="telescope p-5">
+            <div class="telescope">
                 <a href="{{ url('developer/telescope') }}" target="_blank">
                     <div class="block">
                         <div class="p-6">
@@ -57,7 +58,7 @@
                     </div>
                 </a>
             </div>
-            <div class="scramble p-5">
+            <div class="swagger">
                 <a href="{{ url('developer/docs/api') }}" target="_blank">
                     <div class="block">
                         <div class="p-6">
@@ -70,8 +71,7 @@
                     </div>
                 </a>
             </div>
-
-            <div class="horizon p-5">
+            <div class="horizon">
                 <a href="{{ url('developer/horizon') }}" target="_blank">
                     <div class="block">
                         <div class="p-6">
@@ -84,16 +84,15 @@
                     </div>
                 </a>
             </div>
-
-        </div>
-        <div class="d-flex pt-5">
-            <div class="telescope p-5">
+            <div class="pulse">
                 <a href="{{ url('developer/pulse') }}" target="_blank">
                     <div class="block">
                         <div class="p-6">
                             <h5>Pulse</h5>
                             <p>
-                                Laravel Pulse delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
+                                Laravel Pulse delivers at-a-glance insights into your application's performance and
+                                usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find
+                                your most active users, and more.
                             </p>
                         </div>
                     </div>
