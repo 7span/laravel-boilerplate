@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'hello' => 'Hello',
+    'hello' => 'Hello,',
     'thanks' => 'Thanks',
     'forgetPasswordEmailSubject' => 'Forgot Password',
     'forgetPasswordEmailLine1' => 'You requested to reset your password, please use the below code to reset your password.',
@@ -18,5 +18,7 @@ return [
     'forgetPasswordLinkEmailLine2' => 'To reset your password, please click on the following link:',
     'link' => 'Password Reset Link',
     'forgetPasswordOtpEmailLine1' => 'Use the following OTP to complete your Reset Password procedures. OTP is valid for 10 minutes.',
-    'regards' => 'regards,'
+    'regards' => 'Regards,',
+    'verifyUserLine1' => 'Thank you for choosing ' . config('app.name') . '. Use the following OTP to complete your
+     :subject process. OTP is valid for :expirationTime minutes.'
 ];

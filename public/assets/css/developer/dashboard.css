@@ -84,20 +84,10 @@ a {
     text-decoration: none;
 }
 
-.log-viewer .block {
-    display: block;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1),
-        0 2px 4px -1px rgba(9, 9, 16, 0.06);
-    max-width: 20rem;
-    text-align: center;
-    background-color: #2563eb;
-    height: 100%;
-}
-
 .log-viewer .block h5,
 .telescope .block h5,
-.scramble .block h5,
+.swagger .block h5,
+.pulse .block h5,
 .horizon .block h5 {
     color: white;
     font-size: 1.6rem;
@@ -108,7 +98,8 @@ a {
 
 .log-viewer .block p,
 .telescope .block p,
-.scramble .block p,
+.swagger .block p,
+.pulse .block p,
 .horizon .block p {
     color: white;
     font-size: 1rem;
@@ -117,32 +108,40 @@ a {
     font-family: serif;
 }
 
-.telescope .block {
-    display: block;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1),
-        0 2px 4px -1px rgba(9, 9, 16, 0.06);
-    background-color: #7c3aed;
-    max-width: 20rem;
-    text-align: center;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates 4 equal columns */
+    gap: 12px;
+    margin-top: 20px;
 }
 
-.scramble .block {
+.block {
     display: block;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1),
         0 2px 4px -1px rgba(9, 9, 16, 0.06);
-    background-color: #eb70eb;
-    max-width: 20rem;
     text-align: center;
+    height: 220px;
+}
+
+
+
+.telescope .block {
+    background-color: #7c3aed;
 }
 
 .horizon .block {
-    display: block;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(9, 9, 16, 0.1),
-        0 2px 4px -1px rgba(9, 9, 16, 0.06);
-    background-color: #374151;
-    max-width: 20rem;
-    text-align: center;
+    background-color: #b05470;
+}
+
+.log-viewer .block {
+    background-color: #2563eb;
+}
+
+.swagger .block {
+    background-color: #12c03a;
+}
+
+.pulse .block {
+    background-color: #eb70eb;
 }

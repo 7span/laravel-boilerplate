@@ -35,5 +35,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->renderable(fn (NotFoundHttpException $e, Request $request) => ExceptionHelper::notFoundHandler($e, $request));
+        $exceptions->render(function (NotFoundHttpException $e) {
+            $message = $e->getMessage();
+            return response()->json([
+                'message' => $message
+            ], 404);
+        });
     })->create();
