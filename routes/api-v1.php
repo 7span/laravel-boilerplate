@@ -9,13 +9,23 @@ use App\Http\Controllers\Api\V1\SignedUrlController;
 use App\Http\Controllers\Api\V1\MasterSettingController;
 
 Route::post('signup', [AuthController::class, 'signUp']);
+
+Route::get('email/verify', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+Route::post('email/resend-verification', [AuthController::class, 'resendVerifyEmail']);
+
 Route::post('login', [AuthController::class, 'login']);
+
 Route::post('send-otp', [AuthController::class, 'sendOtp']);
+
 Route::post('forget-password-otp', [AuthController::class, 'forgetPasswordOtp']);
-Route::post('forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('reset-password-otp', [AuthController::class, 'resetPasswordOtp']);
+
+Route::post('forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 
+Route::post('generate-signed-url', SignedUrlController::class);
+Route::get('countries', CountryController::class);
+Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -25,7 +35,3 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('change-password', [AuthController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
-
-Route::post('generate-signed-url', SignedUrlController::class);
-Route::get('countries', CountryController::class);
-Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);
