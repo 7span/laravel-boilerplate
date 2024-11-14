@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Jobs\VerifyUserMail;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\ForgetPasswordOtpMail;
+use App\Jobs\ForgetPasswordMail;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
