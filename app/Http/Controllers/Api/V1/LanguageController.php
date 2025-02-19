@@ -88,6 +88,6 @@ class LanguageController extends Controller
     {
         $data = $this->langService->resource($language);
 
-        return isset($data['errors']) ? $this->error($data) : $this->success($data, 200);
+        return $this->success($data, 200);
     }
 }

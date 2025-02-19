@@ -21,7 +21,7 @@ class ForgetPassword extends Mailable
     public function __construct(private ?array $data)
     {
         $this->url = url(
-            config('site.frontWebsiteUrl') .
+            config('site.front_website_url') .
                 '/reset-password?token=' .
                 $data['reset_password_token'] .
                 '&email=' .

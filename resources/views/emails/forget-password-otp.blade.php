@@ -14,16 +14,21 @@
                 <a href="{{ config('app.url') }}"
                     style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">{{ config('app.name') }}</a>
             </div>
-            <p style="font-size:1.1em; margin-top:20px; ">Hi {{ $data['firstname'] }} {{ $data['lastname'] }},</p>
+            <p style="font-size:1.1em; margin-top:20px; ">
+                {{ __('email.hello') }} {{ $data['first_name'] }} {{ $data['last_name'] }}
+            </p>
 
-            <p>Thank you for choosing {{ config('app.name') }}. Use the following OTP to complete your Reset Password
-                procedures. OTP is valid for 10 minutes.</p>
+            <p> {{ __('email.verifyUserLine1', [
+                'subject' => $data['subject'],
+                'expirationTime' => config('site.otp_expiration_time_in_minutes'),
+            ]) }}
+            </p>
 
             <h2
                 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">
                 {{ $data['otp'] }}</h2>
 
-            <p style="font-size:0.9em;">Regards,<br />{{ config('app.name') }}</p>
+            <p style="font-size:0.9em;">{{ __('email.regards') }}<br />{{ config('app.name') }}</p>
         </div>
     </div>
 </body>

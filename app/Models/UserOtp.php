@@ -40,13 +40,14 @@ class UserOtp extends Model
         ],
     ];
 
-    protected $cast = [
-        'created_at' => 'timestamp',
-    ];
-
-    protected $dates = [
-        'created_at',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+            'deleted_at' => 'timestamp',
+        ];
+    }
 
     /**
      * Model's relationships

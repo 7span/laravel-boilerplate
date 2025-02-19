@@ -72,8 +72,8 @@ class SignedUrlController extends Controller
     )]
     public function __invoke(SignedUrlRequest $request)
     {
-        $signedUrlObj = $this->signedUrlService->create($request->all());
+        $signedUrlObj = $this->signedUrlService->create($request->validated());
 
-        return isset($signedUrlObj['errors']) ? $this->error($signedUrlObj) : $this->success($signedUrlObj, 200);
+        return $this->success($signedUrlObj, 200);
     }
 }
