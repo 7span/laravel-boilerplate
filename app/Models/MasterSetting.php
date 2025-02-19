@@ -18,11 +18,14 @@ class MasterSetting extends Model
         'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
 
-    protected $casts = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
-        'deleted_at' => 'timestamp',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+            'deleted_at' => 'timestamp',
+        ];
+    }
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }

@@ -112,7 +112,7 @@ class AuthController extends Controller
     )]
     public function signUp(SignUpRequest $request): JsonResponse
     {
-        $data = $this->authService->signup($request->all());
+        $data = $this->authService->signup($request->validated());
 
         return $this->success($data, 200);
     }
@@ -155,7 +155,7 @@ class AuthController extends Controller
     )]
     public function sendOtp(SendOtpRequest $request): JsonResponse
     {
-        $data = $this->authService->sendOtp($request->all());
+        $data = $this->authService->sendOtp($request->validated());
 
         return $this->success($data, 200);
     }
@@ -203,7 +203,7 @@ class AuthController extends Controller
     )]
     public function verifyOtp(VerifyOtpRequest $request): JsonResponse
     {
-        $data = $this->authService->verifyOtp($request->all());
+        $data = $this->authService->verifyOtp($request->validated());
 
         return $this->success($data, 200);
     }
@@ -248,7 +248,7 @@ class AuthController extends Controller
     )]
     public function login(LoginRequest $request)
     {
-        $data = $this->authService->login($request->all());
+        $data = $this->authService->login($request->validated());
 
         return $this->success($data, 200);
     }
@@ -383,7 +383,7 @@ class AuthController extends Controller
     )]
     public function resetPasswordOtp(ResetPasswordOtpRequest $request): JsonResponse
     {
-        $data = $this->authService->resetPasswordOtp($request->all());
+        $data = $this->authService->resetPasswordOtp($request->validated());
 
         return $this->success($data, 200);
     }
@@ -445,7 +445,7 @@ class AuthController extends Controller
     )]
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->resetPassword($request->all());
+        $data = $this->authService->resetPassword($request->validated());
 
         return $this->success($data, 200);
     }
@@ -502,7 +502,7 @@ class AuthController extends Controller
     )]
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->changePassword($request->all());
+        $data = $this->authService->changePassword($request->validated());
 
         return $this->success($data, 200);
     }

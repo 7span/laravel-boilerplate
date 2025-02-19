@@ -31,8 +31,8 @@ class SendOtpMail implements ShouldQueue
         try {
             $data = [
                 'otp' => $this->otp,
-                'firstname' => $this->user->firstname,
-                'lastname' => $this->user->lastname,
+                'first_name' => $this->user->first_name,
+                'last_name' => $this->user->last_name,
                 'subject' => $this->subject,
             ];
             Mail::to($this->user->email)->send(new VerifyUserMail(data: $data));

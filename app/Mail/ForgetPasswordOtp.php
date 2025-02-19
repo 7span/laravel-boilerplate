@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
@@ -23,7 +24,7 @@ class ForgetPasswordOtp extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('email.forgetPasswordEmailSubject'),
+            subject: $this->data['subject'],
         );
     }
 
