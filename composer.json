@@ -12,7 +12,7 @@
         "aws/aws-sdk-php": "^3.306",
         "darkaonline/l5-swagger": "^8.6",
         "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.0",
         "laravel/horizon": "^5.24",
         "laravel/pulse": "^1.2",
         "laravel/sanctum": "^4.0",
@@ -22,15 +22,15 @@
         "predis/predis": "^2.0",
         "spatie/laravel-littlegatekeeper": "^1.1",
         "spatie/laravel-permission": "^6.4",
-        "spatie/laravel-query-builder": "^5.8"
+        "spatie/laravel-query-builder": "^6.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^10.5",
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^11.5.3",
         "spatie/laravel-ignition": "^2.4",
         "tightenco/duster": "^2.7"
     },
@@ -68,7 +68,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "11.x-dev"
+            "dev-master": "12.x-dev"
         },
         "laravel": {
             "dont-discover": []
