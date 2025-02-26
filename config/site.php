@@ -11,4 +11,5 @@ return [
         'active' => 'active',
         'inactive' => 'inactive',
     ],
+    'logo_url' => asset('assets/img/laravel-logo.png'),
 ];

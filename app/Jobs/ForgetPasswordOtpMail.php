@@ -31,7 +31,7 @@ class ForgetPasswordOtpMail implements ShouldQueue
         try {
             $data = [
                 'otp' => $this->otp,
-                'full_name' => $this->user->full_name,
+                'name' => $this->user->name,
                 'subject' => __('email.forgetPasswordEmailSubject'),
             ];
             Mail::to($this->user->email)->send(new ForgetPasswordOtp(data: $data));

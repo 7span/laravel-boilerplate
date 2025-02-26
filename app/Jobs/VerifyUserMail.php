@@ -29,7 +29,7 @@ class VerifyUserMail implements ShouldQueue
         try {
             $data = [
                 'otp' => $this->otp,
-                'full_name' => $this->user->full_name,
+                'name' => $this->user->name,
                 'subject' => __('email.verifyUserSubject'),
             ];
 

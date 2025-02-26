@@ -7,6 +7,5 @@
     ]) }}
 </p>
 
-<h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">
-    {{ $data['otp'] }}</h2>
+<p class="email-button">{{ $data['otp'] }}</p>
 @endsection
