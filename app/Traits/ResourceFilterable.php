@@ -40,7 +40,6 @@ trait ResourceFilterable
                 }
             }
         }
-
         return $data;
     }
 }
