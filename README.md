@@ -1,16 +1,16 @@
 
 ## About Laravel Boilerplate
 
-The laravel boilerplate is project that uses the `Laravel` (Version 11) as a backend framework. It provides basic structure for starting any new laravel project. It has implemented the basic authetication provided by laravel.
+The laravel boilerplate is project that uses the `Laravel` (Version 12) as a backend framework. It provides basic structure for starting any new laravel project. It has implemented the basic authetication provided by laravel.
 
 
 ## Laravel Packages
 
-- [Laravel Telescope](https://laravel.com/docs/11.x/telescope) - For Monitoring request
+- [Laravel Telescope](https://laravel.com/docs/12.x/telescope) - For Monitoring request
 - [Laravel Littlegatekeeper](https://github.com/spatie/laravel-littlegatekeeper) - Protect pages from access with a universal username/password combination. It is used for developer panel which includes `Telescope`.
 - [Log Viewer](https://github.com/ARCANEDEV/LogViewer) - To manage and keep track of each one of your log files
-- [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum) - It provides a featherweight authentication system for SPAs , mobile applications, and simple, token based APIs
-- [Laravel Pint](https://laravel.com/docs/11.x/pint) - It provides an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.
+- [Laravel Sanctum](https://laravel.com/docs/12.x/sanctum) - It provides a featherweight authentication system for SPAs , mobile applications, and simple, token based APIs
+- [Laravel Pint](https://laravel.com/docs/12.x/pint) - It provides an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.
 	
 	- __General Usage__
 		to use the pint binary all you have to do is run the following command in the root of your project.
