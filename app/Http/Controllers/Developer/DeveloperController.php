@@ -3,28 +3,12 @@
 namespace App\Http\Controllers\Developer;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Developer\Login;
+use Illuminate\Contracts\View\View;
 
 class DeveloperController extends Controller
 {
-    public function login(Login $request)
+    public function showLoginForm(): View
     {
-        $auth = resolve('littlegatekeeper');
-        $loginSuccess = $auth->attempt($request->toArray());
-        if (! $loginSuccess) {
-            return redirect()->back()->withErrors(['message', 'Invalid credencials.']);
-        }
-
-        return redirect()->route('developer.dashboard');
-    }
-
-    public function loginPage()
-    {
-        return view('developer.pages.login');
-    }
-
-    public function dashboard()
-    {
-        return view('developer.pages.dashboard');
+         return view('developer.login');
     }
 }

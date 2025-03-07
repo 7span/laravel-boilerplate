@@ -2,50 +2,36 @@
 
 namespace App\Models;
 
-use App\Traits\BaseModel;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'username',
+        'name',
         'email',
-        'status',
         'password',
-        'country_code',
-        'mobile_number',
-        'email_verified_at',
-        'last_login_at',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    // protected $dates = ['created_at'];
-
-    protected $relationship = [];
 
     /**
      * Get the attributes that should be cast.
@@ -57,10 +43,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'last_login_at' => 'datetime',
-            'created_at' => 'timestamp',
-            'updated_at' => 'timestamp',
-            'deleted_at' => 'timestamp',
         ];
     }
 }
