@@ -28,7 +28,7 @@
 
     <div class="dashboard-container">
         <!-- Log Viewer Card -->
-        <a href="#" target="_blank" class="card">
+        <a href="{{ url('developer/log-viewer') }}" target="_blank" class="card">
             <div class="card-content">
                 <i class="fas fa-file-alt card-icon"></i>
                 <h5>Log Viewer</h5>
@@ -37,7 +37,7 @@
         </a>
 
         <!-- Telescope Card -->
-        <a href="#" target="_blank" class="card">
+        <a href="{{ url('developer/telescope') }}" target="_blank" class="card">
             <div class="card-content">
                 <i class="fas fa-binoculars card-icon"></i>
                 <h5>Telescope</h5>
@@ -46,7 +46,7 @@
         </a>
 
         <!-- Swagger API Document Card -->
-        <a href="#" target="_blank" class="card">
+        <a href="{{ url('developer/docs/api') }}" target="_blank" class="card">
             <div class="card-content">
                 <i class="fas fa-book card-icon"></i>
                 <h5>Swagger API Document</h5>
@@ -55,7 +55,7 @@
         </a>
 
         <!-- Horizon Card -->
-        <a href="#" target="_blank" class="card">
+        <a href="{{ url('developer/horizon') }}" target="_blank" class="card">
             <div class="card-content">
                 <i class="fas fa-chart-line card-icon"></i>
                 <h5>Horizon</h5>
@@ -64,7 +64,7 @@
         </a>
 
         <!-- Pulse Card -->
-        <a href="#" target="_blank" class="card">
+        <a href="{{ url('developer/pulse') }}" target="_blank" class="card">
             <div class="card-content">
                 <i class="fas fa-heartbeat card-icon"></i>
                 <h5>Pulse</h5>
