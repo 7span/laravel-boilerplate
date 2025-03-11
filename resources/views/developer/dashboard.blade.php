@@ -10,66 +10,44 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/developer/dashboard.css') }}">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/developer/dashboard.css') }}">
 </head>
 
 <body>
     <header class="header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="{{ config('app.url') }}">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="{{ config('app.name') }}">
-                </a>
-            </div>
+        <div>
+            <a href="{{ config('app.url') }}">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="{{ config('app.name') }}" height="40">
+            </a>
         </div>
     </header>
 
     <div class="dashboard-container">
-        <!-- Log Viewer Card -->
         <a href="{{ url('developer/log-viewer') }}" target="_blank" class="card">
-            <div class="card-content">
-                <i class="fas fa-file-alt card-icon"></i>
-                <h5>Log Viewer</h5>
-                <p>Log Viewer supports multiple logs! You can see single, daily, and horizon logs.</p>
-            </div>
+            <i class="fas fa-file-alt card-icon" style="color: #3b82f6;"></i>
+            <h5>Log Viewer</h5>
+            <p>View and analyze different types of logs with ease.</p>
         </a>
-
-        <!-- Telescope Card -->
         <a href="{{ url('developer/telescope') }}" target="_blank" class="card">
-            <div class="card-content">
-                <i class="fas fa-binoculars card-icon"></i>
-                <h5>Telescope</h5>
-                <p>Telescope provides insight into requests, exceptions, database queries, queued jobs, and more.</p>
-            </div>
+            <i class="fas fa-binoculars card-icon" style="color: #10b981;"></i>
+            <h5>Telescope</h5>
+            <p>Gain insights into requests, exceptions, and database queries.</p>
         </a>
-
-        <!-- Swagger API Document Card -->
         <a href="{{ url('developer/docs/api') }}" target="_blank" class="card">
-            <div class="card-content">
-                <i class="fas fa-book card-icon"></i>
-                <h5>Swagger API Document</h5>
-                <p>Swagger streamlines RESTful web service development with easy-to-use documentation tools.</p>
-            </div>
+            <i class="fas fa-book card-icon" style="color: #f59e0b;"></i>
+            <h5>Swagger API Document</h5>
+            <p>Easily document and streamline RESTful API development.</p>
         </a>
-
-        <!-- Horizon Card -->
         <a href="{{ url('developer/horizon') }}" target="_blank" class="card">
-            <div class="card-content">
-                <i class="fas fa-chart-line card-icon"></i>
-                <h5>Horizon</h5>
-                <p>Monitor key metrics of your queue system, such as job throughput, runtime, and failures.</p>
-            </div>
+            <i class="fas fa-chart-line card-icon" style="color: #9333ea;"></i>
+            <h5>Horizon</h5>
+            <p>Monitor queue system metrics like job throughput and failures.</p>
         </a>
-
-        <!-- Pulse Card -->
         <a href="{{ url('developer/pulse') }}" target="_blank" class="card">
-            <div class="card-content">
-                <i class="fas fa-heartbeat card-icon"></i>
-                <h5>Pulse</h5>
-                <p>Track application performance, slow jobs, active users, and more with Laravel Pulse.</p>
-            </div>
+            <i class="fas fa-heartbeat card-icon" style="color: #ef4444;"></i>
+            <h5>Pulse</h5>
+            <p>Track application performance, slow jobs, and active users.</p>
         </a>
     </div>
 </body>
