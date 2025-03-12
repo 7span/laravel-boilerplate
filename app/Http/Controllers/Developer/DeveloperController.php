@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Developer;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Developer\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Developer\LoginRequest;
 
 class DeveloperController extends Controller
 {

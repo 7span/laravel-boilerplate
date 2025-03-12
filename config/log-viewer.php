@@ -72,8 +72,8 @@ return [
     */
 
     'middleware' => [
-        'web','developer',
-        \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+        'web', 'developer',
+        Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
     ],
 
     /*
@@ -86,8 +86,8 @@ return [
     */
 
     'api_middleware' => [
-        \Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+        Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
     ],
 
     'api_stateful_domains' => env('LOG_VIEWER_API_STATEFUL_DOMAINS') ? explode(',', env('LOG_VIEWER_API_STATEFUL_DOMAINS')) : null,
