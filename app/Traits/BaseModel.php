@@ -80,4 +80,12 @@ trait BaseModel
     {
         return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
+
+    public function getAppends(): array
+    {
+        $appendParam = request()->get('append', '');
+        $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
+        $allowedAppends = array_filter($appendArray, fn($value) => !empty($value));
+        return array_merge($allowedAppends, $this->appends ?? []);
+    }
 }
