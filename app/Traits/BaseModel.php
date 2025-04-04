@@ -81,6 +81,14 @@ trait BaseModel
         return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
 
+    /**
+     * 
+     * GET /users?append=display_status,display_name
+     * This will append this attributes to the response.
+     * 
+     * If you define a protected property in model : protected $appends = ['display_status'];
+     * Then 'display_status' will be appended to the response by default.
+     */
     public function getAppends(): array
     {
         $appendParam = request()->get('append', '');
