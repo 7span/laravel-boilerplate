@@ -29,10 +29,11 @@ class ClearOldLogs extends Command
     {
         $logPath = storage_path('logs'); // Path to the logs directory
         $files = File::files($logPath); // Get all files in the logs directory
+        $days = env('LOG_CLEAR_DAYS', 30);
 
         foreach ($files as $file) {
             // Check if the file is older than 1 month
-            if (Carbon::parse(File::lastModified($file))->lt(Carbon::now()->subMonth())) {
+            if (Carbon::parse(File::lastModified($file))->lt(Carbon::now()->subDays($days))) {
                 File::delete($file); // Delete the file
                 $this->info("Deleted: {$file->getFilename()}");
             }
