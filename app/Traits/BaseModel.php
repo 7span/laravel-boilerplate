@@ -57,6 +57,8 @@ trait BaseModel
 
     public function getQB(): QueryBuilder
     {
+        $this->addMediaToIncludes();
+
         $queryBuilder = QueryBuilder::for(self::class)
             ->allowedFields($this->getQueryFieldsWithRelationship())
             ->allowedIncludes($this->getIncludes());
@@ -95,5 +97,22 @@ trait BaseModel
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
         $allowedAppends = array_filter($appendArray, fn($value) => !empty($value));
         return array_merge($allowedAppends, $this->appends ?? []);
+    }
+
+    /**
+     * Example: GET /api/v1/users?media=profile_image
+     * 
+     * Dynamically adds the 'media' relationship to the 'include' query parameter
+     * if the 'media' parameter is present in the request that prevent from n+1 query.
+     */
+    protected function addMediaToIncludes(): void
+    {
+        $request = request();
+        $includes = explode(',', $request->query('include', ''));
+
+        if ($request->filled('media') && !in_array('media', $includes)) {
+            $includes[] = 'media';
+            $request->merge(['include' => implode(',', $includes)]);
+        }
     }
 }
