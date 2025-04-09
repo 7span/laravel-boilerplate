@@ -18,7 +18,7 @@ return [
     'forgetPasswordLinkEmailLine2' => 'To reset your password, please click on the following link:',
     'link' => 'Password Reset Link',
     'forgetPasswordOtpEmailLine1' => 'Use the following OTP to complete your Reset Password procedures. OTP is valid for 10 minutes.',
-    'regards' => 'Regards,',
+    'regards' => 'Best Regards,',
     'verifyUserLine1' => 'Thank you for choosing ' . config('app.name') . '. Use the following OTP to complete your
      :subject process. OTP is valid for :expirationTime minutes.'
 ];
