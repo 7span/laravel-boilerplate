@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class CountryController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/countries',
+        path: '/api/countries',
         tags: ['Country'],
         operationId: 'countryList',
         summary: 'Country list',

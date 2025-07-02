@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Admin;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\User;
 use App\Traits\ApiResponser;
@@ -21,7 +21,7 @@ class UserStatusController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/users/{id}/change-status',
+        path: '/api/admin/users/{id}/change-status',
         tags: ['Admin / User'],
         operationId: 'changeStatus',
         summary: 'Change user status',

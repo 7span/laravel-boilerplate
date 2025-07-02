@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
 use App\Services\AuthService;
@@ -28,7 +28,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/register',
+        path: '/api/register',
         operationId: 'authRegister',
         tags: ['Auth'],
         summary: 'Register new user',
@@ -118,7 +118,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/send-otp',
+        path: '/api/send-otp',
         operationId: 'sendOtp',
         tags: ['Auth'],
         summary: 'Send One-Time Password (OTP)',
@@ -209,7 +209,7 @@ class AuthController extends Controller
     // }
 
     #[OA\Post(
-        path: '/api/v1/forgot-password-otp-verify',
+        path: '/api/forgot-password-otp-verify',
         operationId: 'forgotPasswordOTPVerify',
         tags: ['Auth'],
         summary: 'Verify OTP for password reset',
@@ -260,7 +260,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/login',
+        path: '/api/login',
         operationId: 'loginUser',
         tags: ['Auth'],
         summary: 'Login User',
@@ -305,7 +305,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/forget-password',
+        path: '/api/forget-password',
         operationId: 'forgetPassword',
         tags: ['Auth'],
         summary: 'Forget Password with otp',

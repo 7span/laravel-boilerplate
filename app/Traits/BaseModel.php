@@ -108,7 +108,7 @@ trait BaseModel
     }
 
     /**
-     * Example: GET /api/v1/users?media=profile_image
+     * Example: GET /api/users?media=profile_image
      * 
      * Dynamically adds the 'media' relationship to the 'include' query parameter
      * if the 'media' parameter is present in the request that prevent from n+1 query.

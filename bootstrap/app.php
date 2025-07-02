@@ -13,13 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         using: function () {
             Route::middleware('api')
-                ->prefix('api/v1')
-                ->group(base_path('routes/api-v1.php'));
+                ->prefix('api')
+                ->group(base_path('routes/api.php'));
 
             Route::middleware('api')
                 ->as('admin.')
-                ->prefix('api/v1/admin')
-                ->group(base_path('routes/admin-v1.php'));
+                ->prefix('api/admin')
+                ->group(base_path('routes/admin.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));

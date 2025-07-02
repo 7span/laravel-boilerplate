@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class MasterSettingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/settings',
+        path: '/api/settings',
         operationId: 'getMasterSettings',
         tags: ['MasterSettings'],
         summary: 'Get list of settings',
@@ -66,7 +66,7 @@ class MasterSettingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/settings/{masterSetting_id}',
+        path: '/api/settings/{masterSetting_id}',
         operationId: 'getVersionDetail',
         tags: ['MasterSettings'],
         summary: 'Get detail of settings',
