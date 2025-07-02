@@ -21,7 +21,7 @@ class Resource extends JsonResource
     public function toArray($request)
     {
         $data = $this->fields();
-        $data['url'] = $this->getUrl();
+        $data['url'] = $this->getUrl(); // @phpstan-ignore-line
         $data['cdn_url'] = $this->getCdnUrl();
 
         return $data;
@@ -29,22 +29,24 @@ class Resource extends JsonResource
 
     /**
      * Generate the CDN URL for the media if applicable.
-     *
-     * @return string|null
      */
-    private function getCdnUrl()
+    private function getCdnUrl(): ?string
     {
         $cdnEnabled = config('media.cdn_enable');
         $cdnUrl = rtrim(config('media.cdn_url'), '/');
 
-        if (! $cdnEnabled || $this->disk !== 's3' || empty($cdnUrl)) {
-            return;
+        if (! $cdnEnabled || ($this->resource->disk ?? null) !== 's3' || empty($cdnUrl)) {
+            return null;
         }
 
-        $directory = trim($this->directory, '/');
-        $filename = $this->filename;
-        $extension = $this->extension;
+        $directory = trim($this->resource->directory ?? '', '/');
+        $filename = $this->resource->filename ?? null;
+        $extension = $this->resource->extension ?? null;
 
-        return sprintf('%s/%s/%s.%s', $cdnUrl, $directory, $filename, $extension);
+        if ($directory && $filename && $extension) {
+            return sprintf('%s/%s/%s.%s', $cdnUrl, $directory, $filename, $extension);
+        }
+
+        return null;
     }
 }

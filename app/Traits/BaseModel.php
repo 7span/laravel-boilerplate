@@ -104,7 +104,7 @@ trait BaseModel
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
         $allowedAppends = array_filter($appendArray, fn ($value) => ! empty($value));
 
-        return array_merge($allowedAppends, $this->appends ?? []);
+        return array_merge($allowedAppends, $this->appends);
     }
 
     /**

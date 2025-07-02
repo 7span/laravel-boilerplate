@@ -27,7 +27,9 @@
         "spatie/laravel-query-builder": "^6.3"
     },
     "require-dev": {
+        "ekino/phpstan-banned-code": "^3.0",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.22",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",

@@ -19,7 +19,7 @@ class UserOtpService
     {
         $userOtp = $this->userOtpObj->getQB()->where('id', $id)->first();
 
-        return $userOtp;
+        return new JsonResource($userOtp);
     }
 
     public function store(array $inputs): object
@@ -33,13 +33,12 @@ class UserOtpService
     {
         $userOtp = $this->userOtpObj->where('id', $id)->update($inputs);
 
-        return $userOtp;
+        return $userOtp > 0;
     }
 
-    public function isOtpExpired(int|string $createdAt, int|string|null $verifiedAt): string
+    public function isOtpExpired(int|string $createdAt, int|string|null $verifiedAt): bool
     {
         $expirationTime = config('site.otp_expiration_time_in_minutes');
-
         $expirationDate = Carbon::parse($createdAt)->addMinutes($expirationTime)->format('Y-m-d H:i:s');
 
         return $verifiedAt !== null || date('Y-m-d h:i:s') > $expirationDate;

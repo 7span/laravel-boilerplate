@@ -9,7 +9,7 @@ class MediaRule
      *
      * @param  string  $fieldName  The name of the media field.
      * @param  bool  $isNullable  If the field is nullable.
-     * @param  string  $type  The type of media to validate against (e.g., 'image').
+     * @param  array  $tags  The tags of media to validate against (e.g., ['image']).
      */
     public static function rules(string $fieldName, bool $isNullable = true, array $tags = ['image']): array
     {

@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Models\Country;
-use App\Traits\BaseModel;
 use App\Traits\PaginationTrait;
 
 class CountryService
 {
-    use BaseModel, PaginationTrait;
+    use PaginationTrait;
 
     private Country $countryObj;
 

@@ -11,16 +11,12 @@ class UserService
 {
     private User $userObj;
 
-    private UserOtpService $userOtpService;
-
     public function __construct()
     {
         $this->userObj = new User;
-
-        $this->userOtpService = new UserOtpService;
     }
 
-    public function resource(int $id, array $inputs = []): User
+    public function resource(int $id, array $inputs = [])
     {
         $user = $this->userObj->getQB()->findOrFail($id);
 
