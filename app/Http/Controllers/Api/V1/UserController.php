@@ -7,8 +7,10 @@ use App\Services\UserService;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangePassword;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Auth\UpdateProfile;
+use App\Http\Requests\User\UpdateProfile;
+use App\Http\Requests\User\ChangePassword as UserChangePassword;
 use App\Http\Resources\User\Resource as UserResource;
 
 class UserController extends Controller
@@ -102,7 +104,7 @@ class UserController extends Controller
                         example: 'test@gmail.com'
                     ),
                     new OA\Property(
-                        property: 'mobile_number',
+                        property: 'mobile_no',
                         type: 'string',
                         format: 'mobile',
                         example: '9090909090'
@@ -124,6 +126,63 @@ class UserController extends Controller
     public function updateProfile(UpdateProfile $request): JsonResponse
     {
         $data = $this->userService->update(Auth::id(), $request->validated());
+
+        return $this->success($data, 200);
+    }
+
+    #[OA\Post(
+        path: '/api/v1/change-password',
+        operationId: 'changePassword',
+        tags: ['Auth'],
+        summary: 'Change Password',
+        description: "Changes the user's password by verifying the current password and setting a new one.",
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Current password and new password',
+            content: new OA\JsonContent(
+                required: ['current_password', 'password', 'password_confirmation'],
+                properties: [
+                    new OA\Property(
+                        property: 'current_password',
+                        type: 'string',
+                        description: "User's current password",
+                        example: 'oldpassword123',
+                        minLength: 8,
+                        maxLength: 255
+                    ),
+                    new OA\Property(
+                        property: 'password',
+                        type: 'string',
+                        description: "User's new password",
+                        example: 'newpassword123',
+                        minLength: 8,
+                        maxLength: 255
+                    ),
+                    new OA\Property(
+                        property: 'password_confirmation',
+                        type: 'string',
+                        description: "Confirmation of the user's new password",
+                        example: 'newpassword123',
+                        minLength: 8,
+                        maxLength: 255
+                    ),
+                ]
+            ),
+        ),
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Success.',
+            ),
+            new OA\Response(response: '400', description: 'Validation errors!'),
+        ],
+        security: [[
+            'bearerAuth' => [],
+        ]]
+    )]
+    public function changePassword(UserChangePassword $request): JsonResponse
+    {
+        $data = $this->userService->changePassword($request->validated());
 
         return $this->success($data, 200);
     }

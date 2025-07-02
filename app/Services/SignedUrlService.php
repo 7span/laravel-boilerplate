@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use Aws\S3\S3Client;
-use App\Library\MediaHelper;
+use App\Models\TempFile;
+use App\Helpers\MediaHelper;
 
 class SignedUrlService
 {
@@ -25,7 +26,7 @@ class SignedUrlService
         $bucket = config('aws.bucket');
 
         // KEY means folder-name/file-name
-        $directory = $inputs['directory'];
+        $directory = config('media.directory.' . $inputs['type'], 'default');
 
         //Generate FileName
         $fileName = MediaHelper::createFileName($inputs['filename'], $inputs['mime_type']);
@@ -39,6 +40,12 @@ class SignedUrlService
             'Key' => $key,
         ]);
         $presignedRequest = $client->createPresignedRequest($command, '+20 minutes');
+
+        TempFile::create([
+            'disk' => 's3',
+            'directory' => $directory,
+            'file_name' => $fileName,
+        ]);
 
         // Get the pre-signed URL
         $presignedUrl = [

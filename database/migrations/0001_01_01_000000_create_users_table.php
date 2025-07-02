@@ -13,13 +13,14 @@ return new class extends Migration
             $table->string('first_name', 128)->nullable();
             $table->string('last_name', 128)->nullable();
             $table->string('username', 128)->index()->nullable();
-            $table->integer('country_code')->nullable();
-            $table->string('mobile_number', 32)->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->string('country_code', 32)->nullable();
+            $table->string('mobile_no', 32)->nullable();
             $table->string('email', 128)->unique()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 128);
             $table->rememberToken();
-            $table->timestamp('last_login_at')->nullable();
+            $table->timestamp('last_login_at')->default(now());
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

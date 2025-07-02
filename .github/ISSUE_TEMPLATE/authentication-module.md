@@ -14,23 +14,23 @@ An authentication module's task is to verify the identity of users or entities a
 
 #### 1. Table : `users`
 
-| Field         | Datatype     | Required | Note              |
-| ------------- | ------------ | -------- | ----------------- |
-| id            | Int(8)       | Yes      | Primary Key       |
-| email         | varchar(128) | Yes      | Index             |
-| password      | varchar(128) | Yes      |                   |
-| first_name    | varchar(128) | No       |                   |
-| last_name     | varchar(128) | No       |                   |
-| username      | varchar(128) | No       | Index             |
-| country_code  | int(8)       | No       |                   |
-| mobile_number | varchar(32)  | No       |                   |
-| verified_at   | timestamp    | No       |                   |
-| created_at    | timestamp    | Yes      | Created timestamp |
-| updated_at    | timestamp    | No       |                   |
-| deleted_at    | timestamp    | No       |                   |
-| created_by    | Int(8)       | No       |                   |
-| updated_by    | Int(8)       | No       |                   |
-| deleted_by    | Int(8)       | No       |                   |
+| Field        | Datatype     | Required | Note              |
+| ------------ | ------------ | -------- | ----------------- |
+| id           | Int(8)       | Yes      | Primary Key       |
+| email        | varchar(128) | Yes      | Index             |
+| password     | varchar(128) | Yes      |                   |
+| first_name   | varchar(128) | No       |                   |
+| last_name    | varchar(128) | No       |                   |
+| username     | varchar(128) | No       | Index             |
+| country_code | int(8)       | No       |                   |
+| mobile_no    | varchar(32)  | No       |                   |
+| verified_at  | timestamp    | No       |                   |
+| created_at   | timestamp    | Yes      | Created timestamp |
+| updated_at   | timestamp    | No       |                   |
+| deleted_at   | timestamp    | No       |                   |
+| created_by   | Int(8)       | No       |                   |
+| updated_by   | Int(8)       | No       |                   |
+| deleted_by   | Int(8)       | No       |                   |
 
 > [!NOTE]  
 > The `users` table will include only these specific fields. If you need to store additional user details, you should create a separate **`profile`** table with the relevant fields. This table will incorporate a `user_id` field to establish a one-to-one relationship.
@@ -120,7 +120,7 @@ We don't need to create an API to verify the email address. Instead, we will nee
     last_name: String
     username: String
     country_code: Integer
-    mobile_number: String
+    mobile_no: String
 }
 ```
 
@@ -157,7 +157,7 @@ We don't need to create an API to verify the email address. Instead, we will nee
     last_name: String
     email: String
     country_code: Integer
-    mobile_number: String
+    mobile_no: String
     username: String
     otp: String
 }
@@ -205,6 +205,6 @@ We don't need to create an API to verify the email address. Instead, we will nee
     last_name: String
     username: String
     country_code: Integer
-    mobile_number: String
+    mobile_no: String
 }
 ```

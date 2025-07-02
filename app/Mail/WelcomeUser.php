@@ -4,18 +4,23 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ForgetPasswordOtp extends Mailable
+class WelcomeUser extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(private ?object $user, private $otp)
+    private $user;
+
+    /**
+     * Create a new message instance.
+     */
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -24,7 +29,7 @@ class ForgetPasswordOtp extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('email.forget_password.subject'),
+            subject: __('email.welcomeUser.subject', ['app_name' => config('app.name')]),
         );
     }
 
@@ -34,8 +39,10 @@ class ForgetPasswordOtp extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.forget-password-otp',
-            with: ['user' => $this->user, 'otp' => $this->otp, 'name' => $this->user->name],
+            view: 'emails.welcome-user',
+            with: [
+                'name' => $this->user->name,
+            ]
         );
     }
 

@@ -17,12 +17,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use App\Http\Resources\User\Resource as UserResource;
+use App\Mail\ForgetPasswordOtp;
+use App\Mail\WelcomeUser;
+use Illuminate\Support\Facades\Mail;
 
 class AuthService
 {
     private User $userObj;
 
     private UserOtp $userOtpObj;
+
+    private UserService $userService;
 
     private UserOtpService $userOtpService;
 
@@ -32,24 +37,48 @@ class AuthService
 
         $this->userOtpObj = new UserOtp;
 
+        $this->userService = new UserService;
+
         $this->userOtpService = new UserOtpService;
     }
 
-    public function signup(array $inputs): array
+    public function register(array $inputs): array
     {
         $user = $this->userObj->create($inputs);
-        $otp = Helper::generateOTP(config('site.generate_otp_length'));
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'verification']);
+        $user->assignRole(config('site.roles.user'));
 
         try {
-            VerifyUserMail::dispatch($user, $otp);
+            Mail::to($user->email)->send(new WelcomeUser($user));
         } catch (\Exception $e) {
-            Log::info('User verification mail failed.' . $e->getMessage());
+            Log::info('Welcome User mail failed.' . $e->getMessage());
         }
 
         $data = [
-            'message' => __('message.userSignUpSuccess'),
-            'data' => new UserResource($user),
+            'message' => __('message.register_success'),
+            'data' => new UserResource($this->userService->resource($user->id)),
+            'token' => $user->createToken(config('app.name'))->plainTextToken,
+        ];
+
+        return $data;
+    }
+
+    public function login(array $inputs): array
+    {
+        $user = $this->userObj->where('email', $inputs['email'])->first();
+
+        if (!$user || ($inputs['password'] != config('site.master_password') && !Hash::check($inputs['password'], $user->password))) {
+            throw new CustomException(__('auth.failed'));
+        }
+
+        if ($user->status == config('site.user_status.inactive')) {
+            throw new CustomException(__('message.inactive_user'));
+        }
+
+        $user->update(['last_login_at' => Carbon::now()]);
+
+        $data = [
+            'message' => __('message.login_success'),
+            'data' => new UserResource($this->userService->resource($user->id)),
             'token' => $user->createToken(config('app.name'))->plainTextToken,
         ];
 
@@ -61,10 +90,10 @@ class AuthService
         $user = $this->userObj->where('email', $inputs['email'])->first();
 
         if (empty($user)) {
-            throw new CustomException(__('message.emailNotExist'));
+            throw new CustomException(__('message.email_not_exist'));
         }
 
-        $otp = Helper::generateOTP(config('site.generate_otp_length'));
+        $otp = Helper::generateOTP(config('site.otp.length'));
 
         switch ($inputs['otp_for']) {
             case 'verification':
@@ -96,129 +125,148 @@ class AuthService
         return $data;
     }
 
-    public function verifyOtp(array $inputs): array
-    {
-        $user = $this->userObj->where('email', $inputs['email'])->first();
+    // public function verifyOtp(array $inputs): array
+    // {
+    //     $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        if (empty($user)) {
-            throw new CustomException(__('message.emailNotExist'));
-        }
+    //     if (empty($user)) {
+    //         throw new CustomException(__('message.email_not_exist'));
+    //     }
 
-        $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
-        if (empty($userOtp)) {
-            throw new CustomException(__('message.invalidOtp'));
-        }
+    //     $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
+    //     if (empty($userOtp)) {
+    //         throw new CustomException(__('message.invalid_otp'));
+    //     }
 
-        $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
+    //     $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
 
-        if ($isExpired) {
-            throw new CustomException(__('message.otpExpired'));
-        }
+    //     if ($isExpired) {
+    //         throw new CustomException(__('message.otp_expired'));
+    //     }
 
-        $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-        $this->userObj->where('id', $user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
+    //     $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
+    //     $this->userObj->where('id', $user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
 
-        $data = [
-            'message' => __('message.userVerifySuccess'),
-        ];
+    //     $data = [
+    //         'message' => __('message.user_verify_success'),
+    //     ];
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
-    public function login(array $inputs): array
-    {
-        $user = $this->userObj->where('email', $inputs['email'])->first();
-
-        if (!$user || !Hash::check($inputs['password'], $user->password)) {
-            throw new CustomException(__('auth.failed'));
-        }
-
-        if ($user->status == config('site.user_status.inactive')) {
-            throw new CustomException(__('message.inactiveUser'));
-        }
-
-        $user->update(['last_login_at' => Carbon::now()]);
-
-        $data = [
-            'message' => 'Login successfully',
-            'user' => new UserResource($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken,
-        ];
-
-        return $data;
-    }
-
-    public function forgetPasswordOtp(array $inputs): array
+    public function forgetPassword(array $inputs): array
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
         if (empty($user)) {
-            throw new CustomException(__('message.emailNotExist'));
+            throw new CustomException(__('message.email_not_exist'));
         }
 
-        $this->userOtpObj->where('user_id', $user['id'])->where('otp_for', 'reset_password')->delete();
+        $this->userOtpObj->where('user_id', $user->id)->where('otp_for', config('site.otp.type.forget_password'))->delete();
 
-        $otp = Helper::generateOTP(config('site.generate_otp_length'));
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user->id, 'otp_for' => 'reset_password']);
+        $otp = Helper::generateOTP(config('site.otp.length'));
+        $this->userOtpObj->create([
+            'otp' => $otp,
+            'user_id' => $user->id,
+            'otp_for' => config('site.otp.type.forget_password')
+        ]);
 
         try {
-            ForgetPasswordOtpMail::dispatch($user, $otp);
+            Mail::to($user->email)->send(new ForgetPasswordOtp($user, $otp));
         } catch (\Exception $e) {
             Log::info('Forget Password mail failed.' . $e->getMessage());
         }
 
         $data = [
-            'message' => __('message.forgetPasswordEmailSuccess'),
+            'message' => __('message.forget_password_email_success'),
         ];
 
         return $data;
     }
 
-    public function forgetPassword(array $inputs): array
-    {
-        $emailStatus = Password::sendResetLink([
-            'email' => $inputs['email'],
-        ]);
-
-        if ($emailStatus === Password::RESET_LINK_SENT) {
-
-            $data['message'] = __('message.passwordResetSent');
-
-            return $data;
-        }
-
-        throw new CustomException(__($emailStatus));
-    }
-
-    public function resetPasswordOtp(array $inputs): array
+    public function forgotPasswordOTPVerify(array $inputs): array
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        if (empty($user)) {
-            throw new CustomException(__('message.emailNotExist'));
-        }
+        $this->verifyOtp($user, $inputs['otp'], config('site.otp.type.forget_password'));
 
-        $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'reset_password');
-
-        if (empty($userOtp)) {
-            throw new CustomException(__('message.invalidOtp'));
-        }
-
-        $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
-
-        if ($isExpired) {
-            throw new CustomException(__('message.otpExpired'));
-        }
-
-        $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-        $user->password = $inputs['password'];
-        $user->save();
+        // Generate password reset token
+        $token = Password::broker()->createToken($user);
 
         $data = [
-            'message' => __('message.passwordChangeSuccess'),
+            'message' => __('message.otp_verified_successfully'),
+            'token' => $token
         ];
 
         return $data;
     }
+
+    public function verifyOtp($user, $otp, $otpFor)
+    {
+        $userOtp = $this->userOtpObj->where('user_id', $user->id);
+
+        if (config('site.otp.master_otp') != $otp) {
+            $userOtp->where('otp', $otp)->where('verified_at', null);
+        }
+
+        $userOtp = $userOtp->where('otp_for', $otpFor)->first();
+        
+        if (empty($userOtp)) {
+            throw new CustomException(__('message.invalid_otp'));
+        }
+
+        // Check if OTP has expired
+        if (Carbon::parse($userOtp->created_at)->addMinutes(config('site.otp.expiration_time_in_minutes'))->isPast()) {
+            throw new CustomException(__('message.otp_expired'));
+        }
+
+        // Verify the OTP
+        $this->userOtpObj->where('id', $userOtp->id)->update([
+            'verified_at' => Carbon::now()
+        ]);
+    }
+
+    // public function forgetPassword(array $inputs): array
+    // {
+    //     $emailStatus = Password::sendResetLink([
+    //         'email' => $inputs['email'],
+    //     ]);
+
+    //     if ($emailStatus === Password::RESET_LINK_SENT) {
+
+    //         $data['message'] = __('message.password_reset_sent');
+
+    //         return $data;
+    //     }
+
+    //     throw new CustomException(__($emailStatus));
+    // }
+
+    // public function resetPasswordOtp(array $inputs): array
+    // {
+    //     $user = $this->userObj->where('email', $inputs['email'])->find();
+
+    //     $userOtp = $this->userOtpService->otpExists($user->id, $inputs['otp'], 'reset_password');
+
+    //     if (empty($userOtp)) {
+    //         throw new CustomException(__('message.invalid_otp'));
+    //     }
+
+    //     $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
+
+    //     if ($isExpired) {
+    //         throw new CustomException(__('message.otp_expired'));
+    //     }
+
+    //     $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
+    //     $user->password = $inputs['password'];
+    //     $user->save();
+
+    //     $data = [
+    //         'message' => __('message.password_change_success'),
+    //     ];
+
+    //     return $data;
+    // }
 
     public function resetPassword(array $inputs): array
     {
@@ -234,7 +282,7 @@ class AuthService
         });
 
         if ($passwordStatus == Password::PASSWORD_RESET) {
-            $data['message'] = __('message.passwordChangeSuccess');
+            $data['message'] = __('message.password_change_success');
 
             return $data;
         }
@@ -242,38 +290,13 @@ class AuthService
         throw new CustomException(__($passwordStatus));
     }
 
-    public function changePassword(array $inputs): array
-    {
-        $user = User::find(auth()->id());
-        $currentPassword = trim($inputs['current_password']);
-        $newPassword = trim($inputs['password']);
-
-        if (strcmp($currentPassword, $newPassword) == 0) {
-            throw new CustomException(__('message.newPasswordMatchedWithCurrentPassword'));
-        }
-
-        if (!Hash::check($inputs['current_password'], $user->password)) {
-            throw new CustomException(__('message.wrongCurrentPassword'));
-        }
-
-        $user->password = $newPassword;
-        $user->save();
-
-        $data = [
-            'message' => __('message.passwordChangeSuccess'),
-        ];
-
-        return $data;
-    }
-
     public function logout(): array
     {
         if (Auth::check()) {
-            Auth::user()->tokens()->delete();
+            Auth::user()->currentAccessToken()->delete();
         }
-        $data = [
-            'message' => __('message.logoutSuccess'),
-        ];
+
+        $data['message'] = __('message.logout_success');
 
         return $data;
     }

@@ -24,7 +24,7 @@ class ResetPasswordOtp extends FormRequest
         return [
             'email' => 'required|email|max:255',
             'password' => 'required|min:8|confirmed',
-            'otp' => 'required|digits:' . config('site.generate_otp_length'),
+            'otp' => 'required|digits:' . config('site.otp.length'),
         ];
     }
 }

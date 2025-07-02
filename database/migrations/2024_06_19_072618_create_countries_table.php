@@ -9,12 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('countries', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
+            $table->string('name', 128)->index();
             $table->char('iso', 2);
-            $table->string('name', 80)->index();
             $table->char('iso3', 3)->nullable();
-            $table->smallinteger('numcode')->nullable()->index();
-            $table->integer('phonecode')->index();
+            $table->string('calling_code', 8)->index();
+            $table->string('icon', 128)->nullable();
+            $table->string('currency', 24)->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('inactive')->index();
             $table->timestamps();
             $table->softDeletes();
         });

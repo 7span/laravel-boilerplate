@@ -8,24 +8,31 @@ use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SignedUrlController;
 use App\Http\Controllers\Api\V1\MasterSettingController;
 
-Route::post('signup', [AuthController::class, 'signUp']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('send-otp', [AuthController::class, 'sendOtp']);
-Route::post('forget-password-otp', [AuthController::class, 'forgetPasswordOtp']);
-Route::post('forget-password', [AuthController::class, 'forgetPassword']);
-Route::post('reset-password-otp', [AuthController::class, 'resetPasswordOtp']);
-Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
+Route::controller(AuthController::class)->group(function () {
+    Route::post('register', 'register');
+    Route::post('login', 'login');
+    Route::post('send-otp', 'sendOtp');
+    Route::post('forget-password', 'forgetPassword');
+    Route::post('forget-password-otp-verify', 'forgotPasswordOTPVerify');
+    Route::post('reset-password', 'resetPassword');
+    // Route::post('reset-password-otp', 'resetPasswordOtp');
+    // Route::post('forget-password', 'forgetPassword');
+});
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
-    Route::get('me', [UserController::class, 'me']);
-    Route::post('me', [UserController::class, 'updateProfile']);
-    Route::post('change-password', [AuthController::class, 'changePassword']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::controller(UserController::class)->group(function () {
+        Route::get('me', 'me');
+        Route::post('me', 'updateProfile');
+        Route::post('change-password', 'changePassword');
+        Route::post('logout', 'logout');
+    });
 });
 
-Route::post('generate-signed-url', SignedUrlController::class);
+
 Route::get('countries', CountryController::class);
+
 Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);
+
+Route::post('generate-signed-url', SignedUrlController::class);

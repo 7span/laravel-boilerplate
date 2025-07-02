@@ -1,28 +1,37 @@
 <!doctype html>
 <html lang="en">
 @include('emails.includes.header')
+
 <body>
     <div class="wrapper">
         <div class="content">
             <div class="header">
-                <img src="https://laravel.com/img/notification-logo.png" alt="Laravel Logo" class="logo">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="{{ config('app.name') }}" class="logo">
             </div>
 
-            <!-- Email Body -->
             <div class="body">
                 <div class="inner-body">
                     <div class="content-cell">
-                        @include('emails.components.greeting',['data'=>$data])
+                        <p>
+                            {{ __('email.hello') }} {{ $name ?? null }},
+                        </p>
+
                         @yield('content')
-                        @include('emails.components.signature')
+
+                        <p>
+                            {{ __('email.regards') }}<br />{{ config('app.name') }}
+                        </p>
                     </div>
                 </div>
             </div>
 
             <div class="footer">
-                <p>© {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+                <p>
+                    © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+                </p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

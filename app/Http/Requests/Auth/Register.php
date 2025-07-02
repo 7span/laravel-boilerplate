@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SignUp extends FormRequest
+class Register extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,11 +16,13 @@ class SignUp extends FormRequest
         return [
             'first_name' => 'required|max:120',
             'last_name' => 'required|max:120',
-            'username' => 'required|max:120',
+            'username' => 'required|max:120|unique:users,username',
+            // 'username' => 'required|max:120',
             'email' => 'required|email|max:255|unique:users',
+            // 'email' => 'required|email|max:255',
             'password' => 'required|min:8|confirmed',
-            'country_code' => 'nullable|max:8',
-            'mobile_number' => 'nullable|digits:10',
+            'country_code' => 'nullable|max:5',
+            'mobile_no' => 'nullable|min:8|max:15',
         ];
     }
 }

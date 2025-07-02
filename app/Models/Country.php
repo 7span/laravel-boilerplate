@@ -11,11 +11,13 @@ class Country extends Model
     use BaseModel, HasFactory;
 
     protected $fillable = [
-        'iso',
         'name',
         'iso3',
-        'numcode',
-        'phonecode',
+        'iso_code',
+        'calling_code',
+        'currency',
+        'icon',
+        'status'
     ];
 
     protected function casts(): array
@@ -26,4 +28,12 @@ class Country extends Model
             'deleted_at' => 'timestamp',
         ];
     }
+
+    public $queryable = [
+        'id',
+    ];
+
+    public $defaultSort = 'name';
+
+    public $allowedSorts = ['id', 'name'];
 }

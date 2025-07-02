@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Media;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -45,9 +46,16 @@ trait BaseModel
 
     public function getRelationship(): array
     {
-        $relationship = $this->relationship;
+        $relationship = $this->relationship ?? [];
 
-        return $relationship ? $relationship : [];
+        // // Always add 'media' relationship if not present
+        // if (!array_key_exists('media', $relationship)) {
+        //     $relationship['media'] = [
+        //         'model' => Media::class,
+        //     ];
+        // }
+
+        return $relationship;
     }
 
     public function getIncludes(): array

@@ -19,7 +19,7 @@ class CountryService
 
     public function collection(array $inputs)
     {
-        $countries = $this->countryObj->getQB();
+        $countries = $this->countryObj->getQB()->where('status', 'active');
 
         return $this->paginationAttribute($countries);
     }

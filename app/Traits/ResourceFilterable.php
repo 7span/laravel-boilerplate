@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\Resources\MissingValue;
+
 trait ResourceFilterable
 {
     /**
@@ -41,5 +43,24 @@ trait ResourceFilterable
             }
         }
         return $data;
+    }
+
+    protected function whenLoadedMedia(string $key, bool $isResource = false)
+    {
+        $mediaInput = request()->input('media');
+        if (! empty($mediaInput)) {
+            $mediaInput = explode(',', $mediaInput);
+            if (in_array($key, $mediaInput)) {
+                if ($isResource) {
+                    return $this->resource->getMedia($key)->first();
+                }
+
+                return $this->resource->getMedia($key);
+            } else {
+                return new MissingValue;
+            }
+        } else {
+            return new MissingValue;
+        }
     }
 }

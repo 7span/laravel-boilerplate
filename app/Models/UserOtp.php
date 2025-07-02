@@ -38,6 +38,9 @@ class UserOtp extends Model
         'user' => [
             'model' => User::class,
         ],
+        'media' => [
+            'model' => Media::class,
+        ],
     ];
 
     protected function casts(): array

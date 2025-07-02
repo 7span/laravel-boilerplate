@@ -189,4 +189,9 @@ return [
 
     'attributes' => [],
 
+    'custom_messages' => [
+        'password_difference' => 'The new password must be different from your current password.',
+        'current_password' => 'The current password is incorrect.',
+    ],
+
 ];
