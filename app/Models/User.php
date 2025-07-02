@@ -49,11 +49,7 @@ class User extends Authenticatable
         ];
     }
 
-    protected $relationship = [
-        'media' => [
-            'model' => Media::class,
-        ]
-    ];
+    protected $relationship = [];
 
     /** Accessors and Mutators */
     protected $appends = ['name', 'display_status', 'display_mobile_no'];
@@ -68,7 +64,7 @@ class User extends Authenticatable
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn() => __('status.user.'.$this->status),
+            get: fn() => __('status.user.' . $this->status),
         );
     }
 

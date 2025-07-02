@@ -48,12 +48,12 @@ trait BaseModel
     {
         $relationship = $this->relationship ?? [];
 
-        // // Always add 'media' relationship if not present
-        // if (!array_key_exists('media', $relationship)) {
-        //     $relationship['media'] = [
-        //         'model' => Media::class,
-        //     ];
-        // }
+        // Always add 'media' relationship if not present
+        if (!array_key_exists('media', $relationship)) {
+            $relationship['media'] = [
+                'model' => Media::class,
+            ];
+        }
 
         return $relationship;
     }
