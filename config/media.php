@@ -247,5 +247,5 @@ return [
         'application/s-compressed' => 'zip',
         'multipart/x-zip' => 'zip',
         'text/x-scriptzsh' => 'zsh',
-    ]
+    ],
 ];

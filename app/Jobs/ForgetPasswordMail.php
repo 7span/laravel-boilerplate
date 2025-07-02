@@ -33,7 +33,7 @@ class ForgetPasswordMail implements ShouldQueue
                 'first_name' => $this->user->first_name,
                 'last_name' => $this->user->last_name,
                 'email' => $this->user->email,
-                'reset_password_token' => $this->user->reset_password_token
+                'reset_password_token' => $this->user->reset_password_token,
             ];
 
             Mail::to($this->user->email)->send(new ForgetPassword(data: $data));

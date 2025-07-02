@@ -28,10 +28,10 @@ class SignedUrlService
         // KEY means folder-name/file-name
         $directory = config('media.directory.' . $inputs['type'], 'default');
 
-        //Generate FileName
+        // Generate FileName
         $fileName = MediaHelper::createFileName($inputs['filename'], $inputs['mime_type']);
 
-        //Directory Path
+        // Directory Path
         $key = $directory . '/' . $fileName;
 
         // Generate a pre-signed URL for uploading the object

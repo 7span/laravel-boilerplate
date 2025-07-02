@@ -7,11 +7,10 @@ use App\Services\UserService;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\ChangePassword;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UpdateProfile;
-use App\Http\Requests\User\ChangePassword as UserChangePassword;
 use App\Http\Resources\User\Resource as UserResource;
+use App\Http\Requests\User\ChangePassword as UserChangePassword;
 
 class UserController extends Controller
 {

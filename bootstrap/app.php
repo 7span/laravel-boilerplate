@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Helpers\ExceptionHelper;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -37,8 +35,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (NotFoundHttpException $e) {
             $message = $e->getMessage();
+
             return response()->json([
-                'message' => $message
+                'message' => $message,
             ], 404);
         });
     })->create();

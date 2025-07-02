@@ -2,15 +2,10 @@
 
 namespace App\Services;
 
-use App\Exceptions\CustomException;
 use App\Models\User;
-use App\Helpers\Helper;
 use App\Helpers\MediaHelper;
-use App\Jobs\VerifyUserMail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User\Resource;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -65,7 +60,7 @@ class UserService
         $user = Auth::user();
 
         $user->update([
-            'password' => $inputs['password']
+            'password' => $inputs['password'],
         ]);
 
         $data['message'] = __('message.password_change_success');

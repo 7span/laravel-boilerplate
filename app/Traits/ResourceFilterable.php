@@ -20,7 +20,7 @@ trait ResourceFilterable
     {
         $data = [];
         $class = $this->model;
-        $classObj = new $class();
+        $classObj = new $class;
         $fields = array_merge($classObj->getQueryFields(), $classObj->getAppends());
         $hiddenFields = $classObj->getHidden();
         $casts = $classObj->getCasts();
@@ -42,6 +42,7 @@ trait ResourceFilterable
                 }
             }
         }
+
         return $data;
     }
 

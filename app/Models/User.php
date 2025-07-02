@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
+use Plank\Mediable\Mediable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -10,11 +11,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Plank\Mediable\Mediable;
 
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles, Mediable;
+    use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'first_name',
@@ -27,7 +27,7 @@ class User extends Authenticatable
         'mobile_no',
         'email_verified_at',
         'last_login_at',
-        'created_at'
+        'created_at',
     ];
 
     protected $hidden = [
@@ -57,21 +57,21 @@ class User extends Authenticatable
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->first_name . ' ' . $this->last_name,
+            get: fn () => $this->first_name . ' ' . $this->last_name,
         );
     }
 
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn() => __('status.user.' . $this->status),
+            get: fn () => __('status.user.' . $this->status),
         );
     }
 
     protected function displayMobileNo(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->country_code . ' ' . $this->mobile_no,
+            get: fn () => $this->country_code . ' ' . $this->mobile_no,
         );
     }
 }

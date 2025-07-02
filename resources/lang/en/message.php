@@ -22,5 +22,5 @@ return [
     'logout_success' => 'Logout successfully.',
     'inactive_user' => 'Account Inactive: Please contact administrator to reactivate your account.',
     'change_status_success' => 'User status has been updated to :status.',
-    'password_reset_sent' => 'Reset password link sent to mail successfully.'
+    'password_reset_sent' => 'Reset password link sent to mail successfully.',
 ];

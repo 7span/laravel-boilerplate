@@ -9,6 +9,6 @@ class TempFile extends Model
     protected $fillable = [
         'disk',
         'directory',
-        'file_name'
+        'file_name',
     ];
 }

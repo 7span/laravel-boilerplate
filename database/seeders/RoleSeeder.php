@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
             [
                 'name' => config('site.roles.user'),
                 'guard_name' => 'api',
-            ]
+            ],
         ]);
     }
 }

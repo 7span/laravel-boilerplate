@@ -63,7 +63,7 @@ class MediaHelper
             );
 
             array_push($mediaIds, $media->id);
-            
+
             // Delete the entry from TempFile if it exists
             TempFile::where('file_name', $mediaObj['filename'])->delete();
         }

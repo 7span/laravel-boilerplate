@@ -17,7 +17,7 @@ class Country extends Model
         'calling_code',
         'currency',
         'icon',
-        'status'
+        'status',
     ];
 
     protected function casts(): array

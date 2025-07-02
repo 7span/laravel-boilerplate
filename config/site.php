@@ -19,7 +19,7 @@ return [
         'type' => [
             'email_verification' => 'email_verification',
             'forget_password' => 'forget_password',
-        ]
+        ],
     ],
     'user_status' => [
         'active' => 'active',

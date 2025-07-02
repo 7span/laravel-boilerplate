@@ -10,5 +10,6 @@ Route::get('/', function () {
         'user' => $user,
         'name' => 'John Doe',
     ]);
+
     return view('welcome');
 });

@@ -3,10 +3,8 @@
 namespace App\Http\Resources\Media;
 
 use App\Models\Media;
-use Sevenspan\Bunny\Bunny;
 use App\Traits\ResourceFilterable;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\User\UpdatedByResource;
 
 class Resource extends JsonResource
 {
@@ -39,8 +37,8 @@ class Resource extends JsonResource
         $cdnEnabled = config('media.cdn_enable');
         $cdnUrl = rtrim(config('media.cdn_url'), '/');
 
-        if (!$cdnEnabled || $this->disk !== 's3' || empty($cdnUrl)) {
-            return null;
+        if (! $cdnEnabled || $this->disk !== 's3' || empty($cdnUrl)) {
+            return;
         }
 
         $directory = trim($this->directory, '/');

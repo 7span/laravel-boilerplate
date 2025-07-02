@@ -7,19 +7,15 @@ use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
 use App\Jobs\SendOtpMail;
-use Illuminate\Support\Str;
-use App\Jobs\VerifyUserMail;
-use Illuminate\Support\Facades\DB;
-use App\Jobs\ForgetPasswordOtpMail;
+use App\Mail\WelcomeUser;
+use App\Mail\ForgetPasswordOtp;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use App\Http\Resources\User\Resource as UserResource;
-use App\Mail\ForgetPasswordOtp;
-use App\Mail\WelcomeUser;
-use Illuminate\Support\Facades\Mail;
 
 class AuthService
 {
@@ -66,7 +62,7 @@ class AuthService
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        if (!$user || ($inputs['password'] != config('site.master_password') && !Hash::check($inputs['password'], $user->password))) {
+        if (! $user || ($inputs['password'] != config('site.master_password') && ! Hash::check($inputs['password'], $user->password))) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -167,7 +163,7 @@ class AuthService
         $this->userOtpObj->create([
             'otp' => $otp,
             'user_id' => $user->id,
-            'otp_for' => config('site.otp.type.forget_password')
+            'otp_for' => config('site.otp.type.forget_password'),
         ]);
 
         try {
@@ -194,7 +190,7 @@ class AuthService
 
         $data = [
             'message' => __('message.otp_verified_successfully'),
-            'token' => $token
+            'token' => $token,
         ];
 
         return $data;
@@ -209,7 +205,7 @@ class AuthService
         }
 
         $userOtp = $userOtp->where('otp_for', $otpFor)->first();
-        
+
         if (empty($userOtp)) {
             throw new CustomException(__('message.invalid_otp'));
         }
@@ -221,7 +217,7 @@ class AuthService
 
         // Verify the OTP
         $this->userOtpObj->where('id', $userOtp->id)->update([
-            'verified_at' => Carbon::now()
+            'verified_at' => Carbon::now(),
         ]);
     }
 

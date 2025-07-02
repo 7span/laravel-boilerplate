@@ -30,7 +30,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
 });
 
-
 Route::get('countries', CountryController::class);
 
 Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);

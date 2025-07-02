@@ -7,10 +7,9 @@ class MediaRule
     /**
      * Get media validation rules.
      *
-     * @param string $fieldName The name of the media field.
-     * @param bool $isNullable If the field is nullable.
-     * @param string $type The type of media to validate against (e.g., 'image').
-     * @return array
+     * @param  string  $fieldName  The name of the media field.
+     * @param  bool  $isNullable  If the field is nullable.
+     * @param  string  $type  The type of media to validate against (e.g., 'image').
      */
     public static function rules(string $fieldName, bool $isNullable = true, array $tags = ['image']): array
     {
@@ -24,12 +23,12 @@ class MediaRule
 
         $mimeTypes = [];
         foreach ($tags as $tag) {
-            if (config("media.aggregate_types." . $tag)) {
-                $mimeTypes = array_merge($mimeTypes, config("media.aggregate_types." . $tag));
+            if (config('media.aggregate_types.' . $tag)) {
+                $mimeTypes = array_merge($mimeTypes, config('media.aggregate_types.' . $tag));
             }
         }
 
-        if (!empty($mimeTypes)) {
+        if (! empty($mimeTypes)) {
             $baseRules["{$fieldName}.mime_type"] .= '|in:' . implode(',', $mimeTypes);
         }
 

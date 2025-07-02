@@ -102,7 +102,7 @@ return [
                 'png',
                 'gif',
                 'heic',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_IMAGE_VECTOR => [
             'mime_types' => [
@@ -110,7 +110,7 @@ return [
             ],
             'extensions' => [
                 'svg',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_PDF => [
             'mime_types' => [
@@ -118,7 +118,7 @@ return [
             ],
             'extensions' => [
                 'pdf',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_AUDIO => [
             'mime_types' => [
@@ -127,7 +127,7 @@ return [
                 'audio/mpeg',
                 'audio/mp3',
                 'audio/mpeg',
-                'audio/wav'
+                'audio/wav',
             ],
             'extensions' => [
                 'aac',
@@ -135,22 +135,22 @@ return [
                 'oga',
                 'mp3',
                 'wav',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_VIDEO => [
             'mime_types' => [
                 'video/mp4',
                 'video/mpeg',
                 'video/ogg',
-                'video/webm'
+                'video/webm',
             ],
             'extensions' => [
                 'mp4',
                 'm4v',
                 'mov',
                 'ogv',
-                'webm'
-            ]
+                'webm',
+            ],
         ],
         Plank\Mediable\Media::TYPE_ARCHIVE => [
             'mime_types' => [
@@ -160,7 +160,7 @@ return [
             ],
             'extensions' => [
                 'zip',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_DOCUMENT => [
             'mime_types' => [
@@ -170,7 +170,7 @@ return [
                 'text/json',
                 'application/json',
                 'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             ],
             'extensions' => [
                 'doc',
@@ -179,7 +179,7 @@ return [
                 'text',
                 'xml',
                 'json',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_SPREADSHEET => [
             'mime_types' => [
@@ -189,21 +189,19 @@ return [
             'extensions' => [
                 'xls',
                 'xlsx',
-            ]
+            ],
         ],
         Plank\Mediable\Media::TYPE_PRESENTATION => [
-            'mime_types' =>
-                [
-                    'application/vnd.ms-powerpoint',
-                    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                    'application/vnd.openxmlformats-officedocument.presentationml.slideshow'
-                ],
-            'extensions' =>
-                [
-                    'ppt',
-                    'pptx',
-                    'ppsx',
-                ]
+            'mime_types' => [
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+            ],
+            'extensions' => [
+                'ppt',
+                'pptx',
+                'ppsx',
+            ],
         ],
     ],
 
@@ -267,32 +265,32 @@ return [
          * Each can be passed an array of command line arguments to be passed to the optimizer
          */
         'optimizers' => [
-            \Spatie\ImageOptimizer\Optimizers\Jpegoptim::class => [
+            Spatie\ImageOptimizer\Optimizers\Jpegoptim::class => [
                 '--max=85',
                 '--strip-all',
                 '--all-progressive',
             ],
-            \Spatie\ImageOptimizer\Optimizers\Pngquant::class => [
+            Spatie\ImageOptimizer\Optimizers\Pngquant::class => [
                 '--quality=85',
                 '--force',
                 '--skip-if-larger',
             ],
-            \Spatie\ImageOptimizer\Optimizers\Optipng::class => [
+            Spatie\ImageOptimizer\Optimizers\Optipng::class => [
                 '-i0',
                 '-o2',
                 '-quiet',
             ],
-            \Spatie\ImageOptimizer\Optimizers\Gifsicle::class => [
+            Spatie\ImageOptimizer\Optimizers\Gifsicle::class => [
                 '-b',
                 '-O3',
             ],
-            \Spatie\ImageOptimizer\Optimizers\Cwebp::class => [
+            Spatie\ImageOptimizer\Optimizers\Cwebp::class => [
                 '-q 80',
                 '-m 6',
                 '-pass 10',
                 '-mt',
             ],
-            \Spatie\ImageOptimizer\Optimizers\Avifenc::class => [
+            Spatie\ImageOptimizer\Optimizers\Avifenc::class => [
                 '-a cq-level=23',
                 '-j all',
                 '--min 0',
@@ -303,5 +301,5 @@ return [
                 '-a tune=ssim',
             ],
         ],
-    ]
+    ],
 ];

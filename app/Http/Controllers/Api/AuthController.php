@@ -12,7 +12,6 @@ use App\Http\Requests\Auth\Login as LoginRequest;
 use App\Http\Requests\Auth\SendOtp as SendOtpRequest;
 use App\Http\Requests\Auth\Register as RegisterRequest;
 use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
-use App\Http\Requests\Auth\ChangePassword as ChangePasswordRequest;
 use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordOtp as ResetPasswordOtpRequest;
 
@@ -438,7 +437,6 @@ class AuthController extends Controller
 
     //     return $this->success($data, 200);
     // }
-
 
     #[OA\Post(
         path: '/api/v1/reset-password',

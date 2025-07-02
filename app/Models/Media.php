@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
-use Illuminate\Database\Eloquent\Model;
 use Plank\Mediable\Media as MediableMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -35,7 +34,7 @@ class Media extends MediableMedia
 
     protected $relationship = [
         'updated_by_user' => [
-            'model' => User::class
+            'model' => User::class,
         ],
         'media' => [
             'model' => Media::class,

@@ -10,7 +10,7 @@ trait BaseModel
 {
     public function getQueryFields(): array
     {
-        $_this = new self();
+        $_this = new self;
         $fields = [];
 
         $default = $this->getQueryable();
@@ -31,7 +31,7 @@ trait BaseModel
         $relationships = $this->getRelationship();
 
         foreach ($relationships as $relationship) {
-            $relationshipObj = new $relationship['model']();
+            $relationshipObj = new $relationship['model'];
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
@@ -49,7 +49,7 @@ trait BaseModel
         $relationship = $this->relationship ?? [];
 
         // Always add 'media' relationship if not present
-        if (!array_key_exists('media', $relationship)) {
+        if (! array_key_exists('media', $relationship)) {
             $relationship['media'] = [
                 'model' => Media::class,
             ];
@@ -92,10 +92,9 @@ trait BaseModel
     }
 
     /**
-     * 
      * GET /users?append=display_status,display_name
      * This will append this attributes to the response.
-     * 
+     *
      * If you define a protected property in model : protected $appends = ['display_status'];
      * Then 'display_status' will be appended to the response by default.
      */
@@ -103,13 +102,14 @@ trait BaseModel
     {
         $appendParam = request()->get('append', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
-        $allowedAppends = array_filter($appendArray, fn($value) => !empty($value));
+        $allowedAppends = array_filter($appendArray, fn ($value) => ! empty($value));
+
         return array_merge($allowedAppends, $this->appends ?? []);
     }
 
     /**
      * Example: GET /api/users?media=profile_image
-     * 
+     *
      * Dynamically adds the 'media' relationship to the 'include' query parameter
      * if the 'media' parameter is present in the request that prevent from n+1 query.
      */
@@ -118,7 +118,7 @@ trait BaseModel
         $request = request();
         $includes = explode(',', $request->query('include', ''));
 
-        if ($request->filled('media') && !in_array('media', $includes)) {
+        if ($request->filled('media') && ! in_array('media', $includes)) {
             $includes[] = 'media';
             $request->merge(['include' => implode(',', $includes)]);
         }
