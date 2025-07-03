@@ -8,7 +8,7 @@ npx --no-install lint-staged || exit 1
 ./vendor/bin/pint || exit 1
 
 # Run PHPStan for static analysis
-./vendor/bin/phpstan analyse || exit 1
+./vendor/bin/phpstan --memory-limit=2G analyse || exit 1
 
 # Run PHPUnit tests
 ./vendor/bin/phpunit || exit 1
