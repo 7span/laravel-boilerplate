@@ -1,12 +1,13 @@
 @extends('emails.layouts.master')
 
 @section('content')
-<p>{{ __('email.verifyUserLine1', [
-    'subject' => $data['subject'],
-    'expirationTime' => config('site.otp_expiration_time_in_minutes'),
-]) }}</p>
+    <p>{{ __('email.forget_password.line1') }}</p>
 
-<div class="action">
-    <span class="button button-dark">{{ $data['otp'] }}</span>
-</div>
+    <p>{{ __('email.forget_password.line2', [
+        'otp' => $otp,
+        'valid_minute' => config('site.otp.expiration_time_in_minutes'),
+    ]) }}
+    </p>
+
+    <p>{{ __('email.forget_password.footer') }}</p>
 @endsection

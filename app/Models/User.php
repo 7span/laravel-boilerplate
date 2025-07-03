@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
+use Plank\Mediable\Mediable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,13 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -28,49 +24,54 @@ class User extends Authenticatable
         'status',
         'password',
         'country_code',
-        'mobile_number',
+        'mobile_no',
         'email_verified_at',
         'last_login_at',
+        'created_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    // protected $dates = ['created_at'];
+    protected $guard_name = 'api';
 
-    protected $relationship = [];
-
-    protected $appends = ['name'];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'email_verified_at' => 'timestamp',
             'password' => 'hashed',
-            'last_login_at' => 'datetime',
+            'last_login_at' => 'timestamp',
             'created_at' => 'timestamp',
             'updated_at' => 'timestamp',
             'deleted_at' => 'timestamp',
         ];
     }
 
+    protected $relationship = [];
+
     /** Accessors and Mutators */
+    protected $appends = ['name', 'display_status', 'display_mobile_no'];
+
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->first_name . ' ' . $this->last_name,
+            get: fn () => $this->first_name . ' ' . $this->last_name,
+        );
+    }
+
+    protected function displayStatus(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => __('status.user.' . $this->status),
+        );
+    }
+
+    protected function displayMobileNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->country_code . ' ' . $this->mobile_no,
         );
     }
 }

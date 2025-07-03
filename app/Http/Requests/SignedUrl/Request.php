@@ -25,8 +25,8 @@ class Request extends FormRequest
     {
         return [
             'filename' => 'required',
-            'directory' => 'required',
-            'mime_type' => 'required',
+            'mime_type' => 'required|in:' . implode(',', array_keys(config('media.mime_types'))),
+            'type' => 'required|in:' . implode(',', config('media.tags')),
         ];
     }
 }

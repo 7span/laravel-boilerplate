@@ -1,3 +1,17 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-npx --no-install lint-staged
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run lint-staged for staged PHP files (duster fix)
+npx --no-install lint-staged || exit 1
+
+# Run Laravel Pint for code style
+./vendor/bin/pint || exit 1
+
+# Run PHPStan for static analysis
+./vendor/bin/phpstan --memory-limit=2G analyse || exit 1
+
+# Run PHPUnit tests
+./vendor/bin/phpunit || exit 1
+
+# Add more commands below as needed
+# e.g., npm run test:js || exit 1

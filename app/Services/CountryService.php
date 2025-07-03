@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Models\Country;
-use App\Traits\BaseModel;
 use App\Traits\PaginationTrait;
 
 class CountryService
 {
-    use BaseModel, PaginationTrait;
+    use PaginationTrait;
 
     private Country $countryObj;
 
@@ -19,7 +18,7 @@ class CountryService
 
     public function collection(array $inputs)
     {
-        $countries = $this->countryObj->getQB();
+        $countries = $this->countryObj->getQB()->where('status', 'active');
 
         return $this->paginationAttribute($countries);
     }

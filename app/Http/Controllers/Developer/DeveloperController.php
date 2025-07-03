@@ -20,6 +20,11 @@ class DeveloperController extends Controller
 
     public function loginPage()
     {
+        $auth = resolve('littlegatekeeper');
+        if ($auth->isAuthenticated()) {
+            return redirect()->route('developer.dashboard');
+        }
+
         return view('developer.pages.login');
     }
 

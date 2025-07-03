@@ -1,0 +1,64 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/ekino/phpstan-banned-code/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+        - resources/
+        - routes/
+
+    level: 5
+
+    tips:
+        treatPhpDocTypesAsCertain: false
+
+    banned_code:
+        nodes:
+            # enable detection of echo
+            -
+                type: Stmt_Echo
+                functions: null
+
+            # enable detection of eval
+            -
+                type: Expr_Eval
+                functions: null
+
+            # enable detection of die/exit
+            -
+                type: Expr_Exit
+                functions: null
+
+            # enable detection of a set of functions
+            -
+                type: Expr_FuncCall
+                functions:
+                    - dd
+                    - debug_backtrace
+                    - dump
+                    - exec
+                    - passthru
+                    - phpinfo
+                    - print_r
+                    - proc_open
+                    - shell_exec
+                    - system
+                    - var_dump
+
+            # enable detection of print statements
+            -
+                type: Expr_Print
+                functions: null
+
+            # enable detection of shell execution by backticks
+            -
+                type: Expr_ShellExec
+                functions: null
+
+        # enable detection of `use Tests\Foo\Bar` in a non-test file
+        use_from_tests: true
+
+        # errors emitted by the extension are non-ignorable by default, so they cannot accidentally be put into the baseline.
+        non_ignorable: true
