@@ -10,7 +10,6 @@ return [
     'forget_password_email_success' => 'Forgot Password OTP has been sent sent your email address.',
     'otp_verified_successfully' => 'OTP verified successfully. You can now proceed with password reset.',
     'logout_success' => 'Logout successfully.',
-    'user_verify_success' => 'User verified successfully.',
     'otp_expired' => 'Otp expired.',
     'invalid_otp' => 'Invalid OTP. Please try again.',
 ];

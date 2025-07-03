@@ -16,11 +16,4 @@ return [
         'line2' => 'Your OTP is :otp. Please note that it is valid for the next :valid_minute minutes.',
         'footer' => 'If you have any questions, please contact our support team.',
     ],
-    'forgetPasswordEmailSubject' => 'Forgot Password',
-    'verifyUserSubject' => 'Verify User',
-    'updateProfileSubject' => 'Update Profile',
-    'forgetPasswordLinkEmailLine1' => 'We hope this message finds you well. It appears that you have requested to reset the password associated with your ' . config('app.name') . ' account. If you did not initiate this request, please ignore this email.',
-    'forgetPasswordLinkEmailLine2' => 'To reset your password, please click on the following link:',
-    'link' => 'Password Reset Link',
-    'verifyUserLine1' => 'Thank you for choosing ' . config('app.name') . '. Use the following OTP to complete your\n     :subject process. OTP is valid for :expirationTime minutes.',
 ];
