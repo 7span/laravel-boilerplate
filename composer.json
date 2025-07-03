@@ -44,6 +44,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
+            "App\\Console\\Commands\\": "app/Console/Commands/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
