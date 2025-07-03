@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
-use App\Jobs\SendOtpMail;
 use App\Mail\WelcomeUser;
 use App\Mail\ForgetPasswordOtp;
 use App\Exceptions\CustomException;
@@ -25,8 +24,6 @@ class AuthService
 
     private UserService $userService;
 
-    private UserOtpService $userOtpService;
-
     public function __construct()
     {
         $this->userObj = new User;
@@ -34,8 +31,6 @@ class AuthService
         $this->userOtpObj = new UserOtp;
 
         $this->userService = new UserService;
-
-        $this->userOtpService = new UserOtpService;
     }
 
     public function register(array $inputs): array
@@ -80,75 +75,6 @@ class AuthService
 
         return $data;
     }
-
-    public function sendOtp(array $inputs): array
-    {
-        $user = $this->userObj->where('email', $inputs['email'])->first();
-
-        if (empty($user)) {
-            throw new CustomException(__('message.email_not_exist'));
-        }
-
-        $otp = Helper::generateOTP(config('site.otp.length'));
-
-        switch ($inputs['otp_for']) {
-            case 'verification':
-                $subject = __('email.verifyUserSubject');
-                break;
-            case 'update_profile':
-                $subject = __('email.updateProfileSubject');
-                break;
-            case 'reset_password':
-                $subject = __('email.forgetPasswordEmailSubject');
-                break;
-            default:
-                $subject = '';
-                break;
-        }
-
-        $this->userOtpService->store(['otp' => $otp, 'user_id' => $user['id'], 'otp_for' => $inputs['otp_for']]);
-
-        try {
-            SendOtpMail::dispatch($user, $otp, $subject);
-        } catch (\Exception $e) {
-            Log::info('Send Otp mail failed.' . $e->getMessage());
-        }
-
-        $data = [
-            'message' => 'Otp Send Successfully',
-        ];
-
-        return $data;
-    }
-
-    // public function verifyOtp(array $inputs): array
-    // {
-    //     $user = $this->userObj->where('email', $inputs['email'])->first();
-
-    //     if (empty($user)) {
-    //         throw new CustomException(__('message.email_not_exist'));
-    //     }
-
-    //     $userOtp = $this->userOtpService->otpExists($user['id'], $inputs['otp'], 'verification');
-    //     if (empty($userOtp)) {
-    //         throw new CustomException(__('message.invalid_otp'));
-    //     }
-
-    //     $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
-
-    //     if ($isExpired) {
-    //         throw new CustomException(__('message.otp_expired'));
-    //     }
-
-    //     $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-    //     $this->userObj->where('id', $user['id'])->update(['email_verified_at' => date('Y-m-d h:i:s')]);
-
-    //     $data = [
-    //         'message' => __('message.user_verify_success'),
-    //     ];
-
-    //     return $data;
-    // }
 
     public function forgetPassword(array $inputs): array
     {
@@ -220,49 +146,6 @@ class AuthService
             'verified_at' => Carbon::now(),
         ]);
     }
-
-    // public function forgetPassword(array $inputs): array
-    // {
-    //     $emailStatus = Password::sendResetLink([
-    //         'email' => $inputs['email'],
-    //     ]);
-
-    //     if ($emailStatus === Password::RESET_LINK_SENT) {
-
-    //         $data['message'] = __('message.password_reset_sent');
-
-    //         return $data;
-    //     }
-
-    //     throw new CustomException(__($emailStatus));
-    // }
-
-    // public function resetPasswordOtp(array $inputs): array
-    // {
-    //     $user = $this->userObj->where('email', $inputs['email'])->find();
-
-    //     $userOtp = $this->userOtpService->otpExists($user->id, $inputs['otp'], 'reset_password');
-
-    //     if (empty($userOtp)) {
-    //         throw new CustomException(__('message.invalid_otp'));
-    //     }
-
-    //     $isExpired = $this->userOtpService->isOtpExpired($userOtp['created_at'], $userOtp['verified_at']);
-
-    //     if ($isExpired) {
-    //         throw new CustomException(__('message.otp_expired'));
-    //     }
-
-    //     $this->userOtpService->update($userOtp['id'], ['verified_at' => date('Y-m-d h:i:s')]);
-    //     $user->password = $inputs['password'];
-    //     $user->save();
-
-    //     $data = [
-    //         'message' => __('message.password_change_success'),
-    //     ];
-
-    //     return $data;
-    // }
 
     public function resetPassword(array $inputs): array
     {

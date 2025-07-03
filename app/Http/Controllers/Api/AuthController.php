@@ -9,11 +9,9 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\VerifyOtp;
 use App\Http\Requests\Auth\Login as LoginRequest;
-use App\Http\Requests\Auth\SendOtp as SendOtpRequest;
 use App\Http\Requests\Auth\Register as RegisterRequest;
 use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
 use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
-use App\Http\Requests\Auth\ResetPasswordOtp as ResetPasswordOtpRequest;
 
 class AuthController extends Controller
 {
@@ -115,97 +113,6 @@ class AuthController extends Controller
 
         return $this->success($data, 200);
     }
-
-    #[OA\Post(
-        path: '/api/send-otp',
-        operationId: 'sendOtp',
-        tags: ['Auth'],
-        summary: 'Send One-Time Password (OTP)',
-        description: "Sends an OTP to a user's email address for verification purposes.",
-        requestBody: new OA\RequestBody(
-            required: true,
-            description: 'User email and purpose for requesting OTP',
-            content: new OA\JsonContent(
-                required: ['email', 'otp_for'],
-                properties: [
-                    new OA\Property(
-                        property: 'email',
-                        type: 'string',
-                        format: 'email',
-                        description: "User's email address",
-                        example: 'user@gmail.com'
-                    ),
-                    new OA\Property(
-                        property: 'otp_for',
-                        type: 'string',
-                        enum: ['verification', 'reset_password', 'update_profile'],
-                        example: 'register'
-                    ),
-                ]
-            ),
-        ),
-        responses: [
-            new OA\Response(
-                response: '200',
-                description: 'Success.',
-            ),
-            new OA\Response(response: '400', description: 'Validation errors!'),
-        ],
-    )]
-    public function sendOtp(SendOtpRequest $request): JsonResponse
-    {
-        $data = $this->authService->sendOtp($request->validated());
-
-        return $this->success($data);
-    }
-
-    // #[OA\Post(
-    //     path: '/api/v1/verify-otp',
-    //     operationId: 'verifyOtp',
-    //     tags: ['Auth'],
-    //     summary: 'Verify One-Time Password (OTP)',
-    //     description: 'Verifies an OTP submitted by a user for authentication or other purposes.',
-    //     requestBody: new OA\RequestBody(
-    //         required: true,
-    //         description: 'User email and OTP code',
-    //         content: new OA\JsonContent(
-    //             required: ['email', 'otp'],
-    //             properties: [
-    //                 new OA\Property(
-    //                     property: 'email',
-    //                     type: 'string',
-    //                     format: 'email',
-    //                     description: "User's email address",
-    //                     example: 'user@gmail.com'
-    //                 ),
-    //                 new OA\Property(
-    //                     property: 'otp',
-    //                     type: 'string',
-    //                     description: 'OTP code submitted by the user',
-    //                     example: '123456',
-    //                     minLength: 6,
-    //                     maxLength: 6
-    //                 ),
-    //             ]
-    //         ),
-    //     ),
-    //     responses: [
-    //         new OA\Response(
-    //             response: '200',
-    //             description: 'Success.',
-    //         ),
-    //         new OA\Response(response: '400', description: 'Validation errors!'),
-    //     ],
-    //     security: [[
-    //         'bearerAuth' => [],
-    //     ]]
-    // )]
-    // public function verifyOtp(VerifyOtpRequest $request): JsonResponse
-    // {
-    //     $data = $this->authService->verifyOtp($request->validated());
-
-    //     return $this->success($data, 200);
-    // }
 
     #[OA\Post(
         path: '/api/forgot-password-otp-verify',
@@ -339,104 +246,6 @@ class AuthController extends Controller
 
         return $this->success($data, 200);
     }
-
-    // #[OA\Post(
-    //     path: '/api/v1/forget-password',
-    //     operationId: 'forgetPassword',
-    //     tags: ['Auth'],
-    //     summary: 'Forget Password',
-    //     description: "Initiates the process to reset the user's password by sending a reset link to the provided email address.",
-    //     requestBody: new OA\RequestBody(
-    //         required: true,
-    //         description: 'User email',
-    //         content: new OA\JsonContent(
-    //             required: ['email'],
-    //             properties: [
-    //                 new OA\Property(
-    //                     property: 'email',
-    //                     type: 'string',
-    //                     format: 'email',
-    //                     description: "User's email address",
-    //                     example: 'user@gmail.com'
-    //                 ),
-    //             ]
-    //         ),
-    //     ),
-    //     responses: [
-    //         new OA\Response(
-    //             response: '200',
-    //             description: 'Success.',
-    //         ),
-    //         new OA\Response(response: '400', description: 'Validation errors!'),
-    //     ],
-    // )]
-    // public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
-    // {
-    //     $data = $this->authService->forgetPassword($request->validated());
-
-    //     return  $this->success($data, 200);
-    // }
-
-    // #[OA\Post(
-    //     path: '/api/v1/reset-password-otp',
-    //     operationId: 'resetPasswordWithOtp',
-    //     tags: ['Auth'],
-    //     summary: 'Reset Password',
-    //     description: "Resets the user's password using the provided email, new password, and OTP code.",
-    //     requestBody: new OA\RequestBody(
-    //         required: true,
-    //         description: 'User email, new password, and OTP code',
-    //         content: new OA\JsonContent(
-    //             required: ['email', 'password', 'password_confirmation', 'otp'],
-    //             properties: [
-    //                 new OA\Property(
-    //                     property: 'email',
-    //                     type: 'string',
-    //                     format: 'email',
-    //                     description: "User's email address",
-    //                     example: 'user@gmail.com'
-    //                 ),
-    //                 new OA\Property(
-    //                     property: 'password',
-    //                     type: 'string',
-    //                     description: "User's new password",
-    //                     example: 'newpassword123',
-    //                     minLength: 8,
-    //                     maxLength: 255
-    //                 ),
-    //                 new OA\Property(
-    //                     property: 'password_confirmation',
-    //                     type: 'string',
-    //                     description: "Confirmation of the user's new password",
-    //                     example: 'newpassword123',
-    //                     minLength: 8,
-    //                     maxLength: 255
-    //                 ),
-    //                 new OA\Property(
-    //                     property: 'otp',
-    //                     type: 'string',
-    //                     description: "OTP code sent to the user's email",
-    //                     example: '123456',
-    //                     minLength: 6,
-    //                     maxLength: 6
-    //                 ),
-    //             ]
-    //         ),
-    //     ),
-    //     responses: [
-    //         new OA\Response(
-    //             response: '200',
-    //             description: 'Success.',
-    //         ),
-    //         new OA\Response(response: '400', description: 'Validation errors!'),
-    //     ],
-    // )]
-    // public function resetPasswordOtp(ResetPasswordOtpRequest $request): JsonResponse
-    // {
-    //     $data = $this->authService->resetPasswordOtp($request->validated());
-
-    //     return $this->success($data, 200);
-    // }
 
     #[OA\Post(
         path: '/api/v1/reset-password',

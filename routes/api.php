@@ -11,12 +11,9 @@ use App\Http\Controllers\Api\MasterSettingController;
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
-    Route::post('send-otp', 'sendOtp');
     Route::post('forget-password', 'forgetPassword');
     Route::post('forget-password-otp-verify', 'forgotPasswordOTPVerify');
     Route::post('reset-password', 'resetPassword');
-    // Route::post('reset-password-otp', 'resetPasswordOtp');
-    // Route::post('forget-password', 'forgetPassword');
 });
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);

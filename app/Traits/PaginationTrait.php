@@ -7,7 +7,7 @@ trait PaginationTrait
     public function paginationAttribute($data)
     {
         $limit = request()->get('limit');
-        $limit = $limit ?? config('site.pagination.limit');
+        $limit = $limit ?? config('site.pagination_limit');
 
         return (isset($limit) && $limit == '-1') ? $data->get() : $data->paginate($limit);
     }
