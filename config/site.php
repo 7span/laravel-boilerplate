@@ -4,6 +4,12 @@ return [
     'front_website_url' => env('FRONT_WEBSITE_URL', 'http://127.0.0.1:8000'),
     'pagination_limit' => 10,
     'master_password' => env('MASTER_PASSWORD'),
+    'onesignal' => [
+        'app_id' => env('ONESIGNAL_APP_ID'),
+        'api_key' => env('ONESIGNAL_API_KEY'),
+        'admin_app_id' => env('ADMIN_ONESIGNAL_APP_ID'),
+        'admin_api_key' => env('ADMIN_ONESIGNAL_API_KEY'),
+    ],
     'roles' => [
         'admin' => 'admin',
         'user' => 'user',

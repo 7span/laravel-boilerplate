@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\MarkNotificationsAsRead;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'developer' => Spatie\LittleGateKeeper\AuthMiddleware::class,
+            'notification-read' => MarkNotificationsAsRead::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -18,7 +18,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => ['auth:sanctum','notification-read']], function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('me', 'me');
         Route::post('me', 'updateProfile');

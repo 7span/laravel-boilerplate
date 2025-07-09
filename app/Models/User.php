@@ -54,24 +54,29 @@ class User extends Authenticatable
     /** Accessors and Mutators */
     protected $appends = ['name', 'display_status', 'display_mobile_no'];
 
+    public function routeNotificationForOneSignal()
+    {
+        return $this->user_devices()->pluck('onesignal_player_id')->filter()->toArray();
+    }
+    
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->first_name . ' ' . $this->last_name,
+            get: fn() => $this->first_name . ' ' . $this->last_name,
         );
     }
 
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn () => __('status.user.' . $this->status),
+            get: fn() => __('status.user.' . $this->status),
         );
     }
 
     protected function displayMobileNo(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->country_code . ' ' . $this->mobile_no,
+            get: fn() => $this->country_code . ' ' . $this->mobile_no,
         );
     }
 }
