@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\UserStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChangeStatus extends FormRequest
@@ -22,7 +23,7 @@ class ChangeStatus extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:' . implode(',', config('site.user_status')),
+            'status' => 'required|in:' . implode(',', array_column(UserStatus::cases(), 'value')),
         ];
     }
 }

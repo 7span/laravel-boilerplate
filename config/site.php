@@ -16,13 +16,5 @@ return [
         'master_otp' => env('MASTER_OTP'),
         'expiration_time_in_minutes' => 10,
         'length' => 6,
-        'type' => [
-            'email_verification' => 'email_verification',
-            'forget_password' => 'forget_password',
-        ],
-    ],
-    'user_status' => [
-        'active' => 'active',
-        'inactive' => 'inactive',
     ],
 ];
