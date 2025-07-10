@@ -138,6 +138,16 @@ Each file returns an array of key-value pairs for use with Laravel's `__()` and 
   - Centralized content section (`@yield('content')`)
   - Footer with copyright
 
+### Notification System
+
+- This boilerplate includes a robust notification system using Laravel's native features.
+
+  - **Channels Supported:** Database, Email, and optional custom channels (e.g., SMS).
+  - **How It Works:** Notifications are created as classes in `app/Notifications/`. You can add new notification types by creating additional classes in this directory.
+  - **API Integration:** Endpoints are available for listing, marking as read/unread, and managing user notifications.
+
+> See the `app/Notifications/` directory and related controllers/services for implementation details.
+
 ---
 
 ## 🧑‍💻 Developer Tools
