@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
 use App\Traits\BaseModel;
 use Plank\Mediable\Mediable;
 use Laravel\Sanctum\HasApiTokens;
@@ -37,6 +38,11 @@ class User extends Authenticatable
 
     protected $guard_name = 'api';
 
+    protected $relationship = [];
+
+    /** Accessors and Mutators */
+    protected $appends = ['name', 'display_status', 'display_mobile_no'];
+
     protected function casts(): array
     {
         return [
@@ -46,17 +52,14 @@ class User extends Authenticatable
             'created_at' => 'timestamp',
             'updated_at' => 'timestamp',
             'deleted_at' => 'timestamp',
+            'status' => UserStatus::class,
         ];
     }
 
-    protected $relationship = [];
 
     public $queryable = [
         'id',
     ];
-
-    /** Accessors and Mutators */
-    protected $appends = ['name', 'display_status', 'display_mobile_no'];
 
     protected function name(): Attribute
     {
@@ -68,7 +71,7 @@ class User extends Authenticatable
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn() => __('status.user.' . $this->status),
+            get: fn () => $this->status->label(), // @phpstan-ignore-line
         );
     }
 

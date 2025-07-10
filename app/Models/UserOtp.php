@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserOtpFor;
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,20 +44,21 @@ class UserOtp extends Model
         ],
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'timestamp',
-            'updated_at' => 'timestamp',
-            'deleted_at' => 'timestamp',
-        ];
-    }
-
     /**
      * Model's relationships
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+            'deleted_at' => 'timestamp',
+            'otp_for' => UserOtpFor::class,
+        ];
     }
 }
