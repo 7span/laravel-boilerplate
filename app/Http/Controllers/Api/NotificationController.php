@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
-use Openapi\Attributes as OA;
+use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Notification\OneSignalData;
 use App\Services\NotificationService;
+use App\Http\Requests\Notification\OneSignalData;
 use App\Http\Requests\Notification\Request as NotificationRequest;
-use App\Http\Resources\Notification\Resource as NotificationResource;
 use App\Http\Resources\Notification\Collection as NotificationCollection;
 
 class NotificationController extends Controller
@@ -107,9 +105,9 @@ class NotificationController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/organizations/me/onesignal-player-id',
+        path: '/api/onesignal-player-id',
         operationId: 'setOnesignalPlayerId',
-        tags: ['Organization / Auth'],
+        tags: ['Notification'],
         description: 'Set OneSignal player ID for push notifications.',
         requestBody: new OA\RequestBody(
             required: true,

@@ -41,6 +41,10 @@ class Notification extends Model
         'is_read',
     ];
 
+    public $queryable = [
+        'id',
+    ];
+
     protected $defaultSort = '-created_at';
 
     protected $casts = [

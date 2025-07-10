@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\SignedUrlController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\MasterSettingController;
 
 Route::controller(AuthController::class)->group(function () {
@@ -18,13 +19,20 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
-Route::group(['middleware' => ['auth:sanctum','notification-read']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'notification-read']], function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('me', 'me');
         Route::post('me', 'updateProfile');
         Route::post('change-password', 'changePassword');
-        Route::post('logout', 'logout');
     });
+
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('notifications', 'index');
+        Route::post('notifications/read', 'readAllNotification');
+        Route::post('onesignal-player-id', 'setOnesignalData');
+    });
+
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
 Route::get('countries', CountryController::class);

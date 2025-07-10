@@ -51,14 +51,13 @@ class User extends Authenticatable
 
     protected $relationship = [];
 
+    public $queryable = [
+        'id',
+    ];
+
     /** Accessors and Mutators */
     protected $appends = ['name', 'display_status', 'display_mobile_no'];
 
-    public function routeNotificationForOneSignal()
-    {
-        return $this->user_devices()->pluck('onesignal_player_id')->filter()->toArray();
-    }
-    
     protected function name(): Attribute
     {
         return Attribute::make(

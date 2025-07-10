@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-use App\Models\Notification;
 use App\Models\UserDevice;
+use App\Models\Notification;
 use App\Traits\PaginationTrait;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,11 +11,11 @@ class NotificationService
 {
     use PaginationTrait;
 
-    private Notification $notificationObj;
+    private $notificationObj;
 
     public function __construct()
     {
-        $this->notificationObj = new Notification;
+        $this->notificationObj = new Notification();
     }
 
     public function collection()
@@ -32,12 +31,11 @@ class NotificationService
         $notifications = $this->notificationObj
             ->where('user_id', Auth::id())
             ->whereNull('read_at')
-            ->when(!empty($input['ids']), fn($q) => $q->whereIn('id', $inputs['ids']));
+            ->when(!empty($inputs['ids']), fn($q) => $q->whereIn('id', $inputs['ids']));
 
         $notifications->update(['read_at' => now()]);
 
-        // $message = 
-        $data['message'] = __('success');
+        $data['message'] = __('message.notification_read_success');
         return $data;
     }
 
@@ -48,9 +46,8 @@ class NotificationService
             ['onesignal_player_id' => $data['onesignal_player_id']]
         );
 
-        return [
-            'message' => __('entity.entityAdded', ['entity' => "Onesignal Player ID"]),
-            'data' => $device
-        ];
+        $data['message'] = __('message.onesignal_data_success');
+        $data['data'] = $device;
+        return $data;
     }
 }

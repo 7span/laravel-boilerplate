@@ -7,8 +7,6 @@ return [
     'onesignal' => [
         'app_id' => env('ONESIGNAL_APP_ID'),
         'api_key' => env('ONESIGNAL_API_KEY'),
-        'admin_app_id' => env('ADMIN_ONESIGNAL_APP_ID'),
-        'admin_api_key' => env('ADMIN_ONESIGNAL_API_KEY'),
     ],
     'roles' => [
         'admin' => 'admin',
