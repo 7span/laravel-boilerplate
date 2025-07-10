@@ -63,7 +63,7 @@ class AuthService
             throw new CustomException(__('auth.failed'));
         }
 
-        if ($user->status == UserStatus::INACTIVE) {
+        if ($user->status == UserStatus::INACTIVE->value) {
             throw new CustomException(__('message.inactive_user'));
         }
 
