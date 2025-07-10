@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\UserOtp;
+use App\Enums\UserOtpFor;
+use App\Enums\UserStatus;
 use App\Mail\WelcomeUser;
 use App\Mail\ForgetPasswordOtp;
 use App\Exceptions\CustomException;
@@ -61,7 +63,7 @@ class AuthService
             throw new CustomException(__('auth.failed'));
         }
 
-        if ($user->status == config('site.user_status.inactive')) {
+        if ($user->status == UserStatus::INACTIVE) {
             throw new CustomException(__('message.inactive_user'));
         }
 
@@ -83,13 +85,13 @@ class AuthService
             throw new CustomException(__('message.email_not_exist'));
         }
 
-        $this->userOtpObj->where('user_id', $user->id)->where('otp_for', config('site.otp.type.forget_password'))->delete();
+        $this->userOtpObj->where('user_id', $user->id)->where('otp_for', UserOtpFor::FORGOT_PASSWORD->value)->delete();
 
         $otp = Helper::generateOTP(config('site.otp.length'));
         $this->userOtpObj->create([
             'otp' => $otp,
             'user_id' => $user->id,
-            'otp_for' => config('site.otp.type.forget_password'),
+            'otp_for' => UserOtpFor::FORGOT_PASSWORD->value,
         ]);
 
         try {
@@ -109,7 +111,7 @@ class AuthService
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        $this->verifyOtp($user, $inputs['otp'], config('site.otp.type.forget_password'));
+        $this->verifyOtp($user, $inputs['otp'], UserOtpFor::FORGOT_PASSWORD->value);
 
         // Generate password reset token
         $token = Password::broker()->createToken($user);

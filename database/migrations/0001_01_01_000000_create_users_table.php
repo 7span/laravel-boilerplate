@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('first_name', 128)->nullable();
             $table->string('last_name', 128)->nullable();
             $table->string('username', 128)->index()->nullable();
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active')->comment('See App\\Enums\\UserStatus');
             $table->string('country_code', 32)->nullable();
             $table->string('mobile_no', 32)->nullable();
             $table->string('email', 128)->unique()->index();
