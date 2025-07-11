@@ -24,7 +24,7 @@ class UserController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/me',
+        path: '/api/me',
         tags: ['Auth'],
         summary: 'Get logged-in user details',
         responses: [
@@ -57,7 +57,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/me',
+        path: '/api/me',
         operationId: 'updateProfile',
         tags: ['Auth'],
         summary: 'Update Profile',
@@ -130,7 +130,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/change-password',
+        path: '/api/change-password',
         operationId: 'changePassword',
         tags: ['Auth'],
         summary: 'Change Password',

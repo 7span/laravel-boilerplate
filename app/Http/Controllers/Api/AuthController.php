@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
 use App\Services\AuthService;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
@@ -248,7 +249,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/reset-password',
+        path: '/api/reset-password',
         operationId: 'resetPassword',
         tags: ['Auth'],
         summary: 'Reset Password',
@@ -309,11 +310,37 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/logout',
+        path: '/api/logout',
         operationId: 'logoutUser',
         tags: ['Auth'],
         summary: 'Logout User',
         description: 'Logs out the currently authenticated user.',
+        parameters: [
+            new OA\Parameter(
+                name: 'X-Requested-With',
+                in: 'header',
+                required: true,
+                description: 'Custom header for XMLHttpRequest',
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'XMLHttpRequest'
+                )
+            ),
+        ],
+        requestBody: new OA\RequestBody(
+            required: false,
+            description: 'Optional OneSignal player ID for push notification deregistration',
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'onesignal_player_id',
+                        type: 'string',
+                        description: 'OneSignal player ID to deregister from push notifications',
+                        example: 'abcd1234-5678-efgh-9101-ijklmnopqrst'
+                    ),
+                ]
+            ),
+        ),
         responses: [
             new OA\Response(
                 response: '200',
@@ -325,9 +352,9 @@ class AuthController extends Controller
             'bearerAuth' => [],
         ]]
     )]
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        $data = $this->authService->logout();
+        $data = $this->authService->logout($request->all());
 
         return $this->success($data, 200);
     }

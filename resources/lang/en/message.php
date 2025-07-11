@@ -12,4 +12,6 @@ return [
     'logout_success' => 'Logout successfully.',
     'otp_expired' => 'Otp expired.',
     'invalid_otp' => 'Invalid OTP. Please try again.',
+    'onesignal_data_success' => 'OneSignal player ID stored successfully.',
+    'notification_read_success' => 'Notifications marked as read successfully.',
 ];

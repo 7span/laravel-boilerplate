@@ -72,6 +72,8 @@ $ php artisan serve
 - `TELESCOPE_ENABLED` — Enable/disable Laravel Telescope
 - `CDN_ENABLE` — Enable/disable CDN usage for media URLs
 - `CDN_URL` — The base URL of your CDN for media assets
+- `ONESIGNAL_APP_ID` / `ONESIGNAL_API_KEY` — Your OneSignal App ID and API Key for push notifications
+- `NOTIFICATION_ENABLED` — Enable or disable the notification system (true/false)
 
 ---
 
@@ -91,6 +93,7 @@ Localization files are in `resources/lang/en/`:
 - `entity.php` — Entity names/messages
 - `message.php` — General messages
 - `status.php` — Status labels/messages
+- `notification.php` — Notification titles and descriptions
 
 Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` functions.
 
@@ -137,6 +140,16 @@ Each file returns an array of key-value pairs for use with Laravel's `__()` and 
   - Localized greetings and sign-off
   - Centralized content section (`@yield('content')`)
   - Footer with copyright
+
+### Notification System
+
+- This boilerplate includes a robust notification system using Laravel's native features.
+
+  - **Channels Supported:** Database, Email, and optional custom channels (e.g., SMS).
+  - **How It Works:** Notifications are created as classes in `app/Notifications/`. You can add new notification types by creating additional classes in this directory.
+  - **API Integration:** Endpoints are available for listing, marking as read/unread, and managing user notifications.
+
+> See the `app/Notifications/` directory and related controllers/services for implementation details.
 
 ---
 

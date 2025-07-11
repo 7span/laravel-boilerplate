@@ -36,8 +36,10 @@ trait BaseModel
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
             }
-            foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $tableName . '.' . $field;
+            if (isset($relationshipObj->queryable)) {
+                foreach ($relationshipObj->queryable as $field) {
+                    $fields[] = $tableName . '.' . $field;
+                }
             }
         }
 
@@ -102,7 +104,7 @@ trait BaseModel
     {
         $appendParam = request()->get('append', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
-        $allowedAppends = array_filter($appendArray, fn ($value) => ! empty($value));
+        $allowedAppends = array_filter($appendArray, fn($value) => ! empty($value));
 
         return array_merge($allowedAppends, $this->appends);
     }
