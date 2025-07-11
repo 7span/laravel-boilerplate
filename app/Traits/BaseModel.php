@@ -31,7 +31,7 @@ trait BaseModel
         $relationships = $this->getRelationship();
 
         foreach ($relationships as $relationship) {
-            $relationshipObj = new $relationship['model']();
+            $relationshipObj = new $relationship['model'];
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
