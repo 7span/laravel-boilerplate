@@ -73,6 +73,7 @@ $ php artisan serve
 - `CDN_ENABLE` — Enable/disable CDN usage for media URLs
 - `CDN_URL` — The base URL of your CDN for media assets
 - `ONESIGNAL_APP_ID` / `ONESIGNAL_API_KEY` — Your OneSignal App ID and API Key for push notifications
+- `NOTIFICATION_ENABLED` — Enable or disable the notification system (true/false)
 
 ---
 

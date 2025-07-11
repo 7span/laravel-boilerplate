@@ -21,6 +21,10 @@ class UserOneSignalChannel extends OneSignalChannel
 
     public function send($notifiable, Notification $notification)
     {
+        if (!config('site.notification_enabled')) {
+            return;
+        }
+
         $userIds = $notifiable->user_devices()->pluck('onesignal_player_id')->toArray();
 
         if (empty($userIds)) {

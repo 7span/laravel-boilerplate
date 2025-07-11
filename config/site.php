@@ -4,6 +4,7 @@ return [
     'front_website_url' => env('FRONT_WEBSITE_URL', 'http://127.0.0.1:8000'),
     'pagination_limit' => 10,
     'master_password' => env('MASTER_PASSWORD'),
+    'notification_enabled' => env('NOTIFICATION_ENABLED', false),
     'onesignal' => [
         'app_id' => env('ONESIGNAL_APP_ID'),
         'api_key' => env('ONESIGNAL_API_KEY'),

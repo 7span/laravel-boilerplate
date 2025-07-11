@@ -149,7 +149,6 @@ class NotificationController extends Controller
     )]
     public function setOnesignalData(OneSignalData $request)
     {
-        // dd($request);
         $data = $this->notificationService->setOnesignalData($request->validated());
 
         return $this->success($data);
