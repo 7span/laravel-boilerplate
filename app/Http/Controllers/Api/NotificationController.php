@@ -120,6 +120,18 @@ class NotificationController extends Controller
                         description: "The OneSignal Player ID for push notifications.",
                         example: '1a2b3c4d5e'
                     ),
+                    new OA\Property(
+                        property: 'device_id',
+                        type: 'string',
+                        description: "The device ID for the user's device.",
+                        example: 'device12345'
+                    ),
+                    new OA\Property(
+                        property: 'device_type',
+                        type: 'string',
+                        description: "The type of device (e.g., 'android', 'ios').",
+                        example: 'android'
+                    ),
                 ]
             )
         ),
@@ -137,6 +149,7 @@ class NotificationController extends Controller
     )]
     public function setOnesignalData(OneSignalData $request)
     {
+        // dd($request);
         $data = $this->notificationService->setOnesignalData($request->validated());
 
         return $this->success($data);

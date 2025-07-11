@@ -31,6 +31,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index();
             $table->string('onesignal_player_id')->nullable();
+            $table->string('device_id')->nullable();
+            $table->string('device_type')->nullable();
             $table->timestamps();
         });
     }

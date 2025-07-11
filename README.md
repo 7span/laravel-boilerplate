@@ -72,6 +72,7 @@ $ php artisan serve
 - `TELESCOPE_ENABLED` — Enable/disable Laravel Telescope
 - `CDN_ENABLE` — Enable/disable CDN usage for media URLs
 - `CDN_URL` — The base URL of your CDN for media assets
+- `ONESIGNAL_APP_ID` / `ONESIGNAL_API_KEY` — Your OneSignal App ID and API Key for push notifications
 
 ---
 
@@ -91,6 +92,7 @@ Localization files are in `resources/lang/en/`:
 - `entity.php` — Entity names/messages
 - `message.php` — General messages
 - `status.php` — Status labels/messages
+- `notification.php` — Notification titles and descriptions
 
 Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` functions.
 

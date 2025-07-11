@@ -6,6 +6,7 @@ use App\Models\UserDevice;
 use App\Models\Notification;
 use App\Traits\PaginationTrait;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserDevice\Resource as UserDeviceResource;
 
 class NotificationService
 {
@@ -43,11 +44,15 @@ class NotificationService
     {
         $device = UserDevice::updateOrCreate(
             ['user_id' => Auth::id()],
-            ['onesignal_player_id' => $data['onesignal_player_id']]
+            [
+                'onesignal_player_id' => $data['onesignal_player_id'],
+                'device_id' => $data['device_id'] ?? null,
+                'device_type' => $data['device_type'] ?? null,
+            ]
         );
 
         $data['message'] = __('message.onesignal_data_success');
-        $data['data'] = $device;
+        $data['data'] = new UserDeviceResource($device->refresh());
         return $data;
     }
 }

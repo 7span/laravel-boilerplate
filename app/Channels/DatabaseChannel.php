@@ -30,7 +30,6 @@ class DatabaseChannel extends IlluminateDatabaseChannel
             'notifiable_type' => $data['notifiable_type'] ?? null,
             'notifiable_id' => $data['notifiable_id'] ?? null,
             'data' => $data['data'] ?? null,
-            'read_at' => null,
         ]);
     }
 }

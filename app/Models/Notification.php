@@ -4,13 +4,11 @@ namespace App\Models;
 
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Notification extends Model
 {
-    use BaseModel, HasFactory;
+    use BaseModel;
 
-    protected $table = 'notifications';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -41,15 +39,11 @@ class Notification extends Model
         'is_read',
     ];
 
-    public $queryable = [
-        'id',
-    ];
-
     protected $defaultSort = '-created_at';
 
     protected $casts = [
         'data' => 'array',
-        'read_at' => 'datetime',
+        'read_at' => 'timestamp',
         'created_at' => 'timestamp',
     ];
 

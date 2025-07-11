@@ -22,7 +22,9 @@ class OneSignalData extends FormRequest
     public function rules(): array
     {
         return [
-            'onesignal_player_id' => 'required|string'
+            'onesignal_player_id' => 'required|string',
+            'device_id' => 'nullable|string',
+            'device_type' => 'nullable|string|in:android,ios,web',
         ];
     }
 }

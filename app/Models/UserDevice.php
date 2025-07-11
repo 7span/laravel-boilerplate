@@ -4,15 +4,16 @@ namespace App\Models;
 
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserDevice extends Model
 {
-    use HasFactory, BaseModel;
+    use BaseModel;
 
     protected $fillable = [
         'user_id',
-        'onesignal_player_id'
+        'onesignal_player_id',
+        'device_id',
+        'device_type',
     ];
 
     public function user()
@@ -27,8 +28,4 @@ class UserDevice extends Model
             'updated_at' => 'timestamp',
         ];
     }
-
-    public $queryable = [
-        'id',
-    ];
 }
