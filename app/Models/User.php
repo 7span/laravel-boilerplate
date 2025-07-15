@@ -17,6 +17,10 @@ class User extends Authenticatable
 {
     use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
 
+    public $queryable = [
+        'id',
+    ];
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -56,28 +60,24 @@ class User extends Authenticatable
         ];
     }
 
-    public $queryable = [
-        'id',
-    ];
-
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->first_name . ' ' . $this->last_name,
+            get: fn () => $this->first_name . ' ' . $this->last_name,
         );
     }
 
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->status->label(), // @phpstan-ignore-line
+            get: fn () => $this->status->label(), // @phpstan-ignore-line
         );
     }
 
     protected function displayMobileNo(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->country_code . ' ' . $this->mobile_no,
+            get: fn () => $this->country_code . ' ' . $this->mobile_no,
         );
     }
 }
