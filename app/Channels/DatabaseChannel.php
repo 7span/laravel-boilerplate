@@ -12,8 +12,7 @@ class DatabaseChannel extends IlluminateDatabaseChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
-     * @param \Illuminate\Notifications\Notification $notification
+     * @param  mixed  $notifiable
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function send($notifiable, Notification $notification)
