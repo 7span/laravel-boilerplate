@@ -9,6 +9,7 @@ use App\Models\UserOtp;
 use App\Enums\UserOtpFor;
 use App\Enums\UserStatus;
 use App\Mail\WelcomeUser;
+use App\Models\UserDevice;
 use App\Mail\ForgetPasswordOtp;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
@@ -171,9 +172,12 @@ class AuthService
         throw new CustomException(__($passwordStatus));
     }
 
-    public function logout(): array
+    public function logout($inputs): array
     {
         if (Auth::check()) {
+            if (isset($inputs['onesignal_player_id']) && $inputs['onesignal_player_id']) {
+                UserDevice::where('onesignal_player_id', $inputs['onesignal_player_id'])->delete();
+            }
             Auth::user()->currentAccessToken()->delete();
         }
 

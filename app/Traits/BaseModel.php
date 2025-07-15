@@ -109,9 +109,11 @@ trait BaseModel
     {
         $appendParam = request()->get('append', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
+
         $allowedAppends = array_filter($appendArray, function ($value) {
             return !empty($value) && $this->hasAttribute($value);
         });
+      
         return array_merge($allowedAppends, $this->appends ?? []);
     }
 
