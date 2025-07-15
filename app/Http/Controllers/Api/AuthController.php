@@ -356,6 +356,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->logout($request->all());
 
+        
         return $this->success($data, 200);
     }
 }
