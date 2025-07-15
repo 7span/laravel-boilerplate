@@ -36,8 +36,10 @@ trait BaseModel
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
             }
-            foreach ($relationshipObj->queryable as $field) {
-                $fields[] = $tableName . '.' . $field;
+            if (isset($relationshipObj->queryable)) {
+                foreach ($relationshipObj->queryable as $field) {
+                    $fields[] = $tableName . '.' . $field;
+                }
             }
         }
 
@@ -83,6 +85,11 @@ trait BaseModel
         }
         $queryBuilder->allowedFilters($filters);
 
+        if (isset($this->defaultSort)) {
+            $queryBuilder->defaultSort($this->defaultSort);
+        }
+
+        $queryBuilder->allowedSorts($this->getQueryFields());
         return $queryBuilder;
     }
 
@@ -102,9 +109,10 @@ trait BaseModel
     {
         $appendParam = request()->get('append', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
-        $allowedAppends = array_filter($appendArray, fn ($value) => ! empty($value));
-
-        return array_merge($allowedAppends, $this->appends);
+        $allowedAppends = array_filter($appendArray, function ($value) {
+            return !empty($value) && $this->hasAttribute($value);
+        });
+        return array_merge($allowedAppends, $this->appends ?? []);
     }
 
     /**
