@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Aws\S3\S3Client;
 use App\Models\TempFile;
-use App\Helpers\MediaHelper;
+use App\Libraries\MediaHelper;
 
 class SignedUrlService
 {
@@ -15,15 +15,21 @@ class SignedUrlService
 
     public function create(array $inputs)
     {
+        // Get S3 configuration from filesystem config
+        $s3Config = config('filesystems.disks.s3');
+
         // Set up the S3 client
         $client = new S3Client([
-            'version' => config('aws.version'),
-            'region' => config('aws.region'),
-            'credentials' => config('aws.credentials'),
+            'version' => 'latest',
+            'region' => $s3Config['region'],
+            'credentials' => [
+                'key' => $s3Config['key'],
+                'secret' => $s3Config['secret'],
+            ],
         ]);
 
         // Set the bucket name and object key
-        $bucket = config('aws.bucket');
+        $bucket = $s3Config['bucket'];
 
         // KEY means folder-name/file-name
         $directory = config('media.directory.' . $inputs['type'], 'default');
