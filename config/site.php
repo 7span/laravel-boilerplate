@@ -5,6 +5,7 @@ return [
     'pagination_limit' => 10,
     'master_password' => env('MASTER_PASSWORD'),
     'notification_enabled' => env('NOTIFICATION_ENABLED', false),
+    'soft_delete_retention_days' => env('SOFT_DELETE_RETENTION_DAYS', 90),
     'onesignal' => [
         'app_id' => env('ONESIGNAL_APP_ID'),
         'api_key' => env('ONESIGNAL_API_KEY'),
