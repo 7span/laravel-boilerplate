@@ -54,7 +54,7 @@ class NotificationController extends Controller
                 name: 'filter[is_read]',
                 in: 'query',
                 description: 'Pass `true` to get already read notification and `false` for unread notifications.'
-            )
+            ),
         ],
         responses: [
             new OA\Response(response: '200', description: 'Success'),
@@ -117,7 +117,7 @@ class NotificationController extends Controller
                     new OA\Property(
                         property: 'onesignal_player_id',
                         type: 'string',
-                        description: "The OneSignal Player ID for push notifications.",
+                        description: 'The OneSignal Player ID for push notifications.',
                         example: '1a2b3c4d5e'
                     ),
                     new OA\Property(
