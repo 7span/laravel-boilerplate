@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\MasterSetting;
-use App\Models\User;
+use SplFileInfo;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HardDeleteData extends Command
@@ -16,7 +15,7 @@ class HardDeleteData extends Command
 
     public function handle()
     {
-        $days = Config::get('site.soft_delete_retention_days', 3);
+        $days = Config::get('site.soft_delete_retention_days');
         $cutoff = now()->subDays($days);
         $isDryRun = $this->option('dry-run');
         $totalDeleted = 0;
@@ -26,7 +25,7 @@ class HardDeleteData extends Command
          * hard deletion here.
          */
         $excludedModels = [
-            // Country::class,  
+            // User::class,
         ];
 
         $this->info($isDryRun
@@ -50,15 +49,14 @@ class HardDeleteData extends Command
 
     protected function getApplicableModels(array $excludedModels)
     {
+        $excluded = collect($excludedModels);
         return collect(File::files(app_path('Models')))
-            ->filter(fn($file) => $file->getExtension() === 'php')
-            ->map(fn($file) => 'App\\Models\\' . $file->getBasename('.php'))
-            ->filter(
-                fn($class) =>
-                class_exists($class) &&
-                    !in_array($class, $excludedModels) &&
-                    in_array(SoftDeletes::class, class_uses_recursive($class))
-            )
-            ->map(fn($class) => new $class);
+            ->map(fn(SplFileInfo $file) => app()->getNamespace() . 'Models\\' . $file->getBasename('.php'))
+            ->filter(fn(string $className) => (
+                class_exists($className) &&
+                !$excluded->contains($className) &&
+                collect(class_uses_recursive($className))->contains(SoftDeletes::class)
+            ))
+            ->map(fn(string $className) => app($className));
     }
 }
