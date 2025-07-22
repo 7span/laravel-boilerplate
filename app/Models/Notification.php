@@ -10,6 +10,7 @@ class Notification extends Model
     use BaseModel;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -23,16 +24,16 @@ class Notification extends Model
         'notifiable_id',
         'data',
         'read_at',
-        'created_at'
+        'created_at',
     ];
 
     protected $relationship = [
         'user' => [
-            'model' => User::class
+            'model' => User::class,
         ],
         'sender' => [
-            'model' => User::class
-        ]
+            'model' => User::class,
+        ],
     ];
 
     protected $scopedFilters = [
