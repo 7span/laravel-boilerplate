@@ -11,11 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         commands: __DIR__ . '/../routes/console.php',
         using: function () {
-            Route::middleware('api')
+            Route::middleware('throttle:api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('api')
+            Route::middleware('throttle:api')
                 ->as('admin.')
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin.php'));
