@@ -31,13 +31,15 @@ class UserOneSignalChannel extends OneSignalChannel
     public function send($notifiable, Notification $notification)
     {
         if (! config('site.notification_enabled')) {
-            return new Response(204);
+            // Return a dummy ResponseInterface (e.g., an empty response) if notification is disabled
+            return new Response(204); // No Content
         }
 
         $userIds = $notifiable->user_devices()->pluck('onesignal_player_id')->toArray();
 
         if (empty($userIds)) {
-            return new Response(204);
+            // Return a dummy ResponseInterface if no user IDs
+            return new Response(204); // No Content
         }
 
         $response = $this->oneSignal->sendNotificationCustom(
