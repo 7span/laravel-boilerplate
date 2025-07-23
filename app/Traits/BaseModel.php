@@ -90,12 +90,8 @@ trait BaseModel
         }
 
         $queryBuilder->allowedSorts($this->getQueryFields());
-        return $queryBuilder;
-    }
 
-    private function getQueryable()
-    {
-        return ! empty($this->queryable) ? $this->queryable : ['id'];
+        return $queryBuilder;
     }
 
     /**
@@ -107,14 +103,14 @@ trait BaseModel
      */
     public function getAppends(): array
     {
-        $appendParam = request()->get('append', '');
+        $appendParam = request()->get('appends', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
 
         $allowedAppends = array_filter($appendArray, function ($value) {
-            return !empty($value) && $this->hasAttribute($value);
+            return ! empty($value) && $this->hasAttribute($value);
         });
-      
-        return array_merge($allowedAppends, $this->appends ?? []);
+
+        return array_merge($allowedAppends, $this->appends);
     }
 
     /**
@@ -132,5 +128,10 @@ trait BaseModel
             $includes[] = 'media';
             $request->merge(['include' => implode(',', $includes)]);
         }
+    }
+
+    private function getQueryable()
+    {
+        return ! empty($this->queryable) ? $this->queryable : ['id'];
     }
 }

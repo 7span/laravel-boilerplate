@@ -2,6 +2,7 @@
 
 namespace App\Channels;
 
+use GuzzleHttp\Psr7\Response;
 use Berkayk\OneSignal\OneSignalClient;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\OneSignal\OneSignalChannel;
@@ -19,16 +20,24 @@ class UserOneSignalChannel extends OneSignalChannel
         parent::__construct($oneSignal);
     }
 
+    /**
+     * Send the given notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws CouldNotSendNotification
+     */
     public function send($notifiable, Notification $notification)
     {
-        if (!config('site.notification_enabled')) {
-            return;
+        if (! config('site.notification_enabled')) {
+            return new Response(204);
         }
 
         $userIds = $notifiable->user_devices()->pluck('onesignal_player_id')->toArray();
 
         if (empty($userIds)) {
-            return;
+            return new Response(204);
         }
 
         $response = $this->oneSignal->sendNotificationCustom(

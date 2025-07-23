@@ -16,7 +16,7 @@ class NotificationService
 
     public function __construct()
     {
-        $this->notificationObj = new Notification();
+        $this->notificationObj = new Notification;
     }
 
     public function collection()
@@ -32,11 +32,12 @@ class NotificationService
         $notifications = $this->notificationObj
             ->where('user_id', Auth::id())
             ->whereNull('read_at')
-            ->when(!empty($inputs['ids']), fn($q) => $q->whereIn('id', $inputs['ids']));
+            ->when(! empty($inputs['ids']), fn ($q) => $q->whereIn('id', $inputs['ids']));
 
         $notifications->update(['read_at' => now()]);
 
         $data['message'] = __('message.notification_read_success');
+
         return $data;
     }
 
@@ -53,6 +54,7 @@ class NotificationService
 
         $data['message'] = __('message.onesignal_data_success');
         $data['data'] = new UserDeviceResource($device->refresh());
+
         return $data;
     }
 }
