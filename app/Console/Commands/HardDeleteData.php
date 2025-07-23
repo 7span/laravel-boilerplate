@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class HardDeleteData extends Command
 {
     protected $signature = 'system:hard-delete-data {--dry-run}';
+
     protected $description = 'Permanently delete soft-deleted data from the database after a configured number of days.';
 
     public function handle()
@@ -21,7 +22,7 @@ class HardDeleteData extends Command
         $totalDeleted = 0;
 
         /**
-         * Add models to exclude from 
+         * Add models to exclude from
          * hard deletion here.
          */
         $excludedModels = [
@@ -36,7 +37,7 @@ class HardDeleteData extends Command
             $query = $model::onlyTrashed()->where('deleted_at', '<=', $cutoff);
             $count = $query->count();
 
-            if ($count > 0 && !$isDryRun) {
+            if ($count > 0 && ! $isDryRun) {
                 $query->forceDelete();
             }
 
@@ -50,13 +51,14 @@ class HardDeleteData extends Command
     protected function getApplicableModels(array $excludedModels)
     {
         $excluded = collect($excludedModels);
+
         return collect(File::files(app_path('Models')))
-            ->map(fn(SplFileInfo $file) => app()->getNamespace() . 'Models\\' . $file->getBasename('.php'))
-            ->filter(fn(string $className) => (
+            ->map(fn (SplFileInfo $file) => app()->getNamespace() . 'Models\\' . $file->getBasename('.php'))
+            ->filter(fn (string $className) => (
                 class_exists($className) &&
-                !$excluded->contains($className) &&
+                ! $excluded->contains($className) &&
                 collect(class_uses_recursive($className))->contains(SoftDeletes::class)
             ))
-            ->map(fn(string $className) => app($className));
+            ->map(fn (string $className) => app($className));
     }
 }
