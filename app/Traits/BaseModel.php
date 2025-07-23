@@ -120,7 +120,7 @@ trait BaseModel
      */
     public function getAppends(): array
     {
-        $appendParam = request()->get('append', '');
+        $appendParam = request()->get('appends', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
 
         $allowedAppends = array_filter($appendArray, function ($value) {

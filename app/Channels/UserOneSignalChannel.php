@@ -20,6 +20,14 @@ class UserOneSignalChannel extends OneSignalChannel
         parent::__construct($oneSignal);
     }
 
+    /**
+     * Send the given notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws CouldNotSendNotification
+     */
     public function send($notifiable, Notification $notification)
     {
         if (! config('site.notification_enabled')) {
