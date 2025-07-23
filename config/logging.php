@@ -128,8 +128,4 @@ return [
         ],
 
     ],
-
-    // Custom log retention period (in days)
-    'log_retention_days' => env('LOG_RETENTION_DAYS', 30),
-
 ];

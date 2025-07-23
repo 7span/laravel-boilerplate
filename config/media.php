@@ -10,6 +10,8 @@ return [
     ],
     'cdn_enable' => env('CDN_ENABLE', false),
     'cdn_url' => env('CDN_URL', 'https://your-cdn-url.com'),
+    // Delete the temp or non-sync image with the database from the folder
+    'temp_file_delete_after_days' => env('TEMP_FILE_DELETE_AFTER_DAYS', 2),
     'aggregate_types' => [
         'image' => [
             'image/jpeg',
