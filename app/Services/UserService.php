@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Helpers\MediaHelper;
+use App\Libraries\MediaHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User\Resource;
 
