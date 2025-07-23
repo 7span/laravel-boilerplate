@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Libraries;
 
 use App\Models\Media;
 use App\Models\TempFile;
