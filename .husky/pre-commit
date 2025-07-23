@@ -10,6 +10,9 @@ npx --no-install lint-staged || exit 1
 # Run PHPStan for static analysis
 ./vendor/bin/phpstan --memory-limit=2G analyse || exit 1
 
+# Run PHP Peck to detect spelling mistakes
+./vendor/bin/peck || exit 1
+
 # Run PHPUnit tests
 ./vendor/bin/phpunit || exit 1
 

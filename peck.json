@@ -1,0 +1,53 @@
+{
+    "preset": "laravel",
+    "ignore": {
+      "words": [
+        "uuid", "str", "js", "api", "dto", "url", "uri", "cdn", "scss", "npm", "yarn", "csv", "pdf", "xml", "http", "https",
+        "middleware", "controller", "eloquent", "sanctum", "inertia", "livewire", "filament", "artisan", "trait",
+        "enum", "seeder", "factory", "migration", "viewmodel", "repository", "service", "provider", "request",
+        "response", "responser", "auth", "config", "namespace", "nullable", "dispatch", "timestamp", "webhook", "pagination",
+        "stylesheet", "javascript", "frontend", "backend", "webpack", "vuejs", "reactjs", "tailwind", "blade",
+        "queryable", "mutators", "onesignal", "mediable", "filesystems", "littlegatekeeper"
+      ],
+      "paths": [
+        "storage",
+        "vendor",
+        "node_modules",
+        "public",
+        "bootstrap/cache",
+        "resources/views",
+        "database/migrations",
+        "database/seeders",
+        "database/factories",
+        "*.blade.php",
+        "*.md",
+        "*.txt",
+        "*.css",
+        "*.js",
+        "*.json",
+        "*.yml",
+        "*.yaml",
+        "*.env",
+        "*.lock",
+        "*.editorconfig",
+        "*.gitattributes",
+        "*.gitignore",
+        "*.xml",
+        "*.dist",
+        "config/*",
+        "!config/site.php",
+        "tests/Feature/*",
+        "tests/Unit/*",
+        "docker-compose.yml"
+      ]
+    },
+    "paths": [
+      "app",
+      "routes",
+      "resources/lang",
+      "resources/js",
+      "resources/css",
+      "config/site.php"
+    ]
+  }
+  
