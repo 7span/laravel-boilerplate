@@ -1,0 +1,16 @@
+{
+  "preset": "laravel",
+  "ignore": {
+    "words": [
+      "queryable", "mutators", "onesignal", "mediable", "filesystems", "littlegatekeeper", "responser", "js", "str", "cdn",
+      "roboto", "favicon", "img", "logviewer", "telescope","otps"
+    ]
+  },
+  "paths": [
+    "app",
+    "routes",
+    "resources/lang",
+    "config/site.php",
+    "database/migrations"
+  ]
+}
