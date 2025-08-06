@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Libraries;
 
 use Illuminate\Http\Request;
 use App\Exceptions\CustomException;

@@ -17,10 +17,6 @@ class User extends Authenticatable
 {
     use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
 
-    public $queryable = [
-        'id',
-    ];
-
     protected $fillable = [
         'first_name',
         'last_name',
@@ -42,10 +38,19 @@ class User extends Authenticatable
 
     protected $guard_name = 'api';
 
-    protected $relationship = [];
-
     /** Accessors and Mutators */
     protected $appends = ['name', 'display_status', 'display_mobile_no'];
+
+    protected $relationship = [
+        'user_device' => [
+            'model' => UserDevice::class,
+        ],
+    ];
+
+    public function userDevice()
+    {
+        return $this->hasOne(UserDevice::class);
+    }
 
     protected function casts(): array
     {

@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Models\Media;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedInclude;
 
 trait BaseModel
 {
@@ -65,13 +66,29 @@ trait BaseModel
         return array_keys($this->getRelationship());
     }
 
+    /**
+     * Generate allowedIncludes array using snake_case keys as API aliases and camelCase as relationship methods.
+     */
+    public function getAllowedIncludes(): array
+    {
+        $includes = [];
+        foreach ($this->getRelationship() as $alias => $rel) {
+            // Convert snake_case alias to camelCase method name
+            $camel = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $alias))));
+            $includes[] = AllowedInclude::relationship($alias, $camel);
+        }
+
+        return $includes;
+    }
+
     public function getQB(): QueryBuilder
     {
         $this->addMediaToIncludes();
 
         $queryBuilder = QueryBuilder::for(self::class)
             ->allowedFields($this->getQueryFieldsWithRelationship())
-            ->allowedIncludes($this->getIncludes());
+            ->allowedIncludes($this->getAllowedIncludes());
+
         $filters = $this->getQueryFields();
         if (isset($this->scopedFilters)) {
             foreach ($this->scopedFilters as $key => $value) {
@@ -103,7 +120,7 @@ trait BaseModel
      */
     public function getAppends(): array
     {
-        $appendParam = request()->get('append', '');
+        $appendParam = request()->get('appends', '');
         $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
 
         $allowedAppends = array_filter($appendArray, function ($value) {

@@ -1,5 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
 # Run lint-staged for staged PHP files (duster fix)
 npx --no-install lint-staged || exit 1
