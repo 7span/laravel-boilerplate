@@ -86,7 +86,7 @@ class MediaHelper
         $mimeTypes = config('media.mime_types');
         $extension = null;
 
-        if ($mimeType == 'application/octet-stream') {
+        if ($mimeType === 'application/octet-stream') {
             $extension = explode('.', $fileName)[1];
         } else {
             $extension = isset($mimeTypes[$mimeType]) ? $mimeTypes[$mimeType] : explode('.', $fileName)[1];

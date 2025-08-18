@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -8,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 
-class ForgetPasswordOtp extends Mailable
+class ForgotPasswordOtp extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,7 +25,7 @@ class ForgetPasswordOtp extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('email.forget_password.subject'),
+            subject: __('email.forgot_password.subject'),
         );
     }
 
@@ -33,7 +35,7 @@ class ForgetPasswordOtp extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.forget-password-otp',
+            view: 'emails.forgot-password-otp',
             with: ['user' => $this->user, 'otp' => $this->otp, 'name' => $this->user->name],
         );
     }

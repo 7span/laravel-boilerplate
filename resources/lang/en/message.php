@@ -7,7 +7,7 @@ return [
     'password_change_success' => 'Password changed successfully.',
     'inactive_user' => 'Account Inactive: Please contact administrator to reactivate your account.',
     'email_not_exist' => 'This email address is not registered in the system.',
-    'forget_password_email_success' => 'Forgot Password OTP has been sent sent your email address.',
+    'forgot_password_email_success' => 'Forgot Password OTP has been sent sent your email address.',
     'otp_verified_successfully' => 'OTP verified successfully. You can now proceed with password reset.',
     'logout_success' => 'Logout successfully.',
     'otp_expired' => 'Otp expired.',

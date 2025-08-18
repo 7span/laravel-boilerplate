@@ -10,7 +10,7 @@ return [
         'action' => 'Visit Website',
         'footer' => 'If you have any questions, please don\'t hesitate to contact us.',
     ],
-    'forget_password' => [
+    'forgot_password' => [
         'subject' => 'Forgot Password Request',
         'line1' => 'We received a request to reset your password. If you did not make this request, please ignore this email.',
         'line2' => 'Your OTP is :otp. Please note that it is valid for the next :valid_minute minutes.',

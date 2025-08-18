@@ -20,7 +20,6 @@
             "space": "single"
         },
         "elseif": true,
-        "declare_strict_types": true,
         "strict_comparison": true,
         "fully_qualified_strict_types": true,
         "function_declaration": true,

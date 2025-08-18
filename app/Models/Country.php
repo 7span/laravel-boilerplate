@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -9,6 +11,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Country extends Model
 {
     use BaseModel, HasFactory;
+
+    public $queryable = [
+        'id',
+    ];
+
+    public $defaultSort = 'name';
+
+    public $allowedSorts = ['id', 'name'];
 
     protected $fillable = [
         'name',
@@ -28,12 +38,4 @@ class Country extends Model
             'deleted_at' => 'timestamp',
         ];
     }
-
-    public $queryable = [
-        'id',
-    ];
-
-    public $defaultSort = 'name';
-
-    public $allowedSorts = ['id', 'name'];
 }
