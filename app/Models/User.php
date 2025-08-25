@@ -75,7 +75,7 @@ class User extends Authenticatable
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status->label(), // @phpstan-ignore-line
+            get: fn () => $this['status']->label()
         );
     }
 
