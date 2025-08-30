@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Services;
 
 use Carbon\Carbon;
@@ -10,7 +12,7 @@ use App\Enums\UserStatus;
 use App\Libraries\Helper;
 use App\Mail\WelcomeUser;
 use App\Models\UserDevice;
-use App\Mail\ForgetPasswordOtp;
+use App\Mail\ForgotPasswordOtp;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -60,11 +62,11 @@ class AuthService
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        if (! $user || ($inputs['password'] != config('site.master_password') && ! Hash::check($inputs['password'], $user->password))) {
+        if (! $user || ($inputs['password'] !== config('site.master_password') && ! Hash::check($inputs['password'], $user->password))) {
             throw new CustomException(__('auth.failed'));
         }
 
-        if ($user->status == UserStatus::INACTIVE->value) {
+        if ($user->status === UserStatus::INACTIVE->value) {
             throw new CustomException(__('message.inactive_user'));
         }
 
@@ -79,7 +81,7 @@ class AuthService
         return $data;
     }
 
-    public function forgetPassword(array $inputs): array
+    public function forgotPassword(array $inputs): array
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
         if (empty($user)) {
@@ -96,13 +98,13 @@ class AuthService
         ]);
 
         try {
-            Mail::to($user->email)->send(new ForgetPasswordOtp($user, $otp));
+            Mail::to($user->email)->send(new ForgotPasswordOtp($user, $otp));
         } catch (\Exception $e) {
-            Log::info('Forget Password mail failed.' . $e->getMessage());
+            Log::info('Forgot Password mail failed.' . $e->getMessage());
         }
 
         $data = [
-            'message' => __('message.forget_password_email_success'),
+            'message' => __('message.forgot_password_email_success'),
         ];
 
         return $data;
@@ -129,7 +131,7 @@ class AuthService
     {
         $userOtp = $this->userOtpObj->where('user_id', $user->id);
 
-        if (config('site.otp.master_otp') != $otp) {
+        if (config('site.otp.master_otp') !== $otp) {
             $userOtp->where('otp', $otp)->where('verified_at', null);
         }
 
@@ -163,7 +165,7 @@ class AuthService
             $user->save();
         });
 
-        if ($passwordStatus == Password::PASSWORD_RESET) {
+        if ($passwordStatus === Password::PASSWORD_RESET) {
             $data['message'] = __('message.password_change_success');
 
             return $data;
