@@ -11,11 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         commands: __DIR__ . '/../routes/console.php',
         using: function () {
-            Route::middleware('throttle:api')
+            Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('throttle:api')
+            Route::middleware('api')
                 ->as('admin.')
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin.php'));
@@ -32,6 +32,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'developer' => Spatie\LittleGateKeeper\AuthMiddleware::class,
             'notification-read' => MarkNotificationsAsRead::class,
+        ]);
+        $middleware->group('api', [
+            'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
