@@ -32,13 +32,16 @@ $ npm install && npm run build
 # 3. Copy .env and configure
 $ cp .env.example .env
 
-# 4. Generate app key
+# 4. Configure Git hooks (Husky)
+$ git config core.hooksPath .husky
+
+# 5. Generate app key
 $ php artisan key:generate
 
-# 5. Run migrations and seeders
+# 6. Run migrations and seeders
 $ php artisan migrate --seed
 
-# 6. Start the server
+# 7. Start the server
 $ php artisan serve
 ```
 
