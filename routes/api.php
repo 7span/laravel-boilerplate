@@ -13,8 +13,8 @@ use App\Http\Controllers\Api\MasterSettingController;
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
-    Route::post('forget-password', 'forgetPassword');
-    Route::post('forget-password-otp-verify', 'forgotPasswordOTPVerify');
+    Route::post('forgot-password', 'forgotPassword');
+    Route::post('forgot-password-otp-verify', 'forgotPasswordOTPVerify');
     Route::post('reset-password', 'resetPassword');
 });
 
