@@ -6,11 +6,6 @@
         "build": "vite build",
         "prepare": "husky install"
     },
-    "dependencies": {
-        "axios": "1.11.0",
-        "socket.io": "4.8.1",
-        "socket.io-client": "4.8.1"
-    },
     "devDependencies": {
         "axios": "^1.6.4",
         "husky": "^8.0.3",
