@@ -5,13 +5,13 @@ namespace App\Enums;
 enum UserOtpFor: string
 {
     case FORGOT_PASSWORD = 'forgot_password';
-    case VERIFY_EMAIL = 'verify_email';
+    case EMAIL_VERIFICATION = 'email_verification';
 
     public function label(): string
     {
         return match ($this) {
             self::FORGOT_PASSWORD => 'Forgot Password',
-            self::VERIFY_EMAIL => 'Verify Email',
+            self::EMAIL_VERIFICATION => 'Email Verification',
         };
     }
 }
