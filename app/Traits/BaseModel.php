@@ -92,6 +92,8 @@ trait BaseModel
         $filters = $this->getQueryFields();
         if (isset($this->scopedFilters)) {
             foreach ($this->scopedFilters as $key => $value) {
+                // remove plain filter if scoped filter exists
+                $filters = array_filter($filters, fn ($v) => $v !== $value);
                 array_push($filters, AllowedFilter::scope($value));
             }
         }
