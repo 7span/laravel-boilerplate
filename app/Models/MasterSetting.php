@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -18,6 +20,8 @@ class MasterSetting extends Model
         'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
 
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
     protected function casts(): array
     {
         return [
@@ -26,6 +30,4 @@ class MasterSetting extends Model
             'deleted_at' => 'timestamp',
         ];
     }
-
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }

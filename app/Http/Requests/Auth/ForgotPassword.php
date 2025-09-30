@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ForgetPassword extends FormRequest
+class ForgotPassword extends FormRequest
 {
     public function authorize(): bool
     {

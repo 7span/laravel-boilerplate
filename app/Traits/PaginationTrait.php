@@ -9,6 +9,6 @@ trait PaginationTrait
         $limit = request()->get('limit');
         $limit = $limit ?? config('site.pagination_limit');
 
-        return (isset($limit) && $limit == '-1') ? $data->get() : $data->paginate($limit);
+        return (isset($limit) && $limit === '-1') ? $data->get() : $data->paginate($limit);
     }
 }
