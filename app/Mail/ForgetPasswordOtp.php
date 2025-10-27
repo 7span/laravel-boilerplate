@@ -7,8 +7,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ForgetPasswordOtp extends Mailable
+class ForgetPasswordOtp extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

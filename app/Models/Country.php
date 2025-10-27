@@ -10,8 +10,17 @@ class Country extends Model
 {
     use BaseModel, HasFactory;
 
+    public $queryable = [
+        'id',
+    ];
+
+    public $defaultSort = 'name';
+
+    public $allowedSorts = ['id', 'name'];
+
     protected $fillable = [
         'name',
+        'iso',
         'iso3',
         'iso_code',
         'calling_code',
@@ -28,12 +37,4 @@ class Country extends Model
             'deleted_at' => 'timestamp',
         ];
     }
-
-    public $queryable = [
-        'id',
-    ];
-
-    public $defaultSort = 'name';
-
-    public $allowedSorts = ['id', 'name'];
 }
