@@ -38,22 +38,20 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->group('api', [
             'throttle:api',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (Exception $e,$request) {
-
-            if ($request->is('api/*') && $e instanceof NotFoundHttpException &&  $e->getPrevious() instanceof ModelNotFoundException) {
+        $exceptions->render(function (Exception $e, $request) {
+            if ($request->is('api/*') && $e instanceof NotFoundHttpException && $e->getPrevious() instanceof ModelNotFoundException) {
                 $modelName = Str::headline(class_basename($e->getPrevious()->getModel()));
                 throw new CustomException(__('entity.entityNotFound', ['entity' => "$modelName data"]));
             }
 
-            if($request->is('api/*') && $e instanceof NotFoundHttpException) {
-               $route = $request->path();
-               throw new CustomException(__('entity.entityNotFound', ['entity' => "route $route"]));
+            if ($request->is('api/*') && $e instanceof NotFoundHttpException) {
+                $route = $request->path();
+                throw new CustomException(__('entity.entityNotFound', ['entity' => "route $route"]));
             }
 
-            return null;
         });
     })->create();
