@@ -41,14 +41,16 @@ class SuccessResponsesProcessor
             return;
         }
 
-        $tag = $annotation->tags[0] ?? null;
+        $context = $annotation->_context ?? null;
+        $tag = $context->class;
+
+        $tag = str_replace('Controller', '', $tag); // e.g., "User"
+
+        // $tag = $annotation->tags[0] ?? null;
         $this->processMedia($annotation, $tag);
 
         $modelClass = $tag ? "App\\Models\\$tag" : null;
 
-        if ($modelClass == 'MasterSettings') {
-            $modelClass = "MasterSetting";
-        }
         if (!$modelClass || !class_exists($modelClass)) {
             return;
         }
