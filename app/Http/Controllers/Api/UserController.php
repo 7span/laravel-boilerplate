@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UpdateProfile;
 use App\Http\Resources\User\Resource as UserResource;
 use App\Http\Requests\User\ChangePassword as UserChangePassword;
+use App\Models\User;
+use App\OpenApi\Attributes\ApiModel;
 
 class UserController extends Controller
 {
@@ -23,28 +25,11 @@ class UserController extends Controller
         $this->userService = new UserService;
     }
 
+    #[ApiModel(User::class)]
     #[OA\Get(
         path: '/api/me',
         tags: ['Auth'],
         summary: 'Get logged-in user details',
-        // responses: [
-        //     new OA\Response(
-        //         response: 200,
-        //         description: 'Success'
-        //     ),
-        // ],
-        // parameters: [
-        //     new OA\Parameter(
-        //         name: 'X-Requested-With',
-        //         in: 'header',
-        //         required: true,
-        //         description: 'Custom header for XMLHttpRequest',
-        //         schema: new OA\Schema(
-        //             type: 'string',
-        //             default: 'XMLHttpRequest'
-        //         )
-        //     ),
-        // ],
         security: [[
             'bearerAuth' => [],
         ]]

@@ -41,15 +41,11 @@ class SuccessResponsesProcessor
             return;
         }
 
-        $context = $annotation->_context ?? null;
-        $tag = $context->class;
+        $modelName = $this->getModelName($annotation);
 
-        $tag = str_replace('Controller', '', $tag); // e.g., "User"
+        $this->processMedia($annotation, $modelName );
 
-        // $tag = $annotation->tags[0] ?? null;
-        $this->processMedia($annotation, $tag);
-
-        $modelClass = $tag ? "App\\Models\\$tag" : null;
+        $modelClass = $modelName ? "App\\Models\\$modelName" : null;
 
         if (!$modelClass || !class_exists($modelClass)) {
             return;
@@ -71,6 +67,52 @@ class SuccessResponsesProcessor
         $this->processRelation($annotation, $relations);
         $this->processPaginationSort($annotation, $allowedSorts);
         $this->processAppends($annotation, $accessors);
+    }
+
+    protected function getModelName($annotation)
+    {
+        $context = $annotation->_context ?? null;
+        // dd($context?->class, $context?->method);
+        if (!$context?->class || !$context?->method) {
+            return;
+        }
+        $possibleNamespaces = [
+            "App\\Http\\Controllers\\",
+            "App\\Http\\Controllers\\Api\\",
+            "App\\Http\\Controllers\\Api\\Admin\\",
+        ];
+        
+        $foundController = null;
+        foreach ($possibleNamespaces as $ns) {
+            $fqcn = $ns . class_basename($context->class);
+            if (class_exists($fqcn)) {
+                $foundController = $fqcn;
+                break;
+            }
+        }
+        
+        if (!$foundController) {
+            \Log::warning("Controller class not found for: {$context->class}");
+            return;
+        }
+
+        // ✅ Use reflection to get the controller method attributes
+        try {
+            $refMethod = new \ReflectionMethod($foundController, $context->method);
+        } catch (\ReflectionException $e) {
+            return;
+        }
+
+        $attributes = $refMethod->getAttributes(\App\OpenApi\Attributes\ApiModel::class);
+        $apiModelAttr = $attributes ? $attributes[0]->newInstance() : null;
+
+        if (!$apiModelAttr) {
+            return; // skip if no ApiModel attribute defined
+        }
+
+        $modelClass = $apiModelAttr->model;
+        $modelName = class_basename($modelClass);
+        return $modelName;
     }
 
     protected function processHeaders($annotation)
@@ -219,27 +261,27 @@ class SuccessResponsesProcessor
         }
     }
 
-    protected function processMedia($annotation, $tag)
+    protected function processMedia($annotation, $modelName)
     {
-        if (!$tag) {
+        if (!$modelName) {
             return;
         }
 
         // Convert plural tag to singular (e.g., "Products" -> "Product")
-        $singularTag = rtrim($tag, 's');
-        if ($singularTag === $tag && !str_ends_with($tag, 's')) {
+        $singularTag = rtrim($modelName, 's');
+        if ($singularTag === $modelName && !str_ends_with($modelName, 's')) {
             // If it's already singular or doesn't end with 's', try both
-            $singularTag = $tag . 's';
+            $singularTag = $modelName . 's';
         }
 
         // Try to find the resource class (try singular first, then plural)
         $resourceClass = "App\\Http\\Resources\\{$singularTag}\\Resource";
         if (!class_exists($resourceClass)) {
-            $resourceClass = "App\\Http\\Resources\\{$tag}\\Resource";
+            $resourceClass = "App\\Http\\Resources\\{$modelName}\\Resource";
             if (!class_exists($resourceClass)) {
                 $resourceClass = "App\\Http\\Resources\\{$singularTag}";
                 if (!class_exists($resourceClass)) {
-                    $resourceClass = "App\\Http\\Resources\\{$tag}";
+                    $resourceClass = "App\\Http\\Resources\\{$modelName}";
                     if (!class_exists($resourceClass)) {
                         return;
                     }
@@ -270,7 +312,7 @@ class SuccessResponsesProcessor
         }
 
         $mediaKeys = array_values(array_unique($mediaKeys));
-        Log::info("mediaKeys: ", ['mediaKeys' => $mediaKeys, 'resourceClass' => $resourceClass]);
+        Log::info("mediaKeys: ", ['mediaKeys' => $mediaKeys, 'resourceClass' => $resourceClass, 'modelName' => $modelName]);
 
         if (!empty($mediaKeys)) {
             $paramName = "media";

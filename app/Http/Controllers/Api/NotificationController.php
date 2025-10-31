@@ -9,6 +9,8 @@ use App\Services\NotificationService;
 use App\Http\Requests\Notification\OneSignalData;
 use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Collection as NotificationCollection;
+use App\Models\Notification;
+use App\OpenApi\Attributes\ApiModel;
 
 class NotificationController extends Controller
 {
@@ -21,6 +23,7 @@ class NotificationController extends Controller
         $this->notificationService = new NotificationService;
     }
 
+    #[ApiModel(Notification::class)]
     #[OA\Get(
         path: '/api/notifications',
         operationId: 'notificationList',

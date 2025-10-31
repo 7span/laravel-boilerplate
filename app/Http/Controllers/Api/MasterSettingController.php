@@ -10,6 +10,7 @@ use App\Services\MasterSettingService;
 use App\Http\Resources\MasterSetting\Resource;
 use App\Models\MasterSetting;
 use App\Http\Resources\MasterSetting\Collection;
+use App\OpenApi\Attributes\ApiModel;
 
 class MasterSettingController extends Controller
 {
@@ -22,6 +23,7 @@ class MasterSettingController extends Controller
         $this->masterSettingService = new MasterSettingService;
     }
 
+    #[ApiModel(MasterSetting::class)]
     #[OA\Get(
         path: '/api/settings',
         operationId: 'getMasterSettings',

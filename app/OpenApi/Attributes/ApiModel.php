@@ -6,9 +6,9 @@ use OpenApi\Attributes\Response;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class ApiDefaultModal
+class ApiModel
 {
-    public function __construct(public string $modelName)
+    public function __construct(public string $model)
     {
         // parent::__construct(response: 401, description: $description);
     }
