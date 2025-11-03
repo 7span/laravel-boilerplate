@@ -79,7 +79,7 @@ class AuthService
         return $data;
     }
 
-    public function forgetPassword(array $inputs): array
+    public function forgotPassword(array $inputs): array
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
         if (empty($user)) {

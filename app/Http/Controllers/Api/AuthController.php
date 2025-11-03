@@ -212,10 +212,10 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/forget-password',
-        operationId: 'forgetPassword',
+        path: '/api/forgot-password',
+        operationId: 'forgotPassword',
         tags: ['Auth'],
-        summary: 'Forget Password with otp',
+        summary: 'Forgot Password with otp',
         description: "Initiates the process to reset the user's password by otp.",
         requestBody: new OA\RequestBody(
             required: true,
@@ -241,9 +241,9 @@ class AuthController extends Controller
             new OA\Response(response: '400', description: 'Validation errors!'),
         ],
     )]
-    public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
+    public function forgotPassword(ForgetPasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->forgetPassword($request->validated());
+        $data = $this->authService->forgotPassword($request->validated());
 
         return $this->success($data, 200);
     }
