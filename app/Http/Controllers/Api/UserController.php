@@ -103,6 +103,11 @@ class UserController extends Controller
                         example: 'test@gmail.com'
                     ),
                     new OA\Property(
+                        property: 'country_code',
+                        type: 'integer',
+                        nullable: true,
+                    ),
+                    new OA\Property(
                         property: 'mobile_no',
                         type: 'string',
                         format: 'mobile',
