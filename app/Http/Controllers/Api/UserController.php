@@ -73,7 +73,6 @@ class UserController extends Controller
                 )
             ),
         ],
-        
         security: [[
             'bearerAuth' => [],
         ]]

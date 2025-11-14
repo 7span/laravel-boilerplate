@@ -23,11 +23,7 @@ class SuccessResponsesProcessor
                 continue;
             }
             
-            // Add headers to ALL GET endpoints
-            if (get_class($annotation) === OA\Get::class) {
-                $this->processHeaders($annotation);
-            }
-            
+            $this->processHeaders($annotation);
             $this->processParameters($annotation, $analysis);
             $this->processRequestBody($annotation, $analysis);
             $this->processUrlParameters($annotation,$analysis);
@@ -390,7 +386,7 @@ class SuccessResponsesProcessor
 
     protected function processUrlParameters($annotation, $analysis)
     {
-        if (in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Get::class])) {
+        if (in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Get::class,OA\Delete::class])) {
 
             $path = $annotation->path ?? '';
         
