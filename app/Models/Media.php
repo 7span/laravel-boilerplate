@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
+use App\Traits\HasUserActions;
 use Plank\Mediable\Media as MediableMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Media extends MediableMedia
 {
-    use BaseModel, HasFactory;
+    use BaseModel, HasFactory, HasUserActions;
+
+    public $queryable = [
+        'id',
+    ];
 
     protected $fillable = [
         'disk',
@@ -21,10 +26,6 @@ class Media extends MediableMedia
         'updated_by',
         'created_at',
         'updated_at',
-    ];
-
-    public $queryable = [
-        'id',
     ];
 
     protected $casts = [
@@ -45,7 +46,7 @@ class Media extends MediableMedia
 
     protected $scopedFilters = [];
 
-    public function updated_by_user()
+    public function updatedByUser()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
