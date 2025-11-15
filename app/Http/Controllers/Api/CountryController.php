@@ -9,6 +9,7 @@ use App\Services\CountryService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Country\Collection as CountryCollection;
 use App\Models\Country;
+use App\OpenApi\Attributes\ApiModel;    
 
 
 class CountryController extends Controller
@@ -22,6 +23,7 @@ class CountryController extends Controller
         $this->countryService = new CountryService;
     }
 
+    #[ApiModel(Country::class)]
     #[OA\Get(
         path: '/api/countries',
         tags: ['Country'],
