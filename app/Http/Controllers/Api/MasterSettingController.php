@@ -8,7 +8,9 @@ use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
 use App\Services\MasterSettingService;
 use App\Http\Resources\MasterSetting\Resource;
+use App\Models\MasterSetting;
 use App\Http\Resources\MasterSetting\Collection;
+use App\OpenApi\Attributes\ApiModel;
 
 class MasterSettingController extends Controller
 {
@@ -21,39 +23,12 @@ class MasterSettingController extends Controller
         $this->masterSettingService = new MasterSettingService;
     }
 
+    #[ApiModel(MasterSetting::class)]
     #[OA\Get(
         path: '/api/settings',
         operationId: 'getMasterSettings',
         tags: ['MasterSettings'],
         summary: 'Get list of settings',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-        ],
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-            new OA\Parameter(
-                name: 'limit',
-                in: 'query',
-                description: "Pagination limit, '-1' to get all data."
-            ),
-            new OA\Parameter(
-                name: 'page',
-                in: 'query',
-                description: 'The page of results to return.'
-            ),
-        ],
         security: [[
             'bearerAuth' => [],
         ]]
@@ -74,27 +49,6 @@ class MasterSettingController extends Controller
             new OA\Response(
                 response: 200,
                 description: 'Success'
-            ),
-        ],
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-            new OA\Parameter(
-                name: 'masterSetting_id',
-                in: 'path',
-                required: true,
-                description: 'Id of the setting',
-                schema: new OA\Schema(
-                    type: 'string'
-                )
             ),
         ],
         security: [[

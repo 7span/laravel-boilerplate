@@ -18,26 +18,6 @@ class MediaController extends Controller
         operationId: 'adminDeleteMedia',
         tags: ['Media'],
         summary: 'Mobile > Delete media file',
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-            new OA\Parameter(
-                name: 'mediaId',
-                in: 'path',
-            ),
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Success.'),
-            new OA\Response(response: '400', description: 'Validation errors!'),
-        ],
         security: [['bearerAuth' => []]]
     )]
     public function destroy($id)

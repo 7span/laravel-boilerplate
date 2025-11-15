@@ -8,6 +8,8 @@ use OpenApi\Attributes as OA;
 use App\Services\LanguageService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\Language;
+use App\OpenApi\Attributes\ApiModel;
 
 class LanguageController extends Controller
 {
@@ -20,29 +22,12 @@ class LanguageController extends Controller
         $this->langService = new LanguageService;
     }
 
+    #[ApiModel(Language::class)]
     #[OA\Get(
         path: '/api/languages',
         operationId: 'getLanguages',
         tags: ['Languages'],
         summary: 'Get list of languages',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-        ],
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-        ],
     )]
     public function index(Request $request): JsonResponse
     {
@@ -51,38 +36,12 @@ class LanguageController extends Controller
         return $this->success($data, 200);
     }
 
+    #[ApiModel(Language::class)]
     #[OA\Get(
         path: '/api/languages/{language_id}',
         operationId: 'getLanguageId',
         tags: ['Languages'],
         summary: 'Get detail of languages',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-        ],
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-            new OA\Parameter(
-                name: 'language_id',
-                in: 'path',
-                required: true,
-                description: 'ID of the language',
-                schema: new OA\Schema(
-                    type: 'string'
-                )
-            ),
-        ],
     )]
     public function show(string $language): JsonResponse
     {
