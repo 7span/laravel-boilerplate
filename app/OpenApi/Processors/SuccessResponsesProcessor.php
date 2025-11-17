@@ -171,6 +171,13 @@ class SuccessResponsesProcessor
 
     protected function processPaginationSort($annotation, array $allowedSorts)
     {
+        $path = $annotation->path ?? '';
+        preg_match_all('/\{([^}]+)\}/', $path, $matches);
+        $routeParams = $matches[1] ?? [];
+        
+        if (!empty($routeParams)) {
+            return;
+        }
         $parameters = [
             'limit' => 'Pagination limit, -1 for all',
             'page'  => 'The page of results to return.',
@@ -416,7 +423,7 @@ class SuccessResponsesProcessor
                             name: $param,
                             in: 'path',
                             required: true,
-                            description: "Parameter: {$param} for update",
+                            description: "Parameter: {$param} for action",
                             // schema: new OA\Schema(type: $type)
                         );
                     }
@@ -600,8 +607,31 @@ class SuccessResponsesProcessor
     protected function mapRuleToSchema($rule): array
     {
         $rules = is_array($rule) ? $rule : explode('|', $rule);
-        $schema = ['type' => 'string'];
+        $rules = array_map(function ($r) {
+            if (is_string($r)) {
+                return $r;
+            }
+            if (is_object($r)) {
+                // Enum rule → treat as string type
+                if ($r instanceof \Illuminate\Validation\Rules\Enum) {
+                    return 'string';
+                }
+    
+                // If rule is Rule::in([...])
+                if ($r instanceof \Illuminate\Validation\Rules\In) {
+                    return 'string';
+                }
+    
+                // Unknown object → skip string checks
+                return null;
+            }
+            return null;
+        }, $rules);
+    
+        // Remove null values
+        $rules = array_filter($rules);
 
+        $schema = ['type' => 'string'];
         foreach ($rules as $r) {
             if (str_contains($r, 'array')) {
                 $schema = [
@@ -663,7 +693,7 @@ class SuccessResponsesProcessor
 
         return $schema;
     }
-
+    
     protected function isFieldRequired($rule): bool
     {
         $rules = is_array($rule) ? $rule : explode('|', $rule);
