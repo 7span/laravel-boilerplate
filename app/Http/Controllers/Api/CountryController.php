@@ -23,12 +23,12 @@ class CountryController extends Controller
         $this->countryService = new CountryService;
     }
 
-    #[ApiModel(Country::class)]
     #[OA\Get(
         path: '/api/countries',
         tags: ['Country'],
         operationId: 'countryList',
         summary: 'Country list',
+        x: ['model' => Country::class]
 
     )]
     public function __invoke(Request $request)
