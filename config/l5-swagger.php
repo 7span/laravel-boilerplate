@@ -125,7 +125,7 @@ return [
              */
             'processors' => [
                 // new \App\SwaggerProcessors\SchemaQueryParameter(),
-                new \App\OpenApi\Processors\SuccessResponsesProcessor(),
+                new \App\Swagger\Processors\SuccessResponsesProcessor(),
             ],
 
             /**

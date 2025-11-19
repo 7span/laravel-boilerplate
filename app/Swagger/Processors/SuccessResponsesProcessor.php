@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenApi\Processors;
+namespace App\Swagger\Processors;
 
 use ReflectionClass;
 use OpenApi\Analysis;
@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use App\OpenApi\Attributes\ApiDefaultModal;
+use App\Swagger\Attributes\ApiDefaultModal;
 use App\OpenApi\Attributes\SuccessResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -39,9 +39,11 @@ class SuccessResponsesProcessor
 
         $modelName = $this->getModelName($annotation);
 
+        Log::info("Model Name: ", ['modelName' => $modelName]);
         $this->processMedia($annotation, $modelName );
 
         $modelClass = $modelName ? "App\\Models\\$modelName" : null;
+        Log::info("Model Class: ", ['modelClass' => $modelClass]);
 
         if (!$modelClass || !class_exists($modelClass)) {
             return;
@@ -57,8 +59,6 @@ class SuccessResponsesProcessor
         $accessors = $this->getModelAccessors($ref);
         $relations = property_exists($modelInstance, 'relationship') && is_array($modelInstance->relationship) ? $modelInstance->relationship : [];
 
-        Log::info("Model Accessors for $modelClass: ", ['accessors' => $accessors, 'methods_count' => count($ref->getMethods())]);
-
         $this->processFilters($annotation, array_merge($scopedFilters, $exactFilters));
         $this->processRelation($annotation, $relations);
         $this->processPaginationSort($annotation, $allowedSorts);
@@ -67,47 +67,52 @@ class SuccessResponsesProcessor
 
     protected function getModelName($annotation)
     {
-        $context = $annotation->_context ?? null;
-        // dd($context?->class, $context?->method);
-        if (!$context?->class || !$context?->method) {
-            return;
+        $model = $annotation->x['model'] ?? null;
+        if (!$model) {
+            return null;
         }
-        $possibleNamespaces = [
-            "App\\Http\\Controllers\\",
-            "App\\Http\\Controllers\\Api\\",
-            "App\\Http\\Controllers\\Api\\Admin\\",
-        ];
+        return class_basename($model);
+        // $context = $annotation->_context ?? null;
+        // // dd($context?->class, $context?->method);
+        // if (!$context?->class || !$context?->method) {
+        //     return;
+        // }
+        // $possibleNamespaces = [
+        //     "App\\Http\\Controllers\\",
+        //     "App\\Http\\Controllers\\Api\\",
+        //     "App\\Http\\Controllers\\Api\\Admin\\",
+        // ];
         
-        $foundController = null;
-        foreach ($possibleNamespaces as $ns) {
-            $fqcn = $ns . class_basename($context->class);
-            if (class_exists($fqcn)) {
-                $foundController = $fqcn;
-                break;
-            }
-        }
+        // $foundController = null;
+        // foreach ($possibleNamespaces as $ns) {
+        //     $fqcn = $ns . class_basename($context->class);
+        //     if (class_exists($fqcn)) {
+        //         $foundController = $fqcn;
+        //         break;
+        //     }
+        // }
         
-        if (!$foundController) {
-            \Log::warning("Controller class not found for: {$context->class}");
-            return;
-        }
+        // if (!$foundController) {
+        //     \Log::warning("Controller class not found for: {$context->class}");
+        //     return;
+        // }
 
-        // ✅ Use reflection to get the controller method attributes
-        try {
-            $refMethod = new \ReflectionMethod($foundController, $context->method);
-        } catch (\ReflectionException $e) {
-            return;
-        }
+        // // ✅ Use reflection to get the controller method attributes
+        // try {
+        //     $refMethod = new \ReflectionMethod($foundController, $context->method);
+        // } catch (\ReflectionException $e) {
+        //     return;
+        // }
 
-        $attributes = $refMethod->getAttributes(\App\OpenApi\Attributes\ApiModel::class);
-        $apiModelAttr = $attributes ? $attributes[0]->newInstance() : null;
+        // $attributes = $refMethod->getAttributes(\App\Swagger\Attributes\ApiModel::class);
+        // $apiModelAttr = $attributes ? $attributes[0]->newInstance() : null;
 
-        if (!$apiModelAttr) {
-            return; // skip if no ApiModel attribute defined
-        }
+        // if (!$apiModelAttr) {
+        //     return; // skip if no ApiModel attribute defined
+        // }
 
-        $modelClass = $apiModelAttr->model;
-        $modelName = class_basename($modelClass);
+        // $modelClass = $apiModelAttr->model;
+        // $modelName = class_basename($modelClass);
         return $modelName;
     }
 
@@ -148,7 +153,8 @@ class SuccessResponsesProcessor
                     !in_array($method->name, $traitMethods) &&
                     !$method->isStatic() &&
                     !$method->isAbstract() &&
-                    !Str::startsWith($method->name, '__')
+                    !Str::startsWith($method->name, '__') &&
+                    !Str::startsWith($method->name, 'scope')
             )
             ->map(function ($method) {
                 $name = $method->name;
@@ -171,11 +177,8 @@ class SuccessResponsesProcessor
 
     protected function processPaginationSort($annotation, array $allowedSorts)
     {
-        $path = $annotation->path ?? '';
-        preg_match_all('/\{([^}]+)\}/', $path, $matches);
-        $routeParams = $matches[1] ?? [];
-        
-        if (!empty($routeParams)) {
+        $checkParamExist = $this->checkParamExist($annotation);
+        if ($checkParamExist) {
             return;
         }
         $parameters = [
@@ -221,13 +224,17 @@ class SuccessResponsesProcessor
 
     protected function processFilters($annotation, array $filters)
     {
+        $checkParamExist = $this->checkParamExist($annotation);
+        if ($checkParamExist) {
+            return;
+        }
         if (!is_array($annotation->parameters)) {
             $annotation->parameters = [];
         }
 
         if(!empty($filters)){
             foreach ($filters as $field) {
-                $paramName = "filter[$field]";
+                $paramName = $field;
                 $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
                     return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
                 });
@@ -242,6 +249,18 @@ class SuccessResponsesProcessor
                 }
             }
         }
+    }
+
+    protected function checkParamExist($annotation)
+    {
+        $path = $annotation->path ?? '';
+        preg_match_all('/\{([^}]+)\}/', $path, $matches);
+        $routeParams = $matches[1] ?? [];
+        
+        if (!empty($routeParams)) {
+            return true;
+        }
+        return false;
     }
 
     protected function processAppends($annotation, array $accessors)
@@ -693,7 +712,7 @@ class SuccessResponsesProcessor
 
         return $schema;
     }
-    
+
     protected function isFieldRequired($rule): bool
     {
         $rules = is_array($rule) ? $rule : explode('|', $rule);
