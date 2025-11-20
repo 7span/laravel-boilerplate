@@ -365,7 +365,7 @@ class SuccessResponsesProcessor
         }
 
         $controllerInfo = $this->getControllerAndMethod($analysis, $annotation);
-
+        
         if (!$controllerInfo || !($formRequestClass = $this->getFormRequestFromMethod($controllerInfo['method']))) {
             return;
         }
@@ -376,6 +376,9 @@ class SuccessResponsesProcessor
         $required = [];
 
         foreach ($rules as $field => $rule) {
+            if($rule === 'nullable|array') {
+                continue;
+            }
             if ($this->isNestedField($field)) {
                 $this->processNestedField($field, $rule, $properties, $required);
             } else {
@@ -529,29 +532,32 @@ class SuccessResponsesProcessor
         $tag = $context->class;
         $methodName = $context->method;
 
-        $controllerClass = "App\\Http\\Controllers\\{$tag}";
-        if (!class_exists($controllerClass)) {
-            $controllerClass = "App\\Http\\Controllers\\Api\\{$tag}";
-            if (!class_exists($controllerClass)) {
-                $controllerClass = "App\\Http\\Controllers\\Api\\Admin\\{$tag}";
-                if (!class_exists($controllerClass)) {
-                    return null;
-                }
+        $tag = class_basename($tag); // ensures only "CategoryController"
+
+        $possibleNamespaces = [
+            "App\\Http\\Controllers\\",
+            "App\\Http\\Controllers\\Api\\",
+            "App\\Http\\Controllers\\Api\\Admin\\",
+        ];
+
+        // Loop through namespaces and find matching controller
+        foreach ($possibleNamespaces as $namespace) {
+            $controllerClass = $namespace . $tag;
+
+            if (class_exists($controllerClass) && method_exists($controllerClass, $methodName)) {
+                return [
+                    'controller' => $controllerClass,
+                    'method' => new ReflectionMethod($controllerClass, $methodName),
+                ];
             }
         }
 
-        if (!method_exists($controllerClass, $methodName)) {
-            return null;
-        }
-
-        return [
-            'controller' => $controllerClass,
-            'method' => new ReflectionMethod($controllerClass, $methodName),
-        ];
+        return null;
     }
 
     protected function processNestedField(string $field, $rule, array &$properties, array &$required): void
     {
+        
         $segments = explode('.', $field);
         $currentProperties = &$properties;
 
