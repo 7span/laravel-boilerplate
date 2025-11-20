@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use App\Swagger\Attributes\ApiDefaultModal;
 use App\OpenApi\Attributes\SuccessResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,7 +18,7 @@ class SuccessResponsesProcessor
     public function __invoke(Analysis $analysis)
     {
         foreach ($analysis->annotations as $annotation) {
-            if (!in_array(get_class($annotation), [OA\Get::class, OA\Post::class, OA\Put::class, OA\Delete::class])) {
+            if (!in_array(get_class($annotation), [OA\Get::class, OA\Post::class, OA\Put::class, OA\Delete::class, OA\Patch::class])) {
                 continue;
             }
             
@@ -234,7 +233,7 @@ class SuccessResponsesProcessor
 
         if(!empty($filters)){
             foreach ($filters as $field) {
-                $paramName = $field;
+                $paramName = "filter[$field]";
                 $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
                     return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
                 });
@@ -361,7 +360,7 @@ class SuccessResponsesProcessor
 
     protected function processRequestBody($annotation, $analysis)
     {
-        if (!in_array(get_class($annotation), [OA\Post::class, OA\Put::class])) {
+        if (!in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Patch::class])) {
             return;
         }
 
@@ -412,7 +411,7 @@ class SuccessResponsesProcessor
 
     protected function processUrlParameters($annotation, $analysis)
     {
-        if (in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Get::class,OA\Delete::class])) {
+        if (in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Get::class,OA\Delete::class,OA\Patch::class])) {
 
             $path = $annotation->path ?? '';
         
