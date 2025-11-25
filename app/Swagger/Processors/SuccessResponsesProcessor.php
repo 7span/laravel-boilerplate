@@ -364,6 +364,10 @@ class SuccessResponsesProcessor
             return;
         }
 
+        if (!empty($annotation->requestBody)) {
+            return;
+        }
+
         $controllerInfo = $this->getControllerAndMethod($analysis, $annotation);
         
         if (!$controllerInfo || !($formRequestClass = $this->getFormRequestFromMethod($controllerInfo['method']))) {
