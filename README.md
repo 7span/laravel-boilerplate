@@ -125,6 +125,27 @@ Each file returns an array of key-value pairs for use with Laravel's `__()` and 
 -   `app/Rules/` — Custom validation rules
 -   `app/Libraries/` — Libraries classes
 
+## 🛠️ Generate Custom Swagger Documentation with Minimal Code in Controllers
+
+Your custom Swagger setup lives in the `app/Swagger/` directory.
+
+📁 Folder Structure
+
+- app/Swagger/Processors/
+Contains custom processors used to dynamically generate Swagger documentation (e.g., auto-generating request bodies, responses, etc.).
+
+⚙️ Setup Instructions
+
+- To enable your custom processors, add the following entry inside the processors array in the l5-swagger.php configuration file (located in config/):
+
+- new \App\Swagger\Processors\SuccessResponsesProcessor(),
+
+🚀 What This Provides
+
+- Automatically generates Swagger documentation based on Form Request rules.
+- Allows you to write minimal or no OpenAPI annotations in controllers.
+- Supports customizing, extending, or skipping auto-generation when needed.
+
 ---
 
 ## 🛠️ Custom Functionality
