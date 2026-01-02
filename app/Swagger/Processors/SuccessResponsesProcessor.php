@@ -364,7 +364,7 @@ class SuccessResponsesProcessor
             return;
         }
 
-        if (!empty($annotation->requestBody)) {
+        if ($annotation->requestBody !== null && $annotation->requestBody instanceof OA\RequestBody) {
             return;
         }
 
