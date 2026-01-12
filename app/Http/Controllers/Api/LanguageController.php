@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Language;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use App\Services\LanguageService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Models\Language;
 
 class LanguageController extends Controller
 {

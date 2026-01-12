@@ -5,11 +5,11 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Middleware\MarkNotificationsAsRead;
 use App\Http\Controllers\Api\SignedUrlController;
 use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\MasterSettingController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
@@ -40,6 +40,6 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
 
 Route::get('countries', CountryController::class);
 
-Route::apiResource('settings', MasterSettingController::class)->only(['index', 'show']);
+Route::apiResource('settings', SettingController::class)->only(['index', 'show']);
 
 Route::post('generate-signed-url', SignedUrlController::class);

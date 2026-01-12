@@ -12,7 +12,7 @@ class MediaService
 
     public function __construct()
     {
-        $this->mediaObj = new Media();
+        $this->mediaObj = new Media;
     }
 
     public function destroy(int|string $id)
