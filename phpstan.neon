@@ -9,6 +9,9 @@ parameters:
         - resources/
         - routes/
 
+    excludePaths:
+        - app/Swagger/Processors/SuccessResponsesProcessor.php
+
     level: 5
 
     tips:
