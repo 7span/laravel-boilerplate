@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MasterSetting extends Model
+class Setting extends Model
 {
     use BaseModel, HasFactory, SoftDeletes;
 
@@ -18,6 +18,10 @@ class MasterSetting extends Model
         'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
 
+    protected $table = 'settings';
+
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
     protected function casts(): array
     {
         return [
@@ -26,6 +30,4 @@ class MasterSetting extends Model
             'deleted_at' => 'timestamp',
         ];
     }
-
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }

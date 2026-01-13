@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Notification;
 use App\Traits\ApiResponser;
 use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
@@ -9,7 +10,6 @@ use App\Services\NotificationService;
 use App\Http\Requests\Notification\OneSignalData;
 use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Collection as NotificationCollection;
-use App\Models\Notification;
 
 class NotificationController extends Controller
 {

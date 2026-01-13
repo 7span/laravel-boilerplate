@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Traits\ApiResponser;
 use App\Services\UserService;
 use OpenApi\Attributes as OA;
@@ -11,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UpdateProfile;
 use App\Http\Resources\User\Resource as UserResource;
 use App\Http\Requests\User\ChangePassword as UserChangePassword;
-use App\Models\User;
 
 class UserController extends Controller
 {
@@ -38,21 +38,6 @@ class UserController extends Controller
         $user = $this->userService->resource(Auth::id());
 
         return $this->resource(new UserResource($user));
-    }
-
-    #[OA\Get(
-        path: '/api/me/stats',
-        tags: ['Auth'],
-        summary: 'Get logged-in user statistics',
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
-    public function stats(): JsonResponse
-    {
-        $stats = $this->userService->getUserStats(Auth::id());
-
-        return $this->success($stats);
     }
 
     #[OA\Post(
