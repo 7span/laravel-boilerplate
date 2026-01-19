@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\CountryController;
-use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Middleware\MarkNotificationsAsRead;
 use App\Http\Controllers\Api\SignedUrlController;
@@ -39,7 +38,5 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
 });
 
 Route::get('countries', CountryController::class);
-
-Route::apiResource('settings', SettingController::class)->only(['index', 'show']);
 
 Route::post('generate-signed-url', SignedUrlController::class);

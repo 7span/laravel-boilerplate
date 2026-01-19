@@ -28,16 +28,14 @@ class SettingService
         return $this->paginationAttribute($settings);
     }
 
-    public function resource($id)
+    public function update(array $inputs): array
     {
-        $query = $this->settingObj->getQB();
-
-        if (! Auth::guard('sanctum')->check()) {
-            $query->where('is_public', true);
+        foreach ($inputs as $key => $value) {
+            $this->settingObj->where('key', $key)->update(['value' => $value]);
         }
 
-        $setting = $query->findOrFail($id);
+        $data['message'] = __('entity.entityUpdated', ['entity' => 'Master Setting']);
 
-        return $setting;
+        return $data;
     }
 }

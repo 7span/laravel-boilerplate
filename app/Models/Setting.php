@@ -5,11 +5,10 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Setting extends Model
 {
-    use BaseModel, HasFactory, SoftDeletes;
+    use BaseModel, SoftDeletes;
 
     public $fillable = [
         'key',
@@ -17,8 +16,6 @@ class Setting extends Model
         'collection',
         'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
-
-    protected $table = 'settings';
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 

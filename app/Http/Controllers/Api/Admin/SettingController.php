@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Setting;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use App\Services\SettingService;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Setting\Resource;
 use App\Http\Resources\Setting\Collection;
+use App\Http\Requests\Setting\Request as SettingRequest;
 
 class SettingController extends Controller
 {
@@ -23,11 +24,10 @@ class SettingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/settings',
+        path: '/api/admin/settings',
         operationId: 'getSettings',
-        tags: ['Settings'],
+        tags: ['Admin / Settings'],
         summary: 'Get list of settings',
-        x: ['model' => Setting::class],
         security: [[
             'bearerAuth' => [],
         ]]
@@ -39,25 +39,19 @@ class SettingController extends Controller
         return $this->collection(new Collection($settings));
     }
 
-    #[OA\Get(
-        path: '/api/settings/{setting_id}',
-        operationId: 'getSettingDetail',
-        tags: ['Settings'],
-        summary: 'Get detail of settings',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-        ],
-        security: [[
-            'bearerAuth' => [],
-        ]]
+    #[OA\Put(
+        path: '/api/admin/settings',
+        operationId: 'updateSettings',
+        tags: ['Admin / Settings'],
+        summary: 'Update Settings',
+        description: 'Updates multiple settings using a key-value payload.',
+        x: ['model' => Setting::class],
+        security: [['bearerAuth' => []]]
     )]
-    public function show($id)
+    public function update(SettingRequest $request): JsonResponse
     {
-        $settingObj = $this->settingService->resource($id);
+        $data = $this->settingService->update($request->validated());
 
-        return $this->resource(new Resource($settingObj));
+        return $this->success($data);
     }
 }

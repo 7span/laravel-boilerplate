@@ -6,11 +6,10 @@ use App\Enums\UserOtpFor;
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserOtp extends Model
 {
-    use BaseModel, HasFactory;
+    use BaseModel;
 
     public $queryable = [
         'id',
