@@ -8,8 +8,6 @@ use ReflectionMethod;
 use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
-use App\OpenApi\Attributes\SuccessResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -18,38 +16,38 @@ class SuccessResponsesProcessor
     public function __invoke(Analysis $analysis)
     {
         foreach ($analysis->annotations as $annotation) {
-            if (!in_array(get_class($annotation), [OA\Get::class, OA\Post::class, OA\Put::class, OA\Delete::class, OA\Patch::class])) {
+            if (! in_array(get_class($annotation), [OA\Get::class, OA\Post::class, OA\Put::class, OA\Delete::class, OA\Patch::class])) {
                 continue;
             }
-            
+
             $this->processHeaders($annotation);
             $this->processParameters($annotation, $analysis);
             $this->processRequestBody($annotation, $analysis);
-            $this->processUrlParameters($annotation,$analysis);
-            $this->processResponse($annotation,$analysis);
+            $this->processUrlParameters($annotation, $analysis);
+            $this->processResponse($annotation, $analysis);
         }
     }
 
     protected function processParameters($annotation, $analysis)
     {
-        if (!in_array(get_class($annotation), [OA\Get::class])) {
+        if (! in_array(get_class($annotation), [OA\Get::class])) {
             return;
         }
 
         $modelName = $this->getModelName($annotation);
 
-        Log::info("Model Name: ", ['modelName' => $modelName]);
-        $this->processMedia($annotation, $modelName );
+        Log::info('Model Name: ', ['modelName' => $modelName]);
+        $this->processMedia($annotation, $modelName);
 
         $modelClass = $modelName ? "App\\Models\\$modelName" : null;
-        Log::info("Model Class: ", ['modelClass' => $modelClass]);
+        Log::info('Model Class: ', ['modelClass' => $modelClass]);
 
-        if (!$modelClass || !class_exists($modelClass)) {
+        if (! $modelClass || ! class_exists($modelClass)) {
             return;
         }
-        $ref = new \ReflectionClass($modelClass);
+        $ref = new ReflectionClass($modelClass);
         $schemaName = $ref->getShortName();
-        $modelInstance = new $modelClass();
+        $modelInstance = new $modelClass;
 
         // Get model properties, ensuring arrays or empty arrays
         $scopedFilters = property_exists($modelInstance, 'scopedFilters') && is_array($modelInstance->scopedFilters) ? $modelInstance->scopedFilters : [];
@@ -67,9 +65,10 @@ class SuccessResponsesProcessor
     protected function getModelName($annotation)
     {
         $model = $annotation->x['model'] ?? null;
-        if (!$model) {
-            return null;
+        if (! $model) {
+            return;
         }
+
         return class_basename($model);
         // $context = $annotation->_context ?? null;
         // // dd($context?->class, $context?->method);
@@ -81,7 +80,7 @@ class SuccessResponsesProcessor
         //     "App\\Http\\Controllers\\Api\\",
         //     "App\\Http\\Controllers\\Api\\Admin\\",
         // ];
-        
+
         // $foundController = null;
         // foreach ($possibleNamespaces as $ns) {
         //     $fqcn = $ns . class_basename($context->class);
@@ -90,7 +89,7 @@ class SuccessResponsesProcessor
         //         break;
         //     }
         // }
-        
+
         // if (!$foundController) {
         //     \Log::warning("Controller class not found for: {$context->class}");
         //     return;
@@ -117,16 +116,16 @@ class SuccessResponsesProcessor
 
     protected function processHeaders($annotation)
     {
-        if (!is_array($annotation->parameters)) {
+        if (! is_array($annotation->parameters)) {
             $annotation->parameters = [];
         }
-        
+
         $paramName = 'X-Requested-With';
         $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
             return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
         });
-        
-        if (!$exists) {
+
+        if (! $exists) {
             $annotation->parameters[] = new OA\Parameter(
                 name: $paramName,
                 in: 'header',
@@ -141,28 +140,27 @@ class SuccessResponsesProcessor
     {
         $modelClass = $ref->getName();
         $traitMethods = collect(class_uses_recursive($modelClass))
-            ->flatMap(fn($trait) => (new ReflectionClass($trait))->getMethods())
+            ->flatMap(fn ($trait) => (new ReflectionClass($trait))->getMethods())
             ->pluck('name')
             ->all();
-            
+
         return collect($ref->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED))
             ->filter(
-                fn($method) =>
-                $method->getDeclaringClass()->getName() === $modelClass &&
-                    !in_array($method->name, $traitMethods) &&
-                    !$method->isStatic() &&
-                    !$method->isAbstract() &&
-                    !Str::startsWith($method->name, '__') &&
-                    !Str::startsWith($method->name, 'scope')
+                fn ($method) => $method->getDeclaringClass()->getName() === $modelClass &&
+                    ! in_array($method->name, $traitMethods) &&
+                    ! $method->isStatic() &&
+                    ! $method->isAbstract() &&
+                    ! Str::startsWith($method->name, '__') &&
+                    ! Str::startsWith($method->name, 'scope')
             )
             ->map(function ($method) {
                 $name = $method->name;
-                
+
                 if (Str::startsWith($name, 'get') && Str::endsWith($name, 'Attribute')) {
                     return Str::snake(Str::between($name, 'get', 'Attribute'));
                 }
 
-                if ($method->getReturnType()?->getName() === \Illuminate\Database\Eloquent\Casts\Attribute::class) {
+                if ($method->getReturnType()?->getName() === Attribute::class) {
                     return Str::snake($name);
                 }
 
@@ -182,15 +180,15 @@ class SuccessResponsesProcessor
         }
         $parameters = [
             'limit' => 'Pagination limit, -1 for all',
-            'page'  => 'The page of results to return.',
-            'sort'  => 'Sort by field' . ($allowedSorts ? ': ' . implode(', ', array_map(fn($field) => "$field (asc), -$field (desc)", $allowedSorts)) : '')
+            'page' => 'The page of results to return.',
+            'sort' => 'Sort by field' . ($allowedSorts ? ': ' . implode(', ', array_map(fn ($field) => "$field (asc), -$field (desc)", $allowedSorts)) : ''),
         ];
 
         foreach ($parameters as $param => $desc) {
             $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($param) {
                 return is_object($p) && $p instanceof OA\Parameter && $p->name === $param;
             });
-            if (!$exists) {
+            if (! $exists) {
                 $annotation->parameters[] = new OA\Parameter(
                     name: $param,
                     in: 'query',
@@ -203,14 +201,14 @@ class SuccessResponsesProcessor
 
     protected function processRelation($annotation, $relations)
     {
-        if (!empty($relations)) {
-            $paramName = "include";
+        if (! empty($relations)) {
+            $paramName = 'include';
             $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
                 return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
             });
             $relation_keys = implode(',', array_keys($relations));
 
-            if (!$exists) {
+            if (! $exists) {
                 $annotation->parameters[] = new OA\Parameter(
                     name: 'include',
                     in: 'query',
@@ -227,18 +225,18 @@ class SuccessResponsesProcessor
         if ($checkParamExist) {
             return;
         }
-        if (!is_array($annotation->parameters)) {
+        if (! is_array($annotation->parameters)) {
             $annotation->parameters = [];
         }
 
-        if(!empty($filters)){
+        if (! empty($filters)) {
             foreach ($filters as $field) {
                 $paramName = "filter[$field]";
                 $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
                     return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
                 });
-                Log::info("exists:" . $exists);
-                if (!$exists) {
+                Log::info('exists:' . $exists);
+                if (! $exists) {
                     $annotation->parameters[] = new OA\Parameter(
                         name: $paramName,
                         in: 'query',
@@ -255,23 +253,24 @@ class SuccessResponsesProcessor
         $path = $annotation->path ?? '';
         preg_match_all('/\{([^}]+)\}/', $path, $matches);
         $routeParams = $matches[1] ?? [];
-        
-        if (!empty($routeParams)) {
+
+        if (! empty($routeParams)) {
             return true;
         }
+
         return false;
     }
 
     protected function processAppends($annotation, array $accessors)
     {
-        if (!empty($accessors)) {
-            $paramName = "appends";
+        if (! empty($accessors)) {
+            $paramName = 'appends';
             $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
                 return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
             });
             $accessorKeys = implode(',', $accessors);
 
-            if (!$exists) {
+            if (! $exists) {
                 $annotation->parameters[] = new OA\Parameter(
                     name: 'appends',
                     in: 'query',
@@ -284,26 +283,26 @@ class SuccessResponsesProcessor
 
     protected function processMedia($annotation, $modelName)
     {
-        if (!$modelName) {
+        if (! $modelName) {
             return;
         }
 
         // Convert plural tag to singular (e.g., "Products" -> "Product")
         $singularTag = rtrim($modelName, 's');
-        if ($singularTag === $modelName && !str_ends_with($modelName, 's')) {
+        if ($singularTag === $modelName && ! str_ends_with($modelName, 's')) {
             // If it's already singular or doesn't end with 's', try both
             $singularTag = $modelName . 's';
         }
 
         // Try to find the resource class (try singular first, then plural)
         $resourceClass = "App\\Http\\Resources\\{$singularTag}\\Resource";
-        if (!class_exists($resourceClass)) {
+        if (! class_exists($resourceClass)) {
             $resourceClass = "App\\Http\\Resources\\{$modelName}\\Resource";
-            if (!class_exists($resourceClass)) {
+            if (! class_exists($resourceClass)) {
                 $resourceClass = "App\\Http\\Resources\\{$singularTag}";
-                if (!class_exists($resourceClass)) {
+                if (! class_exists($resourceClass)) {
                     $resourceClass = "App\\Http\\Resources\\{$modelName}";
-                    if (!class_exists($resourceClass)) {
+                    if (! class_exists($resourceClass)) {
                         return;
                     }
                 }
@@ -319,24 +318,24 @@ class SuccessResponsesProcessor
                 $content = file_get_contents($filePath);
                 // whenLoadedMedia('key') or whenLoadedMedia("key")
                 preg_match_all('/whenLoadedMedia\([\'\"]([^\'\"]+)[\'\"]\s*,?/i', $content, $matches);
-                if (!empty($matches[1])) {
+                if (! empty($matches[1])) {
                     $mediaKeys = array_merge($mediaKeys, $matches[1]);
                 }
                 // whenLoadedMedia(config('media.tags.key'), ...)
                 preg_match_all('/whenLoadedMedia\(config\([\'\"]media\\.tags\\.([^\'\"]+)[\'\"]\)\s*,?/i', $content, $configMatches);
-                if (!empty($configMatches[1])) {
+                if (! empty($configMatches[1])) {
                     $mediaKeys = array_merge($mediaKeys, $configMatches[1]);
                 }
             }
         } catch (\Exception $e) {
-            Log::error("Error scanning resource for media keys: " . $e->getMessage());
+            Log::error('Error scanning resource for media keys: ' . $e->getMessage());
         }
 
         $mediaKeys = array_values(array_unique($mediaKeys));
-        Log::info("mediaKeys: ", ['mediaKeys' => $mediaKeys, 'resourceClass' => $resourceClass, 'modelName' => $modelName]);
+        Log::info('mediaKeys: ', ['mediaKeys' => $mediaKeys, 'resourceClass' => $resourceClass, 'modelName' => $modelName]);
 
-        if (!empty($mediaKeys)) {
-            $paramName = "media";
+        if (! empty($mediaKeys)) {
+            $paramName = 'media';
             $exists = collect($annotation->parameters ?? [])->contains(function ($p) use ($paramName) {
                 return is_object($p) && $p instanceof OA\Parameter && $p->name === $paramName;
             });
@@ -344,7 +343,7 @@ class SuccessResponsesProcessor
             $mediaKeysStr = implode(',', $mediaKeys);
             $description = "Pass this keys to include perticular media : `{$mediaKeysStr}`";
 
-            if (!$exists) {
+            if (! $exists) {
                 $annotation->parameters[] = new OA\Parameter(
                     name: 'media',
                     in: 'query',
@@ -360,7 +359,7 @@ class SuccessResponsesProcessor
 
     protected function processRequestBody($annotation, $analysis)
     {
-        if (!in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Patch::class])) {
+        if (! in_array(get_class($annotation), [OA\Post::class, OA\Put::class, OA\Patch::class])) {
             return;
         }
 
@@ -369,18 +368,18 @@ class SuccessResponsesProcessor
         }
 
         $controllerInfo = $this->getControllerAndMethod($analysis, $annotation);
-        
-        if (!$controllerInfo || !($formRequestClass = $this->getFormRequestFromMethod($controllerInfo['method']))) {
+
+        if (! $controllerInfo || ! ($formRequestClass = $this->getFormRequestFromMethod($controllerInfo['method']))) {
             return;
         }
 
-        $formRequest = new $formRequestClass();
+        $formRequest = new $formRequestClass;
         $rules = $formRequest->rules();
         $properties = [];
         $required = [];
 
         foreach ($rules as $field => $rule) {
-            if($rule === 'nullable|array') {
+            if ($rule === 'nullable|array') {
                 continue;
             }
             if ($this->isNestedField($field)) {
@@ -411,39 +410,38 @@ class SuccessResponsesProcessor
                 'application/json' => new OA\MediaType(
                     mediaType: 'application/json',
                     schema: $schema
-                )
+                ),
             ]
         );
     }
 
     protected function processUrlParameters($annotation, $analysis)
     {
-        if (in_array(get_class($annotation), [OA\Post::class, OA\Put::class,OA\Get::class,OA\Delete::class,OA\Patch::class])) {
-
+        if (in_array(get_class($annotation), [OA\Post::class, OA\Put::class, OA\Get::class, OA\Delete::class, OA\Patch::class])) {
             $path = $annotation->path ?? '';
-        
+
             // Extract all {params} from the path
             preg_match_all('/\{([^}]+)\}/', $path, $matches);
             $routeParams = $matches[1] ?? [];
-        
-            if (!empty($routeParams)) {
-                if (!is_array($annotation->parameters)) {
+
+            if (! empty($routeParams)) {
+                if (! is_array($annotation->parameters)) {
                     $annotation->parameters = [];
                 }
-        
+
                 foreach ($routeParams as $param) {
                     // Detect data type (simple heuristic)
                     $type = 'string';
                     if (str_contains($param, 'id') || str_ends_with($param, '_id')) {
                         $type = 'integer';
                     }
-        
+
                     // Skip if already exists
                     $exists = collect($annotation->parameters)->contains(function ($p) use ($param) {
                         return is_object($p) && $p instanceof OA\Parameter && $p->name === $param;
                     });
-        
-                    if (!$exists) {
+
+                    if (! $exists) {
                         $annotation->parameters[] = new OA\Parameter(
                             name: $param,
                             in: 'path',
@@ -459,14 +457,13 @@ class SuccessResponsesProcessor
 
     protected function processResponse($annotation, $analysis)
     {
-        
-        if (!is_array($annotation->responses)) {
+        if (! is_array($annotation->responses)) {
             $annotation->responses = [];
         }
 
         // Get existing response codes
         $existingCodes = collect($annotation->responses)
-            ->filter(fn($r) => $r instanceof OA\Response)
+            ->filter(fn ($r) => $r instanceof OA\Response)
             ->pluck('response')
             ->toArray();
 
@@ -492,7 +489,7 @@ class SuccessResponsesProcessor
 
         // Add only missing ones
         foreach ($commonResponses as $res) {
-            if (!in_array($res['code'], $existingCodes)) {
+            if (! in_array($res['code'], $existingCodes)) {
                 $annotation->responses[] = new OA\Response(
                     response: $res['code'],
                     description: $res['desc'],
@@ -511,7 +508,6 @@ class SuccessResponsesProcessor
                 );
             }
         }
-        
     }
 
     protected function isNestedField(string $field): bool
@@ -523,10 +519,11 @@ class SuccessResponsesProcessor
     {
         foreach ($method->getParameters() as $param) {
             $type = $param->getType();
-            if ($type && !$type->isBuiltin() && (new ReflectionClass($type->getName()))->isSubclassOf(FormRequest::class)) {
+            if ($type && ! $type->isBuiltin() && (new ReflectionClass($type->getName()))->isSubclassOf(FormRequest::class)) {
                 return $type->getName();
             }
         }
+
         return null;
     }
 
@@ -539,9 +536,9 @@ class SuccessResponsesProcessor
         $tag = class_basename($tag); // ensures only "CategoryController"
 
         $possibleNamespaces = [
-            "App\\Http\\Controllers\\",
-            "App\\Http\\Controllers\\Api\\",
-            "App\\Http\\Controllers\\Api\\Admin\\",
+            'App\\Http\\Controllers\\',
+            'App\\Http\\Controllers\\Api\\',
+            'App\\Http\\Controllers\\Api\\Admin\\',
         ];
 
         // Loop through namespaces and find matching controller
@@ -561,7 +558,6 @@ class SuccessResponsesProcessor
 
     protected function processNestedField(string $field, $rule, array &$properties, array &$required): void
     {
-        
         $segments = explode('.', $field);
         $currentProperties = &$properties;
 
@@ -610,11 +606,11 @@ class SuccessResponsesProcessor
                     );
                 }
 
-                if ($this->isFieldRequired($rule) && !in_array($segment, $required)) {
+                if ($this->isFieldRequired($rule) && ! in_array($segment, $required)) {
                     $required[] = $segment;
                 }
             } else {
-                if (!$existing) {
+                if (! $existing) {
                     $existing = new OA\Property(
                         property: $segment,
                         type: 'object',
@@ -623,7 +619,7 @@ class SuccessResponsesProcessor
                     $currentProperties[] = $existing;
                 }
 
-                if (!isset($existing->properties) || !is_array($existing->properties)) {
+                if (! isset($existing->properties) || ! is_array($existing->properties)) {
                     $existing->properties = [];
                 }
 
@@ -644,18 +640,17 @@ class SuccessResponsesProcessor
                 if ($r instanceof \Illuminate\Validation\Rules\Enum) {
                     return 'string';
                 }
-    
+
                 // If rule is Rule::in([...])
                 if ($r instanceof \Illuminate\Validation\Rules\In) {
                     return 'string';
                 }
-    
+
                 // Unknown object → skip string checks
-                return null;
+                return;
             }
-            return null;
         }, $rules);
-    
+
         // Remove null values
         $rules = array_filter($rules);
 
@@ -664,7 +659,7 @@ class SuccessResponsesProcessor
             if (str_contains($r, 'array')) {
                 $schema = [
                     'type' => 'array',
-                    'items' => new OA\Items(type: 'string')
+                    'items' => new OA\Items(type: 'string'),
                 ];
 
                 if (is_string($r) && str_contains($r, ':')) {
@@ -710,7 +705,7 @@ class SuccessResponsesProcessor
                 }
             }
 
-            if (!empty($nestedProperties)) {
+            if (! empty($nestedProperties)) {
                 $schema['items'] = new OA\Items(
                     type: 'object',
                     properties: $nestedProperties,
@@ -725,6 +720,7 @@ class SuccessResponsesProcessor
     protected function isFieldRequired($rule): bool
     {
         $rules = is_array($rule) ? $rule : explode('|', $rule);
+
         return in_array('required', $rules);
     }
 }

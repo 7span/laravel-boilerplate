@@ -44,7 +44,6 @@ class AuthController extends Controller
         tags: ['Auth'],
         summary: 'Verify OTP for password reset',
         description: 'Verifies the OTP sent to user email for password reset and returns a reset token',
-        
     )]
     public function forgotPasswordOTPVerify(VerifyOtp $request): JsonResponse
     {
@@ -59,7 +58,6 @@ class AuthController extends Controller
         tags: ['Auth'],
         summary: 'Login User',
         description: 'Logs in a user with email and password.',
-        
     )]
     public function login(LoginRequest $request)
     {
@@ -74,7 +72,6 @@ class AuthController extends Controller
         tags: ['Auth'],
         summary: 'Forgot Password with otp',
         description: "Initiates the process to reset the user's password by otp.",
-        
     )]
     public function forgotPassword(ForgetPasswordRequest $request): JsonResponse
     {

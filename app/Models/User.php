@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property UserStatus $status
+ */
 class User extends Authenticatable
 {
     use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
@@ -75,7 +78,7 @@ class User extends Authenticatable
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status->label(), // @phpstan-ignore-line
+            get: fn () => $this->status->label(),
         );
     }
 

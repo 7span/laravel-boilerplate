@@ -14,7 +14,7 @@ class MediaController extends Controller
     public function __construct(private MediaService $mediaService) {}
 
     #[OA\Delete(
-        path: '/api/v1/media/{mediaId}',
+        path: '/api/media/{mediaId}',
         operationId: 'adminDeleteMedia',
         tags: ['Media'],
         summary: 'Mobile > Delete media file',

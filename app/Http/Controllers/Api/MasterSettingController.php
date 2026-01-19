@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use App\Models\MasterSetting;
 use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
 use App\Services\MasterSettingService;
 use App\Http\Resources\MasterSetting\Resource;
-use App\Models\MasterSetting;
 use App\Http\Resources\MasterSetting\Collection;
 
 class MasterSettingController extends Controller
