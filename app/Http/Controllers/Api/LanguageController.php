@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Language;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
@@ -25,7 +24,7 @@ class LanguageController extends Controller
         path: '/api/languages',
         operationId: 'getLanguages',
         tags: ['Languages'],
-        summary: 'Get list of languages'
+        summary: 'Get list of languages',
     )]
     public function index(Request $request): JsonResponse
     {
@@ -38,7 +37,7 @@ class LanguageController extends Controller
         path: '/api/languages/{language_id}',
         operationId: 'getLanguageId',
         tags: ['Languages'],
-        summary: 'Get detail of languages',
+        summary: 'Get detail of languages'
     )]
     public function show(string $language): JsonResponse
     {

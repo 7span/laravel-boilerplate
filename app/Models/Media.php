@@ -5,11 +5,10 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use App\Traits\HasUserActions;
 use Plank\Mediable\Media as MediableMedia;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Media extends MediableMedia
 {
-    use BaseModel, HasFactory, HasUserActions;
+    use BaseModel, HasUserActions;
 
     public $queryable = [
         'id',

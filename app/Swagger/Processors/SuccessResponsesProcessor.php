@@ -70,48 +70,6 @@ class SuccessResponsesProcessor
         }
 
         return class_basename($model);
-        // $context = $annotation->_context ?? null;
-        // // dd($context?->class, $context?->method);
-        // if (!$context?->class || !$context?->method) {
-        //     return;
-        // }
-        // $possibleNamespaces = [
-        //     "App\\Http\\Controllers\\",
-        //     "App\\Http\\Controllers\\Api\\",
-        //     "App\\Http\\Controllers\\Api\\Admin\\",
-        // ];
-
-        // $foundController = null;
-        // foreach ($possibleNamespaces as $ns) {
-        //     $fqcn = $ns . class_basename($context->class);
-        //     if (class_exists($fqcn)) {
-        //         $foundController = $fqcn;
-        //         break;
-        //     }
-        // }
-
-        // if (!$foundController) {
-        //     \Log::warning("Controller class not found for: {$context->class}");
-        //     return;
-        // }
-
-        // // ✅ Use reflection to get the controller method attributes
-        // try {
-        //     $refMethod = new \ReflectionMethod($foundController, $context->method);
-        // } catch (\ReflectionException $e) {
-        //     return;
-        // }
-
-        // $attributes = $refMethod->getAttributes(\App\Swagger\Attributes\ApiModel::class);
-        // $apiModelAttr = $attributes ? $attributes[0]->newInstance() : null;
-
-        // if (!$apiModelAttr) {
-        //     return; // skip if no ApiModel attribute defined
-        // }
-
-        // $modelClass = $apiModelAttr->model;
-        // $modelName = class_basename($modelClass);
-        return $modelName;
     }
 
     protected function processHeaders($annotation)

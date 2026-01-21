@@ -40,21 +40,6 @@ class UserController extends Controller
         return $this->resource(new UserResource($user));
     }
 
-    #[OA\Get(
-        path: '/api/me/stats',
-        tags: ['Auth'],
-        summary: 'Get logged-in user statistics',
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
-    public function stats(): JsonResponse
-    {
-        $stats = $this->userService->getUserStats(Auth::id());
-
-        return $this->success($stats);
-    }
-
     #[OA\Post(
         path: '/api/me',
         operationId: 'updateProfile',

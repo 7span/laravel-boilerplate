@@ -127,5 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'query_detector' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/query-detector.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('LOG_DAILY_DAYS', 30),
+            'replace_placeholders' => true,
+        ],
+
     ],
 ];
