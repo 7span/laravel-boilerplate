@@ -24,7 +24,18 @@ class Notification extends Model
         'notifiable_id',
         'data',
         'read_at',
-        'created_at',
+    ];
+
+    protected $casts = [
+        'data' => 'array',
+        'read_at' => 'timestamp',
+        'created_at' => 'timestamp',
+    ];
+
+    protected $defaultSort = '-created_at';
+
+    protected $scopedFilters = [
+        'is_read',
     ];
 
     protected $relationship = [
@@ -34,18 +45,6 @@ class Notification extends Model
         'sender' => [
             'model' => User::class,
         ],
-    ];
-
-    protected $scopedFilters = [
-        'is_read',
-    ];
-
-    protected $defaultSort = '-created_at';
-
-    protected $casts = [
-        'data' => 'array',
-        'read_at' => 'timestamp',
-        'created_at' => 'timestamp',
     ];
 
     public function user()

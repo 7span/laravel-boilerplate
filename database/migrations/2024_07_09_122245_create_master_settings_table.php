@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('collection', 255)->nullable();
             $table->boolean('is_public')->default(false)->comment('If key is private, visible only for authenticated user. If public, visible for every user.');
             $table->timestamps();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
         });
     }
