@@ -5,11 +5,10 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MasterSetting extends Model
+class Setting extends Model
 {
-    use BaseModel, HasFactory, SoftDeletes;
+    use BaseModel, SoftDeletes;
 
     public $fillable = [
         'key',
@@ -17,6 +16,8 @@ class MasterSetting extends Model
         'collection',
         'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
     ];
+
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     protected function casts(): array
     {
@@ -26,6 +27,4 @@ class MasterSetting extends Model
             'deleted_at' => 'timestamp',
         ];
     }
-
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }

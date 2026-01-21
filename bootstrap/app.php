@@ -52,6 +52,5 @@ return Application::configure(basePath: dirname(__DIR__))
                 $route = $request->path();
                 throw new CustomException(__('entity.entityNotFound', ['entity' => "route $route"]));
             }
-
         });
     })->create();

@@ -10,12 +10,11 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
+    use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'first_name',

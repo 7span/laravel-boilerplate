@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('master_settings', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('key', 255)->index();
             $table->text('value');
-            $table->string('collection', 255);
+            $table->string('collection', 255)->nullable();
             $table->boolean('is_public')->default(false)->comment('If key is private, visible only for authenticated user. If public, visible for every user.');
             $table->timestamps();
             $table->softDeletes();
@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('master_settings');
+        Schema::dropIfExists('settings');
     }
 };
