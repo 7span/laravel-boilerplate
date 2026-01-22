@@ -16,15 +16,15 @@ class MediaController extends Controller
     public function __construct(private MediaService $mediaService) {}
 
     #[OA\Delete(
-        path: '/api/media/{id}',
+        path: '/api/media/{media}',
         operationId: 'adminDeleteMedia',
         tags: ['Media'],
         summary: 'Mobile > Delete media file',
         security: [['bearerAuth' => []]]
     )]
-    public function destroy(Media $id): JsonResponse
+    public function destroy(Media $media): JsonResponse
     {
-        $data = $this->mediaService->destroy($id);
+        $data = $this->mediaService->destroy($media);
 
         return $this->success($data);
     }
