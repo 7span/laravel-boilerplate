@@ -30,8 +30,13 @@ class SettingService
 
     public function update(array $inputs): array
     {
+        $settings = $this->settingObj->getQB()
+            ->whereIn('key', array_keys($inputs))
+            ->get()
+            ->keyBy('key');
+
         foreach ($inputs as $key => $value) {
-            $this->settingObj->where('key', $key)->update(['value' => $value]);
+            $settings[$key]->update(['value' => $value]);
         }
 
         $data['message'] = __('entity.entityUpdated', ['entity' => 'Master Setting']);

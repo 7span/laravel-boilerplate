@@ -10,10 +10,6 @@ class Media extends MediableMedia
 {
     use BaseModel, HasUserActions;
 
-    public $queryable = [
-        'id',
-    ];
-
     protected $fillable = [
         'disk',
         'directory',
@@ -40,10 +36,6 @@ class Media extends MediableMedia
             'model' => Media::class,
         ],
     ];
-
-    protected $exactFilters = [];
-
-    protected $scopedFilters = [];
 
     public function updatedByUser()
     {

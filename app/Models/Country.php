@@ -9,14 +9,6 @@ class Country extends Model
 {
     use BaseModel;
 
-    public $queryable = [
-        'id',
-    ];
-
-    public $defaultSort = 'name';
-
-    public $allowedSorts = ['id', 'name'];
-
     protected $fillable = [
         'name',
         'iso',
@@ -27,6 +19,8 @@ class Country extends Model
         'icon',
         'status',
     ];
+
+    protected $defaultSort = 'name';
 
     protected function casts(): array
     {

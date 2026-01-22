@@ -11,10 +11,6 @@ class UserOtp extends Model
 {
     use BaseModel;
 
-    public $queryable = [
-        'id',
-    ];
-
     protected $fillable = [
         'otp',
         'user_id',

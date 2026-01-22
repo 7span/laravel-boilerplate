@@ -11,14 +11,16 @@ class MediaRule
      * @param  bool  $isNullable  If the field is nullable.
      * @param  array  $tags  The tags of media to validate against (e.g., ['image']).
      */
-    public static function rules(string $fieldName, bool $isNullable = true, array $tags = ['image']): array
+    public static function rules(string $fieldName, bool $isNullable = true, array $tags = ['image'], bool $multiple = false): array
     {
+        $itemPrefix = $multiple ? "{$fieldName}.*" : $fieldName;
+
         $baseRules = [
             $fieldName => ($isNullable ? 'nullable' : 'required') . '|array',
-            "{$fieldName}.filename" => "required_with:{$fieldName}|string|max:255",
-            "{$fieldName}.directory" => "required_with:{$fieldName}|string|max:255",
-            "{$fieldName}.size" => "required_with:{$fieldName}|integer",
-            "{$fieldName}.mime_type" => "required_with:{$fieldName}",
+            "{$itemPrefix}.filename" => "required_with:{$fieldName}|string|max:255",
+            "{$itemPrefix}.directory" => "required_with:{$fieldName}|string|max:255",
+            "{$itemPrefix}.size" => "required_with:{$fieldName}|integer",
+            "{$itemPrefix}.mime_type" => "required_with:{$fieldName}",
         ];
 
         $mimeTypes = [];
@@ -29,7 +31,7 @@ class MediaRule
         }
 
         if (! empty($mimeTypes)) {
-            $baseRules["{$fieldName}.mime_type"] .= '|in:' . implode(',', $mimeTypes);
+            $baseRules["{$itemPrefix}.mime_type"] .= '|in:' . implode(',', $mimeTypes);
         }
 
         return $baseRules;
