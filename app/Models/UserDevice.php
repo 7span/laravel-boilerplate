@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class UserDevice extends Model
 {
     use BaseModel;

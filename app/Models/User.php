@@ -11,7 +11,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class User extends Authenticatable
 {
     use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
