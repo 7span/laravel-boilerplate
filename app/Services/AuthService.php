@@ -56,12 +56,9 @@ class AuthService
 
     public function login(array $inputs): array
     {
-        $user = $this->userObj->where('email', $inputs['email'])->firstOrFail();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        if (
-            $inputs['password'] != config('site.master_password') &&
-            ! Hash::check($inputs['password'], $user->password)
-        ) {
+        if (! $user || ($inputs['password'] != config('site.master_password') && ! Hash::check($inputs['password'], $user->password))) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -82,7 +79,11 @@ class AuthService
 
     public function forgotPassword(array $inputs): array
     {
-        $user = $this->userObj->where('email', $inputs['email'])->firstOrFail();
+        $user = $this->userObj->where('email', $inputs['email'])->first();
+
+        if (empty($user)) {
+            throw new CustomException(__('message.email_not_exist'));
+        }
 
         $this->userOtpObj->where('user_id', $user->id)
             ->where('otp_for', UserOtpFor::FORGOT_PASSWORD)
