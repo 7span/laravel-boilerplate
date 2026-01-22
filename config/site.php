@@ -23,7 +23,4 @@ return [
         'expiration_time_in_minutes' => 10,
         'length' => 6,
     ],
-    'setting_keys' => [
-        'vat',
-    ],
 ];
