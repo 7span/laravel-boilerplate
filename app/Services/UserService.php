@@ -16,7 +16,7 @@ class UserService
         $this->userObj = new User;
     }
 
-    public function resource(int $id, array $inputs = [])
+    public function resource(int $id)
     {
         $user = $this->userObj->getQB()->findOrFail($id);
 

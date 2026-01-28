@@ -2,29 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Media;
 use App\Libraries\MediaHelper;
-use App\Exceptions\CustomException;
 
 class MediaService
 {
-    private $mediaObj;
+    public function __construct() {}
 
-    public function __construct()
+    public function destroy(object $media): array
     {
-        $this->mediaObj = new Media;
-    }
-
-    public function destroy(int|string $id)
-    {
-        $media = $this->mediaObj->find($id);
-
-        if (! $media) {
-            throw new CustomException(__('message.mediaNotFound'));
-        } else {
-            $data = MediaHelper::destroyMedia($media);
-        }
-
-        return $data;
+        return MediaHelper::destroyMedia($media);
     }
 }

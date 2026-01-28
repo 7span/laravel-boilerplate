@@ -30,9 +30,7 @@ class AuthService
     public function __construct()
     {
         $this->userObj = new User;
-
         $this->userOtpObj = new UserOtp;
-
         $this->userService = new UserService;
     }
 
@@ -64,7 +62,7 @@ class AuthService
             throw new CustomException(__('auth.failed'));
         }
 
-        if ($user->status == UserStatus::INACTIVE->value) {
+        if ($user->status === UserStatus::INACTIVE) {
             throw new CustomException(__('message.inactive_user'));
         }
 
@@ -82,17 +80,20 @@ class AuthService
     public function forgotPassword(array $inputs): array
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
+
         if (empty($user)) {
             throw new CustomException(__('message.email_not_exist'));
         }
 
-        $this->userOtpObj->where('user_id', $user->id)->where('otp_for', UserOtpFor::FORGOT_PASSWORD->value)->delete();
+        $this->userOtpObj->where('user_id', $user->id)
+            ->where('otp_for', UserOtpFor::FORGOT_PASSWORD)
+            ->delete();
 
         $otp = Helper::generateOTP(config('site.otp.length'));
         $this->userOtpObj->create([
             'otp' => $otp,
             'user_id' => $user->id,
-            'otp_for' => UserOtpFor::FORGOT_PASSWORD->value,
+            'otp_for' => UserOtpFor::FORGOT_PASSWORD,
         ]);
 
         try {
@@ -101,18 +102,16 @@ class AuthService
             Log::info('Forget Password mail failed.' . $e->getMessage());
         }
 
-        $data = [
-            'message' => __('message.forget_password_email_success'),
-        ];
+        $data['message'] = __('message.forget_password_email_success');
 
         return $data;
     }
 
     public function forgotPasswordOTPVerify(array $inputs): array
     {
-        $user = $this->userObj->where('email', $inputs['email'])->first();
+        $user = $this->userObj->firstWhere('email', $inputs['email']);
 
-        $this->verifyOtp($user, $inputs['otp'], UserOtpFor::FORGOT_PASSWORD->value);
+        $this->verifyOtp($user, $inputs['otp'], UserOtpFor::FORGOT_PASSWORD);
 
         // Generate password reset token
         $token = Password::broker()->createToken($user);
@@ -125,12 +124,12 @@ class AuthService
         return $data;
     }
 
-    public function verifyOtp($user, $otp, $otpFor)
+    public function verifyOtp(User $user, string $otp, UserOtpFor $otpFor): void
     {
         $userOtp = $this->userOtpObj->where('user_id', $user->id);
 
-        if (config('site.otp.master_otp') != $otp) {
-            $userOtp->where('otp', $otp)->where('verified_at', null);
+        if (config('site.otp.master_otp') !== $otp) {
+            $userOtp->where('otp', $otp)->whereNull('verified_at');
         }
 
         $userOtp = $userOtp->where('otp_for', $otpFor)->first();
@@ -172,14 +171,13 @@ class AuthService
         throw new CustomException(__($passwordStatus));
     }
 
-    public function logout($inputs): array
+    public function logout(array $inputs): array
     {
-        if (Auth::check()) {
-            if (isset($inputs['onesignal_player_id']) && $inputs['onesignal_player_id']) {
-                UserDevice::where('onesignal_player_id', $inputs['onesignal_player_id'])->delete();
-            }
-            Auth::user()->currentAccessToken()->delete();
+        if (isset($inputs['onesignal_player_id']) && $inputs['onesignal_player_id']) {
+            UserDevice::where('onesignal_player_id', $inputs['onesignal_player_id'])->delete();
         }
+
+        Auth::user()?->currentAccessToken()?->delete();
 
         $data['message'] = __('message.logout_success');
 

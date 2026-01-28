@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
         Route::post('onesignal-player-id', 'setOnesignalData');
     });
 
-    Route::delete('media/{id}', [MediaController::class, 'destroy']);
+    Route::delete('media/{media}', [MediaController::class, 'destroy']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
 

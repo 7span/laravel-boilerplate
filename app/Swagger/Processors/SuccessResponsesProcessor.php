@@ -70,8 +70,6 @@ class SuccessResponsesProcessor
         }
 
         return class_basename($model);
-
-        return $modelName;
     }
 
     protected function processHeaders($annotation)
