@@ -14,17 +14,32 @@
     <body>
         <!-- Top Bar -->
         <header class="top-bar">
-            <div class="logo">
+            <div class="logo" id="developerLogo">
                 <img width="120" src="{{ asset('assets/img/logo.png') }}" alt="Logo">
             </div>
             
-            <div class="user-info">
-                <div class="user-avatar">
-                    <img src="{{ asset('assets/img/favicon.png') }}" alt="User">
+            <div class="user-menu">
+                <div class="user-info" id="developerUserTrigger">
+                    <div class="user-avatar">
+                        <img src="{{ asset('assets/img/favicon.png') }}" alt="User">
+                    </div>
+                    <div class="user-details">
+                        <small class="small-text">Logged in as</small>
+                        <p>{{ env('DEVELOPER_USERNAME') }}</p>
+                    </div>
                 </div>
-                <div class="user-details">
-                    <small class="small-text">Logged in as</small>
-                    <p>{{ env('DEVELOPER_USERNAME') }}</p>
+                <div class="user-menu-dropdown" id="developerUserMenu">
+                    <form action="{{ route('developer.logout') }}" method="post">
+                        @csrf
+                        <button type="submit" class="user-menu-item logout logout-button">
+                            <span>Logout</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
             </div>
         </header>
@@ -125,5 +140,35 @@
                 </div>
             </div>
         </main>
+
+        <script>
+            (function () {
+                const userMenuWrapper = document.querySelector('.user-menu');
+                const userTrigger = document.getElementById('developerUserTrigger');
+                const logoTrigger = document.getElementById('developerLogo');
+
+                if (!userMenuWrapper || !userTrigger || !logoTrigger) {
+                    return;
+                }
+
+                const toggleMenu = () => {
+                    userMenuWrapper.classList.toggle('open');
+                };
+
+                userTrigger.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    toggleMenu();
+                });
+
+                logoTrigger.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    toggleMenu();
+                });
+
+                document.addEventListener('click', () => {
+                    userMenuWrapper.classList.remove('open');
+                });
+            })();
+        </script>
     </body>
 </html>
