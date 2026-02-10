@@ -17,3 +17,4 @@ Route::redirect('/', 'login');
 Route::get('login', [DeveloperController::class, 'loginPage']);
 Route::post('login', [DeveloperController::class, 'login'])->name('developer.login');
 Route::get('dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard')->middleware('developer');
+Route::post('logout', [DeveloperController::class, 'logout'])->middleware('developer')->name('developer.logout');
