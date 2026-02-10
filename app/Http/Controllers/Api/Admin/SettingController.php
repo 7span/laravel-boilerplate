@@ -9,8 +9,8 @@ use OpenApi\Attributes as OA;
 use App\Services\SettingService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Setting\Collection;
 use App\Http\Requests\Setting\Request as SettingRequest;
+use App\Http\Resources\Setting\Resource as SettingResource;
 
 class SettingController extends Controller
 {
@@ -36,7 +36,7 @@ class SettingController extends Controller
     {
         $settings = $this->settingService->collection($request->all());
 
-        return $this->collection(new Collection($settings));
+        return SettingResource::collection($settings);
     }
 
     #[OA\Put(

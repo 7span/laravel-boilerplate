@@ -7,6 +7,18 @@ use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 
+/**
+ * Shared query-related helpers for Eloquent models.
+ *
+ * The following dynamic properties are expected to be defined
+ * on models that use this trait when needed:
+ *
+ * @property array<string, array<string, class-string>> $relationship Relationships configuration.
+ * @property array<int, string> $scopedFilters List of filter names treated as scoped filters.
+ * @property array<int, string> $exactFilters List of filter names treated as exact filters.
+ * @property string|null $defaultSort Default sort field (e.g. "-created_at").
+ * @property array<int, string> $queryable Additional queryable fields.
+ */
 trait BaseModel
 {
     public function getQueryFields(): array
