@@ -58,7 +58,7 @@ class AuthService
     {
         $user = $this->userObj->where('email', $inputs['email'])->first();
 
-        if (! $user || ($inputs['password'] != config('site.master_password') && ! Hash::check($inputs['password'], $user->password))) {
+        if (! $user || ($inputs['password'] !== config('site.master_password') && ! Hash::check($inputs['password'], $user->password))) {
             throw new CustomException(__('auth.failed'));
         }
 
@@ -162,7 +162,7 @@ class AuthService
             $user->save();
         });
 
-        if ($passwordStatus == Password::PASSWORD_RESET) {
+        if ($passwordStatus === Password::PASSWORD_RESET) {
             $data['message'] = __('message.password_change_success');
 
             return $data;

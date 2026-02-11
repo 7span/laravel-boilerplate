@@ -4,6 +4,7 @@ namespace App\Channels;
 
 use GuzzleHttp\Psr7\Response;
 use Berkayk\OneSignal\OneSignalClient;
+use Psr\Http\Message\ResponseInterface;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\Exceptions\CouldNotSendNotification;
@@ -24,11 +25,10 @@ class UserOneSignalChannel extends OneSignalChannel
      * Send the given notification.
      *
      * @param  mixed  $notifiable
-     * @return \Psr\Http\Message\ResponseInterface|null
      *
      * @throws CouldNotSendNotification
      */
-    public function send($notifiable, Notification $notification)
+    public function send($notifiable, Notification $notification): ResponseInterface
     {
         if (! config('site.notification_enabled')) {
             // Return a dummy ResponseInterface (e.g., an empty response) if notification is disabled

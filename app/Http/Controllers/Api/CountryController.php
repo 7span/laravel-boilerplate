@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use App\Services\CountryService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Country\Collection as CountryCollection;
+use App\Http\Resources\Country\Resource as CountryResource;
 
 class CountryController extends Controller
 {
@@ -32,6 +32,6 @@ class CountryController extends Controller
     {
         $countries = $this->countryService->collection($request->all());
 
-        return $this->collection(new CountryCollection($countries));
+        return CountryResource::collection($countries);
     }
 }
