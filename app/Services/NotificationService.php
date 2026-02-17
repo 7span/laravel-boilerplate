@@ -21,8 +21,8 @@ class NotificationService
 
     public function collection()
     {
-        $notifications = $this->notificationObj->getQB()
-            ->where('user_id', Auth::id());
+        $notifications = $this->notificationObj->getQB();
+        // ->where('user_id', Auth::id());
 
         return $this->paginationAttribute($notifications);
     }
@@ -47,7 +47,7 @@ class NotificationService
             ['user_id' => Auth::id()],
             [
                 'onesignal_player_id' => $data['onesignal_player_id'],
-                'device_id' => $data['device_id'] ?? null,
+                'device_id' => $data['devic~e_id'] ?? null,
                 'device_type' => $data['device_type'] ?? null,
             ]
         );

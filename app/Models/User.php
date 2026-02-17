@@ -47,6 +47,9 @@ class User extends Authenticatable
         'user_device' => [
             'model' => UserDevice::class,
         ],
+        'media' => [
+            'model' => Media::class,
+        ],
     ];
 
     public function userDevice()

@@ -27,7 +27,51 @@ class NotificationController extends Controller
         operationId: 'notificationList',
         tags: ['Notification'],
         summary: 'Notification List',
-        x: ['model' => Notification::class],
+        // x: ['model' => Notification::class],
+        parameters: [
+            new OA\Parameter(
+                name: 'include',
+                in: 'query',
+                required: false,
+                description: 'Include related data',
+            ),
+            new OA\Parameter(
+                name: 'media',
+                in: 'query',
+                required: false,
+                description: 'Media types to include: `profile`',
+            ),
+            new OA\Parameter(
+                name: 'page',
+                in: 'query',
+                required: false,
+                description: 'Page number',
+            ),
+            new OA\Parameter(
+                name: 'limit',
+                in: 'query',
+                required: false,
+                description: 'Limit the number of results',
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Notification list',
+                content: new OA\JsonContent(
+                    type: 'object',
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(type: 'object')
+                        ),
+                        new OA\Property(property: 'links', type: 'object'),
+                        new OA\Property(property: 'meta', type: 'object'),
+                    ],
+                ),
+            ),
+        ],
         security: [[
             'bearerAuth' => [],
         ]]
