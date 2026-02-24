@@ -27,17 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Strict mode for preventing N+1 queries for development environment
         Model::shouldBeStrict(! $this->app->isProduction());
 
-        DB::prohibitDestructiveCommands(app()->isProduction());
-        
         $this->configureDefaults();
         $this->configureRateLimiting();
 
         if ($this->app->runningInConsole()) {
             $this->commands([]);
         }
-
     }
 
     /**
@@ -45,19 +43,20 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureDefaults(): void
     {
+        // Use CarbonImmutable for dates to prevent accidental mutation and ensure safe date handling
         Date::use(CarbonImmutable::class);
 
+        // Prevent destructive commands in production environment
         DB::prohibitDestructiveCommands(
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
-            ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+        Password::defaults(
+            fn (): ?Password => app()->isProduction()
+            ? Password::min(10)
+                ->mixedCase()       // At least 1 upper and 1 lower case
+                ->numbers()         // At least 1 number
+                ->symbols()         // At least 1 special character
             : null
         );
     }
