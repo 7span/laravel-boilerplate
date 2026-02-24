@@ -4,7 +4,6 @@ namespace App\Data;
 
 use App\Models\Notification;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Lazy;
 
 class NotificationData extends Data
 {
@@ -21,9 +20,7 @@ class NotificationData extends Data
         public array $data,
         public ?int $read_at,
         public ?int $created_at,
-        public ?int $updated_at,
-        public Lazy|UserData|null $user,
-        public Lazy|UserData|null $sender,
+        public ?int $updated_at
     ) {}
 
     public static function fromModel(Notification $notification): self
@@ -40,17 +37,7 @@ class NotificationData extends Data
             data: $notification->data ?? [],
             read_at: $notification->read_at,
             created_at: $notification->created_at,
-            updated_at: $notification->updated_at,
-            user: Lazy::whenLoaded(
-                'user',
-                $notification,
-                fn () => $notification->user ? UserData::fromModel($notification->user) : null
-            )->defaultIncluded(),
-            sender: Lazy::whenLoaded(
-                'sender',
-                $notification,
-                fn () => $notification->sender ? UserData::fromModel($notification->sender) : null
-            )->defaultIncluded(),
+            updated_at: $notification->updated_at
         );
     }
 }
