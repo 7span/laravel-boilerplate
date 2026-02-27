@@ -23,7 +23,7 @@ trait BaseModel
 {
     public function getQueryFields(): array
     {
-        $_this = new self();
+        $_this = new self;
         $fields = [];
 
         $default = $this->getQueryable();
