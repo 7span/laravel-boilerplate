@@ -18,9 +18,14 @@ class Media extends MediableMedia
         'mime_type',
         'aggregate_type',
         'size',
-        'updated_by',
+        // 'updated_by',
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
     ];
 
     protected $relationship = [
@@ -35,13 +40,5 @@ class Media extends MediableMedia
     public function updatedByUser()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'timestamp',
-            'updated_at' => 'timestamp',
-        ];
     }
 }
