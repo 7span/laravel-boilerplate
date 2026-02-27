@@ -23,7 +23,7 @@ trait BaseModel
 {
     public function getQueryFields(): array
     {
-        $_this = new self;
+        $_this = new self();
         $fields = [];
 
         $default = $this->getQueryable();
@@ -44,7 +44,7 @@ trait BaseModel
         $relationships = $this->getRelationship();
 
         foreach ($relationships as $relationship) {
-            $relationshipObj = new $relationship['model'];
+            $relationshipObj = new ($relationship['model'])();
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
@@ -63,12 +63,12 @@ trait BaseModel
     {
         $relationship = $this->relationship ?? [];
 
-        // Always add 'media' relationship if not present
-        if (! array_key_exists('media', $relationship)) {
-            $relationship['media'] = [
-                'model' => Media::class,
-            ];
-        }
+        // // Always add 'media' relationship if not present
+        // if (!array_key_exists('media', $relationship)) {
+        //     $relationship['media'] = [
+        //         'model' => Media::class,
+        //     ];
+        // }
 
         return $relationship;
     }
@@ -97,9 +97,7 @@ trait BaseModel
     {
         $this->addMediaToIncludes();
 
-        $queryBuilder = QueryBuilder::for(self::class)
-            ->allowedFields($this->getQueryFieldsWithRelationship())
-            ->allowedIncludes($this->getAllowedIncludes());
+        $queryBuilder = QueryBuilder::for(self::class)->allowedFields($this->getQueryFieldsWithRelationship())->allowedIncludes($this->getAllowedIncludes());
 
         // $nestedRelations = array_keys(array_filter(
         //     $this->getRelationship(),
@@ -155,20 +153,38 @@ trait BaseModel
     }
 
     /**
-     * Example: GET /api/users?media=profile_image
+     * Merges model-defined relationships into the 'include' query parameter automatically:
      *
-     * Dynamically adds the 'media' relationship to the 'include' query parameter
-     * if the 'media' parameter is present in the request that prevent from n+1 query.
+     * 1. Media: added to includes only when 'media' exists in $relationship and request has a 'media' param.
+     * 2. Nested relations: any dotted key (e.g. 'comments.media') in $relationship is always eager-loaded.
      */
     protected function addMediaToIncludes(): void
     {
         $request = request();
-        $includes = explode(',', $request->query('include', ''));
+        $relationships = $this->getRelationship();
+        // dd($relationships);
+        $includes = array_filter(explode(',', $request->query('include', '')));
 
-        if ($request->filled('media') && ! in_array('media', $includes)) {
+        // Add 'media' if requested and defined in relationships
+        if ($request->filled('media') && array_key_exists('media', $relationships)) {
             $includes[] = 'media';
-            $request->merge(['include' => implode(',', $includes)]);
         }
+
+        // Merge nested media relations (e.g. 'comments.media') only if parent is already in includes
+        $nestedMediaRelations = array_keys(array_filter(
+            $relationships,
+            fn ($alias) => str_ends_with($alias, '.media'),
+            ARRAY_FILTER_USE_KEY
+        ));
+
+        foreach ($nestedMediaRelations as $nested) {
+            $parent = str_replace('.media', '', $nested); // e.g. 'user.media' => 'user'
+            if (in_array($parent, $includes)) {
+                $includes[] = $nested;
+            }
+        }
+
+        $request->merge(['include' => implode(',', array_unique($includes))]);
     }
 
     private function getQueryable()

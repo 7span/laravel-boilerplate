@@ -14,7 +14,6 @@ class Country extends Model
         'name',
         'iso',
         'iso3',
-        'iso_code',
         'calling_code',
         'currency',
         'icon',
@@ -23,10 +22,10 @@ class Country extends Model
 
     protected $defaultSort = 'name';
 
-    protected $relationships = [
-        // 'media' => [
-        //     'model' => Media::class,
-        // ],
+    protected $relationship = [
+        'media' => [
+            'model' => Media::class,
+        ],
     ];
 
     protected function casts(): array
