@@ -48,6 +48,18 @@ class NotificationController extends Controller
                 description: 'Page number',
             ),
             new OA\Parameter(
+                name: 'appends',
+                in: 'query',
+                required: false,
+                description: 'Appends to include in the response,`sender_name`',
+            ),
+            new OA\Parameter(
+                name: 'filter[is_read]',
+                in: 'query',
+                required: false,
+                description: 'Filter notifications by read status: `true` or `false`',
+            ),
+            new OA\Parameter(
                 name: 'limit',
                 in: 'query',
                 required: false,

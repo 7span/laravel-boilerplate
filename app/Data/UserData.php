@@ -28,8 +28,8 @@ class UserData extends Data
         public string $name,
         public string $display_status,
         public string $display_mobile_no,
-        public MediaData|Optional|null $profile_image,
-        public Lazy|UserDeviceData|null $user_device,
+        // public MediaData|Optional|null $profile_image,
+        // public Lazy|UserDeviceData|null $user_device,
     ) {}
 
     public static function fromModel(User $user): self
@@ -51,12 +51,12 @@ class UserData extends Data
             name: (string) $user->name,
             display_status: (string) $user->display_status,
             display_mobile_no: (string) $user->display_mobile_no,
-            profile_image: self::firstMediaDataOrOptional($user, $profileTag),
-            user_device: Lazy::whenLoaded(
-                'userDevice',
-                $user,
-                fn () => $user->userDevice ? UserDeviceData::fromModel($user->userDevice) : null
-            )->defaultIncluded(),
+            // profile_image: self::firstMediaDataOrOptional($user, $profileTag),
+            // user_device: Lazy::whenLoaded(
+            //     'userDevice',
+            //     $user,
+            //     fn () => $user->userDevice ? UserDeviceData::fromModel($user->userDevice) : null
+            // )->defaultIncluded(),
         );
     }
 }

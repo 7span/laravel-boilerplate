@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
+use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    use BaseModel;
+    use BaseModel,Mediable;
 
     protected $fillable = [
         'name',
@@ -21,6 +22,12 @@ class Country extends Model
     ];
 
     protected $defaultSort = 'name';
+
+    protected $relationships = [
+        // 'media' => [
+        //     'model' => Media::class,
+        // ],
+    ];
 
     protected function casts(): array
     {

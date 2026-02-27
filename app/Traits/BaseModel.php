@@ -101,6 +101,16 @@ trait BaseModel
             ->allowedFields($this->getQueryFieldsWithRelationship())
             ->allowedIncludes($this->getAllowedIncludes());
 
+        // $nestedRelations = array_keys(array_filter(
+        //     $this->getRelationship(),
+        //     fn ($alias) => str_contains($alias, '.') && substr($alias, -6) === '.media',
+        //     ARRAY_FILTER_USE_KEY
+        // ));
+
+        // if (!empty($nestedRelations)) {
+        //     $queryBuilder->with($nestedRelations);
+        // }
+
         $filters = $this->getQueryFields();
         if (isset($this->scopedFilters)) {
             foreach ($this->scopedFilters as $key => $value) {

@@ -26,7 +26,33 @@ class CountryController extends Controller
         tags: ['Country'],
         operationId: 'countryList',
         summary: 'Country list',
-        x: ['model' => Country::class]
+        // x: ['model' => Country::class]
+        parameters: [
+            new OA\Parameter(
+                name: 'include',
+                in: 'query',
+                required: false,
+                description: 'Include related data',
+            ),
+            new OA\Parameter(
+                name: 'media',
+                in: 'query',
+                required: false,
+                description: 'Media types to include: `profile`',
+            ),
+            new OA\Parameter(
+                name: 'page',
+                in: 'query',
+                required: false,
+                description: 'Page number',
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Country list',
+            ),
+        ],
     )]
     public function __invoke(Request $request)
     {

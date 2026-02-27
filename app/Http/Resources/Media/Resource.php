@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Media;
 
 use App\Models\Media;
+use App\Data\MediaData;
 use App\Traits\ResourceFilterable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,11 +21,7 @@ class Resource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = $this->fields();
-        $data['url'] = $this->getUrl(); // @phpstan-ignore-line
-        $data['cdn_url'] = $this->getCdnUrl();
-
-        return $data;
+        return MediaData::fromModel($this->resource)->toArray();
     }
 
     /**

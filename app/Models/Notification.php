@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Notification extends Model
 {
@@ -36,6 +37,8 @@ class Notification extends Model
 
     protected $defaultSort = '-created_at';
 
+    protected $appends = ['user_with_type'];
+
     protected $scopedFilters = [
         'is_read',
     ];
@@ -47,7 +50,10 @@ class Notification extends Model
         'sender' => [
             'model' => User::class,
         ],
-        'media' => [
+        'user.media' => [
+            'model' => Media::class,
+        ],
+        'sender.media' => [
             'model' => Media::class,
         ],
     ];
@@ -60,5 +66,39 @@ class Notification extends Model
     public function sender()
     {
         return $this->belongsTo(User::class, 'sent_by');
+    }
+
+    public function scopeIsRead($query, $isRead)
+    {
+        if ($isRead === 'true') {
+            return $query->whereNotNull('read_at');
+        }
+
+        if ($isRead === 'false') {
+            return $query->whereNull('read_at');
+        }
+
+        return $query;
+    }
+
+    protected function senderName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->sender?->name,
+        );
+    }
+
+    protected function buyerName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->user?->name,
+        );
+    }
+
+    protected function userWithType(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->user?->name . ' (' . $this->type . ')',
+        );
     }
 }
