@@ -1,6 +1,7 @@
 includes:
     - vendor/larastan/larastan/extension.neon
     - vendor/ekino/phpstan-banned-code/extension.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
 
@@ -17,6 +18,17 @@ parameters:
     tips:
         treatPhpDocTypesAsCertain: false
 
+    checkExplicitMixedMissingReturn: true
+    checkUninitializedProperties: true
+    checkMissingCallableSignature: true
+
+    strictRules:
+        allRules: false
+        disallowedLooseComparison: true
+        uselessCast: true
+        overwriteVariablesWithLoop: true
+        matchingInheritedMethodNames: true
+        numericOperandsInArithmeticOperators: true
     banned_code:
         nodes:
             # enable detection of echo
@@ -49,6 +61,8 @@ parameters:
                     - shell_exec
                     - system
                     - var_dump
+                    - var_export
+                    - extract
 
             # enable detection of print statements
             -

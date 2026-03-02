@@ -32,4 +32,12 @@ class DeveloperController extends Controller
     {
         return view('developer.pages.dashboard');
     }
+
+    public function logout()
+    {
+        $auth = resolve('littlegatekeeper');
+        $auth->logout();
+
+        return redirect()->route('developer.login');
+    }
 }
