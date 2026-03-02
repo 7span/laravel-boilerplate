@@ -37,6 +37,7 @@ class DeveloperController extends Controller
     {
         $auth = resolve('littlegatekeeper');
         $auth->logout();
+
         return redirect()->route('developer.login');
     }
 }
