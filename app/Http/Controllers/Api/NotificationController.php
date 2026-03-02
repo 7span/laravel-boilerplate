@@ -27,45 +27,7 @@ class NotificationController extends Controller
         operationId: 'notificationList',
         tags: ['Notification'],
         summary: 'Notification List',
-        // x: ['model' => Notification::class],
-        parameters: [
-            new OA\Parameter(
-                name: 'include',
-                in: 'query',
-                required: false,
-                description: 'Include related data',
-            ),
-            new OA\Parameter(
-                name: 'media',
-                in: 'query',
-                required: false,
-                description: 'Media types to include: `profile`',
-            ),
-            new OA\Parameter(
-                name: 'page',
-                in: 'query',
-                required: false,
-                description: 'Page number',
-            ),
-            new OA\Parameter(
-                name: 'appends',
-                in: 'query',
-                required: false,
-                description: 'Appends to include in the response,`sender_name`',
-            ),
-            new OA\Parameter(
-                name: 'filter[is_read]',
-                in: 'query',
-                required: false,
-                description: 'Filter notifications by read status: `true` or `false`',
-            ),
-            new OA\Parameter(
-                name: 'limit',
-                in: 'query',
-                required: false,
-                description: 'Limit the number of results',
-            ),
-        ],
+        x: ['model' => Notification::class],
         responses: [
             new OA\Response(
                 response: 200,

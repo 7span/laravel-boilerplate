@@ -122,7 +122,8 @@ class SuccessResponsesProcessor
                     return Str::snake($name);
                 }
 
-                return $name;
+                // Not an accessor (likely a relation or other method) – ignore
+                return null;
             })
             ->filter()
             ->unique()

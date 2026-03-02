@@ -29,20 +29,6 @@ class UserController extends Controller
         tags: ['Auth'],
         summary: 'Get logged-in user details',
         x: ['model' => User::class],
-        parameters: [
-            new OA\Parameter(
-                name: 'media',
-                in: 'query',
-                required: false,
-                description: 'Media types to include: `profile`',
-            ),
-            new OA\Parameter(
-                name: 'include',
-                in: 'query',
-                required: false,
-                description: 'Relationships to include: `user_device`',
-            ),
-        ],
         responses: [
             new OA\Response(
                 response: 200,

@@ -43,7 +43,7 @@ class Notification extends Model
         'is_read',
     ];
 
-    protected $relationship = [
+    public $relationship = [
         'user' => [
             'model' => User::class,
         ],
