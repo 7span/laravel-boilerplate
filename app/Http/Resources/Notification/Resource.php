@@ -15,8 +15,8 @@ class Resource extends JsonResource
     {
         $data = NotificationData::fromModel($this->resource)->toArray();
 
-        $data['user'] = new UserResource($this->whenLoaded('user'));
-        $data['sender'] = new UserResource($this->whenLoaded('sender'));
+        // $data['user'] = new UserResource($this->whenLoaded('user'));
+        // $data['sender'] = new UserResource($this->whenLoaded('sender'));
 
         return $data;
     }

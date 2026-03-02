@@ -183,6 +183,7 @@ class SuccessResponsesProcessor
         if ($checkParamExist) {
             return;
         }
+
         if (! is_array($annotation->parameters)) {
             $annotation->parameters = [];
         }

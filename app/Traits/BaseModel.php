@@ -63,13 +63,6 @@ trait BaseModel
     {
         $relationship = $this->relationship ?? [];
 
-        // // Always add 'media' relationship if not present
-        // if (!array_key_exists('media', $relationship)) {
-        //     $relationship['media'] = [
-        //         'model' => Media::class,
-        //     ];
-        // }
-
         return $relationship;
     }
 
@@ -98,16 +91,6 @@ trait BaseModel
         $this->addMediaToIncludes();
 
         $queryBuilder = QueryBuilder::for(self::class)->allowedFields($this->getQueryFieldsWithRelationship())->allowedIncludes($this->getAllowedIncludes());
-
-        // $nestedRelations = array_keys(array_filter(
-        //     $this->getRelationship(),
-        //     fn ($alias) => str_contains($alias, '.') && substr($alias, -6) === '.media',
-        //     ARRAY_FILTER_USE_KEY
-        // ));
-
-        // if (!empty($nestedRelations)) {
-        //     $queryBuilder->with($nestedRelations);
-        // }
 
         $filters = $this->getQueryFields();
         if (isset($this->scopedFilters)) {
@@ -161,26 +144,18 @@ trait BaseModel
     protected function addMediaToIncludes(): void
     {
         $request = request();
-        $relationships = $this->getRelationship();
-        // dd($relationships);
         $includes = array_filter(explode(',', $request->query('include', '')));
+        $relationships = $this->getRelationship();
 
-        // Add 'media' if requested and defined in relationships
-        if ($request->filled('media') && array_key_exists('media', $relationships)) {
+        if ($request->filled('media') && isset($relationships['media'])) {
             $includes[] = 'media';
         }
 
-        // Merge nested media relations (e.g. 'comments.media') only if parent is already in includes
-        $nestedMediaRelations = array_keys(array_filter(
-            $relationships,
-            fn ($alias) => str_ends_with($alias, '.media'),
-            ARRAY_FILTER_USE_KEY
-        ));
+        foreach (array_keys($relationships) as $relation) {
+            $parent = substr($relation, 0, -6); // strips '.media'
 
-        foreach ($nestedMediaRelations as $nested) {
-            $parent = str_replace('.media', '', $nested); // e.g. 'user.media' => 'user'
-            if (in_array($parent, $includes)) {
-                $includes[] = $nested;
+            if (str_ends_with($relation, '.media') && in_array($parent, $includes)) {
+                $includes[] = $relation;
             }
         }
 
