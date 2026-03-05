@@ -22,7 +22,6 @@ class Media extends MediableMedia
         'mime_type',
         'aggregate_type',
         'size',
-        // 'updated_by',
         'created_at',
         'updated_at',
     ];
@@ -33,16 +32,8 @@ class Media extends MediableMedia
     ];
 
     protected $relationship = [
-        'updated_by_user' => [
-            'model' => User::class,
-        ],
         'media' => [
             'model' => Media::class,
         ],
     ];
-
-    public function updatedByUser()
-    {
-        return $this->belongsTo(User::class, 'updated_by', 'id');
-    }
 }
