@@ -14,10 +14,18 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property UserStatus $status
+ * @property int|null $email_verified_at
+ * @property int|null $last_login_at
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ * @property int|null $deleted_at
+ * @property-read string $name
+ * @property-read string $display_status
+ * @property-read string $display_mobile_no
  */
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
+    use BaseModel, HasApiTokens,HasRoles, Mediable, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'first_name',

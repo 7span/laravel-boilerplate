@@ -25,8 +25,8 @@ class UserDeviceData extends Data
             onesignal_player_id: $device->onesignal_player_id,
             device_id: $device->device_id,
             device_type: $device->device_type,
-            created_at: $device->created_at?->timestamp,
-            updated_at: $device->updated_at?->timestamp,
+            created_at: $device->created_at,
+            updated_at: $device->updated_at,
         );
     }
 }

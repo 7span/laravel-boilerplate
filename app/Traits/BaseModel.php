@@ -13,7 +13,7 @@ use Spatie\QueryBuilder\AllowedInclude;
  * The following dynamic properties are expected to be defined
  * on models that use this trait when needed:
  *
- * @property array<string, array<string, class-string>> $relationship Relationships configuration.
+ * @property array<string, array<string, class-string>>|null $relationship Relationships configuration.
  * @property array<int, string> $scopedFilters List of filter names treated as scoped filters.
  * @property array<int, string> $exactFilters List of filter names treated as exact filters.
  * @property string|null $defaultSort Default sort field (e.g. "-created_at").
@@ -61,9 +61,7 @@ trait BaseModel
 
     public function getRelationship(): array
     {
-        $relationship = $this->relationship ?? [];
-
-        return $relationship;
+        return $this->relationship ?? [];
     }
 
     public function getIncludes(): array

@@ -4,6 +4,9 @@ namespace App\Traits;
 
 use Illuminate\Http\Resources\MissingValue;
 
+/**
+ * @property class-string<\Illuminate\Database\Eloquent\Model&BaseModel> $model
+ */
 trait ResourceFilterable
 {
     /**

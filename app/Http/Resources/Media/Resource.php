@@ -23,27 +23,4 @@ class Resource extends JsonResource
     {
         return MediaData::fromModel($this->resource)->toArray();
     }
-
-    /**
-     * Generate the CDN URL for the media if applicable.
-     */
-    private function getCdnUrl(): ?string
-    {
-        $cdnEnabled = config('media.cdn_enable');
-        $cdnUrl = rtrim(config('media.cdn_url'), '/');
-
-        if (! $cdnEnabled || ($this->resource->disk ?? null) !== 's3' || empty($cdnUrl)) {
-            return null;
-        }
-
-        $directory = trim($this->resource->directory ?? '', '/');
-        $filename = $this->resource->filename ?? null;
-        $extension = $this->resource->extension ?? null;
-
-        if ($directory && $filename && $extension) {
-            return sprintf('%s/%s/%s.%s', $cdnUrl, $directory, $filename, $extension);
-        }
-
-        return null;
-    }
 }

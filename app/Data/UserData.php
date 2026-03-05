@@ -6,7 +6,8 @@ use App\Models\User;
 use App\Enums\UserStatus;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
-use App\Data\Concerns\InteractsWithRequestedMedia;
+use Spatie\LaravelData\DataCollection;
+use App\Traits\InteractsWithRequestedMedia;
 
 class UserData extends Data
 {
@@ -28,6 +29,7 @@ class UserData extends Data
         public string $display_status,
         public string $display_mobile_no,
         public MediaData|Optional|null $profile,
+        // public DataCollection|Optional $profile, // for multiple images use DataCollection
     ) {}
 
     public static function fromModel(User $user): self
@@ -44,10 +46,10 @@ class UserData extends Data
             email_verified_at: $user->email_verified_at,
             last_login_at: $user->last_login_at,
             created_at: $user->created_at,
-            name: (string) $user->name,
-            display_status: (string) $user->display_status,
-            display_mobile_no: (string) $user->display_mobile_no,
-            profile: self::firstMediaDataOrOptional($user, 'profile'),
+            name: $user->name,
+            display_status: $user->display_status,
+            display_mobile_no: $user->display_mobile_no,
+            profile: self::firstMedia($user, config('media.tags.profile')),
         );
     }
 }

@@ -28,6 +28,22 @@ class NotificationController extends Controller
         tags: ['Notification'],
         summary: 'Notification List',
         x: ['model' => Notification::class],
+        parameters: [
+            new OA\Parameter(
+                name: 'include',
+                in: 'query',
+                description: 'Include related models',
+                required: false,
+                schema: new OA\Schema(type: 'string'),
+            ),
+            new OA\Parameter(
+                name: 'media',
+                in: 'query',
+                description: 'Media tags to include',
+                required: false,
+                schema: new OA\Schema(type: 'string'),
+            ),
+        ],
         responses: [
             new OA\Response(
                 response: 200,

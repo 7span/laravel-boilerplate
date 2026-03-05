@@ -6,6 +6,10 @@ use App\Traits\BaseModel;
 use App\Traits\HasUserActions;
 use Plank\Mediable\Media as MediableMedia;
 
+/**
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ */
 class Media extends MediableMedia
 {
     use BaseModel, HasUserActions;

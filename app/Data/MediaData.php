@@ -49,7 +49,7 @@ class MediaData extends Data
             return null;
         }
 
-        $directory = trim((string) ($media->directory ?? ''), '/');
+        $directory = trim($media->directory ?? '', '/');
         $filename = $media->filename ?? null;
         $extension = $media->extension ?? null;
 

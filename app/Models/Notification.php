@@ -3,15 +3,36 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
-use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
+/**
+ * @property-read User|null $user
+ * @property-read User|null $sender
+ * @property int|null $read_at
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ */
 class Notification extends Model
 {
-    use BaseModel, Mediable;
+    use BaseModel;
 
     public $incrementing = false;
+
+    public $relationship = [
+        'user' => [
+            'model' => User::class,
+        ],
+        'sender' => [
+            'model' => User::class,
+        ],
+        'user.media' => [
+            'model' => Media::class,
+        ],
+        'sender.media' => [
+            'model' => Media::class,
+        ],
+    ];
 
     protected $keyType = 'string';
 
@@ -41,21 +62,6 @@ class Notification extends Model
 
     protected $scopedFilters = [
         'is_read',
-    ];
-
-    public $relationship = [
-        'user' => [
-            'model' => User::class,
-        ],
-        'sender' => [
-            'model' => User::class,
-        ],
-        'user.media' => [
-            'model' => Media::class,
-        ],
-        'sender.media' => [
-            'model' => Media::class,
-        ],
     ];
 
     public function user()
