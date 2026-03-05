@@ -62,7 +62,7 @@ trait InteractsWithRequestedMedia
     /**
      * Return media collection for a tag or omit field.
      *
-     * @return \Spatie\LaravelData\DataCollection<int, MediaData>|Optional
+     * @return DataCollection<int, MediaData>|Optional
      */
     protected static function getMediaCollection(Model $model, string $tag): DataCollection|Optional
     {
