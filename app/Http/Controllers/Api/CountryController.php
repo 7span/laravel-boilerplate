@@ -26,7 +26,13 @@ class CountryController extends Controller
         tags: ['Country'],
         operationId: 'countryList',
         summary: 'Country list',
-        x: ['model' => Country::class]
+        x: ['model' => Country::class],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Country list',
+            ),
+        ],
     )]
     public function __invoke(Request $request)
     {

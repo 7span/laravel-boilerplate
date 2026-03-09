@@ -3,17 +3,17 @@
 namespace App\Models;
 
 use App\Traits\BaseModel;
+use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    use BaseModel;
+    use BaseModel,Mediable;
 
     protected $fillable = [
         'name',
         'iso',
         'iso3',
-        'iso_code',
         'calling_code',
         'currency',
         'icon',
@@ -21,6 +21,12 @@ class Country extends Model
     ];
 
     protected $defaultSort = 'name';
+
+    protected $relationship = [
+        'media' => [
+            'model' => Media::class,
+        ],
+    ];
 
     protected function casts(): array
     {

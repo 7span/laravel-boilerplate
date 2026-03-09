@@ -10,14 +10,23 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property UserStatus $status
+ * @property int|null $email_verified_at
+ * @property int|null $last_login_at
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ * @property int|null $deleted_at
+ * @property-read string $name
+ * @property-read string $display_status
+ * @property-read string $display_mobile_no
  */
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
+    use BaseModel, HasApiTokens, HasFactory, HasRoles, Mediable, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'first_name',
@@ -46,6 +55,9 @@ class User extends Authenticatable
     protected $relationship = [
         'user_device' => [
             'model' => UserDevice::class,
+        ],
+        'media' => [
+            'model' => Media::class,
         ],
     ];
 

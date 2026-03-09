@@ -5,6 +5,10 @@ namespace App\Models;
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ */
 class UserDevice extends Model
 {
     use BaseModel;

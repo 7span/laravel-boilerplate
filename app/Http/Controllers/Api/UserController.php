@@ -29,6 +29,12 @@ class UserController extends Controller
         tags: ['Auth'],
         summary: 'Get logged-in user details',
         x: ['model' => User::class],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'User details',
+            ),
+        ],
         security: [[
             'bearerAuth' => [],
         ]]

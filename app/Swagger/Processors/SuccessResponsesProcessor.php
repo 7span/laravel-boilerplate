@@ -122,7 +122,7 @@ class SuccessResponsesProcessor
                     return Str::snake($name);
                 }
 
-                return $name;
+                // Not an accessor (likely a relation or other method) – ignore
             })
             ->filter()
             ->unique()
@@ -183,6 +183,7 @@ class SuccessResponsesProcessor
         if ($checkParamExist) {
             return;
         }
+
         if (! is_array($annotation->parameters)) {
             $annotation->parameters = [];
         }

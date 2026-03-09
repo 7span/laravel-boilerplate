@@ -21,8 +21,7 @@ class NotificationService
 
     public function collection()
     {
-        $notifications = $this->notificationObj->getQB()
-            ->where('user_id', Auth::id());
+        $notifications = $this->notificationObj->getQB()->where('user_id', Auth::id());
 
         return $this->paginationAttribute($notifications);
     }
