@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\CountryController;
@@ -35,6 +36,8 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
 
     Route::delete('media/{media}', [MediaController::class, 'destroy']);
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::apiResource('posts', PostController::class);
 });
 
 Route::get('countries', CountryController::class);

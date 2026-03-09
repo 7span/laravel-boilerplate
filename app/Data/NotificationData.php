@@ -2,16 +2,14 @@
 
 namespace App\Data;
 
+use App\Libraries\Helper;
 use App\Models\Notification;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Optional;
-use App\Traits\InteractsWithApiResponse;
 
 class NotificationData extends Data
 {
-    use InteractsWithApiResponse;
-
     public function __construct(
         public string $id,
         public int $user_id,
@@ -58,9 +56,9 @@ class NotificationData extends Data
                 $notification,
                 fn () => $notification->sender ? UserData::fromModel($notification->sender) : null
             ),
-            sender_name: self::checkAppends($notification, 'sender_name'),
-            buyer_name: self::checkAppends($notification, 'buyer_name'),
-            user_with_type: self::checkAppends($notification, 'user_with_type'),
+            sender_name: Helper::getRequestedAppends($notification, 'sender_name'),
+            buyer_name: Helper::getRequestedAppends($notification, 'buyer_name'),
+            user_with_type: Helper::getRequestedAppends($notification, 'user_with_type'),
         );
     }
 }
