@@ -19,7 +19,7 @@ class PostRequestData extends Data
     public static function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'max:255'],
             'body' => ['nullable', 'string'],
             'published_at' => ['nullable', 'integer'],
         ];
