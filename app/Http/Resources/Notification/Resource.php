@@ -16,6 +16,11 @@ class Resource extends JsonResource
     public function toArray($request)
     {
         $data = $this->fields();
+        $translationData = $data['data'] ?? [];
+        $data['title'] = __($data['title'], $translationData);
+        $data['description'] = __($data['description'], $translationData);
+
+        $data['data'] = $translationData;
         $data['sender'] = new UserResource($this->whenLoaded('user'));
         $data['user'] = new UserResource($this->whenLoaded('sender'));
 

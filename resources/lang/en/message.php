@@ -14,4 +14,5 @@ return [
     'invalid_otp' => 'Invalid OTP. Please try again.',
     'onesignal_data_success' => 'OneSignal player ID stored successfully.',
     'notification_read_success' => 'Notifications marked as read successfully.',
+    'notification_unread_success' => 'Notifications marked as unread successfully.',
 ];
