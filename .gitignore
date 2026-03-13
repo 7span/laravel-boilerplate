@@ -6,9 +6,7 @@
 /storage/*.key
 /storage/api-docs/*
 /vendor
-.env
 .env.backup
-.env.production
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -19,3 +17,4 @@ yarn-error.log
 /.idea
 /.cursor/*
 /.vscode/*
+config.bat
