@@ -63,6 +63,9 @@ class LangPushToSheet extends Command
             $groups[] = $group;
         }
 
+        $spreadsheet = Sheets::spreadsheet($spreadsheetId);
+        $existingSheets = $spreadsheet->sheetList();
+
         foreach ($groups as $group) {
             // Collect flattened translations per locale for this group.
             $perLocale = [];
@@ -111,9 +114,17 @@ class LangPushToSheet extends Command
 
             $sheetTitle = $group;
 
+            // Ensure sheet/tab exists for this group (email, validation, entity, message, etc.).
+            if (! in_array($sheetTitle, $existingSheets, true)) {
+                $this->info('Creating sheet tab: '.$sheetTitle);
+                $spreadsheet->addSheet($sheetTitle);
+                // Refresh sheet list so subsequent checks are accurate.
+                $existingSheets = $spreadsheet->sheetList();
+            }
+
             $this->info('Pushing '.(count($rows) - 1).' rows to Google Sheet sheet ['.$sheetTitle.']...');
 
-            $sheet = Sheets::spreadsheet($spreadsheetId)->sheet($sheetTitle);
+            $sheet = $spreadsheet->sheet($sheetTitle);
             $sheet->clear();
             $sheet->append($rows);
         }
