@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use App\Http\Middleware\SetLocale;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -38,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->group('api', [
             'throttle:api',
+            SetLocale::class,
             Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })

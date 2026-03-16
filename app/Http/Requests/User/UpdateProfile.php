@@ -21,6 +21,7 @@ class UpdateProfile extends FormRequest
             'username' => 'required|max:120|unique:users,username,' . Auth::id(),
             'country_code' => 'required_with:mobile_no|max:5',
             'mobile_no' => 'nullable|min:8|max:15',
-        ] + MediaRule::rules(config('media.tags.profile'), false);
+            'locale' => 'required|max:5',
+        ] + MediaRule::rules(config('media.tags.profile'), true);
     }
 }
