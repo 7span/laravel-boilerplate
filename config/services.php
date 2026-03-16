@@ -30,5 +30,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'google_sheets' => [
+        'spreadsheet_id' => env('GOOGLE_SHEETS_SPREADSHEET_ID'),
+        'sheet_name' => env('GOOGLE_SHEETS_SHEET_NAME', ''),
+    ],
 
 ];
