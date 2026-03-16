@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\LanguageController;
 use App\Http\Middleware\MarkNotificationsAsRead;
 use App\Http\Controllers\Api\SignedUrlController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\PostController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
@@ -39,4 +41,6 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
 
 Route::get('countries', CountryController::class);
 
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('posts', PostController::class);
 Route::post('generate-signed-url', SignedUrlController::class);
