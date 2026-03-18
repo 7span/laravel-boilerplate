@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 use App\Http\Requests\Notification\OneSignalData;
+use App\Data\Request\Notification\ReadNotificationRequestData;
 use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Resource as NotificationResource;
 
@@ -51,7 +52,8 @@ class NotificationController extends Controller
     )]
     public function readAllNotification(NotificationRequest $request)
     {
-        $data = $this->notificationService->readAllNotification($request->validated());
+        $requestData = ReadNotificationRequestData::fromRequest($request->validated());
+        $data = $this->notificationService->readAllNotification($requestData->toArray());
 
         return $data;
     }

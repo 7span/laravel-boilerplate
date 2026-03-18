@@ -6,6 +6,7 @@ namespace App\Http\Resources\Country;
 
 use App\Models\Country;
 use Illuminate\Http\Request;
+use App\Data\Response\CountryData;
 use App\Traits\ResourceFilterable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class Resource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $data = $this->fields();
+        $data = CountryData::fromModel($this->resource)->toArray();
 
         return $data;
     }

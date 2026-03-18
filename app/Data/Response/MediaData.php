@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace App\Data\Response;
@@ -17,10 +18,10 @@ final class MediaData extends Data
         public readonly string $mime_type,
         public readonly string $aggregate_type,
         public readonly int $size,
-        public readonly string $created_at,
-        public readonly string $updated_at,
+        public readonly int $created_at,
+        public readonly int $updated_at,
         public readonly string $url,
-        public readonly string $cdn_url,
+        public readonly ?string $cdn_url,
     ) {}
 
     /**
@@ -37,10 +38,30 @@ final class MediaData extends Data
             mime_type: $model->mime_type,
             aggregate_type: $model->aggregate_type,
             size: $model->size,
-            created_at: $model->created_at?->toDateTimeString(),
-            updated_at: $model->updated_at?->toDateTimeString(),
-            url: $model->url,
-            cdn_url: $model->cdn_url,
+            created_at: $model->created_at,
+            updated_at: $model->updated_at,
+            url: $model->getUrl(),
+            cdn_url: self::getCdnUrl($model),
         );
+    }
+
+    private static function getCdnUrl(Media $model): ?string
+    {
+        $cdnEnabled = config('media.cdn_enable');
+        $cdnUrl = rtrim((string) config('media.cdn_url'), '/');
+
+        if (! $cdnEnabled || $model->disk !== 's3' || $cdnUrl === '') {
+            return null;
+        }
+
+        $directory = trim((string) $model->directory, '/');
+        $filename = $model->filename;
+        $extension = $model->extension;
+
+        if ($directory !== '' && $filename !== null && $extension !== null) {
+            return sprintf('%s/%s/%s.%s', $cdnUrl, $directory, $filename, $extension);
+        }
+
+        return null;
     }
 }

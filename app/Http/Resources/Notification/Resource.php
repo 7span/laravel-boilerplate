@@ -6,8 +6,8 @@ namespace App\Http\Resources\Notification;
 
 use App\Models\Notification;
 use App\Traits\ResourceFilterable;
+use App\Data\Response\NotificationData;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\User\Resource as UserResource;
 
 class Resource extends JsonResource
 {
@@ -17,10 +17,6 @@ class Resource extends JsonResource
 
     public function toArray($request)
     {
-        $data = $this->fields();
-        $data['sender'] = new UserResource($this->whenLoaded('user'));
-        $data['user'] = new UserResource($this->whenLoaded('sender'));
-
-        return $data;
+        return NotificationData::fromModel($this->resource)->toArray();
     }
 }

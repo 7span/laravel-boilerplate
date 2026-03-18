@@ -44,6 +44,9 @@ class Notification extends Model
         'user' => [
             'model' => User::class,
         ],
+        'user.media' => [
+            'model' => Media::class,
+        ],
         'sender' => [
             'model' => User::class,
         ],
