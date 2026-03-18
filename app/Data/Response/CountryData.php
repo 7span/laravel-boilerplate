@@ -6,7 +6,9 @@ namespace App\Data\Response;
 
 use App\Models\Country;
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 final class CountryData extends Data
 {
     public function __construct(

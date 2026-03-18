@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace App\Data\Request\User;
 
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 final class UpdateProfileRequestData extends Data
 {
     public function __construct(

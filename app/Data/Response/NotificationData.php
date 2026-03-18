@@ -7,7 +7,9 @@ namespace App\Data\Response;
 use App\Models\Notification;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 final class NotificationData extends Data
 {
     /**

@@ -6,7 +6,9 @@ namespace App\Data\Response;
 
 use App\Models\Media;
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 final class MediaData extends Data
 {
     public function __construct(
