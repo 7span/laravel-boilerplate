@@ -11,7 +11,12 @@ use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\VerifyOtp;
+use App\Data\Request\Auth\LoginRequestData;
+use App\Data\Request\Auth\RegisterRequestData;
+use App\Data\Request\Auth\VerifyOtpRequestData;
 use App\Http\Requests\Auth\Login as LoginRequest;
+use App\Data\Request\Auth\ResetPasswordRequestData;
+use App\Data\Request\Auth\ForgetPasswordRequestData;
 use App\Http\Requests\Auth\Register as RegisterRequest;
 use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
 use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
@@ -35,7 +40,8 @@ class AuthController extends Controller
     )]
     public function register(RegisterRequest $request): JsonResponse
     {
-        $data = $this->authService->register($request->validated());
+        $requestData = RegisterRequestData::fromRequest($request->validated());
+        $data = $this->authService->register($requestData->toArray());
 
         return $this->success($data, 200);
     }
@@ -49,7 +55,8 @@ class AuthController extends Controller
     )]
     public function forgotPasswordOTPVerify(VerifyOtp $request): JsonResponse
     {
-        $data = $this->authService->forgotPasswordOTPVerify($request->validated());
+        $requestData = VerifyOtpRequestData::fromRequest($request->validated());
+        $data = $this->authService->forgotPasswordOTPVerify($requestData->toArray());
 
         return $this->success($data);
     }
@@ -61,9 +68,10 @@ class AuthController extends Controller
         summary: 'Login User',
         description: 'Logs in a user with email and password.',
     )]
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
-        $data = $this->authService->login($request->validated());
+        $requestData = LoginRequestData::fromRequest($request->validated());
+        $data = $this->authService->login($requestData->toArray());
 
         return $this->success($data, 200);
     }
@@ -77,7 +85,8 @@ class AuthController extends Controller
     )]
     public function forgotPassword(ForgetPasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->forgotPassword($request->validated());
+        $requestData = ForgetPasswordRequestData::fromRequest($request->validated());
+        $data = $this->authService->forgotPassword($requestData->toArray());
 
         return $this->success($data, 200);
     }
@@ -91,7 +100,8 @@ class AuthController extends Controller
     )]
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
-        $data = $this->authService->resetPassword($request->validated());
+        $requestData = ResetPasswordRequestData::fromRequest($request->validated());
+        $data = $this->authService->resetPassword($requestData->toArray());
 
         return $this->success($data, 200);
     }
