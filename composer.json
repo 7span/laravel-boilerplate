@@ -10,16 +10,13 @@
     "require": {
         "php": "^8.3",
         "aws/aws-sdk-php": "^3.341",
-        "darkaonline/l5-swagger": "^9.0",
         "guzzlehttp/guzzle": "^7.9",
         "guzzlehttp/psr7": "^2.7",
-        "laravel-notification-channels/onesignal": "^2.8",
-        "laravel/framework": "^12.7.2",
+        "laravel/framework": "^13.0",
         "laravel/horizon": "^5.31",
-        "laravel/pulse": "^1.4",
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.5",
-        "laravel/tinker": "^2.10.1",
+        "laravel/tinker": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.0",
         "opcodesio/log-viewer": "^3.15",
         "plank/laravel-mediable": "^6.3",
@@ -29,7 +26,6 @@
         "spatie/laravel-query-builder": "^6.3"
     },
     "require-dev": {
-        "beyondcode/laravel-query-detector": "^2.1",
         "ekino/phpstan-banned-code": "^3.0",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.0",

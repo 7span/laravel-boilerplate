@@ -16,8 +16,8 @@ class Resource extends JsonResource
     public function toArray($request)
     {
         $data = $this->fields();
-        $data['sender'] = new UserResource($this->whenLoaded('user'));
-        $data['user'] = new UserResource($this->whenLoaded('sender'));
+        $data['sender'] = new UserResource($this->whenLoaded('sender'));
+        $data['user'] = new UserResource($this->whenLoaded('user'));
 
         return $data;
     }
