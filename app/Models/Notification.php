@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -41,6 +43,9 @@ class Notification extends Model
     protected $relationship = [
         'user' => [
             'model' => User::class,
+        ],
+        'user.media' => [
+            'model' => Media::class,
         ],
         'sender' => [
             'model' => User::class,

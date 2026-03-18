@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Plank\Mediable\Media;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

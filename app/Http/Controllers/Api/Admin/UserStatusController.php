@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\User;
@@ -8,6 +10,7 @@ use App\Services\UserService;
 use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ChangeStatus;
+use App\Data\Request\User\ChangeStatusRequestData;
 
 class UserStatusController extends Controller
 {
@@ -31,7 +34,8 @@ class UserStatusController extends Controller
     )]
     public function __invoke(User $user, ChangeStatus $request)
     {
-        $user = $this->userService->changeStatus($user, $request->validated());
+        $requestData = ChangeStatusRequestData::fromRequest($request->validated());
+        $user = $this->userService->changeStatus($user, $requestData->toArray());
 
         return $this->success($user);
     }

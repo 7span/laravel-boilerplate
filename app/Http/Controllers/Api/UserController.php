@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
@@ -10,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UpdateProfile;
+use App\Data\Request\User\UpdateProfileRequestData;
+use App\Data\Request\User\ChangePasswordRequestData;
 use App\Http\Resources\User\Resource as UserResource;
 use App\Http\Requests\User\ChangePassword as UserChangePassword;
 
@@ -63,7 +67,8 @@ class UserController extends Controller
     )]
     public function updateProfile(UpdateProfile $request): JsonResponse
     {
-        $data = $this->userService->update(Auth::id(), $request->validated());
+        $requestData = UpdateProfileRequestData::fromRequest($request->validated());
+        $data = $this->userService->update(Auth::id(), $requestData->toArray());
 
         return $this->success($data, 200);
     }
@@ -80,7 +85,8 @@ class UserController extends Controller
     )]
     public function changePassword(UserChangePassword $request): JsonResponse
     {
-        $data = $this->userService->changePassword($request->validated());
+        $requestData = ChangePasswordRequestData::fromRequest($request->validated());
+        $data = $this->userService->changePassword($requestData->toArray());
 
         return $this->success($data, 200);
     }

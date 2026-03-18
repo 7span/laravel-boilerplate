@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 return [
     // Login credentials
     'username' => env('DEVELOPER_USERNAME', 'default_username'),

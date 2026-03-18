@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -13,7 +15,6 @@ class Country extends Model
         'name',
         'iso',
         'iso3',
-        'iso_code',
         'calling_code',
         'currency',
         'icon',

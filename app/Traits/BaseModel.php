@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Traits;
 
 use App\Models\Media;
@@ -13,7 +15,7 @@ use Spatie\QueryBuilder\AllowedInclude;
  * The following dynamic properties are expected to be defined
  * on models that use this trait when needed:
  *
- * @property array<string, array<string, class-string>> $relationship Relationships configuration.
+ * @property array<string, array<string, class-string>>|null $relationship Relationships configuration.
  * @property array<int, string> $scopedFilters List of filter names treated as scoped filters.
  * @property array<int, string> $exactFilters List of filter names treated as exact filters.
  * @property string|null $defaultSort Default sort field (e.g. "-created_at").
@@ -44,7 +46,7 @@ trait BaseModel
         $relationships = $this->getRelationship();
 
         foreach ($relationships as $relationship) {
-            $relationshipObj = new $relationship['model'];
+            $relationshipObj = new ($relationship['model'])();
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
@@ -61,16 +63,7 @@ trait BaseModel
 
     public function getRelationship(): array
     {
-        $relationship = $this->relationship ?? [];
-
-        // Always add 'media' relationship if not present
-        if (! array_key_exists('media', $relationship)) {
-            $relationship['media'] = [
-                'model' => Media::class,
-            ];
-        }
-
-        return $relationship;
+        return $this->relationship ?? [];
     }
 
     public function getIncludes(): array
@@ -97,9 +90,7 @@ trait BaseModel
     {
         $this->addMediaToIncludes();
 
-        $queryBuilder = QueryBuilder::for(self::class)
-            ->allowedFields($this->getQueryFieldsWithRelationship())
-            ->allowedIncludes($this->getAllowedIncludes());
+        $queryBuilder = QueryBuilder::for(self::class)->allowedFields($this->getQueryFieldsWithRelationship())->allowedIncludes($this->getAllowedIncludes());
 
         $filters = $this->getQueryFields();
         if (isset($this->scopedFilters)) {
@@ -145,20 +136,30 @@ trait BaseModel
     }
 
     /**
-     * Example: GET /api/users?media=profile_image
+     * Merges model-defined relationships into the 'include' query parameter automatically:
      *
-     * Dynamically adds the 'media' relationship to the 'include' query parameter
-     * if the 'media' parameter is present in the request that prevent from n+1 query.
+     * 1. Media: added to includes only when 'media' exists in $relationship and request has a 'media' param.
+     * 2. Nested relations: any dotted key (e.g. 'comments.media') in $relationship is always eager-loaded.
      */
     protected function addMediaToIncludes(): void
     {
         $request = request();
-        $includes = explode(',', $request->query('include', ''));
+        $includes = array_filter(explode(',', $request->query('include', '')));
+        $relationships = $this->getRelationship();
 
-        if ($request->filled('media') && ! in_array('media', $includes)) {
+        if ($request->filled('media') && isset($relationships['media'])) {
             $includes[] = 'media';
-            $request->merge(['include' => implode(',', $includes)]);
         }
+
+        foreach (array_keys($relationships) as $relation) {
+            $parent = substr($relation, 0, -6); // strips '.media'
+
+            if (str_ends_with($relation, '.media') && in_array($parent, $includes)) {
+                $includes[] = $relation;
+            }
+        }
+
+        $request->merge(['include' => implode(',', array_unique($includes))]);
     }
 
     private function getQueryable()

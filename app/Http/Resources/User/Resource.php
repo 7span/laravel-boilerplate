@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Resources\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Data\Response\UserData;
 use App\Traits\ResourceFilterable;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Media\Resource as MediaResource;
@@ -22,7 +25,7 @@ class Resource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $data = $this->fields();
+        $data = UserData::fromModel($this->resource)->toArray();
         $data['profile_image'] = new MediaResource($this->whenLoadedMedia(config('media.tags.profile'), true));
         $data['user_device'] = new UserDeviceResource($this->whenLoaded('userDevice'));
 
