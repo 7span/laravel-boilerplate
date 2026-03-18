@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 return [
     'entityNotFound' => ':entity not found.',
     'entityCreated' => ':entity created successfully.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 return [
     'register_success' => 'Registration successful! Welcome aboard!',
     'login_success' => 'Login successful! Welcome back!',

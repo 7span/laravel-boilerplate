@@ -1,4 +1,3 @@
-
 {
     "preset": "laravel",
     "rules": {
@@ -29,10 +28,14 @@
         "no_blank_lines_after_class_opening": true,
         "no_empty_statement": true,
         "no_extra_blank_lines": {
-            "tokens": ["extra"]
+            "tokens": [
+                "extra"
+            ]
         },
         "no_unused_imports": true,
-        "ordered_imports": { "sort_algorithm": "length" },
+        "ordered_imports": {
+            "sort_algorithm": "length"
+        },
         "simplified_null_return": true,
         "single_blank_line_at_eof": true,
         "single_line_after_imports": true,
@@ -44,7 +47,11 @@
         "trailing_comma_in_multiline": true,
         "trim_array_spaces": true,
         "visibility_required": {
-            "elements": ["method", "property"]
-        }
+            "elements": [
+                "method",
+                "property"
+            ]
+        },
+        "declare_strict_types": true
     }
 }

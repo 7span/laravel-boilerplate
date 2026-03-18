@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Illuminate\Support\Str;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Route;

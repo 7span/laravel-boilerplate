@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 return [
     'front_website_url' => env('FRONT_WEBSITE_URL', 'http://127.0.0.1:8000'),
     'pagination_limit' => 10,
