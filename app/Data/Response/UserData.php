@@ -9,9 +9,7 @@ use App\Enums\UserStatus;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use App\Traits\InteractsWithRequestedMedia;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
-#[TypeScript]
 final class UserData extends Data
 {
     use InteractsWithRequestedMedia;
