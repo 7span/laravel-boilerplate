@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Channels;
 
 use GuzzleHttp\Psr7\Response;
