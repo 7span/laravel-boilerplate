@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Notification;
 use App\Traits\ApiResponser;
 use OpenApi\Attributes as OA;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 use App\Http\Requests\Notification\OneSignalData;
@@ -55,6 +56,21 @@ class NotificationController extends Controller
     }
 
     #[OA\Post(
+        path: '/api/notifications/unread',
+        operationId: 'unreadNotifications',
+        tags: ['Notification'],
+        summary: 'Mark notifications as unread',
+        description: 'Allows marking all notifications or specific notifications as unread for the authenticated user.',
+        security: [['bearerAuth' => []]]
+    )]
+    public function markAsUnread(NotificationRequest $request)
+    {
+        $data = $this->notificationService->markAsUnread($request->validated());
+
+        return $data;
+    }
+
+    #[OA\Post(
         path: '/api/onesignal-player-id',
         operationId: 'setOnesignalPlayerId',
         tags: ['Notification'],
@@ -64,6 +80,22 @@ class NotificationController extends Controller
     public function setOnesignalData(OneSignalData $request)
     {
         $data = $this->notificationService->setOnesignalData($request->validated());
+
+        return $this->success($data);
+    }
+
+    #[OA\Get(
+        path: '/api/notifications/unread-count',
+        operationId: 'unreadNotificationCount',
+        tags: ['Notification'],
+        summary: 'Get unread notifications count',
+        security: [[
+            'bearerAuth' => [],
+        ]]
+    )]
+    public function unreadCount(): JsonResponse
+    {
+        $data = $this->notificationService->unreadCount();
 
         return $this->success($data);
     }

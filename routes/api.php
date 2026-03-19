@@ -29,7 +29,9 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
 
     Route::controller(NotificationController::class)->group(function () {
         Route::get('notifications', 'index');
+        Route::get('notifications/unread-count', 'unreadCount');
         Route::post('notifications/read', 'readAllNotification');
+        Route::post('notifications/unread', 'markAsUnread');
         Route::post('onesignal-player-id', 'setOnesignalData');
     });
 

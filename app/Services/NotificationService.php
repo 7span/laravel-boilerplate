@@ -41,6 +41,20 @@ class NotificationService
         return $data;
     }
 
+    public function markAsUnread(array $inputs)
+    {
+        $notifications = $this->notificationObj
+            ->where('user_id', Auth::id())
+            ->whereNotNull('read_at')
+            ->when(! empty($inputs['ids']), fn ($q) => $q->whereIn('id', $inputs['ids']));
+
+        $notifications->update(['read_at' => null]);
+
+        $data['message'] = __('message.notification_unread_success');
+
+        return $data;
+    }
+
     public function setOnesignalData(array $data)
     {
         $device = UserDevice::updateOrCreate(
@@ -54,6 +68,18 @@ class NotificationService
 
         $data['message'] = __('message.onesignal_data_success');
         $data['data'] = new UserDeviceResource($device->refresh());
+
+        return $data;
+    }
+
+    public function unreadCount(): array
+    {
+        $count = $this->notificationObj
+            ->where('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->count();
+
+        $data['unread_count'] = $count;
 
         return $data;
     }
