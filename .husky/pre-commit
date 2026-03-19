@@ -4,6 +4,7 @@
 npx --no-install lint-staged || exit 1
 
 # Run Laravel Pint for code style
+./vendor/bin/pint --config pint.strict.json || exit 1
 ./vendor/bin/pint || exit 1
 
 # Run PHPStan for static analysis
