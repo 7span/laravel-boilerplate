@@ -16,7 +16,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Dedoc\Scramble\Support\Generator\OpenApi;
+use App\Support\Scramble\GetQBParameterExtractor;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
+use Dedoc\Scramble\Configuration\ParametersExtractors;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,6 +54,9 @@ class AppServiceProvider extends ServiceProvider
             })
             ->withDocumentTransformers(function (OpenApi $openApi) {
                 $openApi->secure(SecurityScheme::http('bearer'));
+            })
+            ->withParametersExtractors(function (ParametersExtractors $extractors) {
+                $extractors->append([GetQBParameterExtractor::class]);
             });
 
         Scramble::registerApi('admin', ['api_path' => 'api/admin'])
