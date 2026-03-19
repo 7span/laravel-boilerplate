@@ -1,0 +1,25 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Laravel Boilerplate API",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://laravel-boilerplate.test/api/usher"
+        }
+    ],
+    "security": [
+        {
+            "http": []
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "http": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

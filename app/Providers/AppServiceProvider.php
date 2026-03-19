@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
                 $openApi->secure(SecurityScheme::http('bearer'));
             })
             ->withParametersExtractors(function (ParametersExtractors $extractors) {
-                $extractors->append([GetQBParameterExtractor::class]);
+                // $extractors->append([GetQBParameterExtractor::class]);
             });
 
         Scramble::registerApi('admin', ['api_path' => 'api/admin'])
@@ -98,11 +98,11 @@ class AppServiceProvider extends ServiceProvider
 
         Password::defaults(
             fn (): ?Password => app()->isProduction()
-            ? Password::min(10)
-                ->mixedCase()       // At least 1 upper and 1 lower case
-                ->numbers()         // At least 1 number
-                ->symbols()         // At least 1 special character
-            : null
+                ? Password::min(10)
+                    ->mixedCase()       // At least 1 upper and 1 lower case
+                    ->numbers()         // At least 1 number
+                    ->symbols()         // At least 1 special character
+                : null
         );
     }
 

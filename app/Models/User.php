@@ -41,7 +41,7 @@ class User extends Authenticatable
     protected $guard_name = 'api';
 
     /** Accessors and Mutators */
-    protected $appends = ['name', 'display_status', 'display_mobile_no'];
+    protected $appends = ['display_status', 'display_mobile_no'];
 
     protected $relationship = [
         'user_device' => [

@@ -1,0 +1,2558 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Laravel Boilerplate API",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://laravel-boilerplate.test/api"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Auth"
+        },
+        {
+            "name": "Countries"
+        },
+        {
+            "name": "Languages"
+        },
+        {
+            "name": "Notifications"
+        },
+        {
+            "name": "Media"
+        },
+        {
+            "name": "Signed URL"
+        },
+        {
+            "name": "Posts"
+        }
+    ],
+    "security": [
+        {
+            "http": []
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "operationId": "auth.register",
+                "description": "Creates a new user account and returns an access token.",
+                "summary": "Register a new user",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Register"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "data",
+                                        "token"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "operationId": "auth.login",
+                "description": "Authenticates a user with email and password and returns an access token.",
+                "summary": "Login",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Login"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "data",
+                                        "token"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/forgot-password": {
+            "post": {
+                "operationId": "auth.forgotPassword",
+                "description": "Sends a one-time passcode to the user's email to initiate the password reset flow.",
+                "summary": "Forgot password",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgetPassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/forgot-password-otp-verify": {
+            "post": {
+                "operationId": "auth.forgotPasswordOTPVerify",
+                "description": "Validates the OTP sent to the user's email and returns a password-reset token.",
+                "summary": "Verify OTP for password reset",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VerifyOtp"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "token"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/reset-password": {
+            "post": {
+                "operationId": "auth.resetPassword",
+                "description": "Sets a new password using the reset token obtained after OTP verification.",
+                "summary": "Reset password",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "operationId": "user.me",
+                "description": "Returns the profile details of the currently authenticated user.",
+                "summary": "Get authenticated user",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `first_name`, `last_name`, `username`, `email`, `status`, `password`, `country_code`, `mobile_no`, `email_verified_at`, `last_login_at`, `created_at`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `user_device`, `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[first_name]",
+                        "in": "query",
+                        "description": "Filter by first_name.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[last_name]",
+                        "in": "query",
+                        "description": "Filter by last_name.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[username]",
+                        "in": "query",
+                        "description": "Filter by username.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[email]",
+                        "in": "query",
+                        "description": "Filter by email.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[status]",
+                        "in": "query",
+                        "description": "Filter by status.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[password]",
+                        "in": "query",
+                        "description": "Filter by password.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[country_code]",
+                        "in": "query",
+                        "description": "Filter by country_code.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[mobile_no]",
+                        "in": "query",
+                        "description": "Filter by mobile_no.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[email_verified_at]",
+                        "in": "query",
+                        "description": "Filter by email_verified_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[last_login_at]",
+                        "in": "query",
+                        "description": "Filter by last_login_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[created_at]",
+                        "in": "query",
+                        "description": "Filter by created_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`User`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "user.updateProfile",
+                "description": "Updates the profile information for the authenticated user.",
+                "summary": "Update profile",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "user"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/change-password": {
+            "post": {
+                "operationId": "user.changePassword",
+                "description": "Changes the authenticated user's password after verifying the current one.",
+                "summary": "Change password",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "operationId": "auth.logout",
+                "description": "Revokes the current access token and ends the authenticated session.",
+                "summary": "Logout",
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/countries": {
+            "get": {
+                "operationId": "country",
+                "description": "Returns a paginated list of all available countries. Supports filtering and sorting via query parameters.",
+                "summary": "List countries",
+                "tags": [
+                    "Countries"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `name`, `iso`, `iso3`, `iso_code`, `calling_code`, `currency`, `icon`, `status`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[name]",
+                        "in": "query",
+                        "description": "Filter by name.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[iso]",
+                        "in": "query",
+                        "description": "Filter by iso.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[iso3]",
+                        "in": "query",
+                        "description": "Filter by iso3.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[iso_code]",
+                        "in": "query",
+                        "description": "Filter by iso_code.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[calling_code]",
+                        "in": "query",
+                        "description": "Filter by calling_code.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[currency]",
+                        "in": "query",
+                        "description": "Filter by currency.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[icon]",
+                        "in": "query",
+                        "description": "Filter by icon.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[status]",
+                        "in": "query",
+                        "description": "Filter by status.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `App.Http.Resources.Country.Resource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Country"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/languages": {
+            "get": {
+                "operationId": "languages.index",
+                "description": "Returns all available application locales.",
+                "summary": "List languages",
+                "tags": [
+                    "Languages"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "lable": {
+                                                        "type": "string"
+                                                    },
+                                                    "rtl": {
+                                                        "type": "boolean"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "name",
+                                                    "lable",
+                                                    "rtl"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/languages/{language}": {
+            "get": {
+                "operationId": "languages.show",
+                "description": "Returns all translation key-value pairs for the given locale.",
+                "summary": "Show language",
+                "tags": [
+                    "Languages"
+                ],
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications": {
+            "get": {
+                "operationId": "notification.index",
+                "description": "Returns a paginated list of in-app notifications for the authenticated user.",
+                "summary": "List notifications",
+                "tags": [
+                    "Notifications"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `id`, `user_id`, `sent_by`, `title`, `description`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `user`, `sender`, `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[id]",
+                        "in": "query",
+                        "description": "Filter by id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[user_id]",
+                        "in": "query",
+                        "description": "Filter by user_id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[sent_by]",
+                        "in": "query",
+                        "description": "Filter by sent_by.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[title]",
+                        "in": "query",
+                        "description": "Filter by title.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[description]",
+                        "in": "query",
+                        "description": "Filter by description.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[type]",
+                        "in": "query",
+                        "description": "Filter by type.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[notifiable_type]",
+                        "in": "query",
+                        "description": "Filter by notifiable_type.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[notifiable_id]",
+                        "in": "query",
+                        "description": "Filter by notifiable_id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[data]",
+                        "in": "query",
+                        "description": "Filter by data.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[read_at]",
+                        "in": "query",
+                        "description": "Filter by read_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `Resource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Notification"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications/read": {
+            "post": {
+                "operationId": "notification.readAllNotification",
+                "description": "Marks all or specific notifications as read for the authenticated user.",
+                "summary": "Mark notifications as read",
+                "tags": [
+                    "Notifications"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/onesignal-player-id": {
+            "post": {
+                "operationId": "notification.setOnesignalData",
+                "description": "Registers or updates the OneSignal player ID for the authenticated user's device.",
+                "summary": "Register push notification device",
+                "tags": [
+                    "Notifications"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OneSignalData"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserDevice"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/media/{media}": {
+            "delete": {
+                "operationId": "media.destroy",
+                "description": "Permanently deletes the specified media file belonging to the authenticated user.",
+                "summary": "Delete media file",
+                "tags": [
+                    "Media"
+                ],
+                "parameters": [
+                    {
+                        "name": "media",
+                        "in": "path",
+                        "required": true,
+                        "description": "The media ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/generate-signed-url": {
+            "post": {
+                "operationId": "signedUrl",
+                "description": "Creates a time-limited signed URL that can be used for direct file uploads to storage.",
+                "summary": "Generate signed URL",
+                "tags": [
+                    "Signed URL"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/App.Http.Requests.SignedUrl.Request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "url": {
+                                            "type": "string"
+                                        },
+                                        "key": {
+                                            "type": "string"
+                                        },
+                                        "directory": {
+                                            "type": "string"
+                                        },
+                                        "filename": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "url",
+                                        "key",
+                                        "directory",
+                                        "filename"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/posts": {
+            "get": {
+                "operationId": "posts.index",
+                "summary": "List posts",
+                "tags": [
+                    "Posts"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `user_id`, `title`, `slug`, `description`, `status`, `is_published`, `published_at`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `user`, `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "appends",
+                        "in": "query",
+                        "schema": {}
+                    },
+                    {
+                        "name": "filter[user_id]",
+                        "in": "query",
+                        "description": "Filter by user_id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[title]",
+                        "in": "query",
+                        "description": "Filter by title.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[slug]",
+                        "in": "query",
+                        "description": "Filter by slug.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[description]",
+                        "in": "query",
+                        "description": "Filter by description.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[status]",
+                        "in": "query",
+                        "description": "Filter by status.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[is_published]",
+                        "in": "query",
+                        "description": "Filter by is_published.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[published_at]",
+                        "in": "query",
+                        "description": "Filter by published_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `App.Http.Resources.Post.Resource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Post"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "posts.store",
+                "summary": "Store a new post",
+                "tags": [
+                    "Posts"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `user_id`, `title`, `slug`, `description`, `status`, `is_published`, `published_at`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `user`, `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[user_id]",
+                        "in": "query",
+                        "description": "Filter by user_id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[title]",
+                        "in": "query",
+                        "description": "Filter by title.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[slug]",
+                        "in": "query",
+                        "description": "Filter by slug.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[description]",
+                        "in": "query",
+                        "description": "Filter by description.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[status]",
+                        "in": "query",
+                        "description": "Filter by status.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[is_published]",
+                        "in": "query",
+                        "description": "Filter by is_published.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[published_at]",
+                        "in": "query",
+                        "description": "Filter by published_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StorePost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "post": {
+                                            "$ref": "#/components/schemas/Post"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "post"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/posts/{post}": {
+            "get": {
+                "operationId": "posts.show",
+                "summary": "Show a post",
+                "tags": [
+                    "Posts"
+                ],
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `user_id`, `title`, `slug`, `description`, `status`, `is_published`, `published_at`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `user`, `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[user_id]",
+                        "in": "query",
+                        "description": "Filter by user_id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[title]",
+                        "in": "query",
+                        "description": "Filter by title.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[slug]",
+                        "in": "query",
+                        "description": "Filter by slug.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[description]",
+                        "in": "query",
+                        "description": "Filter by description.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[status]",
+                        "in": "query",
+                        "description": "Filter by status.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[is_published]",
+                        "in": "query",
+                        "description": "Filter by is_published.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[published_at]",
+                        "in": "query",
+                        "description": "Filter by published_at.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`Post`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Post"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "posts.update",
+                "summary": "Update a post",
+                "tags": [
+                    "Posts"
+                ],
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "post": {
+                                            "$ref": "#/components/schemas/Post"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "post"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "posts.destroy",
+                "summary": "Delete a post",
+                "tags": [
+                    "Posts"
+                ],
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/oauth2-callback": {
+            "get": {
+                "operationId": "l5-swagger.default.oauth2_callback",
+                "summary": "Handles the OAuth2 callback and retrieves the required file for the redirect",
+                "tags": [
+                    "Swagger"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "http": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        },
+        "schemas": {
+            "App.Http.Requests.SignedUrl.Request": {
+                "type": "object",
+                "properties": {
+                    "filename": {
+                        "type": "string"
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "enum": [
+                            "video/3gpp2",
+                            "video/3gp",
+                            "video/3gpp",
+                            "application/x-compressed",
+                            "audio/x-acc",
+                            "audio/ac3",
+                            "application/postscript",
+                            "audio/x-aiff",
+                            "audio/aiff",
+                            "audio/x-au",
+                            "video/x-msvideo",
+                            "video/msvideo",
+                            "video/avi",
+                            "application/x-troff-msvideo",
+                            "application/macbinary",
+                            "application/mac-binary",
+                            "application/x-binary",
+                            "application/x-macbinary",
+                            "image/bmp",
+                            "image/x-bmp",
+                            "image/x-bitmap",
+                            "image/x-xbitmap",
+                            "image/x-win-bitmap",
+                            "image/x-windows-bmp",
+                            "image/ms-bmp",
+                            "image/x-ms-bmp",
+                            "application/bmp",
+                            "application/x-bmp",
+                            "application/x-win-bitmap",
+                            "application/cdr",
+                            "application/coreldraw",
+                            "application/x-cdr",
+                            "application/x-coreldraw",
+                            "image/cdr",
+                            "image/x-cdr",
+                            "zz-application/zz-winassoc-cdr",
+                            "application/mac-compactpro",
+                            "application/pkix-crl",
+                            "application/pkcs-crl",
+                            "application/x-x509-ca-cert",
+                            "application/pkix-cert",
+                            "text/css",
+                            "text/x-comma-separated-values",
+                            "text/comma-separated-values",
+                            "application/vnd.msexcel",
+                            "application/x-director",
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                            "application/x-dvi",
+                            "message/rfc822",
+                            "application/x-msdownload",
+                            "video/x-f4v",
+                            "audio/x-flac",
+                            "video/x-flv",
+                            "image/gif",
+                            "application/gpg-keys",
+                            "application/x-gtar",
+                            "application/x-gzip",
+                            "application/mac-binhex40",
+                            "application/mac-binhex",
+                            "application/x-binhex40",
+                            "application/x-mac-binhex40",
+                            "text/html",
+                            "image/x-icon",
+                            "image/x-ico",
+                            "image/vnd.microsoft.icon",
+                            "text/calendar",
+                            "application/java-archive",
+                            "application/x-java-application",
+                            "application/x-jar",
+                            "image/jp2",
+                            "video/mj2",
+                            "image/jpx",
+                            "image/jpm",
+                            "image/jpeg",
+                            "image/jpg",
+                            "image/pjpeg",
+                            "application/x-javascript",
+                            "application/json",
+                            "text/json",
+                            "application/vnd.google-earth.kml+xml",
+                            "application/vnd.google-earth.kmz",
+                            "text/x-log",
+                            "audio/x-m4a",
+                            "audio/mp4",
+                            "application/vnd.mpegurl",
+                            "audio/midi",
+                            "application/vnd.mif",
+                            "video/quicktime",
+                            "video/x-sgi-movie",
+                            "audio/mpeg",
+                            "audio/mpg",
+                            "audio/mpeg3",
+                            "audio/mp3",
+                            "video/mp4",
+                            "video/mpeg",
+                            "application/oda",
+                            "audio/ogg",
+                            "video/ogg",
+                            "application/ogg",
+                            "font/otf",
+                            "application/x-pkcs10",
+                            "application/pkcs10",
+                            "application/x-pkcs12",
+                            "application/x-pkcs7-signature",
+                            "application/pkcs7-mime",
+                            "application/x-pkcs7-mime",
+                            "application/x-pkcs7-certreqresp",
+                            "application/pkcs7-signature",
+                            "application/pdf",
+                            "application/octet-stream",
+                            "application/x-x509-user-cert",
+                            "application/x-pem-file",
+                            "application/pgp",
+                            "application/x-httpd-php",
+                            "application/php",
+                            "application/x-php",
+                            "text/php",
+                            "text/x-php",
+                            "application/x-httpd-php-source",
+                            "image/png",
+                            "image/x-png",
+                            "application/powerpoint",
+                            "application/vnd.ms-powerpoint",
+                            "application/vnd.ms-office",
+                            "application/msword",
+                            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                            "application/x-photoshop",
+                            "image/vnd.adobe.photoshop",
+                            "audio/x-realaudio",
+                            "audio/x-pn-realaudio",
+                            "application/x-rar",
+                            "application/rar",
+                            "application/x-rar-compressed",
+                            "audio/x-pn-realaudio-plugin",
+                            "application/x-pkcs7",
+                            "text/rtf",
+                            "text/richtext",
+                            "video/vnd.rn-realvideo",
+                            "application/x-stuffit",
+                            "application/smil",
+                            "text/srt",
+                            "image/svg+xml",
+                            "application/x-shockwave-flash",
+                            "application/x-tar",
+                            "application/x-gzip-compressed",
+                            "image/tiff",
+                            "font/ttf",
+                            "text/plain",
+                            "text/x-vcard",
+                            "application/videolan",
+                            "text/vtt",
+                            "audio/x-wav",
+                            "audio/wave",
+                            "audio/wav",
+                            "application/wbxml",
+                            "video/webm",
+                            "image/webp",
+                            "audio/x-ms-wma",
+                            "application/wmlc",
+                            "video/x-ms-wmv",
+                            "video/x-ms-asf",
+                            "font/woff",
+                            "font/woff2",
+                            "application/xhtml+xml",
+                            "application/excel",
+                            "application/msexcel",
+                            "application/x-msexcel",
+                            "application/x-ms-excel",
+                            "application/x-excel",
+                            "application/x-dos_ms_excel",
+                            "application/xls",
+                            "application/x-xls",
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            "application/vnd.ms-excel",
+                            "application/xml",
+                            "text/xml",
+                            "text/xsl",
+                            "application/xspf+xml",
+                            "application/x-compress",
+                            "application/x-zip",
+                            "application/zip",
+                            "application/x-zip-compressed",
+                            "application/s-compressed",
+                            "multipart/x-zip",
+                            "text/x-scriptzsh"
+                        ]
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "profile"
+                        ]
+                    }
+                },
+                "required": [
+                    "filename",
+                    "mime_type",
+                    "type"
+                ],
+                "title": "App.Http.Requests.SignedUrl.Request"
+            },
+            "ChangePassword": {
+                "type": "object",
+                "properties": {
+                    "current_password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "password",
+                    "password_confirmation"
+                ],
+                "title": "ChangePassword"
+            },
+            "Country": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the country."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The full name of the country."
+                    },
+                    "iso": {
+                        "type": "string",
+                        "description": "ISO 3166-1 alpha-2 country code (e.g. US)."
+                    },
+                    "iso3": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "ISO 3166-1 alpha-3 country code (e.g. USA)."
+                    },
+                    "iso_code": {
+                        "type": "string",
+                        "description": "Numeric ISO country code."
+                    },
+                    "calling_code": {
+                        "type": "string",
+                        "description": "International dialing code (e.g. +1)."
+                    },
+                    "currency": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The currency code for the country (e.g. USD)."
+                    },
+                    "icon": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "URL or path to the country flag icon."
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Active/inactive status of the country record."
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "iso",
+                    "iso3",
+                    "iso_code",
+                    "calling_code",
+                    "currency",
+                    "icon",
+                    "status"
+                ],
+                "title": "Country"
+            },
+            "ForgetPassword": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    }
+                },
+                "required": [
+                    "email"
+                ],
+                "title": "ForgetPassword"
+            },
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "title": "Login"
+            },
+            "Media": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the media file."
+                    },
+                    "disk": {
+                        "type": "string",
+                        "description": "The storage disk where the file is stored (e.g. local, s3)."
+                    },
+                    "directory": {
+                        "type": "string",
+                        "description": "The directory path within the disk."
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename without extension."
+                    },
+                    "extension": {
+                        "type": "string",
+                        "description": "The file extension (e.g. jpg, png)."
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "description": "The MIME type of the file."
+                    },
+                    "aggregate_type": {
+                        "type": "string",
+                        "description": "The aggregate type category (e.g. image, video, document)."
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "The file size in bytes."
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "The public URL to access the file."
+                    },
+                    "cdn_url": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri",
+                        "description": "The CDN URL for the file, if CDN is enabled."
+                    }
+                },
+                "required": [
+                    "id",
+                    "disk",
+                    "directory",
+                    "filename",
+                    "extension",
+                    "mime_type",
+                    "aggregate_type",
+                    "size",
+                    "url",
+                    "cdn_url"
+                ],
+                "title": "Media"
+            },
+            "Notification": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The unique UUID of the notification."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "description": "The ID of the recipient user."
+                    },
+                    "sent_by": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "The ID of the user who triggered the notification."
+                    },
+                    "title": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Short notification title."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Full notification message body."
+                    },
+                    "type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Notification category type."
+                    },
+                    "notifiable_type": {
+                        "type": "string",
+                        "description": "The class name of the related notifiable entity."
+                    },
+                    "notifiable_id": {
+                        "type": "integer",
+                        "description": "The ID of the related notifiable entity."
+                    },
+                    "data": {
+                        "type": "object",
+                        "description": "Additional structured data attached to the notification.",
+                        "additionalProperties": {}
+                    },
+                    "read_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Timestamp when the notification was read, or null if unread."
+                    },
+                    "created_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Timestamp when the notification was created."
+                    },
+                    "sender": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "required": [
+                    "id",
+                    "user_id",
+                    "sent_by",
+                    "title",
+                    "description",
+                    "type",
+                    "notifiable_type",
+                    "notifiable_id",
+                    "data",
+                    "read_at",
+                    "created_at"
+                ],
+                "title": "Notification"
+            },
+            "OneSignalData": {
+                "type": "object",
+                "properties": {
+                    "onesignal_player_id": {
+                        "type": "string"
+                    },
+                    "device_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "device_type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "enum": [
+                            "android",
+                            "ios",
+                            "web"
+                        ]
+                    }
+                },
+                "required": [
+                    "onesignal_player_id"
+                ],
+                "title": "OneSignalData"
+            },
+            "Post": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "published_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": "integer"
+                    },
+                    "updated_at": {
+                        "type": "integer"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "required": [
+                    "id",
+                    "user_id",
+                    "name",
+                    "title",
+                    "slug",
+                    "description",
+                    "status",
+                    "published_at",
+                    "created_at",
+                    "updated_at",
+                    "user"
+                ],
+                "title": "Post"
+            },
+            "Register": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "country_code": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 5
+                    },
+                    "mobile_no": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 8,
+                        "maxLength": 15
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "username",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "title": "Register"
+            },
+            "Request": {
+                "type": "object",
+                "properties": {
+                    "ids": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "title": "Request"
+            },
+            "ResetPassword": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "token": {
+                        "type": "string"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": [
+                    "email",
+                    "password",
+                    "token",
+                    "password_confirmation"
+                ],
+                "title": "ResetPassword"
+            },
+            "StorePost": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "enum": [
+                            "draft",
+                            "published"
+                        ]
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "is_published": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    }
+                },
+                "required": [
+                    "title",
+                    "description",
+                    "user_id"
+                ],
+                "title": "StorePost"
+            },
+            "UpdatePost": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "published"
+                        ]
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    }
+                },
+                "title": "UpdatePost"
+            },
+            "UpdateProfile": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "country_code": {
+                        "type": "string",
+                        "maxLength": 5
+                    },
+                    "mobile_no": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 8,
+                        "maxLength": 15
+                    },
+                    "profile": {
+                        "type": "object",
+                        "properties": {
+                            "filename": {
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "directory": {
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "size": {
+                                "type": "integer"
+                            },
+                            "mime_type": {
+                                "type": "string",
+                                "enum": [
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/gif",
+                                    "image/webp"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "username",
+                    "profile"
+                ],
+                "title": "UpdateProfile"
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the user."
+                    },
+                    "first_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's first name."
+                    },
+                    "last_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's last name."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The full display name of the user."
+                    },
+                    "username": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's unique username."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "The user's email address."
+                    },
+                    "status": {
+                        "description": "The user's account status.",
+                        "$ref": "#/components/schemas/UserStatus"
+                    },
+                    "display_status": {
+                        "type": "string",
+                        "description": "Human-readable label for the account status."
+                    },
+                    "country_code": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The country dial code (e.g. +1)."
+                    },
+                    "mobile_no": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's mobile number."
+                    },
+                    "display_mobile_no": {
+                        "type": "string",
+                        "description": "Mobile number with country code prefix."
+                    },
+                    "email_verified_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Timestamp when the email was verified."
+                    },
+                    "last_login_at": {
+                        "type": "integer",
+                        "description": "Timestamp of the user's last login."
+                    },
+                    "created_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Timestamp when the user was created."
+                    },
+                    "profile_image": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "user_device": {
+                        "$ref": "#/components/schemas/UserDevice"
+                    }
+                },
+                "required": [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "name",
+                    "username",
+                    "email",
+                    "status",
+                    "display_status",
+                    "country_code",
+                    "mobile_no",
+                    "display_mobile_no",
+                    "email_verified_at",
+                    "last_login_at",
+                    "created_at"
+                ],
+                "title": "User"
+            },
+            "UserDevice": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the device record."
+                    },
+                    "user_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "The ID of the owning user."
+                    },
+                    "onesignal_player_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The OneSignal player ID for push notifications."
+                    },
+                    "device_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The unique hardware device ID."
+                    },
+                    "device_type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The type of device (e.g. ios, android, web)."
+                    }
+                },
+                "required": [
+                    "id",
+                    "user_id",
+                    "onesignal_player_id",
+                    "device_id",
+                    "device_type"
+                ],
+                "title": "UserDevice"
+            },
+            "UserStatus": {
+                "type": "string",
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "title": "UserStatus"
+            },
+            "VerifyOtp": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 120
+                    },
+                    "otp": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "otp"
+                ],
+                "title": "VerifyOtp"
+            }
+        },
+        "responses": {
+            "ValidationException": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Errors overview."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "description": "A detailed description of each field that failed validation.",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "errors"
+                            ]
+                        }
+                    }
+                }
+            },
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            },
+            "ModelNotFoundException": {
+                "description": "Not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

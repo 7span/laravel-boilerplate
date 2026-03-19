@@ -1,0 +1,581 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Laravel Boilerplate API",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://laravel-boilerplate.test/api/admin"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Admin / Users"
+        },
+        {
+            "name": "Admin / Settings"
+        }
+    ],
+    "security": [
+        {
+            "http": []
+        }
+    ],
+    "paths": {
+        "/users/{user}/change-status": {
+            "post": {
+                "operationId": "admin.userStatus",
+                "description": "Enables or disables a user account. Requires admin privileges.",
+                "summary": "Change user status",
+                "tags": [
+                    "Admin / Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "description": "The user ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangeStatus"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "user"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/settings": {
+            "get": {
+                "operationId": "setting.index",
+                "description": "Returns a paginated list of application settings. Requires admin privileges.",
+                "summary": "List settings",
+                "tags": [
+                    "Admin / Settings"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Available sorts: `id`, `key`, `value`, `collection`, `is_public`, `updated_by`. Prefix with `-` for descending order.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Available includes: `media`. Separate multiple with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[key]",
+                        "in": "query",
+                        "description": "Filter by key.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[value]",
+                        "in": "query",
+                        "description": "Filter by value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[collection]",
+                        "in": "query",
+                        "description": "Filter by collection.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[is_public]",
+                        "in": "query",
+                        "description": "Filter by is_public.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter[updated_by]",
+                        "in": "query",
+                        "description": "Filter by updated_by.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `Resource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Setting"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "setting.update",
+                "description": "Bulk-updates application settings using a key-value payload. Requires admin privileges.",
+                "summary": "Update settings",
+                "tags": [
+                    "Admin / Settings"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "http": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        },
+        "schemas": {
+            "ChangeStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ]
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "title": "ChangeStatus"
+            },
+            "Media": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the media file."
+                    },
+                    "disk": {
+                        "type": "string",
+                        "description": "The storage disk where the file is stored (e.g. local, s3)."
+                    },
+                    "directory": {
+                        "type": "string",
+                        "description": "The directory path within the disk."
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename without extension."
+                    },
+                    "extension": {
+                        "type": "string",
+                        "description": "The file extension (e.g. jpg, png)."
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "description": "The MIME type of the file."
+                    },
+                    "aggregate_type": {
+                        "type": "string",
+                        "description": "The aggregate type category (e.g. image, video, document)."
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "The file size in bytes."
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "The public URL to access the file."
+                    },
+                    "cdn_url": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri",
+                        "description": "The CDN URL for the file, if CDN is enabled."
+                    }
+                },
+                "required": [
+                    "id",
+                    "disk",
+                    "directory",
+                    "filename",
+                    "extension",
+                    "mime_type",
+                    "aggregate_type",
+                    "size",
+                    "url",
+                    "cdn_url"
+                ],
+                "title": "Media"
+            },
+            "Setting": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the setting."
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": "The unique setting key used to reference this setting."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "The value stored for this setting."
+                    },
+                    "collection": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The collection/group this setting belongs to."
+                    },
+                    "is_public": {
+                        "type": "integer",
+                        "description": "Whether this setting is publicly accessible without authentication."
+                    },
+                    "updated_by": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "The ID of the user who last updated this setting."
+                    }
+                },
+                "required": [
+                    "id",
+                    "key",
+                    "value",
+                    "collection",
+                    "is_public",
+                    "updated_by"
+                ],
+                "title": "Setting"
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the user."
+                    },
+                    "first_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's first name."
+                    },
+                    "last_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's last name."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The full display name of the user."
+                    },
+                    "username": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's unique username."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "The user's email address."
+                    },
+                    "status": {
+                        "description": "The user's account status.",
+                        "$ref": "#/components/schemas/UserStatus"
+                    },
+                    "display_status": {
+                        "type": "string",
+                        "description": "Human-readable label for the account status."
+                    },
+                    "country_code": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The country dial code (e.g. +1)."
+                    },
+                    "mobile_no": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The user's mobile number."
+                    },
+                    "display_mobile_no": {
+                        "type": "string",
+                        "description": "Mobile number with country code prefix."
+                    },
+                    "email_verified_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Timestamp when the email was verified."
+                    },
+                    "last_login_at": {
+                        "type": "integer",
+                        "description": "Timestamp of the user's last login."
+                    },
+                    "created_at": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Timestamp when the user was created."
+                    },
+                    "profile_image": {
+                        "$ref": "#/components/schemas/Media"
+                    },
+                    "user_device": {
+                        "$ref": "#/components/schemas/UserDevice"
+                    }
+                },
+                "required": [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "name",
+                    "username",
+                    "email",
+                    "status",
+                    "display_status",
+                    "country_code",
+                    "mobile_no",
+                    "display_mobile_no",
+                    "email_verified_at",
+                    "last_login_at",
+                    "created_at"
+                ],
+                "title": "User"
+            },
+            "UserDevice": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "The unique identifier of the device record."
+                    },
+                    "user_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "The ID of the owning user."
+                    },
+                    "onesignal_player_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The OneSignal player ID for push notifications."
+                    },
+                    "device_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The unique hardware device ID."
+                    },
+                    "device_type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The type of device (e.g. ios, android, web)."
+                    }
+                },
+                "required": [
+                    "id",
+                    "user_id",
+                    "onesignal_player_id",
+                    "device_id",
+                    "device_type"
+                ],
+                "title": "UserDevice"
+            },
+            "UserStatus": {
+                "type": "string",
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "title": "UserStatus"
+            }
+        },
+        "responses": {
+            "ModelNotFoundException": {
+                "description": "Not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            },
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            },
+            "ValidationException": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Errors overview."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "description": "A detailed description of each field that failed validation.",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "errors"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
