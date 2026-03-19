@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use App\Services\UserService;
-use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use App\Http\Requests\User\ChangeStatus;
+use App\Http\Resources\User\Resource as UserResource;
 
+/**
+ * @tags Admin / Users
+ */
+#[Group('Admin / Users', weight: 1)]
 class UserStatusController extends Controller
 {
     use ApiResponser;
@@ -20,15 +25,13 @@ class UserStatusController extends Controller
         $this->userService = new UserService;
     }
 
-    #[OA\Post(
-        path: '/api/admin/users/{id}/change-status',
-        tags: ['Admin / User'],
-        operationId: 'changeStatus',
-        summary: 'Change user status',
-        security: [[
-            'bearerAuth' => [],
-        ]],
-    )]
+    /**
+     * Change user status.
+     *
+     * Enables or disables a user account. Requires admin privileges.
+     *
+     * @response array{message: string, user: UserResource}
+     */
     public function __invoke(User $user, ChangeStatus $request)
     {
         $user = $this->userService->changeStatus($user, $request->validated());

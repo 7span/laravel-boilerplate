@@ -11,6 +11,7 @@
         "php": "^8.3",
         "aws/aws-sdk-php": "^3.341",
         "darkaonline/l5-swagger": "^9.0",
+        "dedoc/scramble": "^0.13.16",
         "guzzlehttp/guzzle": "^7.9",
         "guzzlehttp/psr7": "^2.7",
         "laravel-notification-channels/onesignal": "^2.8",

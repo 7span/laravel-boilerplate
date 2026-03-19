@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Notification;
 use App\Traits\ApiResponser;
-use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use App\Services\NotificationService;
 use App\Http\Requests\Notification\OneSignalData;
+use App\Http\Resources\UserDevice\Resource as UserDeviceResource;
 use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Resource as NotificationResource;
 
+/**
+ * @tags Notifications
+ */
+#[Group('Notifications', weight: 6)]
 class NotificationController extends Controller
 {
     use ApiResponser;
@@ -22,16 +26,11 @@ class NotificationController extends Controller
         $this->notificationService = new NotificationService;
     }
 
-    #[OA\Get(
-        path: '/api/notifications',
-        operationId: 'notificationList',
-        tags: ['Notification'],
-        summary: 'Notification List',
-        x: ['model' => Notification::class],
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
+    /**
+     * List notifications.
+     *
+     * Returns a paginated list of in-app notifications for the authenticated user.
+     */
     public function index()
     {
         $data = $this->notificationService->collection();
@@ -39,14 +38,13 @@ class NotificationController extends Controller
         return NotificationResource::collection($data);
     }
 
-    #[OA\Post(
-        path: '/api/notifications/read',
-        operationId: 'readAllNotifications',
-        tags: ['Notification'],
-        summary: 'Mark notifications as read',
-        description: 'Allows marking all notifications or specific notifications as read for the authenticated user.',
-        security: [['bearerAuth' => []]]
-    )]
+    /**
+     * Mark notifications as read.
+     *
+     * Marks all or specific notifications as read for the authenticated user.
+     *
+     * @response array{message: string}
+     */
     public function readAllNotification(NotificationRequest $request)
     {
         $data = $this->notificationService->readAllNotification($request->validated());
@@ -54,13 +52,13 @@ class NotificationController extends Controller
         return $data;
     }
 
-    #[OA\Post(
-        path: '/api/onesignal-player-id',
-        operationId: 'setOnesignalPlayerId',
-        tags: ['Notification'],
-        description: 'Set OneSignal player ID for push notifications.',
-        security: [['bearerAuth' => []]]
-    )]
+    /**
+     * Register push notification device.
+     *
+     * Registers or updates the OneSignal player ID for the authenticated user's device.
+     *
+     * @response array{message: string, data: UserDeviceResource}
+     */
     public function setOnesignalData(OneSignalData $request)
     {
         $data = $this->notificationService->setOnesignalData($request->validated());

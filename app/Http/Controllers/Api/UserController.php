@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
 use App\Traits\ApiResponser;
 use App\Services\UserService;
-use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UpdateProfile;
 use App\Http\Resources\User\Resource as UserResource;
 use App\Http\Requests\User\ChangePassword as UserChangePassword;
 
+/**
+ * @tags Auth
+ */
+#[Group('Auth', weight: 0)]
 class UserController extends Controller
 {
     use ApiResponser;
@@ -24,43 +27,25 @@ class UserController extends Controller
         $this->userService = new UserService;
     }
 
-    #[OA\Get(
-        path: '/api/me',
-        tags: ['Auth'],
-        summary: 'Get logged-in user details',
-        x: ['model' => User::class],
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
-    public function me(): JsonResponse
+    /**
+     * Get authenticated user.
+     *
+     * Returns the profile details of the currently authenticated user.
+     */
+    public function me(): UserResource
     {
         $user = $this->userService->resource(Auth::id());
 
-        return $this->resource(new UserResource($user));
+        return new UserResource($user);
     }
 
-    #[OA\Post(
-        path: '/api/me',
-        operationId: 'updateProfile',
-        tags: ['Auth'],
-        summary: 'Update Profile',
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-        ],
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
+    /**
+     * Update profile.
+     *
+     * Updates the profile information for the authenticated user.
+     *
+     * @response array{message: string, user: UserResource}
+     */
     public function updateProfile(UpdateProfile $request): JsonResponse
     {
         $data = $this->userService->update(Auth::id(), $request->validated());
@@ -68,16 +53,13 @@ class UserController extends Controller
         return $this->success($data, 200);
     }
 
-    #[OA\Post(
-        path: '/api/change-password',
-        operationId: 'changePassword',
-        tags: ['Auth'],
-        summary: 'Change Password',
-        description: "Changes the user's password by verifying the current password and setting a new one.",
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
+    /**
+     * Change password.
+     *
+     * Changes the authenticated user's password after verifying the current one.
+     *
+     * @response array{message: string}
+     */
     public function changePassword(UserChangePassword $request): JsonResponse
     {
         $data = $this->userService->changePassword($request->validated());
