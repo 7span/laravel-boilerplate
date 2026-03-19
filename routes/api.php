@@ -19,18 +19,16 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
-
+Route::controller(NotificationController::class)->group(function () {
+    Route::get('notifications', 'index');
+    Route::post('notifications/read', 'readAllNotification');
+    Route::post('onesignal-player-id', 'setOnesignalData');
+});
 Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]], function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('me', 'me');
         Route::post('me', 'updateProfile');
         Route::post('change-password', 'changePassword');
-    });
-
-    Route::controller(NotificationController::class)->group(function () {
-        Route::get('notifications', 'index');
-        Route::post('notifications/read', 'readAllNotification');
-        Route::post('onesignal-player-id', 'setOnesignalData');
     });
 
     Route::delete('media/{media}', [MediaController::class, 'destroy']);

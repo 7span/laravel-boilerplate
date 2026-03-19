@@ -5,7 +5,12 @@
         "dev": "vite",
         "build": "vite build",
         "prepare": "husky install",
-        "openapi-ts": "openapi-ts"
+        "openapi-ts": "openapi-ts",
+        "openapi-export:api": "php artisan scramble:export --api=default --path=scramble/api.json",
+        "openapi-export:admin": "php artisan scramble:export --api=admin --path=scramble/admin.json",
+        "openapi-export:organizer": "php artisan scramble:export --api=organizer --path=scramble/organizer.json",
+        "openapi-export:usher": "php artisan scramble:export --api=usher --path=scramble/usher.json",
+        "openapi-export:all": "npm run openapi-export:api && npm run openapi-export:admin && npm run openapi-export:organizer && npm run openapi-export:usher && npm run openapi-ts"
     },
     "devDependencies": {
         "@hey-api/openapi-ts": "^0.94.3",

@@ -22,7 +22,14 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->as('admin.')
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin.php'));
-
+            Route::middleware('api')
+                ->as('organizer.')
+                ->prefix('api/organizer')
+                ->group(base_path('routes/organizer.php'));
+            Route::middleware('api')
+                ->as('usher.')
+                ->prefix('api/usher')
+                ->group(base_path('routes/usher.php'));
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 

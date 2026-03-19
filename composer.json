@@ -11,6 +11,7 @@
         "php": "^8.3",
         "aws/aws-sdk-php": "^3.341",
         "darkaonline/l5-swagger": "^9.0",
+        "dedoc/scramble-pro": "^0.8.12",
         "dedoc/scramble": "^0.13.16",
         "guzzlehttp/guzzle": "^7.9",
         "guzzlehttp/psr7": "^2.7",
@@ -44,6 +45,12 @@
         "spatie/laravel-ignition": "^2.4",
         "tightenco/duster": "^2.7"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.dedoc.co"
+        }
+    ],
     "autoload": {
         "files": [
             "app/Libraries/Helper.php"
