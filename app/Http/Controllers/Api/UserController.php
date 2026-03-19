@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
 use App\Services\UserService;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
@@ -81,6 +82,30 @@ class UserController extends Controller
     public function changePassword(UserChangePassword $request): JsonResponse
     {
         $data = $this->userService->changePassword($request->validated());
+
+        return $this->success($data, 200);
+    }
+
+    #[OA\Post(
+        path: '/api/locale',
+        operationId: 'updateLocale',
+        tags: ['Auth'],
+        summary: 'Update Locale',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'locale', type: 'string', format: 'max:5'),
+                ]
+            )
+        ),
+        security: [[
+            'bearerAuth' => [],
+        ]]
+    )]
+    public function updateLocale(Request $request): JsonResponse
+    {
+        $data = $this->userService->updateLocale($request->all());
 
         return $this->success($data, 200);
     }

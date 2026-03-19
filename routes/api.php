@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]],
         Route::get('me', 'me');
         Route::post('me', 'updateProfile');
         Route::post('change-password', 'changePassword');
+        Route::post('locale', 'updateLocale');
     });
 
     Route::controller(NotificationController::class)->group(function () {
