@@ -11,11 +11,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 /**
  * @property UserStatus $status
  */
-class User extends Authenticatable
+class User extends Authenticatable implements HasLocalePreference
 {
     use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
 
@@ -53,6 +54,11 @@ class User extends Authenticatable
     public function userDevice()
     {
         return $this->hasOne(UserDevice::class);
+    }
+
+    public function preferredLocale(): string
+    {
+        return $this->locale ?? config('app.locale');
     }
 
     protected function casts(): array
