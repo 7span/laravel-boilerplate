@@ -144,9 +144,9 @@ class GetQBParameterExtractor implements ParameterExtractor
     {
         $parameters = [];
         $fillable = $model->getFillable();
-        $scopedFilters = $model->scopedFilters ?? [];
-        $exactFilters = $model->exactFilters ?? [];
-        $defaultSort = $model->defaultSort ?? null;
+        $scopedFilters = isset($model->scopedFilters) ? $model->scopedFilters : []; // @phpstan-ignore property.notFound
+        $exactFilters = isset($model->exactFilters) ? $model->exactFilters : []; // @phpstan-ignore property.notFound
+        $defaultSort = isset($model->defaultSort) ? $model->defaultSort : null; // @phpstan-ignore property.notFound
 
         // Regular filters (all fillable fields not handled by scope/exact)
         foreach ($fillable as $field) {
