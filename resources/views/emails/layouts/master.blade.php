@@ -1,6 +1,10 @@
 <!doctype html>
-<html lang="en">
-@include('emails.includes.header')
+@php
+    $locale = app()->getLocale();
+    $isRtl = $locale === 'ar';
+@endphp
+<html lang="{{ $locale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
+@include('emails.includes.header', ['isRtl' => $isRtl])
 
 <body>
     <div class="wrapper">

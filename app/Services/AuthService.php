@@ -40,7 +40,7 @@ class AuthService
         $user->assignRole(config('site.roles.user'));
 
         try {
-            Mail::to($user->email)->send(new WelcomeUser($user));
+            Mail::to($user)->send(new WelcomeUser($user));
         } catch (\Exception $e) {
             Log::info('Welcome User mail failed.' . $e->getMessage());
         }
@@ -97,7 +97,7 @@ class AuthService
         ]);
 
         try {
-            Mail::to($user->email)->send(new ForgetPasswordOtp($user, $otp));
+            Mail::to($user)->send(new ForgetPasswordOtp($user, $otp));
         } catch (\Exception $e) {
             Log::info('Forget Password mail failed.' . $e->getMessage());
         }
