@@ -24,7 +24,7 @@ class NotificationController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/notifications',
+        path: '/api/v1/notifications',
         operationId: 'notificationList',
         tags: ['Notification'],
         summary: 'Notification List',
@@ -41,7 +41,7 @@ class NotificationController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/notifications/read',
+        path: '/api/v1/notifications/read',
         operationId: 'readAllNotifications',
         tags: ['Notification'],
         summary: 'Mark notifications as read',
@@ -56,7 +56,7 @@ class NotificationController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/notifications/unread',
+        path: '/api/v1/notifications/unread',
         operationId: 'unreadNotifications',
         tags: ['Notification'],
         summary: 'Mark notifications as unread',
@@ -71,7 +71,7 @@ class NotificationController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/onesignal-player-id',
+        path: '/api/v1/onesignal-player-id',
         operationId: 'setOnesignalPlayerId',
         tags: ['Notification'],
         description: 'Set OneSignal player ID for push notifications.',
@@ -85,7 +85,7 @@ class NotificationController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/notifications/unread-count',
+        path: '/api/v1/notifications/unread-count',
         operationId: 'unreadNotificationCount',
         tags: ['Notification'],
         summary: 'Get unread notifications count',

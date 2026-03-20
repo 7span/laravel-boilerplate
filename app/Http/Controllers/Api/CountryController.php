@@ -22,7 +22,7 @@ class CountryController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/countries',
+        path: '/api/v1/countries',
         tags: ['Country'],
         operationId: 'countryList',
         summary: 'Country list',

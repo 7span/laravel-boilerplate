@@ -26,7 +26,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/register',
+        path: '/api/v1/register',
         operationId: 'authRegister',
         tags: ['Auth'],
         summary: 'Register new user',
@@ -39,7 +39,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/forgot-password-otp-verify',
+        path: '/api/v1/forgot-password-otp-verify',
         operationId: 'forgotPasswordOTPVerify',
         tags: ['Auth'],
         summary: 'Verify OTP for password reset',
@@ -53,7 +53,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/login',
+        path: '/api/v1/login',
         operationId: 'loginUser',
         tags: ['Auth'],
         summary: 'Login User',
@@ -67,7 +67,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/forgot-password',
+        path: '/api/v1/forgot-password',
         operationId: 'forgotPassword',
         tags: ['Auth'],
         summary: 'Forgot Password with otp',
@@ -81,7 +81,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/reset-password',
+        path: '/api/v1/reset-password',
         operationId: 'resetPassword',
         tags: ['Auth'],
         summary: 'Reset Password',
@@ -95,7 +95,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/logout',
+        path: '/api/v1/logout',
         operationId: 'logoutUser',
         tags: ['Auth'],
         summary: 'Logout User',

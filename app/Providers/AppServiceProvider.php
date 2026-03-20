@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureDefaults();
         $this->configureRateLimiting();
+
+        // Configure Passport
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
 
         if ($this->app->runningInConsole()) {
             $this->commands([]);

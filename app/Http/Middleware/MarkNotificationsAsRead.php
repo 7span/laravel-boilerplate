@@ -16,8 +16,8 @@ class MarkNotificationsAsRead
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth('sanctum')->check() && $request->has('notify_id')) {
-            Notification::where('id', $request->get('notify_id'))->where('user_id', auth('sanctum')->id())->whereNull('read_at')->update(['read_at' => now()]);
+        if (auth('api')->check() && $request->has('notify_id')) {
+            Notification::where('id', $request->get('notify_id'))->where('user_id', auth('api')->id())->whereNull('read_at')->update(['read_at' => now()]);
         }
 
         return $next($request);

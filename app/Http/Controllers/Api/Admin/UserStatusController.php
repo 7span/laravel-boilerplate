@@ -21,7 +21,7 @@ class UserStatusController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/admin/users/{id}/change-status',
+        path: '/api/v1/admin/users/{id}/change-status',
         tags: ['Admin / User'],
         operationId: 'changeStatus',
         summary: 'Change user status',
