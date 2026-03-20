@@ -19,7 +19,7 @@ class UserService
 
     public function resource(int $id)
     {
-        $user = $this->userObj->getQB()->findOrFail($id);
+        $user = $this->userObj->findOrFail($id);
 
         return $user;
     }

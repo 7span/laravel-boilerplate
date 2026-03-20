@@ -18,8 +18,6 @@ trait HasTranslations
      */
     public function __call($method, $parameters)
     {
-        $method = (string) $method;
-
         if (str_starts_with($method, 'get') && str_ends_with($method, 'Attribute')) {
             $studly = \Illuminate\Support\Str::after($method, 'get');
             $studly = \Illuminate\Support\Str::before($studly, 'Attribute');
