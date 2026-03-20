@@ -21,6 +21,8 @@ use Spatie\QueryBuilder\AllowedInclude;
  */
 trait BaseModel
 {
+    use HasTranslations;
+
     public function getQueryFields(): array
     {
         $_this = new self;
