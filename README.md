@@ -49,7 +49,7 @@ $ php artisan serve
 
 ## ✨ Features & Packages
 
--   **[Authentication (Laravel Sanctum)](https://laravel.com/docs/12.x/sanctum)**
+-   **[Authentication (Laravel Passport)](https://laravel.com/docs/12.x/passport)**
 -   **[Role & Permission Management (Spatie Laravel Permission)](https://spatie.be/docs/laravel-permission/v6/introduction)**
 -   **[Media/File Management (Plank Mediable)](https://github.com/plank/laravel-mediable)**
 -   **[API Documentation (L5-Swagger)](https://github.com/DarkaOnLine/L5-Swagger)**

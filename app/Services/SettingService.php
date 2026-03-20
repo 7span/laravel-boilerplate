@@ -21,7 +21,7 @@ class SettingService
     {
         $settings = $this->settingObj->getQB();
 
-        if (! Auth::guard('sanctum')->check()) {
+        if (! Auth::guard('api')->check()) {
             $settings = $settings->where('is_public', true);
         }
 

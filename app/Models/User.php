@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Enums\UserStatus;
 use App\Traits\BaseModel;
 use Plank\Mediable\Mediable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -16,7 +17,7 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 /**
  * @property UserStatus $status
  */
-class User extends Authenticatable implements HasLocalePreference
+class User extends Authenticatable implements HasLocalePreference, OAuthenticatable
 {
     use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
 

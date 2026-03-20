@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
 use App\Traits\ApiResponser;
@@ -26,7 +26,7 @@ class UserController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/me',
+        path: '/api/v1/me',
         tags: ['Auth'],
         summary: 'Get logged-in user details',
         x: ['model' => User::class],
@@ -42,7 +42,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/me',
+        path: '/api/v1/me',
         operationId: 'updateProfile',
         tags: ['Auth'],
         summary: 'Update Profile',
@@ -70,7 +70,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/change-password',
+        path: '/api/v1/change-password',
         operationId: 'changePassword',
         tags: ['Auth'],
         summary: 'Change Password',
@@ -87,7 +87,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/locale',
+        path: '/api/v1/locale',
         operationId: 'updateLocale',
         tags: ['Auth'],
         summary: 'Update Locale',

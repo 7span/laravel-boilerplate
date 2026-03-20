@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
 use OpenApi\Attributes as OA;
@@ -20,7 +20,7 @@ class SignedUrlController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/generate-signed-url',
+        path: '/api/v1/generate-signed-url',
         operationId: 'generate-signed-url',
         tags: ['SignedUrl'],
         summary: 'Generate signed url',

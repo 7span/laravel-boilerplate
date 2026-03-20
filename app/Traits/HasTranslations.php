@@ -4,7 +4,6 @@ namespace App\Traits;
 
 trait HasTranslations
 {
-    
     public function getTranslated(string $field): ?string
     {
         $lang = app()->getLocale();
@@ -16,7 +15,6 @@ trait HasTranslations
 
     /**
      * Handle calls like getNameAttribute() when a translatable field is appended.
-     *
      */
     public function __call($method, $parameters)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Models\Setting;
 use App\Traits\ApiResponser;
@@ -24,7 +24,7 @@ class SettingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/admin/settings',
+        path: '/api/v1/admin/settings',
         operationId: 'getSettings',
         tags: ['Admin / Settings'],
         summary: 'Get list of settings',
@@ -40,7 +40,7 @@ class SettingController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/admin/settings',
+        path: '/api/v1/admin/settings',
         operationId: 'updateSettings',
         tags: ['Admin / Settings'],
         summary: 'Update Settings',

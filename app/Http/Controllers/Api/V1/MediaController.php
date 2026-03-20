@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Media;
 use App\Traits\ApiResponser;
@@ -16,7 +16,7 @@ class MediaController extends Controller
     public function __construct(private MediaService $mediaService) {}
 
     #[OA\Delete(
-        path: '/api/media/{media}',
+        path: '/api/v1/media/{media}',
         operationId: 'adminDeleteMedia',
         tags: ['Media'],
         summary: 'Mobile > Delete media file',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class LanguageController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/languages',
+        path: '/api/v1/languages',
         operationId: 'getLanguages',
         tags: ['Languages'],
         summary: 'Get list of languages',
@@ -34,7 +34,7 @@ class LanguageController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/languages/{language_id}',
+        path: '/api/v1/languages/{language_id}',
         operationId: 'getLanguageId',
         tags: ['Languages'],
         summary: 'Get detail of languages'
