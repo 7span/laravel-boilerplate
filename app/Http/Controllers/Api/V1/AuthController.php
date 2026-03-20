@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Api\V1;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
-use OpenApi\Attributes as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use App\Http\Requests\Auth\VerifyOtp;
 use App\Http\Requests\Auth\Login as LoginRequest;
+use App\Http\Resources\User\Resource as UserResource;
 use App\Http\Requests\Auth\Register as RegisterRequest;
 use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
 use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
 
+/**
+ * @tags Auth
+ */
+#[Group('Auth', weight: 10)]
 class AuthController extends Controller
 {
     use ApiResponser;
@@ -25,12 +30,13 @@ class AuthController extends Controller
         $this->authService = new AuthService;
     }
 
-    #[OA\Post(
-        path: '/api/v1/register',
-        operationId: 'authRegister',
-        tags: ['Auth'],
-        summary: 'Register new user',
-    )]
+    /**
+     * Register.
+     *
+     * @unauthenticated
+     *
+     * @response array{message: string, data: UserResource, token: string}
+     */
     public function register(RegisterRequest $request): JsonResponse
     {
         $data = $this->authService->register($request->validated());
@@ -38,13 +44,13 @@ class AuthController extends Controller
         return $this->success($data, 200);
     }
 
-    #[OA\Post(
-        path: '/api/v1/forgot-password-otp-verify',
-        operationId: 'forgotPasswordOTPVerify',
-        tags: ['Auth'],
-        summary: 'Verify OTP for password reset',
-        description: 'Verifies the OTP sent to user email for password reset and returns a reset token',
-    )]
+    /**
+     * Verify reset OTP.
+     *
+     * @unauthenticated
+     *
+     * @response array{message: string, token: string}
+     */
     public function forgotPasswordOTPVerify(VerifyOtp $request): JsonResponse
     {
         $data = $this->authService->forgotPasswordOTPVerify($request->validated());
@@ -52,27 +58,27 @@ class AuthController extends Controller
         return $this->success($data);
     }
 
-    #[OA\Post(
-        path: '/api/v1/login',
-        operationId: 'loginUser',
-        tags: ['Auth'],
-        summary: 'Login User',
-        description: 'Logs in a user with email and password.',
-    )]
-    public function login(LoginRequest $request)
+    /**
+     * Login.
+     *
+     * @unauthenticated
+     *
+     * @response array{message: string, data: UserResource, token: string}
+     */
+    public function login(LoginRequest $request): JsonResponse
     {
         $data = $this->authService->login($request->validated());
 
         return $this->success($data, 200);
     }
 
-    #[OA\Post(
-        path: '/api/v1/forgot-password',
-        operationId: 'forgotPassword',
-        tags: ['Auth'],
-        summary: 'Forgot Password with otp',
-        description: "Initiates the process to reset the user's password by otp.",
-    )]
+    /**
+     * Forgot password.
+     *
+     * @unauthenticated
+     *
+     * @response array{message: string}
+     */
     public function forgotPassword(ForgetPasswordRequest $request): JsonResponse
     {
         $data = $this->authService->forgotPassword($request->validated());
@@ -80,13 +86,13 @@ class AuthController extends Controller
         return $this->success($data, 200);
     }
 
-    #[OA\Post(
-        path: '/api/v1/reset-password',
-        operationId: 'resetPassword',
-        tags: ['Auth'],
-        summary: 'Reset Password',
-        description: "Resets the user's password using the provided email, new password via link",
-    )]
+    /**
+     * Reset password.
+     *
+     * @unauthenticated
+     *
+     * @response array{message: string}
+     */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $data = $this->authService->resetPassword($request->validated());
@@ -94,28 +100,11 @@ class AuthController extends Controller
         return $this->success($data, 200);
     }
 
-    #[OA\Post(
-        path: '/api/v1/logout',
-        operationId: 'logoutUser',
-        tags: ['Auth'],
-        summary: 'Logout User',
-        description: 'Logs out the currently authenticated user.',
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Requested-With',
-                in: 'header',
-                required: true,
-                description: 'Custom header for XMLHttpRequest',
-                schema: new OA\Schema(
-                    type: 'string',
-                    default: 'XMLHttpRequest'
-                )
-            ),
-        ],
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
+    /**
+     * Logout.
+     *
+     * @response array{message: string}
+     */
     public function logout(Request $request): JsonResponse
     {
         $data = $this->authService->logout($request->all());

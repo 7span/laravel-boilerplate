@@ -104,21 +104,21 @@ trait BaseModel
             ->allowedIncludes($this->getAllowedIncludes());
 
         $filters = $this->getQueryFields();
-        if (isset($this->scopedFilters)) {
+        if (isset($this->scopedFilters)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
             foreach ($this->scopedFilters as $key => $value) {
                 // remove plain filter if scoped filter exists
                 $filters = array_filter($filters, fn ($v) => $v !== $value);
                 array_push($filters, AllowedFilter::scope($value));
             }
         }
-        if (isset($this->exactFilters)) {
+        if (isset($this->exactFilters)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
             foreach ($this->exactFilters as $key => $value) {
                 array_push($filters, AllowedFilter::exact($value));
             }
         }
         $queryBuilder->allowedFilters($filters);
 
-        if (isset($this->defaultSort)) {
+        if (isset($this->defaultSort)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
             $queryBuilder->defaultSort($this->defaultSort);
         }
 

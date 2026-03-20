@@ -13,7 +13,6 @@ class Country extends Model
         'name',
         'iso',
         'iso3',
-        'iso_code',
         'calling_code',
         'currency',
         'icon',

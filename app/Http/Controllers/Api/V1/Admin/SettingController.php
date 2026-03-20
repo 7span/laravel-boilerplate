@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Models\Setting;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
-use OpenApi\Attributes as OA;
 use App\Services\SettingService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
+use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Requests\Setting\Request as SettingRequest;
 use App\Http\Resources\Setting\Resource as SettingResource;
 
+/**
+ * @tags Admin / Settings
+ */
+#[Group('Admin / Settings', weight: 80)]
 class SettingController extends Controller
 {
     use ApiResponser;
@@ -23,15 +27,10 @@ class SettingController extends Controller
         $this->settingService = new SettingService;
     }
 
-    #[OA\Get(
-        path: '/api/v1/admin/settings',
-        operationId: 'getSettings',
-        tags: ['Admin / Settings'],
-        summary: 'Get list of settings',
-        security: [[
-            'bearerAuth' => [],
-        ]]
-    )]
+    /**
+     * List.
+     */
+    #[QueryParameter('appends')]
     public function index(Request $request)
     {
         $settings = $this->settingService->collection($request->all());
@@ -39,15 +38,11 @@ class SettingController extends Controller
         return SettingResource::collection($settings);
     }
 
-    #[OA\Put(
-        path: '/api/v1/admin/settings',
-        operationId: 'updateSettings',
-        tags: ['Admin / Settings'],
-        summary: 'Update Settings',
-        description: 'Updates multiple settings using a key-value payload.',
-        x: ['model' => Setting::class],
-        security: [['bearerAuth' => []]]
-    )]
+    /**
+     * Update.
+     *
+     * @response array{message: string}
+     */
     public function update(SettingRequest $request): JsonResponse
     {
         $data = $this->settingService->update($request->validated());
