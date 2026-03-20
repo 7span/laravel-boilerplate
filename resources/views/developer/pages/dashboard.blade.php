@@ -17,7 +17,7 @@
             <div class="logo" id="developerLogo">
                 <img width="120" src="{{ asset('assets/img/logo.png') }}" alt="Logo">
             </div>
-            
+
             <div class="user-menu">
                 <div class="user-info" id="developerUserTrigger">
                     <div class="user-avatar">
@@ -43,13 +43,13 @@
                 </div>
             </div>
         </header>
-        
+
         <!-- Main Content -->
         <main class="main-content">
             <h1 class="section-title">Dashboard</h1>
 
             <div class="tools-category">
-                <div class="tools-grid">      
+                <div class="tools-grid">
 
                     <a href="{{ url('developer/log-viewer') }}" target="_blank" class="tool-card minimal-card">
                         <div class="tool-icon">
@@ -70,7 +70,7 @@
                         <div class="tool-content">
                             <div class="tool-title-row">
                                 <span class="tool-title">Telescope</span>
-                                
+
                             </div>
                             <span class="tool-subtitle">Debug and monitor your application</span>
                         </div>
@@ -82,10 +82,10 @@
                         </div>
                         <div class="tool-content">
                             <div class="tool-title-row">
-                                <span class="tool-title">Swagger API</span>
-                                
+                                <span class="tool-title">Scramble API</span>
+
                             </div>
-                            <span class="tool-subtitle">API documentation generator</span>
+                            <span class="tool-subtitle">API documentation</span>
                         </div>
                     </a>
 
@@ -96,7 +96,7 @@
                         <div class="tool-content">
                             <div class="tool-title-row">
                                 <span class="tool-title">Horizon</span>
-                                
+
                             </div>
                             <span class="tool-subtitle">Monitor Redis queues</span>
                         </div>

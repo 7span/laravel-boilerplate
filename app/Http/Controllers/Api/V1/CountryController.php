@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Country;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
-use OpenApi\Attributes as OA;
 use App\Services\CountryService;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
+use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Resources\Country\Resource as CountryResource;
 
+/**
+ * @tags Country
+ */
+#[Group('Country', weight: 30)]
 class CountryController extends Controller
 {
     use ApiResponser;
@@ -21,13 +25,12 @@ class CountryController extends Controller
         $this->countryService = new CountryService;
     }
 
-    #[OA\Get(
-        path: '/api/v1/countries',
-        tags: ['Country'],
-        operationId: 'countryList',
-        summary: 'Country list',
-        x: ['model' => Country::class]
-    )]
+    /**
+     * List.
+     *
+     * @unauthenticated
+     */
+    #[QueryParameter('appends')]
     public function __invoke(Request $request)
     {
         $countries = $this->countryService->collection($request->all());

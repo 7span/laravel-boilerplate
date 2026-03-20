@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
-use OpenApi\Attributes as OA;
 use App\Services\LanguageService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 
+/**
+ * @tags Languages
+ */
+#[Group('Languages', weight: 20)]
 class LanguageController extends Controller
 {
     use ApiResponser;
@@ -20,12 +24,20 @@ class LanguageController extends Controller
         $this->langService = new LanguageService;
     }
 
-    #[OA\Get(
-        path: '/api/v1/languages',
-        operationId: 'getLanguages',
-        tags: ['Languages'],
-        summary: 'Get list of languages',
-    )]
+    /**
+     * List.
+     *
+     * @unauthenticated
+     *
+     * @response array{
+     *     data: array<int, array{
+     *         id: string,
+     *         name: string,
+     *         lable: string,
+     *         rtl: bool
+     *     }>
+     * }
+     */
     public function index(Request $request): JsonResponse
     {
         $data = $this->langService->collection();
@@ -33,12 +45,13 @@ class LanguageController extends Controller
         return $this->success($data, 200);
     }
 
-    #[OA\Get(
-        path: '/api/v1/languages/{language_id}',
-        operationId: 'getLanguageId',
-        tags: ['Languages'],
-        summary: 'Get detail of languages'
-    )]
+    /**
+     * Show.
+     *
+     * @unauthenticated
+     *
+     * @response array<string, mixed>
+     */
     public function show(string $language): JsonResponse
     {
         $data = $this->langService->resource($language);
