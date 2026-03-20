@@ -12,11 +12,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 /**
  * @property UserStatus $status
  */
-class User extends Authenticatable implements OAuthenticatable
+class User extends Authenticatable implements HasLocalePreference, OAuthenticatable
 {
     use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
 
@@ -54,6 +55,11 @@ class User extends Authenticatable implements OAuthenticatable
     public function userDevice()
     {
         return $this->hasOne(UserDevice::class);
+    }
+
+    public function preferredLocale(): string
+    {
+        return $this->locale ?? config('app.locale');
     }
 
     protected function casts(): array

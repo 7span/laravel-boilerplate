@@ -29,7 +29,7 @@
         ol,
         blockquote {
             line-height: 1.4;
-            text-align: left;
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
 
         a {
@@ -47,28 +47,28 @@
             font-size: 18px;
             font-weight: bold;
             margin-top: 0;
-            text-align: left;
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
 
         h2 {
             font-size: 16px;
             font-weight: bold;
             margin-top: 0;
-            text-align: left;
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
 
         h3 {
             font-size: 14px;
             font-weight: bold;
             margin-top: 0;
-            text-align: left;
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
 
         p {
             font-size: 16px;
             line-height: 1.5em;
             margin-top: 0;
-            text-align: left;
+            text-align: {{ $isRtl ? 'right' : 'left' }};
         }
 
         p.sub {

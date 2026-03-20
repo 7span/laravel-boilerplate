@@ -16,4 +16,7 @@ return [
         'line2' => 'Your OTP is :otp. Please note that it is valid for the next :valid_minute minutes.',
         'footer' => 'If you have any questions, please contact our support team.',
     ],
+    'app' => [
+        'name' => config('app.name'),
+    ],
 ];

@@ -1,7 +1,7 @@
 @extends('emails.layouts.master')
 
 @section('content')
-    <h2>{{ __('email.welcome_user.greeting', ['app_name' => config('app.name')]) }}</h2>
+    <h2>{{ __('email.welcome_user.greeting', ['app_name' => __('email.app.name')]) }}</h2>
 
     <p>{{ __('email.welcome_user.content') }}</p>
 
