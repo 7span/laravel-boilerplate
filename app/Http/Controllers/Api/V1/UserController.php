@@ -32,7 +32,7 @@ class UserController extends Controller
     /**
      * Profile.
      */
-    // #[QueryParameter('appends')]
+    #[QueryParameter('media')]
     public function me(): JsonResponse
     {
         $user = $this->userService->resource(Auth::id());

@@ -48,6 +48,10 @@ trait ResourceFilterable
 
     protected function whenLoadedMedia(string $key, bool $isResource = false)
     {
+        if (! method_exists($this->resource, 'getMedia')) { // @phpstan-ignore function.alreadyNarrowedType
+            return new MissingValue;
+        }
+
         $mediaInput = request()->input('media');
         if (! empty($mediaInput)) {
             $mediaInput = explode(',', $mediaInput);

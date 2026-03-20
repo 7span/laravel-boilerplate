@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Services\CountryService;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
-use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Resources\Country\Resource as CountryResource;
 
 /**
@@ -30,7 +29,6 @@ class CountryController extends Controller
      *
      * @unauthenticated
      */
-    #[QueryParameter('appends')]
     public function __invoke(Request $request)
     {
         $countries = $this->countryService->collection($request->all());
