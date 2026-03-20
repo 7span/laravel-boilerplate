@@ -59,11 +59,11 @@ class AppServiceProvider extends ServiceProvider
 
         Password::defaults(
             fn (): ?Password => app()->isProduction()
-            ? Password::min(10)
-                ->mixedCase()       // At least 1 upper and 1 lower case
-                ->numbers()         // At least 1 number
-                ->symbols()         // At least 1 special character
-            : null
+                ? Password::min(10)
+                    ->mixedCase()       // At least 1 upper and 1 lower case
+                    ->numbers()         // At least 1 number
+                    ->symbols()         // At least 1 special character
+                : null
         );
     }
 
