@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Setting;
 
 use App\Models\Setting;
@@ -16,9 +18,13 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string */
     protected $model = Setting::class;
 
     /**
+<<<<<<< HEAD
+     * @return array<string, mixed>
+=======
      * @return array{
      *     id: int,
      *     key: string,
@@ -27,6 +33,7 @@ class Resource extends JsonResource
      *     is_public: bool|int,
      *     updated_by: int|null
      * }
+>>>>>>> origin/master
      */
     public function toArray(Request $request): array
     {

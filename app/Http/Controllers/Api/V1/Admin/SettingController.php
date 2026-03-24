@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Traits\ApiResponser;
@@ -8,9 +10,11 @@ use App\Services\SettingService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
+use OpenApi\Attributes as OA;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Requests\Setting\Request as SettingRequest;
 use App\Http\Resources\Setting\Resource as SettingResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
  * @tags Admin / Settings
@@ -30,10 +34,21 @@ class SettingController extends Controller
     /**
      * List.
      */
+    #[OA\Get(
+        path: '/api/v1/admin/settings',
+        operationId: 'getSettings',
+        tags: ['Admin / Settings'],
+        summary: 'Get list of settings',
+        security: [[
+            'bearerAuth' => [],
+        ]]
+    )]
     #[QueryParameter('appends')]
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $settings = $this->settingService->collection($request->all());
+        /** @var array<string, mixed> $allInputs */
+        $allInputs = $request->all();
+        $settings = $this->settingService->collection($allInputs);
 
         return SettingResource::collection($settings);
     }

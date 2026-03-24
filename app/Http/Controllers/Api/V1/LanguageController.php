@@ -1,6 +1,12 @@
 <?php
 
+<<<<<<< HEAD:app/Http/Controllers/Api/LanguageController.php
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Api;
+=======
 namespace App\Http\Controllers\Api\V1;
+>>>>>>> origin/master:app/Http/Controllers/Api/V1/LanguageController.php
 
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;

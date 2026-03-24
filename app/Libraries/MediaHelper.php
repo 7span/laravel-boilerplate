@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Libraries;
 
 use App\Models\Media;
@@ -9,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
-    public static function createFileName($fileName, $mimeType)
+    public static function createFileName(string $fileName, string $mimeType): string
     {
         $extension = self::getExtension($fileName, $mimeType);
 
@@ -19,14 +21,15 @@ class MediaHelper
         return $fileName;
     }
 
-    public static function getAggregateType($mimeType)
+    public static function getAggregateType(string $mimeType): string
     {
-        $aggregateTypeLists = config('media.aggregate_types');
+        /** @var array<string, array<int, string>> $aggregateTypeLists */
+        $aggregateTypeLists = (array) config('media.aggregate_types', []);
 
         $aggregateType = '';
 
         foreach ($aggregateTypeLists as $key => $aggregateTypes) {
-            if (in_array($mimeType, $aggregateTypes)) {
+            if (in_array($mimeType, $aggregateTypes, true)) {
                 $aggregateType = $key;
                 break;
             }
@@ -35,62 +38,78 @@ class MediaHelper
         return ! empty($aggregateType) ? $aggregateType : 'all';
     }
 
-    public static function attachMedia($media)
+    /**
+     * @param array<int, array<string, mixed>>|array<string, mixed> $media
+     * @return array<int, int>
+     */
+    public static function attachMedia(array $media): array
     {
+        /** @var array<int, int> $mediaIds */
         $mediaIds = [];
-        if (! is_array($media[0] ?? null)) {
-            $media = [$media];
-        }
+        
+        /** @var array<int, array<string, mixed>> $mediaItems */
+        $mediaItems = (isset($media[0]) && is_array($media[0])) ? $media : [$media];
 
-        foreach ($media as $mediaObj) {
-            $extension = self::getExtension($mediaObj['filename'], $mediaObj['mime_type']);
-            $aggregateType = self::getAggregateType($mediaObj['mime_type']);
-            $fileName = explode('.', $mediaObj['filename'])[0];
+        foreach ($mediaItems as $mediaObj) {
+            $filename = is_scalar($v1 = $mediaObj['filename'] ?? null) ? (string) $v1 : '';
+            $mimeType = is_scalar($v2 = $mediaObj['mime_type'] ?? null) ? (string) $v2 : '';
+            $size = is_scalar($v3 = $mediaObj['size'] ?? null) ? (int) $v3 : 0;
+            $disk = is_scalar($v4 = ($mediaObj['disk'] ?? config('filesystems.default', 'local'))) ? (string) $v4 : 'local';
+            $directory = is_scalar($v5 = $mediaObj['directory'] ?? null) ? (string) $v5 : '';
 
-            $media = Media::updateOrCreate(
+            $extension = self::getExtension($filename, $mimeType);
+            $aggregateType = self::getAggregateType($mimeType);
+            
+            $nameOnly = explode('.', $filename)[0];
+
+            $mediaModel = Media::updateOrCreate(
                 [
-                    'filename' => $fileName,
+                    'filename' => $nameOnly,
                 ],
                 [
-                    'disk' => $mediaObj['disk'] ?? config('filesystems.default'),
-                    'directory' => $mediaObj['directory'],
-                    'filename' => $fileName,
+                    'disk' => $disk,
+                    'directory' => $directory,
+                    'filename' => $nameOnly,
                     'extension' => $extension,
-                    'mime_type' => $mediaObj['mime_type'],
-                    'size' => $mediaObj['size'],
+                    'mime_type' => $mimeType,
+                    'size' => $size,
                     'aggregate_type' => $aggregateType,
                 ]
             );
 
-            array_push($mediaIds, $media->id);
+            $mediaId = is_scalar($id = $mediaModel->getKey()) ? (int) $id : 0;
+            array_push($mediaIds, $mediaId);
 
             // Delete the entry from TempFile if it exists
-            TempFile::where('file_name', $mediaObj['filename'])->delete();
+            TempFile::where('file_name', $filename)->delete();
         }
 
         return $mediaIds;
     }
 
-    public static function destroyMedia($fileObj)
+    /**
+     * @return array<string, string>
+     */
+    public static function destroyMedia(Media $fileObj): array
     {
-        $imageUrl = $fileObj['directory'] . '/' . $fileObj['filename'] . '.' . $fileObj['extension'];
-        Storage::disk(config('filesystems.default'))->delete($imageUrl);
+        $directory = $fileObj->directory ?? '';
+        $filename = $fileObj->filename ?? '';
+        $extension = $fileObj->extension ?? '';
+        $imageUrl = $directory . '/' . $filename . '.' . $extension;
+        Storage::disk(is_string($disk = config('filesystems.default')) ? $disk : 'local')->delete($imageUrl);
         $fileObj->delete();
-        $data['message'] = __('entity.entityDeleted', ['entity' => 'Media']);
+        $data = ['message' => (string) __('entity.entityDeleted', ['entity' => 'Media'])];
 
         return $data;
     }
 
-    public static function getExtension($fileName, $mimeType)
+    public static function getExtension(string $fileName, string $mimeType): string
     {
-        $mimeTypes = config('media.mime_types');
+        /** @var array<string, string> $mimeTypes */
+        $mimeTypes = (array) config('media.mime_types', []);
         $extension = null;
 
-        if ($mimeType === 'application/octet-stream') {
-            $extension = explode('.', $fileName)[1];
-        } else {
             $extension = isset($mimeTypes[$mimeType]) ? $mimeTypes[$mimeType] : explode('.', $fileName)[1];
-        }
 
         return $extension;
     }

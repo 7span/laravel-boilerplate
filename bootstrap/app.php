@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
 use App\Http\Middleware\SetLocale;
 use App\Exceptions\CustomException;

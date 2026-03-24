@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -27,6 +29,7 @@ class Media extends MediableMedia
         'updated_at' => 'timestamp',
     ];
 
+    /** @var array<string, array<string, class-string>> */
     protected $relationship = [
         'media' => [
             'model' => Media::class,

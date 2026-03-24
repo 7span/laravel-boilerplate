@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\SignedUrl;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -11,7 +13,7 @@ class Request extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,12 +23,12 @@ class Request extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'filename' => 'required',
-            'mime_type' => 'required|in:' . implode(',', array_keys(config('media.mime_types'))),
-            'type' => 'required|in:' . implode(',', config('media.tags')),
+            'mime_type' => 'required|in:' . implode(',', array_keys((array) config('media.mime_types'))),
+            'type' => 'required|in:' . implode(',', (array) config('media.tags')),
         ];
     }
 }

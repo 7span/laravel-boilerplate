@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Aws\S3\S3Client;
@@ -13,10 +15,15 @@ class SignedUrlService
         //
     }
 
-    public function create(array $inputs)
+    /**
+     * @param array<string, mixed> $inputs
+     * @return array<string, string>
+     */
+    public function create(array $inputs): array
     {
         // Get S3 configuration from filesystem config
-        $s3Config = config('filesystems.disks.s3');
+        /** @var array<string, string> $s3Config */
+        $s3Config = (array) config('filesystems.disks.s3');
 
         // Set up the S3 client
         $client = new S3Client([
@@ -32,10 +39,18 @@ class SignedUrlService
         $bucket = $s3Config['bucket'];
 
         // KEY means folder-name/file-name
-        $directory = config('media.directory.' . $inputs['type'], 'default');
+        $v1 = $inputs['type'] ?? 'default';
+        $type = is_scalar($v1) ? (string) $v1 : 'default';
+        $v2 = config('media.directory.' . $type, 'default');
+        /** @var string $directory */
+        $directory = is_scalar($v2) ? (string) $v2 : 'default';
 
         // Generate FileName
-        $fileName = MediaHelper::createFileName($inputs['filename'], $inputs['mime_type']);
+        /** @var string $filename */
+        $filename = $inputs['filename'];
+        /** @var string $mimeType */
+        $mimeType = $inputs['mime_type'];
+        $fileName = MediaHelper::createFileName($filename, $mimeType);
 
         // Directory Path
         $key = $directory . '/' . $fileName;

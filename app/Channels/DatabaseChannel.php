@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Channels;
 
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +17,11 @@ class DatabaseChannel extends IlluminateDatabaseChannel
      * @param  mixed  $notifiable
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function send($notifiable, Notification $notification)
+    public function send(mixed $notifiable, Notification $notification): \Illuminate\Database\Eloquent\Model
     {
         $data = $this->getData($notifiable, $notification);
 
+        /** @var object{id:int|string} $notifiable */
         return NotificationModel::create([
             'id' => $notification->id,
             'user_id' => $notifiable->id,
