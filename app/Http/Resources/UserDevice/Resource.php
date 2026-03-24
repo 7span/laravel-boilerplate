@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\UserDevice;
 
 use App\Models\UserDevice;
@@ -11,6 +13,7 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string */
     protected $model = UserDevice::class;
 
     /**

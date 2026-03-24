@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Notification;
 
 use App\Models\Notification;
@@ -11,9 +13,11 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string */
     protected $model = Notification::class;
 
-    public function toArray($request)
+    /** @return array<string, mixed> */
+    public function toArray($request): array
     {
         $data = $this->fields();
         $data['sender'] = new UserResource($this->whenLoaded('user'));

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\User;
@@ -16,21 +18,32 @@ class UserService
         $this->userObj = new User;
     }
 
-    public function resource(int $id)
+    public function resource(int $id): User
     {
+        /** @var User $user */
         $user = $this->userObj->getQB()->findOrFail($id);
 
         return $user;
     }
 
+    /**
+     * @param array<string, mixed> $inputs
+     * @return array<string, mixed>
+     */
     public function update(int $id, array $inputs = []): array
     {
         $user = $this->resource($id);
 
         $user->update($inputs);
 
-        $mediaId = MediaHelper::attachMedia($inputs[config('media.tags.profile')]);
-        $user->syncMedia($mediaId, config('media.tags.profile'));
+        /** @var string $profileTag */
+        $profileTag = config('media.tags.profile');
+        
+        /** @var array<int|string, mixed> $mediaInput */
+        $mediaInput = $inputs[$profileTag];
+
+        $mediaId = MediaHelper::attachMedia($mediaInput);
+        $user->syncMedia($mediaId, $profileTag);
 
         $data = [
             'message' => __('message.user_profile_update'),
@@ -40,7 +53,11 @@ class UserService
         return $data;
     }
 
-    public function changeStatus(object $user, array $inputs = [])
+    /**
+     * @param array<string, mixed> $inputs
+     * @return array<string, mixed>
+     */
+    public function changeStatus(User $user, array $inputs = []): array
     {
         $user->update($inputs);
         $data = [
@@ -51,9 +68,17 @@ class UserService
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $inputs
+     * @return array<string, mixed>
+     */
     public function changePassword(array $inputs): array
     {
+        /** @var User|null $user */
         $user = Auth::user();
+        if (!$user) {
+            throw new \App\Exceptions\CustomException(__('auth.failed'));
+        }
 
         $user->update([
             'password' => $inputs['password'],

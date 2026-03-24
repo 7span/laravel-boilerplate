@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\UserStatus;
@@ -13,7 +15,23 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $username
+ * @property string $email
  * @property UserStatus $status
+ * @property string $password
+ * @property string|null $country_code
+ * @property string|null $mobile_no
+ * @property int|null $email_verified_at
+ * @property int|null $last_login_at
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ * @property int|null $deleted_at
+ * @property string $name
+ * @property string $display_status
+ * @property string $display_mobile_no
  */
 class User extends Authenticatable
 {
@@ -38,20 +56,31 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $guard_name = 'api';
+    protected string $guard_name = 'api';
 
     /** Accessors and Mutators */
     protected $appends = ['name', 'display_status', 'display_mobile_no'];
 
-    protected $relationship = [
-        'user_device' => [
+    /** @var array<string, array<string, class-string>> */
+    protected array $relationship = [
+        'user_devices' => [
             'model' => UserDevice::class,
         ],
     ];
 
-    public function userDevice()
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\UserDevice, \App\Models\User> */
+    public function userDevices(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(UserDevice::class);
+        /** @var \Illuminate\Database\Eloquent\Relations\HasMany<UserDevice, User> $rel @phpstan-ignore varTag.type */
+        $rel = $this->hasMany(UserDevice::class);
+
+        return $rel;
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\UserDevice, \App\Models\User> */
+    public function user_devices(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->userDevices();
     }
 
     protected function casts(): array
@@ -67,6 +96,7 @@ class User extends Authenticatable
         ];
     }
 
+    /** @return Attribute<string, never> */
     protected function name(): Attribute
     {
         return Attribute::make(
@@ -74,6 +104,7 @@ class User extends Authenticatable
         );
     }
 
+    /** @return Attribute<string, never> */
     protected function displayStatus(): Attribute
     {
         return Attribute::make(
@@ -81,6 +112,7 @@ class User extends Authenticatable
         );
     }
 
+    /** @return Attribute<string, never> */
     protected function displayMobileNo(): Attribute
     {
         return Attribute::make(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\User;
@@ -7,6 +9,7 @@ use App\Traits\ApiResponser;
 use App\Services\UserService;
 use OpenApi\Attributes as OA;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\User\ChangeStatus;
 
 class UserStatusController extends Controller
@@ -29,7 +32,7 @@ class UserStatusController extends Controller
             'bearerAuth' => [],
         ]],
     )]
-    public function __invoke(User $user, ChangeStatus $request)
+    public function __invoke(User $user, ChangeStatus $request): \Illuminate\Http\JsonResponse
     {
         $user = $this->userService->changeStatus($user, $request->validated());
 

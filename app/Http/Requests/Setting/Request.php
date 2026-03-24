@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Setting;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +26,9 @@ class Request extends FormRequest
          */
         $rules = [];
 
-        foreach (config('site.setting_keys', []) as $key) {
+        /** @var array<int, string> $keys */
+        $keys = (array) config('site.setting_keys', []);
+        foreach ($keys as $key) {
             $rules[$key] = 'required';
         }
 

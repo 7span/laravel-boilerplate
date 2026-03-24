@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\User;
 
 use App\Rules\MediaRule;
@@ -13,6 +15,7 @@ class UpdateProfile extends FormRequest
         return true;
     }
 
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         return [
@@ -21,6 +24,6 @@ class UpdateProfile extends FormRequest
             'username' => 'required|max:120|unique:users,username,' . Auth::id(),
             'country_code' => 'required_with:mobile_no|max:5',
             'mobile_no' => 'nullable|min:8|max:15',
-        ] + MediaRule::rules(config('media.tags.profile'), false);
+        ] + MediaRule::rules(is_scalar($tag = config('media.tags.profile')) ? (string) $tag : '', false);
     }
 }

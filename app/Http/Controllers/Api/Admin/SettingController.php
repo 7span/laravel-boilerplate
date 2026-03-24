@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Setting;
@@ -32,9 +34,11 @@ class SettingController extends Controller
             'bearerAuth' => [],
         ]]
     )]
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $settings = $this->settingService->collection($request->all());
+        /** @var array<string, mixed> $allInputs */
+        $allInputs = $request->all();
+        $settings = $this->settingService->collection($allInputs);
 
         return SettingResource::collection($settings);
     }

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
@@ -18,12 +21,16 @@ use Spatie\QueryBuilder\AllowedInclude;
  * @property array<int, string> $exactFilters List of filter names treated as exact filters.
  * @property string|null $defaultSort Default sort field (e.g. "-created_at").
  * @property array<int, string> $queryable Additional queryable fields.
+ * @property array<int, string> $fillable
+ * @property array<int, string> $appends
  */
 trait BaseModel
 {
+    /** @return array<int, string> */
     public function getQueryFields(): array
     {
-        $_this = new self;
+        /** @var $this $model */
+        $model = $this;
         $fields = [];
 
         $default = $this->getQueryable();
@@ -31,25 +38,29 @@ trait BaseModel
             $fields[] = $field;
         }
 
-        foreach ($_this->getFillable() as $field) {
+        foreach ($model->getFillable() as $field) {
             $fields[] = $field;
         }
 
         return $fields;
     }
 
+    /** @return array<int, string> */
     public function getQueryFieldsWithRelationship(): array
     {
         $fields = $this->getQueryFields();
         $relationships = $this->getRelationship();
 
         foreach ($relationships as $relationship) {
+            /** @var \Illuminate\Database\Eloquent\Model&object{queryable?:array<int,string>} $relationshipObj */
             $relationshipObj = new $relationship['model'];
             $tableName = $relationshipObj->getTable();
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
             }
+            /** @phpstan-ignore-next-line */
             if (isset($relationshipObj->queryable)) {
+                /** @phpstan-ignore-next-line */
                 foreach ($relationshipObj->queryable as $field) {
                     $fields[] = $tableName . '.' . $field;
                 }
@@ -59,8 +70,11 @@ trait BaseModel
         return $fields;
     }
 
+    /** @return array<string, array<string, class-string>> */
     public function getRelationship(): array
     {
+        /** @var array<string, array<string, class-string>> $relationship */
+        /** @phpstan-ignore-next-line */
         $relationship = $this->relationship ?? [];
 
         // Always add 'media' relationship if not present
@@ -73,6 +87,7 @@ trait BaseModel
         return $relationship;
     }
 
+    /** @return array<int, string> */
     public function getIncludes(): array
     {
         return array_keys($this->getRelationship());
@@ -80,9 +95,12 @@ trait BaseModel
 
     /**
      * Generate allowedIncludes array using snake_case keys as API aliases and camelCase as relationship methods.
+     *
+     * @return array<int, AllowedInclude>
      */
     public function getAllowedIncludes(): array
     {
+        /** @var array<int, AllowedInclude> $includes */
         $includes = [];
         foreach ($this->getRelationship() as $alias => $rel) {
             // Convert snake_case alias to camelCase method name
@@ -90,48 +108,53 @@ trait BaseModel
             $includes[] = AllowedInclude::relationship($alias, $camel);
         }
 
-        return $includes;
+        /** @var array<int, \Spatie\QueryBuilder\AllowedInclude> $finalIncludes */
+        $finalIncludes = $includes;
+        return $finalIncludes;
     }
 
+    /** @return QueryBuilder<$this> */
     public function getQB(): QueryBuilder
     {
         $this->addMediaToIncludes();
 
-        $queryBuilder = QueryBuilder::for(self::class)
+        /** @phpstan-ignore-next-line */
+        $queryBuilder = QueryBuilder::for($this::class)
             ->allowedFields($this->getQueryFieldsWithRelationship())
             ->allowedIncludes($this->getAllowedIncludes());
 
+        /** @var array<int, string> $filters */
         $filters = $this->getQueryFields();
-        if (isset($this->scopedFilters)) {
-            foreach ($this->scopedFilters as $key => $value) {
-                // remove plain filter if scoped filter exists
-                $filters = array_filter($filters, fn ($v) => $v !== $value);
-                array_push($filters, AllowedFilter::scope($value));
-            }
+        /** @var array<int, string> $scopedFilters */
+        /** @phpstan-ignore-next-line */
+        $scopedFilters = $this->scopedFilters ?? [];
+        foreach ($scopedFilters as $value) {
+            // remove plain filter if scoped filter exists
+            $filters = array_filter($filters, fn ($v) => $v !== $value);
+            array_push($filters, AllowedFilter::scope($value));
         }
-        if (isset($this->exactFilters)) {
-            foreach ($this->exactFilters as $key => $value) {
-                array_push($filters, AllowedFilter::exact($value));
-            }
+        /** @var array<int, string> $exactFilters */
+        /** @phpstan-ignore-next-line */
+        $exactFilters = $this->exactFilters ?? [];
+        foreach ($exactFilters as $value) {
+            array_push($filters, AllowedFilter::exact($value));
         }
         $queryBuilder->allowedFilters($filters);
 
-        if (isset($this->defaultSort)) {
-            $queryBuilder->defaultSort($this->defaultSort);
+        /** @phpstan-ignore-next-line */
+        $defaultSort = $this->defaultSort ?? null;
+        /** @phpstan-ignore-next-line */
+        if (is_string($defaultSort)) {
+            $queryBuilder->defaultSort($defaultSort);
         }
 
         $queryBuilder->allowedSorts($this->getQueryFields());
 
+        /** @var QueryBuilder<$this> $queryBuilder */
         return $queryBuilder;
     }
 
-    /**
-     * GET /users?append=display_status,display_name
-     * This will append this attributes to the response.
-     *
-     * If you define a protected property in model : protected $appends = ['display_status'];
-     * Then 'display_status' will be appended to the response by default.
-     */
+    /** @return array<int, string> */
     public function getAppends(): array
     {
         $appendParam = request()->get('appends', '');
@@ -141,28 +164,28 @@ trait BaseModel
             return ! empty($value) && $this->hasAttribute($value);
         });
 
-        return array_merge($allowedAppends, $this->appends);
+        /** @var array<int, string> $appends */
+        /** @phpstan-ignore-next-line */
+        $appends = $this->appends ?? [];
+        return array_merge($allowedAppends, $appends);
     }
 
-    /**
-     * Example: GET /api/users?media=profile_image
-     *
-     * Dynamically adds the 'media' relationship to the 'include' query parameter
-     * if the 'media' parameter is present in the request that prevent from n+1 query.
-     */
     protected function addMediaToIncludes(): void
     {
         $request = request();
-        $includes = explode(',', $request->query('include', ''));
+        $includes = explode(',', (string) $request->query('include', ''));
 
-        if ($request->filled('media') && ! in_array('media', $includes)) {
+        if ($request->filled('media') && ! in_array('media', $includes, true)) {
             $includes[] = 'media';
             $request->merge(['include' => implode(',', $includes)]);
         }
     }
 
-    private function getQueryable()
+    /** @return array<int, string> */
+    private function getQueryable(): array
     {
-        return ! empty($this->queryable) ? $this->queryable : ['id'];
+        /** @var array<int, string> $queryable */
+        $queryable = $this->queryable ?? [];
+        return ! empty($queryable) ? $queryable : ['id'];
     }
 }

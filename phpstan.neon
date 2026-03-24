@@ -13,10 +13,16 @@ parameters:
     excludePaths:
         - app/Swagger/Processors/SuccessResponsesProcessor.php
 
-    level: 5
+    level: 9
+    parallel:
+        maximumNumberOfProcesses: 1
 
     tips:
         treatPhpDocTypesAsCertain: false
+
+    # Disable migration and schema scanning to avoid requiring phpmyadmin/sql-parser
+    disableMigrationScan: true
+    disableSchemaScan: true
 
     checkExplicitMixedMissingReturn: true
     checkUninitializedProperties: true

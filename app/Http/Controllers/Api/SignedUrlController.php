@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
@@ -25,7 +27,7 @@ class SignedUrlController extends Controller
         tags: ['SignedUrl'],
         summary: 'Generate signed url',
     )]
-    public function __invoke(SignedUrlRequest $request)
+    public function __invoke(SignedUrlRequest $request): \Illuminate\Http\JsonResponse
     {
         $signedUrlObj = $this->signedUrlService->create($request->validated());
 

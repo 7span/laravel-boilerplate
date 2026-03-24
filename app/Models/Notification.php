@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -32,12 +34,15 @@ class Notification extends Model
         'created_at' => 'timestamp',
     ];
 
+    /** @var string */
     protected $defaultSort = '-created_at';
 
+    /** @var array<int, string> */
     protected $scopedFilters = [
         'is_read',
     ];
 
+    /** @var array<string, array<string, class-string>> */
     protected $relationship = [
         'user' => [
             'model' => User::class,
@@ -47,13 +52,21 @@ class Notification extends Model
         ],
     ];
 
-    public function user()
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, \App\Models\Notification> */
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        /** @var \Illuminate\Database\Eloquent\Relations\BelongsTo<User, Notification> $rel @phpstan-ignore varTag.type */
+        $rel = $this->belongsTo(User::class, 'user_id');
+
+        return $rel;
     }
 
-    public function sender()
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, \App\Models\Notification> */
+    public function sender(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'sent_by');
+        /** @var \Illuminate\Database\Eloquent\Relations\BelongsTo<User, Notification> $rel @phpstan-ignore varTag.type */
+        $rel = $this->belongsTo(User::class, 'sent_by');
+
+        return $rel;
     }
 }

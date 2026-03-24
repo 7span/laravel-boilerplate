@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Traits\ApiResponser;
@@ -59,7 +61,7 @@ class AuthController extends Controller
         summary: 'Login User',
         description: 'Logs in a user with email and password.',
     )]
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $data = $this->authService->login($request->validated());
 

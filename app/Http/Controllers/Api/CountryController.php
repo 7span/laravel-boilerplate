@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\Country;
@@ -28,7 +30,7 @@ class CountryController extends Controller
         summary: 'Country list',
         x: ['model' => Country::class]
     )]
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $countries = $this->countryService->collection($request->all());
 

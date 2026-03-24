@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 class MediaRule
@@ -9,7 +11,8 @@ class MediaRule
      *
      * @param  string  $fieldName  The name of the media field.
      * @param  bool  $isNullable  If the field is nullable.
-     * @param  array  $tags  The tags of media to validate against (e.g., ['image']).
+     * @param  array<int, string>  $tags  The tags of media to validate against (e.g., ['image']).
+     * @return array<string, string>
      */
     public static function rules(string $fieldName, bool $isNullable = true, array $tags = ['image'], bool $multiple = false): array
     {
@@ -23,10 +26,13 @@ class MediaRule
             "{$itemPrefix}.mime_type" => "required_with:{$fieldName}",
         ];
 
+        /** @var array<int, string> $mimeTypes */
         $mimeTypes = [];
         foreach ($tags as $tag) {
-            if (config('media.aggregate_types.' . $tag)) {
-                $mimeTypes = array_merge($mimeTypes, config('media.aggregate_types.' . $tag));
+            /** @var array<int, string>|null $typeMimes */
+            $typeMimes = config('media.aggregate_types.' . $tag);
+            if ($typeMimes) {
+                $mimeTypes = array_merge($mimeTypes, $typeMimes);
             }
         }
 

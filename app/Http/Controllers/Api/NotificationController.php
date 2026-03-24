@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\Notification;
@@ -32,7 +34,7 @@ class NotificationController extends Controller
             'bearerAuth' => [],
         ]]
     )]
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $data = $this->notificationService->collection();
 
@@ -47,11 +49,11 @@ class NotificationController extends Controller
         description: 'Allows marking all notifications or specific notifications as read for the authenticated user.',
         security: [['bearerAuth' => []]]
     )]
-    public function readAllNotification(NotificationRequest $request)
+    public function readAllNotification(NotificationRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $this->notificationService->readAllNotification($request->validated());
 
-        return $data;
+        return $this->success($data);
     }
 
     #[OA\Post(
@@ -61,7 +63,7 @@ class NotificationController extends Controller
         description: 'Set OneSignal player ID for push notifications.',
         security: [['bearerAuth' => []]]
     )]
-    public function setOnesignalData(OneSignalData $request)
+    public function setOnesignalData(OneSignalData $request): \Illuminate\Http\JsonResponse
     {
         $data = $this->notificationService->setOnesignalData($request->validated());
 

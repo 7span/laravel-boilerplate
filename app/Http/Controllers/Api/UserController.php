@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
@@ -35,7 +37,7 @@ class UserController extends Controller
     )]
     public function me(): JsonResponse
     {
-        $user = $this->userService->resource(Auth::id());
+        $user = $this->userService->resource(intval(Auth::id()));
 
         return $this->resource(new UserResource($user));
     }
@@ -63,7 +65,7 @@ class UserController extends Controller
     )]
     public function updateProfile(UpdateProfile $request): JsonResponse
     {
-        $data = $this->userService->update(Auth::id(), $request->validated());
+        $data = $this->userService->update(intval(Auth::id()), $request->validated());
 
         return $this->success($data, 200);
     }
