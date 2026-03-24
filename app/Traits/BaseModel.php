@@ -26,7 +26,12 @@ use Spatie\QueryBuilder\AllowedInclude;
  */
 trait BaseModel
 {
+<<<<<<< HEAD
     /** @return array<int, string> */
+=======
+    use HasTranslations;
+
+>>>>>>> origin/master
     public function getQueryFields(): array
     {
         /** @var $this $model */
@@ -125,6 +130,7 @@ trait BaseModel
 
         /** @var array<int, string> $filters */
         $filters = $this->getQueryFields();
+<<<<<<< HEAD
         /** @var array<int, string> $scopedFilters */
         /** @phpstan-ignore-next-line */
         $scopedFilters = $this->scopedFilters ?? [];
@@ -146,6 +152,24 @@ trait BaseModel
         /** @phpstan-ignore-next-line */
         if (is_string($defaultSort)) {
             $queryBuilder->defaultSort($defaultSort);
+=======
+        if (isset($this->scopedFilters)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
+            foreach ($this->scopedFilters as $key => $value) {
+                // remove plain filter if scoped filter exists
+                $filters = array_filter($filters, fn ($v) => $v !== $value);
+                array_push($filters, AllowedFilter::scope($value));
+            }
+        }
+        if (isset($this->exactFilters)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
+            foreach ($this->exactFilters as $key => $value) {
+                array_push($filters, AllowedFilter::exact($value));
+            }
+        }
+        $queryBuilder->allowedFilters($filters);
+
+        if (isset($this->defaultSort)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
+            $queryBuilder->defaultSort($this->defaultSort);
+>>>>>>> origin/master
         }
 
         $queryBuilder->allowedSorts($this->getQueryFields());

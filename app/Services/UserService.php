@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Libraries\MediaHelper;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User\Resource;
 
@@ -20,8 +21,12 @@ class UserService
 
     public function resource(int $id): User
     {
+<<<<<<< HEAD
         /** @var User $user */
         $user = $this->userObj->getQB()->findOrFail($id);
+=======
+        $user = $this->userObj->findOrFail($id);
+>>>>>>> origin/master
 
         return $user;
     }
@@ -34,8 +39,12 @@ class UserService
     {
         $user = $this->resource($id);
 
-        $user->update($inputs);
+        if (isset($inputs[config('media.tags.profile')])) {
+            $mediaId = MediaHelper::attachMedia($inputs[config('media.tags.profile')]);
+            $user->syncMedia($mediaId, config('media.tags.profile'));
+        }
 
+<<<<<<< HEAD
         /** @var string $profileTag */
         $profileTag = config('media.tags.profile');
         
@@ -44,6 +53,11 @@ class UserService
 
         $mediaId = MediaHelper::attachMedia($mediaInput);
         $user->syncMedia($mediaId, $profileTag);
+=======
+        unset($inputs[config('media.tags.profile')]);
+        $user->update($inputs);
+        App::setLocale($inputs['locale']);
+>>>>>>> origin/master
 
         $data = [
             'message' => __('message.user_profile_update'),
@@ -85,6 +99,16 @@ class UserService
         ]);
 
         $data['message'] = __('message.password_change_success');
+
+        return $data;
+    }
+
+    public function updateLocale(array $inputs): array
+    {
+        Auth::user()->update(['locale' => $inputs['locale']]);
+        App::setLocale($inputs['locale']);
+
+        $data['message'] = __('entity.entityUpdated', ['entity' => 'Language']);
 
         return $data;
     }

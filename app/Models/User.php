@@ -7,12 +7,14 @@ namespace App\Models;
 use App\Enums\UserStatus;
 use App\Traits\BaseModel;
 use Plank\Mediable\Mediable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 /**
  * @property int $id
@@ -33,7 +35,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $display_status
  * @property string $display_mobile_no
  */
-class User extends Authenticatable
+class User extends Authenticatable implements HasLocalePreference, OAuthenticatable
 {
     use BaseModel, HasApiTokens, HasRoles, Mediable, Notifiable, SoftDeletes;
 
@@ -42,6 +44,7 @@ class User extends Authenticatable
         'last_name',
         'username',
         'email',
+        'locale',
         'status',
         'password',
         'country_code',
@@ -81,6 +84,11 @@ class User extends Authenticatable
     public function user_devices(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->userDevices();
+    }
+
+    public function preferredLocale(): string
+    {
+        return $this->locale ?? config('app.locale');
     }
 
     protected function casts(): array

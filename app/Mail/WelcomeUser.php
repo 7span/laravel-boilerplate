@@ -28,7 +28,11 @@ class WelcomeUser extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
+<<<<<<< HEAD
             subject: __('email.welcome_user.subject', ['app_name' => is_string($n = config('app.name')) ? $n : '']),
+=======
+            subject: __('email.welcome_user.subject', ['app_name' => __('email.app.name')]),
+>>>>>>> origin/master
         );
     }
 

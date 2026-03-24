@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class MarkNotificationsAsRead
+class SetLocale
 {
     /**
      * Handle an incoming request.
@@ -18,9 +17,11 @@ class MarkNotificationsAsRead
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth('api')->check() && $request->has('notify_id')) {
-            Notification::where('id', $request->get('notify_id'))->where('user_id', auth('api')->id())->whereNull('read_at')->update(['read_at' => now()]);
-        }
+        $locale = $request->header('locale')
+            ?? Auth::user()->locale
+            ?? config('app.locale');
+
+        App::setLocale($locale);
 
         return $next($request);
     }

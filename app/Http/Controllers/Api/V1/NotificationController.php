@@ -1,18 +1,28 @@
 <?php
 
+<<<<<<< HEAD:app/Http/Controllers/Api/NotificationController.php
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
+=======
+namespace App\Http\Controllers\Api\V1;
+>>>>>>> origin/master:app/Http/Controllers/Api/V1/NotificationController.php
 
-use App\Models\Notification;
 use App\Traits\ApiResponser;
-use OpenApi\Attributes as OA;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use App\Services\NotificationService;
+use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Requests\Notification\OneSignalData;
+use App\Http\Resources\UserDevice\Resource as UserDeviceResource;
 use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Resource as NotificationResource;
 
+/**
+ * @tags Notification
+ */
+#[Group('Notification', weight: 40)]
 class NotificationController extends Controller
 {
     use ApiResponser;
@@ -24,6 +34,7 @@ class NotificationController extends Controller
         $this->notificationService = new NotificationService;
     }
 
+<<<<<<< HEAD:app/Http/Controllers/Api/NotificationController.php
     #[OA\Get(
         path: '/api/notifications',
         operationId: 'notificationList',
@@ -35,12 +46,20 @@ class NotificationController extends Controller
         ]]
     )]
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+=======
+    /**
+     * List.
+     */
+    #[QueryParameter('appends')]
+    public function index()
+>>>>>>> origin/master:app/Http/Controllers/Api/V1/NotificationController.php
     {
         $data = $this->notificationService->collection();
 
         return NotificationResource::collection($data);
     }
 
+<<<<<<< HEAD:app/Http/Controllers/Api/NotificationController.php
     #[OA\Post(
         path: '/api/notifications/read',
         operationId: 'readAllNotifications',
@@ -50,12 +69,21 @@ class NotificationController extends Controller
         security: [['bearerAuth' => []]]
     )]
     public function readAllNotification(NotificationRequest $request): \Illuminate\Http\JsonResponse
+=======
+    /**
+     * Mark read.
+     *
+     * @response array{message: string}
+     */
+    public function readAllNotification(NotificationRequest $request)
+>>>>>>> origin/master:app/Http/Controllers/Api/V1/NotificationController.php
     {
         $data = $this->notificationService->readAllNotification($request->validated());
 
         return $this->success($data);
     }
 
+<<<<<<< HEAD:app/Http/Controllers/Api/NotificationController.php
     #[OA\Post(
         path: '/api/onesignal-player-id',
         operationId: 'setOnesignalPlayerId',
@@ -64,8 +92,40 @@ class NotificationController extends Controller
         security: [['bearerAuth' => []]]
     )]
     public function setOnesignalData(OneSignalData $request): \Illuminate\Http\JsonResponse
+=======
+    /**
+     * Mark unread.
+     *
+     * @response array{message: string}
+     */
+    public function markAsUnread(NotificationRequest $request)
+    {
+        $data = $this->notificationService->markAsUnread($request->validated());
+
+        return $data;
+    }
+
+    /**
+     * Save OneSignal.
+     *
+     * @response array{message: string, data: UserDeviceResource}
+     */
+    public function setOnesignalData(OneSignalData $request)
+>>>>>>> origin/master:app/Http/Controllers/Api/V1/NotificationController.php
     {
         $data = $this->notificationService->setOnesignalData($request->validated());
+
+        return $this->success($data);
+    }
+
+    /**
+     * Unread count.
+     *
+     * @response array{unread_count: int}
+     */
+    public function unreadCount(): JsonResponse
+    {
+        $data = $this->notificationService->unreadCount();
 
         return $this->success($data);
     }

@@ -10,12 +10,16 @@ parameters:
         - resources/
         - routes/
 
+<<<<<<< HEAD
     excludePaths:
         - app/Swagger/Processors/SuccessResponsesProcessor.php
 
     level: 9
     parallel:
         maximumNumberOfProcesses: 1
+=======
+    level: 5
+>>>>>>> origin/master
 
     tips:
         treatPhpDocTypesAsCertain: false

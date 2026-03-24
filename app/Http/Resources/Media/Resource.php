@@ -6,11 +6,16 @@ namespace App\Http\Resources\Media;
 
 use App\Models\Media;
 use App\Traits\ResourceFilterable;
+use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @property Media $resource
  */
+<<<<<<< HEAD
+=======
+#[SchemaName('Media')]
+>>>>>>> origin/master
 class Resource extends JsonResource
 {
     use ResourceFilterable;
@@ -19,10 +24,27 @@ class Resource extends JsonResource
     protected $model = Media::class;
 
     /**
+<<<<<<< HEAD
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array<string, mixed>
+=======
+     * @return array{
+     *     id: int,
+     *     disk: string,
+     *     directory: string|null,
+     *     filename: string,
+     *     extension: string|null,
+     *     mime_type: string|null,
+     *     aggregate_type: string|null,
+     *     size: int|null,
+     *     created_at: int|null,
+     *     updated_at: int|null,
+     *     url: string,
+     *     cdn_url: string|null
+     * }
+>>>>>>> origin/master
      */
     public function toArray($request): array
     {

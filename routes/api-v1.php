@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\MediaController;
-use App\Http\Controllers\Api\CountryController;
-use App\Http\Controllers\Api\LanguageController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\MediaController;
 use App\Http\Middleware\MarkNotificationsAsRead;
-use App\Http\Controllers\Api\SignedUrlController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\V1\CountryController;
+use App\Http\Controllers\Api\V1\LanguageController;
+use App\Http\Controllers\Api\V1\SignedUrlController;
+use App\Http\Controllers\Api\V1\NotificationController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
@@ -22,16 +22,19 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
-Route::group(['middleware' => ['auth:sanctum', MarkNotificationsAsRead::class]], function () {
+Route::group(['middleware' => ['auth:api', MarkNotificationsAsRead::class]], function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('me', 'me');
         Route::post('me', 'updateProfile');
         Route::post('change-password', 'changePassword');
+        Route::post('locale', 'updateLocale');
     });
 
     Route::controller(NotificationController::class)->group(function () {
         Route::get('notifications', 'index');
+        Route::get('notifications/unread-count', 'unreadCount');
         Route::post('notifications/read', 'readAllNotification');
+        Route::post('notifications/unread', 'markAsUnread');
         Route::post('onesignal-player-id', 'setOnesignalData');
     });
 

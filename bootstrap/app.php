@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Str;
+use App\Http\Middleware\SetLocale;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -17,13 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         using: function () {
             Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+                ->prefix('api/v1')
+                ->group(base_path('routes/api-v1.php'));
 
             Route::middleware('api')
                 ->as('admin.')
-                ->prefix('api/admin')
-                ->group(base_path('routes/admin.php'));
+                ->prefix('api/v1/admin')
+                ->group(base_path('routes/admin-v1.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
@@ -40,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->group('api', [
             'throttle:api',
+            SetLocale::class,
             Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })

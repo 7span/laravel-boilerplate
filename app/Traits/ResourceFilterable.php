@@ -86,6 +86,7 @@ trait ResourceFilterable
      */
     protected function whenLoadedMedia(string $key, bool $isResource = false): Media|Collection|MissingValue
     {
+<<<<<<< HEAD
         /** @var string|null $mediaQuery */
         $mediaQuery = request()->input('media');
         if (! empty($mediaQuery)) {
@@ -95,6 +96,16 @@ trait ResourceFilterable
                 /** @var Model $res */
                 /** @phpstan-ignore-next-line */
                 $res = $this->resource;
+=======
+        if (! method_exists($this->resource, 'getMedia')) { // @phpstan-ignore function.alreadyNarrowedType
+            return new MissingValue;
+        }
+
+        $mediaInput = request()->input('media');
+        if (! empty($mediaInput)) {
+            $mediaInput = explode(',', $mediaInput);
+            if (in_array($key, $mediaInput)) {
+>>>>>>> origin/master
                 if ($isResource) {
                     /** @phpstan-ignore-next-line */
                     return $res->getMedia($key)->first() ?? new MissingValue;

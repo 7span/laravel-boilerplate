@@ -48,7 +48,7 @@ class AuthService
         $user->assignRole($role);
 
         try {
-            Mail::to($user->email)->send(new WelcomeUser($user));
+            Mail::to($user)->send(new WelcomeUser($user));
         } catch (\Exception $e) {
             Log::info('Welcome User mail failed.' . $e->getMessage());
         }
@@ -56,7 +56,11 @@ class AuthService
         $data = [
             'message' => __('message.register_success'),
             'data' => new UserResource($this->userService->resource($user->id)),
+<<<<<<< HEAD
             'token' => $user->createToken(is_string($n = config('app.name')) ? $n : '')->plainTextToken,
+=======
+            'token' => $user->createToken(config('app.name'))->accessToken,
+>>>>>>> origin/master
         ];
 
         return $data;
@@ -82,11 +86,14 @@ class AuthService
         }
 
         $user->update(['last_login_at' => Carbon::now()]);
-
         $data = [
             'message' => __('message.login_success'),
             'data' => new UserResource($this->userService->resource($user->id)),
+<<<<<<< HEAD
             'token' => $user->createToken(is_string($n = config('app.name')) ? $n : '')->plainTextToken,
+=======
+            'token' => $user->createToken(config('app.name'))->accessToken,
+>>>>>>> origin/master
         ];
 
         return $data;
@@ -118,9 +125,13 @@ class AuthService
         ]);
 
         try {
+<<<<<<< HEAD
             /** @var string $otpStr */
             $otpStr = (string) $otp;
             Mail::to($user->email)->send(new ForgetPasswordOtp($user, $otpStr));
+=======
+            Mail::to($user)->send(new ForgetPasswordOtp($user, $otp));
+>>>>>>> origin/master
         } catch (\Exception $e) {
             Log::info('Forget Password mail failed.' . $e->getMessage());
         }
@@ -223,8 +234,11 @@ class AuthService
             UserDevice::where('onesignal_player_id', $inputs['onesignal_player_id'])->delete();
         }
 
-        Auth::user()?->currentAccessToken()?->delete();
+        $token = Auth::user()->token();
 
+        if ($token instanceof \Laravel\Passport\Token) {
+            $token->revoke();
+        }
         $data['message'] = __('message.logout_success');
 
         return $data;
