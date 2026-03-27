@@ -25,23 +25,23 @@
 $ git clone <your-repo-url>
 $ cd laravel-boilerplate
 
-# 2. Install dependencies
+# 2. One-shot setup (recommended)
+# Local environment (Windows-friendly Composer flags handled automatically)
+$ php artisan app:setup local
+
+# Production environment
+$ php artisan app:setup production --skip-npm --skip-serve
+
+# You can also skip individual steps when needed, for example:
+$ php artisan app:setup local --skip-composer --skip-npm --skip-hooks
+
+# 3. Manual (step‑by‑step) setup – alternative to app:setup
 $ composer install
 $ npm install && npm run build
-
-# 3. Copy .env and configure
-$ cp .env.example .env
-
-# 4. Configure Git hooks (Husky)
+$ cp .env.example .env          # Windows: copy .env.example .env
 $ git config core.hooksPath .husky
-
-# 5. Generate app key
 $ php artisan key:generate
-
-# 6. Run migrations and seeders
 $ php artisan migrate --seed
-
-# 7. Start the server
 $ php artisan serve
 ```
 
@@ -152,6 +152,12 @@ Contains custom processors used to dynamically generate Swagger documentation (e
 
 ### Custom Artisan Commands
 
+-   `php artisan app:setup {environment=local}` — Run full app setup for `local` or `production`
+    -   **OS-aware Composer install:** On Windows uses `composer install --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-posix`
+    -   **Local vs Production:**
+        -   `local`: installs dev deps, runs `npm install && npm run build`, can start `php artisan serve`, sets DB engine to `InnoDB` in `config/database.php`
+        -   `production`: uses `--no-dev --optimize-autoloader`, runs `migrate --seed --force`, leaves DB engine as default (or resets from `InnoDB` to `null`)
+    -   **Skip options:** `--skip-composer`, `--skip-npm`, `--skip-env`, `--skip-hooks`, `--skip-key`, `--skip-migrate`, `--skip-db-engine`, `--skip-serve`
 -   `php artisan telescope:clear` — Clears all entries/data from Laravel Telescope
 -   `php artisan pulse:clear` — Clears all entries/data from Laravel Pulse
 
