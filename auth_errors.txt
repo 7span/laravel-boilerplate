@@ -1,0 +1,130 @@
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Services\AuthService.php ===
+Line 39: Method App\Services\AuthService::register() has parameter $inputs with no value type specified in iterable type array.
+Line 39: Method App\Services\AuthService::register() return type has no value type specified in iterable type array.
+Line 42: Parameter #1 ...$roles of method App\Models\User::assignRole() expects array|BackedEnum|Illuminate\Support\Collection|int|Spatie\Permission\Contracts\Role|string, mixed given.
+Line 53: Parameter #1 $name of method App\Models\User::createToken() expects string, mixed given.
+Line 59: Method App\Services\AuthService::login() has parameter $inputs with no value type specified in iterable type array.
+Line 59: Method App\Services\AuthService::login() return type has no value type specified in iterable type array.
+Line 76: Parameter #1 $name of method App\Models\User::createToken() expects string, mixed given.
+Line 82: Method App\Services\AuthService::forgotPassword() has parameter $inputs with no value type specified in iterable type array.
+Line 82: Method App\Services\AuthService::forgotPassword() return type has no value type specified in iterable type array.
+Line 94: Parameter #1 $length of static method App\Libraries\Helper::generateOTP() expects int, mixed given.
+Line 112: Method App\Services\AuthService::forgotPasswordOTPVerify() has parameter $inputs with no value type specified in iterable type array.
+Line 112: Method App\Services\AuthService::forgotPasswordOTPVerify() return type has no value type specified in iterable type array.
+Line 116: Parameter #1 $user of method App\Services\AuthService::verifyOtp() expects App\Models\User, App\Models\User|null given.
+Line 119: Parameter #1 $user of method Illuminate\Auth\Passwords\PasswordBroker::createToken() expects Illuminate\Contracts\Auth\CanResetPassword, App\Models\User|null given.
+Line 144: Access to an undefined property App\Models\UserOtp::$created_at.
+Line 144: Parameter #1 $value of method Carbon\Carbon::addMinutes() expects float|int, mixed given.
+Line 154: Method App\Services\AuthService::resetPassword() has parameter $inputs with no value type specified in iterable type array.
+Line 154: Method App\Services\AuthService::resetPassword() return type has no value type specified in iterable type array.
+Line 173: Parameter #1 $key of function __ expects string|null, mixed given.
+Line 176: Method App\Services\AuthService::logout() has parameter $inputs with no value type specified in iterable type array.
+Line 176: Method App\Services\AuthService::logout() return type has no value type specified in iterable type array.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Country\Resource) ===
+Line 35: PHPDoc tag @var has invalid value (\Illuminate\Database\Eloquent\Model&object{getQueryFields():array<int,string>,getAppends():array<int,string>,getHidden():array<int,string>,getCasts():array<string,string>} $classObj): Unexpected token "(", expected ':' at offset 66 on line 1
+Line 37: Call to an undefined method object::getAppends().
+Line 37: Call to an undefined method object::getQueryFields().
+Line 38: Call to an undefined method object::getHidden().
+Line 39: Call to an undefined method object::getCasts().
+Line 45: Cannot call method format() on mixed.
+Line 48: Cannot call method format() on mixed.
+Line 62: Method App\Http\Resources\Country\Resource::whenLoadedMedia() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel
+Line 67: PHPDoc tag @var with type string is not subtype of native type list<string>.
+Line 67: Parameter #2 $string of function explode expects string, mixed given.
+Line 68: Parameter #2 $haystack of function in_array expects array, string given.
+Line 73: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 77: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Media\Resource) ===
+Line 35: PHPDoc tag @var has invalid value (\Illuminate\Database\Eloquent\Model&object{getQueryFields():array<int,string>,getAppends():array<int,string>,getHidden():array<int,string>,getCasts():array<string,string>} $classObj): Unexpected token "(", expected ':' at offset 66 on line 1
+Line 37: Call to an undefined method object::getAppends().
+Line 37: Call to an undefined method object::getQueryFields().
+Line 38: Call to an undefined method object::getHidden().
+Line 39: Call to an undefined method object::getCasts().
+Line 45: Cannot call method format() on mixed.
+Line 48: Cannot call method format() on mixed.
+Line 62: Method App\Http\Resources\Media\Resource::whenLoadedMedia() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel
+Line 67: PHPDoc tag @var with type string is not subtype of native type list<string>.
+Line 67: Parameter #2 $string of function explode expects string, mixed given.
+Line 68: Parameter #2 $haystack of function in_array expects array, string given.
+Line 73: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 77: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Notification\Resource) ===
+Line 35: PHPDoc tag @var has invalid value (\Illuminate\Database\Eloquent\Model&object{getQueryFields():array<int,string>,getAppends():array<int,string>,getHidden():array<int,string>,getCasts():array<string,string>} $classObj): Unexpected token "(", expected ':' at offset 66 on line 1
+Line 37: Call to an undefined method object::getAppends().
+Line 37: Call to an undefined method object::getQueryFields().
+Line 38: Call to an undefined method object::getHidden().
+Line 39: Call to an undefined method object::getCasts().
+Line 45: Cannot call method format() on mixed.
+Line 48: Cannot call method format() on mixed.
+Line 62: Method App\Http\Resources\Notification\Resource::whenLoadedMedia() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel
+Line 67: PHPDoc tag @var with type string is not subtype of native type list<string>.
+Line 67: Parameter #2 $string of function explode expects string, mixed given.
+Line 68: Parameter #2 $haystack of function in_array expects array, string given.
+Line 73: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 77: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Setting\Resource) ===
+Line 35: PHPDoc tag @var has invalid value (\Illuminate\Database\Eloquent\Model&object{getQueryFields():array<int,string>,getAppends():array<int,string>,getHidden():array<int,string>,getCasts():array<string,string>} $classObj): Unexpected token "(", expected ':' at offset 66 on line 1
+Line 37: Call to an undefined method object::getAppends().
+Line 37: Call to an undefined method object::getQueryFields().
+Line 38: Call to an undefined method object::getHidden().
+Line 39: Call to an undefined method object::getCasts().
+Line 45: Cannot call method format() on mixed.
+Line 48: Cannot call method format() on mixed.
+Line 62: Method App\Http\Resources\Setting\Resource::whenLoadedMedia() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel
+Line 67: PHPDoc tag @var with type string is not subtype of native type list<string>.
+Line 67: Parameter #2 $string of function explode expects string, mixed given.
+Line 68: Parameter #2 $haystack of function in_array expects array, string given.
+Line 73: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 77: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\UserDevice\Resource) ===
+Line 35: PHPDoc tag @var has invalid value (\Illuminate\Database\Eloquent\Model&object{getQueryFields():array<int,string>,getAppends():array<int,string>,getHidden():array<int,string>,getCasts():array<string,string>} $classObj): Unexpected token "(", expected ':' at offset 66 on line 1
+Line 37: Call to an undefined method object::getAppends().
+Line 37: Call to an undefined method object::getQueryFields().
+Line 38: Call to an undefined method object::getHidden().
+Line 39: Call to an undefined method object::getCasts().
+Line 45: Cannot call method format() on mixed.
+Line 48: Cannot call method format() on mixed.
+Line 62: Method App\Http\Resources\UserDevice\Resource::whenLoadedMedia() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel
+Line 67: PHPDoc tag @var with type string is not subtype of native type list<string>.
+Line 67: Parameter #2 $string of function explode expects string, mixed given.
+Line 68: Parameter #2 $haystack of function in_array expects array, string given.
+Line 73: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 77: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\User\Resource) ===
+Line 35: PHPDoc tag @var has invalid value (\Illuminate\Database\Eloquent\Model&object{getQueryFields():array<int,string>,getAppends():array<int,string>,getHidden():array<int,string>,getCasts():array<string,string>} $classObj): Unexpected token "(", expected ':' at offset 66 on line 1
+Line 37: Call to an undefined method object::getAppends().
+Line 37: Call to an undefined method object::getQueryFields().
+Line 38: Call to an undefined method object::getHidden().
+Line 39: Call to an undefined method object::getCasts().
+Line 45: Cannot call method format() on mixed.
+Line 48: Cannot call method format() on mixed.
+Line 62: Method App\Http\Resources\User\Resource::whenLoadedMedia() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel
+Line 67: PHPDoc tag @var with type string is not subtype of native type list<string>.
+Line 67: Parameter #2 $string of function explode expects string, mixed given.
+Line 68: Parameter #2 $haystack of function in_array expects array, string given.
+Line 73: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 73: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 77: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 77: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type Illuminate\Database\Eloquent\Model.

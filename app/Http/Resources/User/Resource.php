@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\User;
 
 use App\Models\User;
@@ -18,8 +20,12 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string */
     protected $model = User::class;
 
+<<<<<<< HEAD
+    /** @return array<string, mixed> */
+=======
     /**
      * @return array{
      *     id: int,
@@ -43,10 +49,13 @@ class Resource extends JsonResource
      *     user_device: UserDeviceResource|null
      * }
      */
+>>>>>>> origin/master
     public function toArray(Request $request): array
     {
         $data = $this->fields();
-        $data['profile_image'] = new MediaResource($this->whenLoadedMedia(config('media.tags.profile'), true));
+        $val = config('media.tags.profile', '');
+        $tag = is_scalar($val) ? (string) $val : '';
+        $data['profile_image'] = new MediaResource($this->whenLoadedMedia($tag, true));
         $data['user_device'] = new UserDeviceResource($this->whenLoaded('userDevice'));
 
         return $data;

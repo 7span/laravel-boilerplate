@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\BaseModel;
@@ -16,12 +18,17 @@ class UserDevice extends Model
         'device_type',
     ];
 
-    public function user()
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, \App\Models\UserDevice> */
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class);
+        /** @var \Illuminate\Database\Eloquent\Relations\BelongsTo<User, UserDevice> $rel @phpstan-ignore varTag.type */
+        $rel = $this->belongsTo(User::class);
+
+        return $rel;
     }
 
-    protected function casts()
+    /** @return array<string, string> */
+    protected function casts(): array
     {
         return [
             'created_at' => 'timestamp',

@@ -1,0 +1,150 @@
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Channels\UserOneSignalChannel.php
+L41: Call to an undefined method App\Models\User::user_devices().
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Console\Commands\DeleteTempFiles.php
+L35: Cannot cast mixed to string.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Console\Commands\HardDeleteData.php
+L21: Cannot cast mixed to int.
+L40: Call to an undefined static method object::onlyTrashed().
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Controllers\Api\Admin\SettingController.php
+L28: Method App\Http\Controllers\Api\Admin\SettingController::index() has no return type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Controllers\Api\Admin\UserStatusController.php
+L25: Method App\Http\Controllers\Api\Admin\UserStatusController::__invoke() has no return type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Controllers\Api\AuthController.php
+L57: Method App\Http\Controllers\Api\AuthController::login() has no return type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Controllers\Api\CountryController.php
+L26: Method App\Http\Controllers\Api\CountryController::__invoke() has no return type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Controllers\Api\SignedUrlController.php
+L24: Method App\Http\Controllers\Api\SignedUrlController::__invoke() has no return type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Controllers\Api\UserController.php
+L40: Parameter #1 $id of method App\Services\UserService::resource() expects int, int|string|null given.
+L68: Parameter #1 $id of method App\Services\UserService::update() expects int, int|string|null given.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\Auth\ForgetPassword.php
+L16: Method App\Http\Requests\Auth\ForgetPassword::rules() return type has no value type specified in iterable type array.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\Auth\Register.php
+L16: Method App\Http\Requests\Auth\Register::rules() return type has no value type specified in iterable type array.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\Auth\VerifyOtp.php
+L16: Method App\Http\Requests\Auth\VerifyOtp::rules() return type has no value type specified in iterable type array.
+L20: Binary operation "." between 'required|digits:' and mixed results in an error.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\Setting\Request.php
+L29: Argument of an invalid type mixed supplied for foreach, only iterables are supported.
+L30: Possibly invalid array key type mixed.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\SignedUrl\Request.php
+L30: Parameter #1 $array of function array_keys expects array, mixed given.
+L31: Parameter #2 $array of function implode expects array, mixed given.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\User\ChangePassword.php
+L16: Method App\Http\Requests\User\ChangePassword::rules() return type has no value type specified in iterable type array.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Requests\User\UpdateProfile.php
+L18: Method App\Http\Requests\User\UpdateProfile::rules() return type has no value type specified in iterable type array.
+L26: Parameter #1 $fieldName of static method App\Rules\MediaRule::rules() expects string, mixed given.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Resources\Country\Resource.php
+L16: Property App\Http\Resources\Country\Resource::$model has no type specified.
+L18: Method App\Http\Resources\Country\Resource::toArray() return type has no value type specified in iterable type array.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Resources\Setting\Resource.php
+L16: Property App\Http\Resources\Setting\Resource::$model has no type specified.
+L18: Method App\Http\Resources\Setting\Resource::toArray() return type has no value type specified in iterable type array.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Resources\UserDevice\Resource.php
+L16: Property App\Http\Resources\UserDevice\Resource::$model has no type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Http\Resources\User\Resource.php
+L18: Property App\Http\Resources\User\Resource::$model has no type specified.
+L28: Parameter #1 $key of method App\Http\Resources\User\Resource::whenLoadedMedia() expects string, mixed given.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Mail\ForgetPasswordOtp.php
+L18: Method App\Mail\ForgetPasswordOtp::__construct() has parameter $otp with no type specified.
+L40: Cannot access property $name on object|null.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Models\Country.php
+L25: Property App\Models\Country::$defaultSort has no type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Models\Media.php
+L32: Property App\Models\Media::$relationship has no type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Models\Notification.php
+L58: Method App\Models\Notification::user() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, App\Models\Notification> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, $this(App\Models\Notification)>.
+L64: Method App\Models\Notification::sender() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, App\Models\Notification> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, $this(App\Models\Notification)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Models\User.php
+L71: Method App\Models\User::userDevice() return type with generic class Illuminate\Database\Eloquent\Relations\HasOne does not specify its types: TRelatedModel, TDeclaringModel
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Models\UserDevice.php
+L21: Method App\Models\UserDevice::user() has no return type specified.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Models\UserOtp.php
+L61: Method App\Models\UserOtp::user() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, App\Models\UserOtp> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, $this(App\Models\UserOtp)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Services\AuthService.php
+L111: Cannot cast mixed to string.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Services\MediaService.php
+L13: Method App\Services\MediaService::destroy() return type has no value type specified in iterable type array.
+L15: Parameter #1 $fileObj of static method App\Libraries\MediaHelper::destroyMedia() expects App\Models\Media, object given.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Services\NotificationService.php
+L34: Parameter #1 $data of method App\Services\NotificationService::paginationAttribute() expects Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Relations\Relation<Illuminate\Database\Eloquent\Model, Illuminate\Database\Eloquent\Model, mixed>, Illuminate\Database\Eloquent\Builder<App\Models\Notification> given.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Services\SignedUrlService.php
+L43: Binary operation "." between 'media.directory.' and mixed results in an error.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\Country)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\Country).
+L143: Method App\Models\Country::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\Country)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\Country)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\Media)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\Media).
+L143: Method App\Models\Media::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\Media)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\Media)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\Notification)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\Notification).
+L74: Property App\Models\Notification::$relationship (array<string, array<string, class-string>>) on left side of ?? is not nullable.
+L123: Property App\Models\Notification::$scopedFilters (array<int, string>) in isset() is not nullable.
+L137: Property App\Models\Notification::$defaultSort (string) in isset() is not nullable.
+L143: Method App\Models\Notification::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\Notification)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\Notification)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\Setting)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\Setting).
+L143: Method App\Models\Setting::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\Setting)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\Setting)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\User)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\User).
+L143: Method App\Models\User::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\User)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\User)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\UserDevice)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\UserDevice).
+L143: Method App\Models\UserDevice::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\UserDevice)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\UserDevice)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\BaseModel.php (in context of class App\Models\UserOtp)
+L31: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of native type $this(App\Models\UserOtp).
+L74: Property App\Models\UserOtp::$relationship (array<string, array<string, class-string>>) on left side of ?? is not nullable.
+L130: Property App\Models\UserOtp::$exactFilters (array<int, string>) in isset() is not nullable.
+L143: Method App\Models\UserOtp::getQB() should return Spatie\QueryBuilder\QueryBuilder<static(App\Models\UserOtp)> but returns Spatie\QueryBuilder\QueryBuilder<$this(App\Models\UserOtp)>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\PaginationTrait.php (in context of class App\Services\CountryService)
+L35: PHPDoc tag @var with type Illuminate\Contracts\Pagination\LengthAwarePaginator<int, Illuminate\Database\Eloquent\Model> is not subtype of type Illuminate\Pagination\LengthAwarePaginator<int, Illuminate\Database\Eloquent\Model>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\PaginationTrait.php (in context of class App\Services\NotificationService)
+L35: PHPDoc tag @var with type Illuminate\Contracts\Pagination\LengthAwarePaginator<int, Illuminate\Database\Eloquent\Model> is not subtype of type Illuminate\Pagination\LengthAwarePaginator<int, Illuminate\Database\Eloquent\Model>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\PaginationTrait.php (in context of class App\Services\SettingService)
+L35: PHPDoc tag @var with type Illuminate\Contracts\Pagination\LengthAwarePaginator<int, Illuminate\Database\Eloquent\Model> is not subtype of type Illuminate\Pagination\LengthAwarePaginator<int, Illuminate\Database\Eloquent\Model>.
+---
+FILE: D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Media\Resource)
+L21: PHPDoc tag @var with type Illuminate\Database\Eloquent\Model is not subtype of type App\Models\Media.
+---

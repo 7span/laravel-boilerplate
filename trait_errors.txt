@@ -1,0 +1,101 @@
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Libraries\MediaHelper.php ===
+Line 14: Method App\Libraries\MediaHelper::createFileName() has no return type specified.
+Line 14: Method App\Libraries\MediaHelper::createFileName() has parameter $fileName with no type specified.
+Line 14: Method App\Libraries\MediaHelper::createFileName() has parameter $mimeType with no type specified.
+Line 24: Method App\Libraries\MediaHelper::getAggregateType() has no return type specified.
+Line 24: Method App\Libraries\MediaHelper::getAggregateType() has parameter $mimeType with no type specified.
+Line 30: Argument of an invalid type mixed supplied for foreach, only iterables are supported.
+Line 31: Parameter #2 $haystack of function in_array expects array, mixed given.
+Line 40: Method App\Libraries\MediaHelper::attachMedia() has no return type specified.
+Line 40: Method App\Libraries\MediaHelper::attachMedia() has parameter $media with no type specified.
+Line 76: Method App\Libraries\MediaHelper::destroyMedia() has no return type specified.
+Line 76: Method App\Libraries\MediaHelper::destroyMedia() has parameter $fileObj with no type specified.
+Line 79: Parameter #1 $name of static method Illuminate\Filesystem\FilesystemManager::disk() expects string|UnitEnum|null, mixed given.
+Line 86: Method App\Libraries\MediaHelper::getExtension() has no return type specified.
+Line 86: Method App\Libraries\MediaHelper::getExtension() has parameter $fileName with no type specified.
+Line 86: Method App\Libraries\MediaHelper::getExtension() has parameter $mimeType with no type specified.
+Line 94: Cannot access offset mixed on mixed.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Country\Resource) ===
+Line 36: PHPDoc tag @var for variable $classObj contains unknown class App\Traits\BaseModelInterface.
+Line 36: PHPDoc tag @var with type App\Traits\BaseModelInterface is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 37: Call to method getAppends() on an unknown class App\Traits\BaseModelInterface.
+Line 37: Call to method getQueryFields() on an unknown class App\Traits\BaseModelInterface.
+Line 38: Call to method getHidden() on an unknown class App\Traits\BaseModelInterface.
+Line 39: Call to method getCasts() on an unknown class App\Traits\BaseModelInterface.
+Line 75: PHPDoc tag @var for variable $resource contains unresolvable type.
+Line 79: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+Line 83: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Media\Resource) ===
+Line 36: PHPDoc tag @var for variable $classObj contains unknown class App\Traits\BaseModelInterface.
+Line 36: PHPDoc tag @var with type App\Traits\BaseModelInterface is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 37: Call to method getAppends() on an unknown class App\Traits\BaseModelInterface.
+Line 37: Call to method getQueryFields() on an unknown class App\Traits\BaseModelInterface.
+Line 38: Call to method getHidden() on an unknown class App\Traits\BaseModelInterface.
+Line 39: Call to method getCasts() on an unknown class App\Traits\BaseModelInterface.
+Line 75: PHPDoc tag @var for variable $resource contains unresolvable type.
+Line 79: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+Line 83: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Notification\Resource) ===
+Line 36: PHPDoc tag @var for variable $classObj contains unknown class App\Traits\BaseModelInterface.
+Line 36: PHPDoc tag @var with type App\Traits\BaseModelInterface is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 37: Call to method getAppends() on an unknown class App\Traits\BaseModelInterface.
+Line 37: Call to method getQueryFields() on an unknown class App\Traits\BaseModelInterface.
+Line 38: Call to method getHidden() on an unknown class App\Traits\BaseModelInterface.
+Line 39: Call to method getCasts() on an unknown class App\Traits\BaseModelInterface.
+Line 75: PHPDoc tag @var for variable $resource contains unresolvable type.
+Line 79: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+Line 83: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\Setting\Resource) ===
+Line 36: PHPDoc tag @var for variable $classObj contains unknown class App\Traits\BaseModelInterface.
+Line 36: PHPDoc tag @var with type App\Traits\BaseModelInterface is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 37: Call to method getAppends() on an unknown class App\Traits\BaseModelInterface.
+Line 37: Call to method getQueryFields() on an unknown class App\Traits\BaseModelInterface.
+Line 38: Call to method getHidden() on an unknown class App\Traits\BaseModelInterface.
+Line 39: Call to method getCasts() on an unknown class App\Traits\BaseModelInterface.
+Line 75: PHPDoc tag @var for variable $resource contains unresolvable type.
+Line 79: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+Line 83: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\UserDevice\Resource) ===
+Line 36: PHPDoc tag @var for variable $classObj contains unknown class App\Traits\BaseModelInterface.
+Line 36: PHPDoc tag @var with type App\Traits\BaseModelInterface is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 37: Call to method getAppends() on an unknown class App\Traits\BaseModelInterface.
+Line 37: Call to method getQueryFields() on an unknown class App\Traits\BaseModelInterface.
+Line 38: Call to method getHidden() on an unknown class App\Traits\BaseModelInterface.
+Line 39: Call to method getCasts() on an unknown class App\Traits\BaseModelInterface.
+Line 75: PHPDoc tag @var for variable $resource contains unresolvable type.
+Line 79: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+Line 83: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Traits\ResourceFilterable.php (in context of class App\Http\Resources\User\Resource) ===
+Line 36: PHPDoc tag @var for variable $classObj contains unknown class App\Traits\BaseModelInterface.
+Line 36: PHPDoc tag @var with type App\Traits\BaseModelInterface is not subtype of type Illuminate\Database\Eloquent\Model.
+Line 37: Call to method getAppends() on an unknown class App\Traits\BaseModelInterface.
+Line 37: Call to method getQueryFields() on an unknown class App\Traits\BaseModelInterface.
+Line 38: Call to method getHidden() on an unknown class App\Traits\BaseModelInterface.
+Line 39: Call to method getCasts() on an unknown class App\Traits\BaseModelInterface.
+Line 75: PHPDoc tag @var for variable $resource contains unresolvable type.
+Line 79: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 79: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.
+Line 83: Call to method getMedia() on an unknown class Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var for variable $resource has invalid type Plank\Mediable\Mediable.
+Line 83: PHPDoc tag @var with type Plank\Mediable\Mediable is not subtype of type *NEVER*.

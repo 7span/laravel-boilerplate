@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -13,7 +16,8 @@ class ForgetPasswordOtp extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(private ?object $user, private $otp)
+    /** @param string $otp */
+    public function __construct(private ?User $user, private string $otp)
     {
         //
     }
@@ -33,9 +37,13 @@ class ForgetPasswordOtp extends Mailable implements ShouldQueue
      */
     public function content(): Content
     {
+        $user = $this->user;
+        if (!$user) {
+            throw new \Exception('User not found');
+        }
         return new Content(
             view: 'emails.forget-password-otp',
-            with: ['user' => $this->user, 'otp' => $this->otp, 'name' => $this->user->name],
+            with: ['user' => $user, 'otp' => $this->otp, 'name' => $user->name],
         );
     }
 

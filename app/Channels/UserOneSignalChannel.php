@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Channels;
 
 use GuzzleHttp\Psr7\Response;
@@ -35,19 +37,25 @@ class UserOneSignalChannel extends OneSignalChannel
             return new Response(204); // No Content
         }
 
-        $userIds = $notifiable->user_devices()->pluck('onesignal_player_id')->toArray();
+        /** @var \App\Models\User $notifiable */
+        $devices = $notifiable->userDevices();
+        /** @var array<int, string> $userIds */
+        $userIds = $devices->pluck('onesignal_player_id')->toArray();
 
         if (empty($userIds)) {
             // Return a dummy ResponseInterface if no user IDs
             return new Response(204); // No Content
         }
 
+        /** @var \Psr\Http\Message\ResponseInterface $response */
         $response = $this->oneSignal->sendNotificationCustom(
             $this->payload($notifiable, $notification, $userIds)
         );
 
         if ($response->getStatusCode() !== 200) {
-            throw CouldNotSendNotification::serviceRespondedWithAnError($response);
+            /** @var \Throwable $exception */
+            $exception = CouldNotSendNotification::serviceRespondedWithAnError($response);
+            throw $exception;
         }
 
         return $response;

@@ -1,0 +1,18 @@
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Channels\UserOneSignalChannel.php ===
+Line 40: Cannot call method user_devices() on mixed.
+Line 51: Cannot call method getStatusCode() on mixed.
+Line 55: Method App\Channels\UserOneSignalChannel::send() should return Psr\Http\Message\ResponseInterface but returns mixed.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Console\Commands\DeleteTempFiles.php ===
+Line 35: Cannot cast mixed to string.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Http\Resources\Media\Resource.php ===
+Line 30: No error to ignore is reported on line 30.
+Line 51: Casting to string something that's already string.
+Line 52: Casting to string something that's already string.
+Line 53: Casting to string something that's already string.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Models\Notification.php ===
+Line 58: Method App\Models\Notification::user() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, App\Models\Notification> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, $this(App\Models\Notification)>.
+Line 64: Method App\Models\Notification::sender() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, App\Models\Notification> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, $this(App\Models\Notification)>.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Models\UserOtp.php ===
+Line 61: Method App\Models\UserOtp::user() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, App\Models\UserOtp> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\User, $this(App\Models\UserOtp)>.
+=== D:\laravel\strict_mode\laravel-boilerplate\app\Services\AuthService.php ===
+Line 111: Cannot cast mixed to string.

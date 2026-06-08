@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
 use Exception;
@@ -11,15 +13,19 @@ class CustomException extends Exception
 
     public function __construct(public string $messageStr, public int $resCode = 400) {}
 
-    public function report()
+    public function report(): string
     {
         return '';
     }
 
-    public function render()
+    public function render(): \Illuminate\Http\JsonResponse
     {
-        $data['message'] = $this->messageStr;
-        $data['errors']['message'][] = $this->messageStr;
+        $data = [
+            'message' => $this->messageStr,
+            'errors' => [
+                'message' => [$this->messageStr],
+            ],
+        ];
 
         return $this->error($data, $this->resCode);
     }

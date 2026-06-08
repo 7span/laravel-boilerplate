@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
@@ -28,9 +30,10 @@ class DeleteTempFiles extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
-        $expiryDays = (int) config('media.temp_file_delete_after_days', 2);
+        $val = config('media.temp_file_delete_after_days', 2);
+        $expiryDays = is_scalar($val) ? (int) $val : 2;
 
         $expiredTempFiles = TempFile::whereIn('disk', ['s3', 'local', 'public'])
             ->where('created_at', '<', Carbon::now()->subDays($expiryDays))
@@ -42,6 +45,7 @@ class DeleteTempFiles extends Command
             return 0;
         }
 
+        /** @var array{region:string,key:string,secret:string,bucket:string} $s3Config */
         $s3Config = config('filesystems.disks.s3');
         $client = new S3Client([
             'version' => 'latest',

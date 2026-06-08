@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -13,9 +15,9 @@ class WelcomeUser extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    private $user;
+    private \App\Models\User $user;
 
-    public function __construct($user)
+    public function __construct(\App\Models\User $user)
     {
         $this->user = $user;
     }
@@ -26,7 +28,11 @@ class WelcomeUser extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
+<<<<<<< HEAD
+            subject: __('email.welcome_user.subject', ['app_name' => is_string($n = config('app.name')) ? $n : '']),
+=======
             subject: __('email.welcome_user.subject', ['app_name' => __('email.app.name')]),
+>>>>>>> origin/master
         );
     }
 
