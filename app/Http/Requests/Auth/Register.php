@@ -20,7 +20,7 @@ class Register extends FormRequest
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
             'country_code' => 'nullable|max:5',
-            'mobile_no' => 'nullable|min:8|max:15',
+            'mobile_no' => ['nullable', 'regex:/^\+?[1-9]\d{7,14}$/'],
         ];
     }
 }
