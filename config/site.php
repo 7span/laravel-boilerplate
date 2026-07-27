@@ -14,10 +14,6 @@ return [
         'admin' => 'admin',
         'user' => 'user',
     ],
-    'roleIds' => [
-        'admin' => 1,
-        'user' => 2,
-    ],
     'otp' => [
         'master_otp' => env('MASTER_OTP'),
         'expiration_time_in_minutes' => 10,

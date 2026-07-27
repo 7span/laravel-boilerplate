@@ -17,7 +17,7 @@ class UserService
         $this->userObj = new User;
     }
 
-    public function resource(int $id)
+    public function resource(int $id): User
     {
         $user = $this->userObj->findOrFail($id);
 
@@ -45,7 +45,7 @@ class UserService
         return $data;
     }
 
-    public function changeStatus(object $user, array $inputs = [])
+    public function changeStatus(User $user, array $inputs = []): array
     {
         $user->update($inputs);
         $data = [

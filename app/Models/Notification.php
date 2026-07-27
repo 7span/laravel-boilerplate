@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\BaseModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Notification extends Model
 {
@@ -26,11 +27,14 @@ class Notification extends Model
         'read_at',
     ];
 
-    protected $casts = [
-        'data' => 'array',
-        'read_at' => 'timestamp',
-        'created_at' => 'timestamp',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'data' => 'array',
+            'read_at' => 'timestamp',
+            'created_at' => 'timestamp',
+        ];
+    }
 
     protected $defaultSort = '-created_at';
 
@@ -55,5 +59,10 @@ class Notification extends Model
     public function sender()
     {
         return $this->belongsTo(User::class, 'sent_by');
+    }
+
+    public function scopeIsRead(Builder $query, bool $isRead): Builder
+    {
+        return $isRead ? $query->whereNotNull('read_at') : $query->whereNull('read_at');
     }
 }

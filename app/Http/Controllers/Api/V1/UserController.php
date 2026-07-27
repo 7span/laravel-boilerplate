@@ -22,12 +22,7 @@ class UserController extends Controller
 {
     use ApiResponser;
 
-    private UserService $userService;
-
-    public function __construct()
-    {
-        $this->userService = new UserService;
-    }
+    public function __construct(private UserService $userService) {}
 
     /**
      * Profile.

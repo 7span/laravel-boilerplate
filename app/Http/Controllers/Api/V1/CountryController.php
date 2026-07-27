@@ -8,6 +8,7 @@ use App\Services\CountryService;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
 use App\Http\Resources\Country\Resource as CountryResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
  * @tags Country
@@ -17,19 +18,14 @@ class CountryController extends Controller
 {
     use ApiResponser;
 
-    private CountryService $countryService;
-
-    public function __construct()
-    {
-        $this->countryService = new CountryService;
-    }
+    public function __construct(private CountryService $countryService) {}
 
     /**
      * List.
      *
      * @unauthenticated
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): AnonymousResourceCollection
     {
         $countries = $this->countryService->collection($request->all());
 

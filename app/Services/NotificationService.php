@@ -27,7 +27,7 @@ class NotificationService
         return $this->paginationAttribute($notifications);
     }
 
-    public function readAllNotification(array $inputs)
+    public function readAllNotification(array $inputs): array
     {
         $notifications = $this->notificationObj
             ->where('user_id', Auth::id())
@@ -41,7 +41,7 @@ class NotificationService
         return $data;
     }
 
-    public function markAsUnread(array $inputs)
+    public function markAsUnread(array $inputs): array
     {
         $notifications = $this->notificationObj
             ->where('user_id', Auth::id())
@@ -55,7 +55,7 @@ class NotificationService
         return $data;
     }
 
-    public function setOnesignalData(array $data)
+    public function setOnesignalData(array $data): array
     {
         $device = UserDevice::updateOrCreate(
             ['user_id' => Auth::id()],

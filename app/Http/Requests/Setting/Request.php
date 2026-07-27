@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Setting;
 
+use App\Models\Setting;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Request extends FormRequest
@@ -18,14 +19,10 @@ class Request extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * Add all setting keys that you want to update and
-         * defined in site.php file.
-         */
         $rules = [];
 
-        foreach (config('site.setting_keys', []) as $key) {
-            $rules[$key] = 'required';
+        foreach (Setting::query()->pluck('key') as $key) {
+            $rules[$key] = 'sometimes|required';
         }
 
         return $rules;

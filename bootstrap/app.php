@@ -36,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'developer' => Spatie\LittleGateKeeper\AuthMiddleware::class,
             'notification-read' => MarkNotificationsAsRead::class,
+            'role' => Spatie\Permission\Middleware\RoleMiddleware::class,
         ]);
         $middleware->group('api', [
             'throttle:api',

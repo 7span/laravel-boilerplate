@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
+use Illuminate\Http\JsonResponse;
 use App\Services\SignedUrlService;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
@@ -16,12 +17,7 @@ class SignedUrlController extends Controller
 {
     use ApiResponser;
 
-    private SignedUrlService $signedUrlService;
-
-    public function __construct()
-    {
-        $this->signedUrlService = new SignedUrlService;
-    }
+    public function __construct(private SignedUrlService $signedUrlService) {}
 
     /**
      * Generate URL.
@@ -30,7 +26,7 @@ class SignedUrlController extends Controller
      *
      * @response array{url: string, key: string, directory: string, filename: string}
      */
-    public function __invoke(SignedUrlRequest $request)
+    public function __invoke(SignedUrlRequest $request): JsonResponse
     {
         $signedUrlObj = $this->signedUrlService->create($request->validated());
 

@@ -11,6 +11,7 @@ use Dedoc\Scramble\Attributes\Group;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Requests\Setting\Request as SettingRequest;
 use App\Http\Resources\Setting\Resource as SettingResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
  * @tags Admin / Settings
@@ -20,18 +21,13 @@ class SettingController extends Controller
 {
     use ApiResponser;
 
-    private SettingService $settingService;
-
-    public function __construct()
-    {
-        $this->settingService = new SettingService;
-    }
+    public function __construct(private SettingService $settingService) {}
 
     /**
      * List.
      */
     #[QueryParameter('appends')]
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $settings = $this->settingService->collection($request->all());
 

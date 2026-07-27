@@ -17,12 +17,7 @@ class LanguageController extends Controller
 {
     use ApiResponser;
 
-    private LanguageService $langService;
-
-    public function __construct()
-    {
-        $this->langService = new LanguageService;
-    }
+    public function __construct(private LanguageService $langService) {}
 
     /**
      * List.

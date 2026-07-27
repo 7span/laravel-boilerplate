@@ -22,6 +22,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('sent_by')->references('id')->on('users')->onDelete('cascade');
+            $table->index(['user_id', 'created_at']);
         });
 
         Schema::create('user_devices', function (Blueprint $table) {

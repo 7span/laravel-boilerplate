@@ -22,10 +22,13 @@ class Media extends MediableMedia
         'updated_at',
     ];
 
-    protected $casts = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+        ];
+    }
 
     protected $relationship = [
         'media' => [

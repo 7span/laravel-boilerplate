@@ -9,6 +9,7 @@ use Dedoc\Scramble\Attributes\Group;
 use App\Services\NotificationService;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Requests\Notification\OneSignalData;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\UserDevice\Resource as UserDeviceResource;
 use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Resource as NotificationResource;
@@ -21,18 +22,13 @@ class NotificationController extends Controller
 {
     use ApiResponser;
 
-    private NotificationService $notificationService;
-
-    public function __construct()
-    {
-        $this->notificationService = new NotificationService;
-    }
+    public function __construct(private NotificationService $notificationService) {}
 
     /**
      * List.
      */
     #[QueryParameter('appends')]
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         $data = $this->notificationService->collection();
 
@@ -44,7 +40,7 @@ class NotificationController extends Controller
      *
      * @response array{message: string}
      */
-    public function readAllNotification(NotificationRequest $request)
+    public function readAllNotification(NotificationRequest $request): array
     {
         $data = $this->notificationService->readAllNotification($request->validated());
 
@@ -56,7 +52,7 @@ class NotificationController extends Controller
      *
      * @response array{message: string}
      */
-    public function markAsUnread(NotificationRequest $request)
+    public function markAsUnread(NotificationRequest $request): array
     {
         $data = $this->notificationService->markAsUnread($request->validated());
 
@@ -68,7 +64,7 @@ class NotificationController extends Controller
      *
      * @response array{message: string, data: UserDeviceResource}
      */
-    public function setOnesignalData(OneSignalData $request)
+    public function setOnesignalData(OneSignalData $request): JsonResponse
     {
         $data = $this->notificationService->setOnesignalData($request->validated());
 

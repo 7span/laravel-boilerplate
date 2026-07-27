@@ -23,12 +23,7 @@ class AuthController extends Controller
 {
     use ApiResponser;
 
-    private AuthService $authService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService;
-    }
+    public function __construct(private AuthService $authService) {}
 
     /**
      * Register.
