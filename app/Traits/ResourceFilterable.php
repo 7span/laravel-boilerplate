@@ -2,10 +2,13 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\MissingAttributeException;
 use Illuminate\Http\Resources\MissingValue;
 
 trait ResourceFilterable
 {
+    protected static array $fieldMetaCache = [];
+
     /**
      * Filter null inputs.
      */
@@ -18,27 +21,34 @@ trait ResourceFilterable
 
     protected function prepareResponse(): array
     {
+        $class = get_class($this->resource);
+
+        
+        // Cache model fields for current request
+        $meta = static::$fieldMetaCache[$class] ??= [
+            'columns' => $this->resource->getQueryFields(),
+            'hidden' => array_flip($this->resource->getHidden()),
+        ];
+
+        $appends = $this->resource->getAppends();
+
         $data = [];
-        $class = $this->model;
-        $classObj = new $class;
-        $fields = array_merge($classObj->getQueryFields(), $classObj->getAppends());
-        $hiddenFields = $classObj->getHidden();
-        $casts = $classObj->getCasts();
-        foreach ($fields as $field) {
-            if (! in_array($field, $hiddenFields)) {
-                if (isset($casts[$field])) {
-                    switch ($casts[$field]) {
-                        case 'datetime':
-                            $data[$field] = optional($this->$field)->format('d-m-Y H:i:s');
-                            break;
-                        case 'date':
-                            $data[$field] = optional($this->$field)->format('d-m-Y');
-                            break;
-                        default: // Used for id
-                            $data[$field] = $this->$field;
-                    }
-                } else {
+        // Columns actually returned by the DB query (not the full model schema)
+        $loadedAttributes = $this->resource->getAttributes();
+
+        // only touch columns that were actually selected
+        foreach ($meta['columns'] as $field) {
+            if (! isset($meta['hidden'][$field]) && array_key_exists($field, $loadedAttributes)) {
+                $data[$field] = $this->$field;
+            }
+        }
+
+        foreach ($appends as $field) {
+            if (! isset($meta['hidden'][$field])) {
+                try {
                     $data[$field] = $this->$field;
+                } catch (MissingAttributeException) {
+                    // Skip appends whose accessor depends on a column not selected via ?fields=
                 }
             }
         }

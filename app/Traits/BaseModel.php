@@ -51,10 +51,11 @@ trait BaseModel
             foreach ($relationshipObj->getFillable() as $field) {
                 $fields[] = $tableName . '.' . $field;
             }
-            if (isset($relationshipObj->queryable)) {
-                foreach ($relationshipObj->queryable as $field) {
-                    $fields[] = $tableName . '.' . $field;
-                }
+
+            // related model's queryable defaults to id
+            $relationshipQueryable = ! empty($relationshipObj->queryable) ? $relationshipObj->queryable : ['id'];
+            foreach ($relationshipQueryable as $field) {
+                $fields[] = $tableName . '.' . $field;
             }
         }
 
