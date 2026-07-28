@@ -26,7 +26,9 @@ trait ResourceFilterable
         $casts = $classObj->getCasts();
         foreach ($fields as $field) {
             if (! in_array($field, $hiddenFields)) {
-                if (isset($casts[$field])) {
+                if (method_exists($classObj, 'isTranslatableAttribute') && $classObj->isTranslatableAttribute($field)) {
+                    $data[$field] = $this->resource->getTranslations($field);
+                } elseif (isset($casts[$field])) {
                     switch ($casts[$field]) {
                         case 'datetime':
                             $data[$field] = optional($this->$field)->format('d-m-Y H:i:s');
