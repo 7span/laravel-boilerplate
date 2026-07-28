@@ -14,13 +14,15 @@ class Register extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|max:120',
-            'last_name' => 'required|max:120',
+            'first_name' => 'required|array',
+            'first_name.*' => 'required|string|max:120',
+            'last_name' => 'required|array',
+            'last_name.*' => 'required|string|max:120',
             'username' => 'required|max:120|unique:users,username',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
             'country_code' => 'nullable|max:5',
-            'mobile_no' => 'nullable|min:8|max:15',
+            'mobile_no' => ['nullable', 'regex:/^\+?[1-9]\d{7,14}$/'],
         ];
     }
 }

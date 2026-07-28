@@ -23,8 +23,8 @@ class Resource extends JsonResource
     /**
      * @return array{
      *     id: int,
-     *     first_name: string|null,
-     *     last_name: string|null,
+     *     first_name: array<string, string>|null,
+     *     last_name: array<string, string>|null,
      *     username: string|null,
      *     email: string,
      *     locale: string|null,

@@ -6,6 +6,7 @@ use App\Models\Media;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * Shared query-related helpers for Eloquent models.

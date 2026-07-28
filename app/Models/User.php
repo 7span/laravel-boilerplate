@@ -43,6 +43,8 @@ class User extends Authenticatable implements HasLocalePreference, OAuthenticata
 
     protected $guard_name = 'api';
 
+    public $translatable = ['first_name', 'last_name'];
+
     /** Accessors and Mutators */
     protected $appends = ['name', 'display_status', 'display_mobile_no'];
 
