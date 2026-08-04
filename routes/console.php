@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schedule;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
 
-Schedule::command('media:delete-temp-files')->daily();
-Schedule::command('telescope:prune --hours=24')->daily();
-Schedule::command('pulse:purge')->daily();
-
-// To permanently delete soft-deleted records after X days
-// Schedule::command('system:hard-delete-data')->daily();
+Artisan::command('inspire', function () {
+    $this->comment(Inspiring::quote());
+})->purpose('Display an inspiring quote');

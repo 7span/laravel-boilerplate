@@ -1,226 +1,58 @@
-<!-- PROJECT BANNER -->
-<p align="center">
-  <img src="public/assets/img/logo.png" alt="Laravel Boilerplate Logo" width="120"/>
-</p>
-
-<h1 align="center">Laravel Boilerplate</h1>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-  <b>A robust starter project using <code>Laravel 12</code> for rapid, modern API development.</b><br>
-  <i>Clean structure, best practices, authentication, and a suite of developer tools out of the box.</i>
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-<p align="center">
-  <img alt="Laravel" src="https://img.shields.io/badge/Laravel-12.x-red?logo=laravel&logoColor=white">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg">
-  <img alt="Code Style" src="https://img.shields.io/badge/code%20style-pint-ff69b4">
-</p>
+## About Laravel
 
----
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## 🚀 Quick Start
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
+
+## Learning Laravel
+
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+
+## Agentic Development
+
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
 
 ```bash
-# 1. Clone the repository
-$ git clone <your-repo-url>
-$ cd laravel-boilerplate
+composer require laravel/boost --dev
 
-# 2. Install dependencies
-$ composer install
-$ npm install && npm run build
-
-# 3. Copy .env and configure
-$ cp .env.example .env
-
-# 4. Configure Git hooks (Husky)
-$ git config core.hooksPath .husky
-
-# 5. Generate app key
-$ php artisan key:generate
-
-# 6. Run migrations and seeders
-$ php artisan migrate --seed
-
-# 7. Start the server
-$ php artisan serve
+php artisan boost:install
 ```
 
----
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-## ✨ Features & Packages
+## Contributing
 
--   **[Authentication (Laravel Passport)](https://laravel.com/docs/12.x/passport)**
--   **[Role & Permission Management (Spatie Laravel Permission)](https://spatie.be/docs/laravel-permission/v6/introduction)**
--   **[Media/File Management (Plank Mediable)](https://github.com/plank/laravel-mediable)**
--   **[API Documentation (L5-Swagger)](https://github.com/DarkaOnLine/L5-Swagger)**
--   **[Request Monitoring (Laravel Telescope)](https://laravel.com/docs/12.x/telescope)**
--   **[Log Management (Log Viewer)](https://github.com/opcodesio/log-viewer)**
--   **[Queue Monitoring (Laravel Horizon)](https://laravel.com/docs/12.x/horizon)**
--   **[Performance Monitoring (Laravel Pulse)](https://laravel.com/docs/12.x/pulse)**
--   **[Code Style (Laravel Pint)](https://laravel.com/docs/12.x/pint)**
--   **[Static Analysis (Larastan/PHPStan)](https://github.com/larastan/larastan)**
--   **[Universal Developer Panel Protection (Littlegatekeeper)](https://github.com/spatie/laravel-littlegatekeeper)**
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
----
+## Code of Conduct
 
-## ⚙️ Custom Environment Variables
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-> In addition to standard Laravel variables, set these in your `.env`:
+## Security Vulnerabilities
 
--   `FRONT_WEBSITE_URL` — The URL of your frontend application
--   `MASTER_PASSWORD` — Master password for privileged/admin operations
--   `MASTER_OTP` — Master OTP code for bypassing OTP verification
--   `DEVELOPER_USERNAME` / `DEVELOPER_PASSWORD` — Credentials for the developer panel
--   `LOG_DAILY_DAYS` — Days to retain log files takes 30 days default
--   `TELESCOPE_ENABLED` — Enable/disable Laravel Telescope
--   `CDN_ENABLE` — Enable/disable CDN usage for media URLs
--   `CDN_URL` — The base URL of your CDN for media assets
--   `ONESIGNAL_APP_ID` / `ONESIGNAL_API_KEY` — Your OneSignal App ID and API Key for push notifications
--   `NOTIFICATION_ENABLED` — Enable or disable the notification system (true/false)
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
----
+## License
 
-## 🗂️ Custom Configuration File Structure
-
--   `site.php` — Site-wide settings (frontend URL, pagination, roles, OTP, user status)
--   `media.php` — Media/file upload settings (tags, directories, CDN, types, MIME mappings)
--   `aws.php` — AWS credentials/settings for S3 and related services
-
----
-
-## 🌍 Localization File Structure
-
-Localization files are in `resources/lang/en/`:
-
--   `email.php` — Email-related strings
--   `entity.php` — Entity names/messages
--   `message.php` — General messages
--   `status.php` — Status labels/messages
--   `notification.php` — Notification titles and descriptions
-
-Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` functions.
-
----
-
-## 📦 API Overview
-
-### Supported Endpoints
-
--   **Auth:** Register, Login, Logout, Get Profile, Forget Password (OTP), Reset Password
--   **User:** Update Profile, Change Password, Change Status (Admin)
--   **Country:** List countries (with filters)
--   **Language:** List languages
--   **Master Settings:** List and detail endpoints
--   **Signed URL:** Generate signed URLs for file uploads
-
-> API documentation is auto-generated and available at `/api/documentation` via Swagger (L5-Swagger).
-
-### API Folder Structure
-
--   `app/Http/Controllers/Api/` — API controllers (RESTful, thin, service-driven)
--   `app/Http/Requests/` — FormRequest classes for validation
--   `app/Http/Resources/` — API resource and collection transformers
--   `app/Services/` — Business logic and service classes
--   `app/Models/` — Eloquent models
--   `app/Rules/` — Custom validation rules
--   `app/Libraries/` — Libraries classes
-
-## 🛠️ Generate Custom Swagger Documentation with Minimal Code in Controllers
-
-Your custom Swagger setup lives in the `app/Swagger/` directory.
-
-📁 Folder Structure
-
-- app/Swagger/Processors/
-Contains custom processors used to dynamically generate Swagger documentation (e.g., auto-generating request bodies, responses, etc.).
-
-⚙️ Setup Instructions
-
-- To enable your custom processors, add the following entry inside the processors array in the l5-swagger.php configuration file (located in config/):
-
-- new \App\Swagger\Processors\SuccessResponsesProcessor(),
-
-🚀 What This Provides
-
-- Automatically generates Swagger documentation based on Form Request rules.
-- Allows you to write minimal or no OpenAPI annotations in controllers.
-- Supports customizing, extending, or skipping auto-generation when needed.
-
----
-
-## 🛠️ Custom Functionality
-
-### Custom Artisan Commands
-
--   `php artisan telescope:clear` — Clears all entries/data from Laravel Telescope
--   `php artisan pulse:clear` — Clears all entries/data from Laravel Pulse
-
-### Custom Validation Rules & Libraries
-
--   **MediaRule:** Reusable validation for media/image fields (tags, mime types, nullable/required)
--   **MediaHelper:** File naming, extension detection, media attachment/deletion, aggregate type detection
--   **Image Optimization:** Configured via `config/mediable.php` for automatic optimization (JPEG, PNG, GIF, WebP, AVIF)
-
-### Mail Layout Customization
-
--   All emails use a custom Blade layout: `resources/views/emails/layouts/master.blade.php`
-    -   Branded header with logo
-    -   Localized greetings and sign-off
-    -   Centralized content section (`@yield('content')`)
-    -   Footer with copyright
-
-### Notification System
-
--   This boilerplate includes a robust notification system using Laravel's native features.
-
-    -   **Channels Supported:** Database, Email, and optional custom channels (e.g., SMS).
-    -   **How It Works:** Notifications are created as classes in `app/Notifications/`. You can add new notification types by creating additional classes in this directory.
-    -   **API Integration:** Endpoints are available for listing, marking as read/unread, and managing user notifications.
-
-> See the `app/Notifications/` directory and related controllers/services for implementation details.
-
----
-
-## 🧑‍💻 Developer Tools
-
-### Developer Panel
-
--   `/developer/telescope` — Laravel Telescope
--   `/developer/log-viewer` — Log Viewer
--   `/developer/pulse` — Laravel Pulse
--   `/developer/login` — Login for developer tools
--   **Authentication:** Protected by `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD` in `.env`
-
-### Pre-commit Checklist & Code Quality
-
--   Lint staged PHP files: `npx --no-install lint-staged`
--   Code style check: `./vendor/bin/pint`
--   Static analysis: `./vendor/bin/phpstan --memory-limit=2G analyse`
--   Run tests: `./vendor/bin/phpunit`
-
-> If you have issues committing, ensure pre-commit hooks are executable:
->
-> ```bash
-> chmod ug+x .husky/pre-commit
-> ```
-
--   **Pint:** Run `./vendor/bin/pint` to auto-format code. VS Code users can bind Pint to `Ctrl+S` for instant formatting.
--   **Larastan/PHPStan:** Run `./vendor/bin/phpstan analyse` for static analysis.
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-## 📄 License
-
-[MIT](LICENSE)
-
----
-
-## 💬 Support
-
-For questions, suggestions, or support, please open an issue or contact the maintainer.
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
