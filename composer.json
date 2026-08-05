@@ -7,13 +7,26 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "aws/aws-sdk-php": "^3.390",
+        "dedoc/scramble": "^0.13.38",
+        "laravel-notification-channels/onesignal": "^2.8",
         "laravel/framework": "^13.8",
-        "laravel/tinker": "^3.0"
+        "laravel/horizon": "^5.48",
+        "laravel/sanctum": "^4.0",
+        "laravel/telescope": "^5.22",
+        "laravel/tinker": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.35",
+        "opcodesio/log-viewer": "^3.24",
+        "plank/laravel-mediable": "^7.0",
+        "predis/predis": "^3.5",
+        "spatie/laravel-permission": "^8.3",
+        "spatie/laravel-query-builder": "^7.3"
     },
     "require-dev": {
         "ekino/phpstan-banned-code": "^3.2",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.10",
+        "laravel/boost": "^2.5",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",

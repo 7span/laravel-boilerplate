@@ -10,7 +10,7 @@ parameters:
         - resources/
         - routes/
 
-    level: 5
+    level: 6
 
     tips:
         treatPhpDocTypesAsCertain: false
