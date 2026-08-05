@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "Running Pint..."
+./vendor/bin/pint
+
+echo "Re-staging fixes..."
+git add -u
+
+echo "Running PHPStan..."
+./vendor/bin/phpstan --memory-limit=2G analyse || exit 1
+
+echo "Pre-commit checks passed!"
