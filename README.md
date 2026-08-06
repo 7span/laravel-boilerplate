@@ -59,7 +59,7 @@ $ php artisan serve
 -   **[Performance Monitoring (Laravel Pulse)](https://laravel.com/docs/12.x/pulse)**
 -   **[Code Style (Laravel Pint)](https://laravel.com/docs/12.x/pint)**
 -   **[Static Analysis (Larastan/PHPStan)](https://github.com/larastan/larastan)**
--   **[Universal Developer Panel Protection (Littlegatekeeper)](https://github.com/spatie/laravel-littlegatekeeper)**
+-   **Universal Developer Panel Protection** (first-party session-based auth)
 
 ---
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d20f307d645d54a3c8a79ba0ca4e3d97",
+    "content-hash": "5b739d49cb80681622b1e4431a416584",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5846,67 +5846,6 @@
                 "source": "https://github.com/spatie/image-optimizer/tree/1.8.1"
             },
             "time": "2025-11-26T10:57:19+00:00"
-        },
-        {
-            "name": "spatie/laravel-littlegatekeeper",
-            "version": "1.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-littlegatekeeper.git",
-                "reference": "6a426c5769735ad831c829ee6d3c91cad89e218d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-littlegatekeeper/zipball/6a426c5769735ad831c829ee6d3c91cad89e218d",
-                "reference": "6a426c5769735ad831c829ee6d3c91cad89e218d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\LittleGateKeeper\\LittleGateKeeperServiceProvider"
-                    ]
-                },
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\LittleGateKeeper\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian De Deyne",
-                    "email": "sebastian@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Protect pages from access with a universal username/password",
-            "homepage": "https://github.com/spatie/laravel-littlegatekeeper",
-            "keywords": [
-                "laravel-littlegatekeeper",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-littlegatekeeper/issues",
-                "source": "https://github.com/spatie/laravel-littlegatekeeper/tree/1.1.4"
-            },
-            "time": "2021-08-04T07:59:03+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -12252,5 +12191,5 @@
         "php": "^8.3"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

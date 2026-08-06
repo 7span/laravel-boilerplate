@@ -9,19 +9,21 @@ class DeveloperController extends Controller
 {
     public function login(Login $request)
     {
-        $auth = resolve('littlegatekeeper');
-        $loginSuccess = $auth->attempt($request->toArray());
-        if (! $loginSuccess) {
+        $valid = config('developer.username') === $request->username
+            && config('developer.password') === $request->password;
+
+        if (! $valid) {
             return redirect()->back()->withErrors(['message', 'Invalid credencials.']);
         }
+
+        session()->put(config('developer.sessionKey'), true);
 
         return redirect()->route('developer.dashboard');
     }
 
     public function loginPage()
     {
-        $auth = resolve('littlegatekeeper');
-        if ($auth->isAuthenticated()) {
+        if (session()->has(config('developer.sessionKey'))) {
             return redirect()->route('developer.dashboard');
         }
 
@@ -35,8 +37,7 @@ class DeveloperController extends Controller
 
     public function logout()
     {
-        $auth = resolve('littlegatekeeper');
-        $auth->logout();
+        session()->forget(config('developer.sessionKey'));
 
         return redirect()->route('developer.login');
     }
