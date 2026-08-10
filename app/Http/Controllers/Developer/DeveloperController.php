@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Developer;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\Developer\Login;
+use App\Http\Requests\Developer\LoginRequest;
 
 class DeveloperController extends Controller
 {
-    public function login(Login $request): RedirectResponse
+    public function login(LoginRequest $request): RedirectResponse
     {
         $valid = config('developer.username') === $request->username
             && config('developer.password') === $request->password;
