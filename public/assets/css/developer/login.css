@@ -1,0 +1,177 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+	background-color: #f9fafb;
+	min-height: 100vh;
+}
+
+.container {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+}
+
+.login-wrapper {
+	width: 100%;
+	max-width: 28rem;
+}
+
+.logo-container {
+	text-align: center;
+	margin-bottom: 2rem;
+	padding-top: 0.5rem;
+}
+
+.logo-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+}
+
+.logo {
+	height: 3rem;
+}
+
+.login-card {
+	background-color: white;
+	border-radius: 0.875rem;
+	box-shadow: 10px 20px 25px -5px rgba(0, 0, 0, 0.08), 10px 20px 10px -4px rgba(0, 0, 0, 0.04);
+	padding: 2rem;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+.form-label {
+	display: block;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #374151;
+	margin-bottom: 0.5rem;
+}
+
+.input-wrapper {
+	position: relative;
+}
+
+.input-icon {
+	position: absolute;
+	top: 50%;
+	left: 0.75rem;
+	transform: translateY(-50%);
+	width: 1.25rem;
+	height: 1.25rem;
+	pointer-events: none;
+}
+
+.input-icon svg {
+	width: 100%;
+	height: 100%;
+	fill: rgba(156, 163, 175, 0.6);
+	stroke: rgba(156, 163, 175, 0.6);
+	stroke-width: 1.5;
+}
+
+.form-input {
+	width: 100%;
+	padding: 0.875rem 1rem 0.875rem 2.5rem;
+	border: 1px solid #d1d5db;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	outline: none;
+	transition: all 0.2s;
+}
+
+.form-input::placeholder {
+	color: #9ca3af;
+	opacity: 0.7;
+}
+
+.form-input:focus {
+	border-color: rgba(248, 25, 39, 0.5);
+	box-shadow: 0 0 0 3px rgba(248, 25, 39, 0.1);
+}
+
+.toggle-password {
+	position: absolute;
+	top: 50%;
+	right: 0.75rem;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.25rem;
+	width: 1.6rem;
+	height: 1.6rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity 0.2s;
+	pointer-events: none;
+}
+
+.input-wrapper:focus-within .toggle-password,
+.toggle-password:hover,
+.toggle-password:focus {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.toggle-password svg {
+	width: 100%;
+	height: 100%;
+	fill: rgba(156, 163, 175, 0.5);
+	transition: fill 0.2s;
+}
+
+.toggle-password:hover svg {
+	fill: rgba(156, 163, 175, 0.8);
+}
+
+.submit-button {
+	width: 100%;
+	background: linear-gradient(to bottom, rgba(255, 42, 58, 1), #F81927);
+	color: white;
+	font-weight: 600;
+	padding: 0.875rem 1rem;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	font-size: 1rem;
+}
+
+.submit-button:hover {
+	background: linear-gradient(to right, rgba(255, 42, 58, 1), #d10b18);
+	box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+	transform: translateY(-1px);
+}
+
+.submit-button:active {
+	transform: translateY(0) scale(0.98);
+}
+.welcome-text {
+	font-size: 1.2rem;
+	color: #6e6e6e;
+	text-align: left;
+	margin-bottom: 1.5rem;
+	font-weight: 500;
+}
+.error-message {
+	font-size: 0.9rem;
+	color: #f81927;
+	text-align: left;
+	margin-top: 0.2rem;
+	font-weight: 400;
+}

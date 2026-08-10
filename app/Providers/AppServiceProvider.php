@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use Dedoc\Scramble\Scramble;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+        $this->configureApiDocumentation();
     }
 
     protected function configureRateLimiting(): void
@@ -36,5 +40,17 @@ class AppServiceProvider extends ServiceProvider
                     ], 429, $headers);
                 });
         });
+    }
+
+    protected function configureApiDocumentation(): void
+    {
+        Scramble::configure()
+            ->withDocumentTransformers(function (OpenApi $openApi): void {
+                $openApi->secure(SecurityScheme::http('bearer'));
+            })
+            ->expose(
+                ui: '/developer/docs/api',
+                document: '/developer/docs/api.json',
+            );
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\DeveloperAuth;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,9 +22,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->prefix('developer')
+                ->group(base_path('routes/developer.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'developer' => DeveloperAuth::class,
+        ]);
         $middleware->group('api', [
             'throttle:api',
             SubstituteBindings::class,
