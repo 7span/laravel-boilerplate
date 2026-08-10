@@ -13,12 +13,12 @@ trait HasUserActions
      */
     protected static function bootHasUserActions(): void
     {
-        static::creating(fn (Model $model) => self::stampCurrentUser($model, 'created_by'));
-        static::updating(fn (Model $model) => self::stampCurrentUser($model, 'updated_by'));
-        static::deleting(fn (Model $model) => self::stampCurrentUser($model, 'deleted_by'));
+        static::creating(fn (Model $model) => self::setAuthUserId($model, 'created_by'));
+        static::updating(fn (Model $model) => self::setAuthUserId($model, 'updated_by'));
+        static::deleting(fn (Model $model) => self::setAuthUserId($model, 'deleted_by'));
     }
 
-    private static function stampCurrentUser(Model $model, string $column): void
+    private static function setAuthUserId(Model $model, string $column): void
     {
         if (! Auth::check() && Schema::hasColumn($model->getTable(), $column)) {
             return;
