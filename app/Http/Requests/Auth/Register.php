@@ -23,7 +23,7 @@ class Register extends FormRequest
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'country_code' => ['nullable', 'string', 'max:5'],
-            'mobile_no' => ['nullable', 'string', 'min:8', 'max:15'],
+            'mobile_no' => ['nullable', 'string', 'digits_between:8,15'],
         ];
     }
 }

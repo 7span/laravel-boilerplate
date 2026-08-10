@@ -15,6 +15,6 @@ class UserService
 
     public function resource(int $id): User
     {
-        return $this->userObj->findOrFail($id);
+        return $this->userObj->getQB()->findOrFail($id);
     }
 }
