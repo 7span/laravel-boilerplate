@@ -10,17 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * @property int $id
- * @property int|null $user_id
- * @property string $otp
- * @property UserOtpFor $otp_for
- * @property int|null $verified_at
- * @property int|null $created_at
- * @property int|null $updated_at
- * @property int|null $deleted_at
- * @property-read User|null $user
- */
+/** @property UserOtpFor $otp_for */
 #[Fillable([
     'user_id',
     'otp',

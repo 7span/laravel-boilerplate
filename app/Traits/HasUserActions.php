@@ -20,7 +20,7 @@ trait HasUserActions
 
     private static function setAuthUserId(Model $model, string $column): void
     {
-        if (! Auth::check() && Schema::hasColumn($model->getTable(), $column)) {
+        if (! Auth::check() || ! Schema::hasColumn($model->getTable(), $column)) {
             return;
         }
 

@@ -18,26 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 
-/**
- * @property int $id
- * @property string|null $first_name
- * @property string|null $last_name
- * @property string|null $username
- * @property string $email
- * @property int|null $email_verified_at
- * @property string $password
- * @property string|null $locale
- * @property UserStatus|null $status
- * @property string|null $country_code
- * @property string|null $mobile_no
- * @property int|null $last_login_at
- * @property int|null $created_at
- * @property int|null $updated_at
- * @property int|null $deleted_at
- * @property-read string $name
- * @property-read string|null $display_status
- * @property-read string $display_mobile_no
- */
+/** @property UserStatus|null $status */
 #[Fillable([
     'first_name',
     'last_name',

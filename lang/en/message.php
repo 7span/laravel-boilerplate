@@ -13,4 +13,7 @@ return [
     'invalid_otp' => 'Invalid OTP. Please try again.',
     'otp_expired' => 'OTP expired. Please request a new one.',
     'password_change_success' => 'Password changed successfully.',
+    'user_profile_update' => 'Your profile updated successfully.',
+    'current_password_incorrect' => 'The current password is incorrect.',
+    'password_must_be_different' => 'The new password must be different from your current password.',
 ];
