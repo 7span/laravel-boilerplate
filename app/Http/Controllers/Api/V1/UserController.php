@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
     {
-        $data = $this->userService->update((int) auth()->id(), $request->validated());
+        $data = $this->userService->update(auth()->id(), $request->validated());
 
         return $this->success($data);
     }
