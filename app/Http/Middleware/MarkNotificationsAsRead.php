@@ -19,10 +19,8 @@ class MarkNotificationsAsRead
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $notifyId = $request->get('notify_id');
-
-        if ($request->user() && is_string($notifyId) && $notifyId !== '') {
-            app(NotificationService::class)->markAsRead($request->user(), ['ids' => [$notifyId]]);
+        if (auth('api')->check() && $request->has('notify_id')) {
+            app(NotificationService::class)->markAsRead(auth('api')->user(), ['ids' => [$request->get('notify_id')]]);
         }
 
         return $next($request);
