@@ -138,6 +138,27 @@ return [
      */
     'flatten_deep_query_parameters' => true,
 
+    /*
+     * Request headers documented by App\Support\Scramble\GetQBParameterExtractor.
+     *
+     * Each entry needs a `name`; `description`, `example` and `required` are
+     * optional. A header applies to every documented route unless `include`
+     * narrows it, and `exclude` wins over `include`. Both accept a string or an
+     * array of route URI patterns matched with `Str::is`, e.g. `api/v1/*`.
+     *
+     * 'headers' => [
+     *     [
+     *         'name' => 'x-organizer-domain',
+     *         'description' => 'Organization domain used to resolve organization context.',
+     *         'example' => 'club.example.com',
+     *         'required' => false,
+     *         'include' => 'api/v1/*',
+     *         'exclude' => ['api/v1/admin/*', 'api/v1/usher/*'],
+     *     ],
+     * ],
+     */
+    'headers' => [],
+
     'middleware' => [
         'web',
         'developer',

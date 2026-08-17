@@ -22,7 +22,7 @@ class SignedUrlService
         $directory = config("media.directory.{$inputs['type']}", config('media.directory.default'));
 
         $filename = MediaHelper::createFileName($inputs['filename'], $inputs['mime_type']);
-        
+
         $key = "{$directory}/{$filename}";
 
         ['url' => $url] = Storage::disk('s3')->temporaryUploadUrl($key, now()->addMinutes(20));

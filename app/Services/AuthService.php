@@ -7,6 +7,7 @@ use App\Models\UserOtp;
 use App\Enums\UserOtpFor;
 use App\Enums\UserStatus;
 use App\Libraries\Helper;
+use Laravel\Passport\AccessToken;
 use App\Notifications\WelcomeUser;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Date;
@@ -46,7 +47,7 @@ class AuthService
         return [
             'message' => __('message.register_success'),
             'data' => new UserResource($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken,
+            'token' => $user->createToken(config('app.name'))->accessToken,
         ];
     }
 
@@ -73,7 +74,7 @@ class AuthService
         return [
             'message' => __('message.login_success'),
             'data' => new UserResource($user),
-            'token' => $user->createToken(config('app.name'))->plainTextToken,
+            'token' => $user->createToken(config('app.name'))->accessToken,
         ];
     }
 
@@ -142,7 +143,7 @@ class AuthService
         ], function (User $user, string $password): void {
             $user->forceFill(['password' => $password])->save();
 
-            $user->tokens()->delete();
+            $user->tokens()->update(['revoked' => true]);
         });
 
         if ($status !== Password::PASSWORD_RESET) {
@@ -159,7 +160,11 @@ class AuthService
      */
     public function logout(User $user): array
     {
-        $user->currentAccessToken()->delete();
+        $token = $user->token();
+
+        if ($token instanceof AccessToken) {
+            $token->revoke();
+        }
 
         return [
             'message' => __('message.logout_success'),

@@ -8,7 +8,6 @@ use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
-use Dedoc\Scramble\Attributes\QueryParameter;
 use App\Http\Requests\User\UpdateLocaleRequest;
 use App\Http\Requests\User\UpdateProfileRequest;
 use App\Http\Requests\User\ChangePasswordRequest;
@@ -29,7 +28,6 @@ class UserController extends Controller
      *
      * @response UserResource
      */
-    #[QueryParameter('media', description: 'Comma separated media tags to include, e.g. profile.')]
     public function me(): JsonResponse
     {
         $user = $this->userService->resource((int) auth()->id());

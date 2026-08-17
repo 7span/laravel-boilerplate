@@ -28,6 +28,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'onesignal' => [
+        'apps' => [
+            'user' => [
+                'app_id' => env('ONESIGNAL_USER_APP_ID'),
+                'api_key' => env('ONESIGNAL_USER_API_KEY'),
+            ],
+            'admin' => [
+                'app_id' => env('ONESIGNAL_ADMIN_APP_ID'),
+                'api_key' => env('ONESIGNAL_ADMIN_API_KEY'),
+            ],
+        ],
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Str;
+use App\Http\Middleware\SetLocale;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\DeveloperAuth;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\MarkNotificationsAsRead;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('api/v1')
                 ->group(base_path('routes/api-v1.php'));
 
+            Route::middleware('api')
+                ->as('admin.')
+                ->prefix('api/v1/admin')
+                ->group(base_path('routes/admin-v1.php'));
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 
@@ -32,10 +39,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'developer' => DeveloperAuth::class,
+            'notification-read' => MarkNotificationsAsRead::class,
             'role' => RoleMiddleware::class,
         ]);
         $middleware->group('api', [
             'throttle:api',
+            SetLocale::class,
             SubstituteBindings::class,
         ]);
     })
