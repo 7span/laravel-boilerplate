@@ -50,6 +50,6 @@ class SettingService
             $setting->update(['value' => $inputs[$setting->key]]);
         }
 
-        return ['message' => __('entity.entityUpdated', ['entity' => 'Setting'])];
+        return ['message' => __('message.entity.entityUpdated', ['entity' => 'Setting'])];
     }
 }

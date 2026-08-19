@@ -7,6 +7,7 @@ use App\Models\UserOtp;
 use App\Enums\UserOtpFor;
 use App\Enums\UserStatus;
 use App\Libraries\Helper;
+use App\Models\UserDevice;
 use Laravel\Passport\AccessToken;
 use App\Notifications\WelcomeUser;
 use App\Exceptions\CustomException;
@@ -156,10 +157,21 @@ class AuthService
     }
 
     /**
+     * Revoke the current access token, and forget the device that is signing out so it
+     * stops receiving push notifications.
+     *
+     * @param  array<string, mixed>  $inputs
      * @return array{message: string}
      */
-    public function logout(User $user): array
+    public function logout(User $user, array $inputs = []): array
     {
+        if (! empty($inputs['onesignal_player_id'])) {
+            UserDevice::query()
+                ->where('user_id', $user->id)
+                ->where('onesignal_player_id', $inputs['onesignal_player_id'])
+                ->delete();
+        }
+
         $token = $user->token();
 
         if ($token instanceof AccessToken) {

@@ -17,7 +17,7 @@ class LanguageService
         $languages = array_values(config('language', []));
 
         if ($languages === []) {
-            throw new CustomException(__('entity.entityNotFound', ['entity' => 'Languages']), 404);
+            throw new CustomException(__('message.entity.entityNotFound', ['entity' => 'Languages']), 404);
         }
 
         return ['data' => $languages];
@@ -33,7 +33,7 @@ class LanguageService
         $path = lang_path("{$language}.json");
 
         if (! File::exists($path)) {
-            throw new CustomException(__('entity.entityNotFound', ['entity' => 'Language file']), 404);
+            throw new CustomException(__('message.entity.entityNotFound', ['entity' => 'Language file']), 404);
         }
 
         return json_decode(File::get($path), true) ?? [];

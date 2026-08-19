@@ -19,4 +19,10 @@ return [
     'notification_read_success' => 'Notifications marked as read.',
     'notification_unread_success' => 'Notifications marked as unread.',
     'onesignal_data_success' => 'Device registered for push notifications successfully.',
+    'entity' => [
+        'entityNotFound' => ':entity not found.',
+        'entityCreated' => ':entity created successfully.',
+        'entityUpdated' => ':entity has been updated successfully.',
+        'entityDeleted' => ':entity deleted successfully.',
+    ],
 ];

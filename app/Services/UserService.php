@@ -61,7 +61,7 @@ class UserService
         $user->update(['status' => $inputs['status']]);
 
         return [
-            'message' => __('entity.entityUpdated', ['entity' => 'User status']),
+            'message' => __('message.entity.entityUpdated', ['entity' => 'User status']),
             'user' => new UserResource($user),
         ];
     }
@@ -87,6 +87,6 @@ class UserService
 
         App::setLocale($inputs['locale']);
 
-        return ['message' => __('entity.entityUpdated', ['entity' => 'Language'])];
+        return ['message' => __('message.entity.entityUpdated', ['entity' => 'Language'])];
     }
 }

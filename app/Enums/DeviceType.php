@@ -10,10 +10,6 @@ enum DeviceType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::ANDROID => 'Android',
-            self::IOS => 'iOS',
-            self::WEB => 'Web',
-        };
+        return __('enum.' . $this->value);
     }
 }

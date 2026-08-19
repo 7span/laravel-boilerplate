@@ -31,8 +31,8 @@ return [
     'onesignal' => [
         'apps' => [
             'user' => [
-                'app_id' => env('ONESIGNAL_USER_APP_ID'),
-                'api_key' => env('ONESIGNAL_USER_API_KEY'),
+                'app_id' => env('ONESIGNAL_APP_ID'),
+                'api_key' => env('ONESIGNAL_API_KEY'),
             ],
             'admin' => [
                 'app_id' => env('ONESIGNAL_ADMIN_APP_ID'),

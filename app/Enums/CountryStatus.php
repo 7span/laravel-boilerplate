@@ -9,9 +9,6 @@ enum CountryStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
-        };
+        return __('enum.' . $this->value);
     }
 }

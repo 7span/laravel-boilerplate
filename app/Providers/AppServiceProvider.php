@@ -9,6 +9,7 @@ use Illuminate\Routing\Route;
 use Laravel\Passport\Passport;
 use App\Channels\DatabaseChannel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use App\Channels\UserOneSignalChannel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,7 @@ use Dedoc\Scramble\Support\Generator\OpenApi;
 use App\Support\Scramble\GetQBParameterExtractor;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Dedoc\Scramble\Configuration\ParametersExtractors;
+use Illuminate\Notifications\Events\NotificationSending;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -70,14 +72,24 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Swap the framework channels for the application ones so `via()` can keep
-     * returning the `database` and `onesignal` driver names.
+     * Swap the framework channels for the application ones so `via()` can keep returning the
+     * `database` and `onesignal` driver names, and make both honour the notification switch.
      */
     protected function configureNotificationChannels(): void
     {
         Notification::resolved(function (ChannelManager $manager): void {
             $manager->extend('database', fn (): DatabaseChannel => new DatabaseChannel);
             $manager->extend('onesignal', fn (): UserOneSignalChannel => new UserOneSignalChannel);
+        });
+
+        // When notifications are off, block database and push. Mail still sends, so the OTP works.
+        Event::listen(function (NotificationSending $event): ?bool {
+            if (config('site.notification_enabled')) {
+                return null;
+            }
+
+            // false cancels the send, null leaves it to other listeners.
+            return in_array($event->channel, ['database', 'onesignal'], true) ? false : null;
         });
     }
 
