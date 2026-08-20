@@ -16,4 +16,13 @@ return [
     'user_profile_update' => 'Your profile updated successfully.',
     'current_password_incorrect' => 'The current password is incorrect.',
     'password_must_be_different' => 'The new password must be different from your current password.',
+    'notification_read_success' => 'Notifications marked as read.',
+    'notification_unread_success' => 'Notifications marked as unread.',
+    'onesignal_data_success' => 'Device registered for push notifications successfully.',
+    'entity' => [
+        'entityNotFound' => ':entity not found.',
+        'entityCreated' => ':entity created successfully.',
+        'entityUpdated' => ':entity has been updated successfully.',
+        'entityDeleted' => ':entity deleted successfully.',
+    ],
 ];

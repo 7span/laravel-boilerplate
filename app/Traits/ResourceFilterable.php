@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\MissingAttributeException;
 
 trait ResourceFilterable
 {
@@ -36,10 +37,17 @@ trait ResourceFilterable
                 continue;
             }
 
+            try {
+                $value = $this->$field;
+            } catch (MissingAttributeException) {
+                // `fields[...]` did not select this column.
+                continue;
+            }
+
             $data[$field] = match ($casts[$field] ?? null) {
-                'datetime' => $this->$field?->format('d-m-Y H:i:s'),
-                'date' => $this->$field?->format('d-m-Y'),
-                default => $this->$field,
+                'datetime' => $value?->format('d-m-Y H:i:s'),
+                'date' => $value?->format('d-m-Y'),
+                default => $value,
             };
         }
 

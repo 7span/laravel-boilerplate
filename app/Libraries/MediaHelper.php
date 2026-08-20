@@ -78,7 +78,7 @@ class MediaHelper
         $fileObj->delete();
 
         return [
-            'message' => __('entity.entityDeleted', ['entity' => 'Media']),
+            'message' => __('message.entity.entityDeleted', ['entity' => 'Media']),
         ];
     }
 

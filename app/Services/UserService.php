@@ -54,6 +54,20 @@ class UserService
 
     /**
      * @param  array<string, mixed>  $inputs
+     * @return array{message: string, user: UserResource}
+     */
+    public function changeStatus(User $user, array $inputs): array
+    {
+        $user->update(['status' => $inputs['status']]);
+
+        return [
+            'message' => __('message.entity.entityUpdated', ['entity' => 'User status']),
+            'user' => new UserResource($user),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $inputs
      * @return array{message: string}
      */
     public function changePassword(User $user, array $inputs): array
@@ -73,6 +87,6 @@ class UserService
 
         App::setLocale($inputs['locale']);
 
-        return ['message' => __('entity.entityUpdated', ['entity' => 'Language'])];
+        return ['message' => __('message.entity.entityUpdated', ['entity' => 'Language'])];
     }
 }

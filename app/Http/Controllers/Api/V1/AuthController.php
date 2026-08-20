@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
 use App\Traits\ApiResponser;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\LogoutRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\VerifyOtpRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
@@ -102,13 +102,14 @@ class AuthController extends Controller
     /**
      * Logout.
      *
-     * Revokes the access token used to make the request.
+     * Revokes the access token used to make the request. Pass the device's
+     * `onesignal_player_id` to also unregister it from push notifications.
      *
      * @response array{message: string}
      */
-    public function logout(): JsonResponse
+    public function logout(LogoutRequest $request): JsonResponse
     {
-        $data = $this->authService->logout(auth()->user());
+        $data = $this->authService->logout(auth()->user(), $request->validated());
 
         return $this->success($data);
     }
