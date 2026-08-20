@@ -7,12 +7,12 @@
 
 <p align="center">
   <b>A robust starter project using <code>Laravel 13</code> for rapid, modern API development.</b><br>
-  <i>Clean structure, best practices, authentication, and a suite of developer tools out of the box.</i>
+  <i>Clean structure, best practices, token authentication, and a suite of developer tools out of the box.</i>
 </p>
 
 <p align="center">
   <img alt="Laravel" src="https://img.shields.io/badge/Laravel-13.x-red?logo=laravel&logoColor=white">
-  <img alt="PHP" src="https://img.shields.io/badge/PHP-8.3+-777bb4?logo=php&logoColor=white">
+  <img alt="PHP" src="https://img.shields.io/badge/PHP-8.3%2B-777bb4?logo=php&logoColor=white">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg">
   <img alt="Code Style" src="https://img.shields.io/badge/code%20style-pint-ff69b4">
 </p>
@@ -23,206 +23,162 @@
 
 ```bash
 # 1. Clone the repository
-$ git clone <your-repo-url>
-$ cd laravel-boilerplate
+git clone <your-repo-url>
+cd laravel-boilerplate
 
-# 2. Install dependencies
-$ composer install
-$ npm install && npm run build
+# 2. One-shot setup (install, .env, key, migrate, assets)
+composer setup
 
-# 3. Copy .env and configure
-$ cp .env.example .env
+# 3. Configure Git hooks (Husky)
+git config core.hooksPath .husky
 
-# 4. Configure Git hooks (Husky)
-$ git config core.hooksPath .husky
-
-# 5. Generate app key and Passport signing keys
-$ php artisan key:generate
-$ php artisan passport:keys
-
-# 6. Run migrations and seeders
-$ php artisan migrate --seed
-
-# 7. Start the server
-$ php artisan serve
+# 4. Start everything (server + queue + logs + vite)
+composer dev
 ```
 
-`composer setup` runs steps 2, 3, 5 and 6 in one go, and `composer dev` boots the server,
-queue worker, log tail and Vite together.
+<details>
+<summary>Manual setup (instead of <code>composer setup</code>)</summary>
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+npm install && npm run build
+php artisan serve
+```
+
+</details>
+
+> **Requirements:** PHP `^8.3`, Composer, Node.js. `DB_CONNECTION` defaults to `sqlite`; switch to MySQL/PostgreSQL in `.env` if needed. Redis (`predis`) is used for Horizon queues.
 
 ---
 
 ## ✨ Features & Packages
 
--   **[Authentication (Laravel Passport)](https://laravel.com/docs/13.x/passport)**
+-   **[Authentication (Laravel Sanctum)](https://laravel.com/docs/13.x/sanctum)** — token-based API auth
 -   **[Role & Permission Management (Spatie Laravel Permission)](https://spatie.be/docs/laravel-permission/v6/introduction)**
--   **[Media/File Management (Plank Mediable)](https://github.com/plank/laravel-mediable)**
--   **[Query String Filtering & Sorting (Spatie Query Builder)](https://spatie.be/docs/laravel-query-builder)**
--   **[API Documentation (Scramble)](https://scramble.dedoc.co)**
--   **[Push Notifications (OneSignal channel)](https://github.com/laravel-notification-channels/onesignal)**
+-   **[Query Filtering & Sorting (Spatie Query Builder)](https://spatie.be/docs/laravel-query-builder)**
+-   **[Media/File Management (Plank Mediable)](https://github.com/plank/laravel-mediable)** + S3 via [Flysystem](https://github.com/thephpleague/flysystem-aws-s3-v3)
+-   **[API Documentation (Scramble)](https://scramble.dedoc.co/)** — generated from types, no annotations required
 -   **[Request Monitoring (Laravel Telescope)](https://laravel.com/docs/13.x/telescope)**
 -   **[Log Management (Log Viewer)](https://github.com/opcodesio/log-viewer)**
 -   **[Queue Monitoring (Laravel Horizon)](https://laravel.com/docs/13.x/horizon)**
+-   **[Push Notifications (OneSignal channel)](https://github.com/laravel-notification-channels/onesignal)**
 -   **[Code Style (Laravel Pint)](https://laravel.com/docs/13.x/pint)**
--   **[Static Analysis (Larastan/PHPStan)](https://github.com/larastan/larastan)**
--   **Developer panel protection** — first-party `DeveloperAuth` middleware, configured in `config/developer.php`
+-   **[Static Analysis (Larastan/PHPStan)](https://github.com/larastan/larastan)** — level 5 + strict & banned-code rules
+-   **[AI-assisted development (Laravel Boost)](https://laravel.com/docs/13.x/boost)** — plus `.ai/` guidelines & skills
 
 ---
 
 ## ⚙️ Custom Environment Variables
 
-> In addition to the standard Laravel variables, set these in your `.env`:
+> In addition to standard Laravel variables, set these in your `.env`:
 
--   `FRONT_WEBSITE_URL` — The URL of your frontend application, used in mails and reset links
+-   `FRONT_WEBSITE_URL` — The URL of your frontend application
 -   `MASTER_PASSWORD` — Master password for privileged/admin operations
 -   `MASTER_OTP` — Master OTP code for bypassing OTP verification
+-   `SOFT_DELETE_RETENTION_DAYS` — Days to retain soft-deleted records (default `90`)
+-   `CDN_ENABLE` — Enable/disable CDN usage for media URLs
+-   `CDN_URL` — The base URL of your CDN for media assets
+-   `TEMP_FILE_DELETE_AFTER_DAYS` — Days before unlinked/temp uploads are purged (default `2`)
 -   `DEVELOPER_USERNAME` / `DEVELOPER_PASSWORD` — Credentials for the developer panel
--   `LOG_DAILY_DAYS` — Days to retain log files, defaults to 30
--   `TELESCOPE_ENABLED` / `TELESCOPE_PATH` — Toggle Telescope and where it is served
--   `HORIZON_PATH` — Where the Horizon dashboard is served
--   `LOG_VIEWER_ENABLED` — Toggle the Log Viewer
--   `API_VERSION` — Version reported by the generated OpenAPI documents
--   `CDN_ENABLE` / `CDN_URL` — Toggle and base URL of your CDN for media assets
--   `AWS_URL` — Public base URL of the S3 bucket, set it when files are served through a CDN
--   `TEMP_FILE_DELETE_AFTER_DAYS` — Age at which unclaimed uploads are pruned
--   `SOFT_DELETE_RETENTION_DAYS` — Age at which soft-deleted rows are hard deleted
--   `NOTIFICATION_ENABLED` — Enable or disable the notification system (true/false)
--   `ONESIGNAL_APP_ID` / `ONESIGNAL_API_KEY` — OneSignal credentials for the **user** app
--   `ONESIGNAL_ADMIN_APP_ID` / `ONESIGNAL_ADMIN_API_KEY` — OneSignal credentials for the **admin** app
--   `PASSPORT_PRIVATE_KEY` / `PASSPORT_PUBLIC_KEY` — Only when the token signing keys come from the environment instead of `storage/oauth-*.key`
-
-> `QUEUE_CONNECTION` and `CACHE_STORE` ship as `redis` because Horizon only supervises the
-> redis queue driver. Switching them to `database` disables the Horizon dashboard.
+-   `TELESCOPE_PATH` / `HORIZON_PATH` — Override developer tool paths (default `developer/telescope`, `developer/horizon`)
 
 ---
 
-## 🗂️ Custom Configuration File Structure
+## 🗂️ Custom Configuration Files
 
--   `site.php` — Site-wide settings (frontend URL, pagination, roles, OTP, master password, updatable setting keys)
+-   `site.php` — Site-wide settings (frontend URL, pagination limit, master password, roles, OTP, soft-delete retention)
 -   `media.php` — Media/file upload settings (tags, directories, CDN, aggregate types, MIME mappings)
--   `developer.php` — Developer panel credentials, session key and redirect route
--   `language.php` — Locales exposed by the `languages` endpoints
+-   `developer.php` — Developer panel credentials, session key, and auth redirect route
+-   `scramble.php` — API documentation generation settings
 
 ---
 
-## 🌍 Localization File Structure
+## 🌍 Localization
 
-Localization files are in `lang/<locale>/`:
+Localization files live in `lang/en/`:
 
--   `message.php` — General API messages, plus the nested `entity.*` lines (`:entity not found.` etc.)
--   `email.php` — Email subjects and body strings
--   `enum.php` — Human readable labels for the enums in `app/Enums/`
--   `auth.php`, `validation.php` — Framework strings, published so they can be customised
+-   `email.php` — Email-related strings
+-   `entity.php` — Entity names/messages
+-   `message.php` — General messages
 
-Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` functions.
-`lang/ar/email.php` is included as a reference translation, and the locale is chosen per request
-from the `locale` header, falling back to the authenticated user's `locale` column
-(see `app/Http/Middleware/SetLocale.php`).
+Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` helpers. Models can use the `HasTranslations` trait for per-locale attributes.
 
 ---
 
 ## 📦 API Overview
 
-All routes are versioned. `routes/api-v1.php` is served under `api/v1`, and
-`routes/admin-v1.php` under `api/v1/admin`.
+All API routes are versioned and registered in `routes/api-v1.php` under the `api/v1` prefix (see `bootstrap/app.php`).
 
 ### Supported Endpoints
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `POST` | `api/v1/register` | Register a user |
-| `POST` | `api/v1/login` | Issue an access token |
-| `POST` | `api/v1/forgot-password` | Mail a forgot-password OTP |
-| `POST` | `api/v1/forgot-password/verify-otp` | Verify the OTP and receive a reset token |
-| `POST` | `api/v1/reset-password` | Reset the password with that token |
-| `POST` | `api/v1/logout` | Revoke the current token |
-| `GET` | `api/v1/me` | Authenticated user profile |
-| `POST` | `api/v1/me` | Update profile |
-| `POST` | `api/v1/change-password` | Change password |
-| `POST` | `api/v1/locale` | Update the user's locale |
-| `GET` | `api/v1/countries` | List countries (filter, sort, paginate) |
-| `GET` | `api/v1/languages`, `api/v1/languages/{language}` | List locales, fetch one translation file |
-| `GET` | `api/v1/notifications` | List notifications |
-| `GET` | `api/v1/notifications/unread-count` | Unread counter |
-| `POST` | `api/v1/notifications/read`, `api/v1/notifications/unread` | Mark all, or given ids, as read/unread |
-| `POST` | `api/v1/notifications/onesignal` | Register a device for push |
-| `POST` | `api/v1/generate-signed-url` | Pre-signed S3 upload URL |
-| `DELETE` | `api/v1/media/{media}` | Detach and delete a media record |
-| `GET` | `api/v1/admin/settings` | List settings |
-| `PUT` | `api/v1/admin/settings` | Update the keys listed in `site.setting_keys` |
-| `POST` | `api/v1/admin/users/{user}/change-status` | Activate/deactivate a user |
+-   **Auth:** Register, Login, Logout, Get Profile, Forget Password (OTP), Reset Password
+-   **User:** Update Profile, Change Password, Change Status (Admin)
+-   **Country:** List countries (with filters)
+-   **Language:** List languages
+-   **Master Settings:** List and detail endpoints
+-   **Signed URL:** Generate signed URLs for file uploads
 
-> Documentation is auto-generated by Scramble: the user API at `/developer/docs/api`
-> and the admin API at `/developer/docs/admin` (JSON at the same paths with a `.json` suffix).
+### API Documentation
 
-### API Folder Structure
+Scramble generates the OpenAPI spec from your controllers, requests, and resources — no annotations needed. It is exposed behind the developer panel (configured in `app/Providers/AppServiceProvider.php`):
 
--   `app/Http/Controllers/Api/` — API controllers (RESTful, thin, service-driven)
--   `app/Http/Requests/` — FormRequest classes for validation
--   `app/Http/Resources/` — API resource and collection transformers
--   `app/Services/` — Business logic and service classes
+-   `/developer/docs/api` — Interactive UI
+-   `/developer/docs/api.json` — OpenAPI document
+
+Bearer-token security is applied to the whole document, and `#[Group]` / `#[SchemaName]` attributes are used to organise operations and schemas.
+
+### Folder Structure
+
+-   `app/Http/Controllers/Api/V1/` — API controllers (RESTful, thin, service-driven)
+-   `app/Http/Requests/` — FormRequest validation classes (grouped by domain)
+-   `app/Http/Resources/` — API resource & collection transformers
+-   `app/Services/` — Business logic (`AuthService`, `UserService`)
 -   `app/Models/` — Eloquent models
--   `app/Enums/` — Backed enums for statuses and types, with translated labels
--   `app/Rules/` — Custom validation rules
--   `app/Libraries/` — Helper libraries
--   `app/Traits/` — Shared model, response and filtering behaviour
--   `app/Channels/` — Custom notification channels
--   `app/Support/Scramble/` — Documentation extractors
+-   `app/Enums/` — Enums for statuses and typed constants (`UserStatus`)
+-   `app/Traits/` — Reusable model/controller traits
+-   `app/Libraries/` — Helper classes (`Helper`)
+-   `app/Notifications/` — Notification classes (`WelcomeUser`)
+-   `app/Exceptions/` — `CustomException` for consistent API errors
 
-### API Documentation with Minimal Code in Controllers
+### Reusable Traits
 
-Scramble infers request bodies, responses and query parameters from FormRequest rules,
-API Resources and route signatures, so controllers stay free of annotations. Two documents are
-registered in `app/Providers/AppServiceProvider.php`, one per route prefix. Attributes such as
-`#[Group]` and `#[SchemaName]` refine the output where the inference needs a hint, and
-`app/Support/Scramble/GetQBParameterExtractor.php` documents the Spatie Query Builder
-filter/sort/include parameters automatically.
+-   `ApiResponser` — Standardised success/error JSON responses
+-   `BaseModel` — Shared model conventions
+-   `ResourceFilterable` — Filters, sorts, includes & appends via Spatie Query Builder
+-   `HasTranslations` — Locale-aware attribute accessors
+-   `HasUserActions` — Auto-fills created-by / updated-by user IDs
+
+### Exception Handling
+
+`bootstrap/app.php` converts API `404`s into localized `CustomException` messages — both missing models (`... data not found`) and unknown routes (`route ... not found`) — so clients always get a consistent JSON error shape.
 
 ---
 
 ## 🛠️ Custom Functionality
 
-### Custom Artisan Commands
+### Media Handling
 
--   `php artisan media:delete-temp-files` — Deletes unclaimed uploads older than `TEMP_FILE_DELETE_AFTER_DAYS` and their `temp_files` rows (scheduled daily)
--   `php artisan system:hard-delete-data` — Permanently removes rows soft-deleted more than `SOFT_DELETE_RETENTION_DAYS` ago (opt-in, commented out in `routes/console.php`)
--   `php artisan telescope:prune --hours=24` — Prunes Telescope entries (scheduled daily)
-
-### Custom Validation Rules & Libraries
-
--   **MediaRule:** Reusable validation for media/image fields (tags, mime types, nullable/required)
--   **MediaHelper:** File naming, extension detection, media attachment/deletion, aggregate type detection
--   **Helper:** OTP generation
--   **Image Optimization:** Configured via `config/mediable.php` for automatic optimization (JPEG, PNG, GIF, WebP, AVIF)
-
-### Uploads
-
-Clients ask for a pre-signed URL (`POST api/v1/generate-signed-url`), `PUT` the file straight to S3,
-then send the returned key back with the owning resource. Each issued URL records a `temp_files`
-row, so anything never claimed is pruned by `media:delete-temp-files`.
+-   Uploads are managed through Mediable with tags/directories declared in `config/media.php`
+-   Optional CDN rewriting of media URLs (`CDN_ENABLE`, `CDN_URL`)
+-   Unattached/temp files are cleaned up after `TEMP_FILE_DELETE_AFTER_DAYS`
+-   `App\Http\Resources\Media\Resource` exposes a consistent media payload
 
 ### Mail Layout Customization
 
 -   All emails use a custom Blade layout: `resources/views/emails/layouts/master.blade.php`
-    -   Branded header with logo
+    -   Branded header (`emails/includes/header.blade.php`) with logo
     -   Localized greetings and sign-off
     -   Centralized content section (`@yield('content')`)
     -   Footer with copyright
 
-### Notification System
+### Notifications
 
--   This boilerplate includes a robust notification system using Laravel's native features.
-
-    -   **Channels supported:** `database` and `onesignal`, both swapped for the app's own
-        implementations in `app/Channels/` so notifications write the extra `notifications` columns
-        (`user_id`, `sent_by`, `title`, `description`, `type`) and push to the right OneSignal app.
-    -   **How it works:** Notifications are classes in `app/Notifications/`. Add new types by adding
-        classes there; `NOTIFICATION_ENABLED` is the master switch.
-    -   **API integration:** Endpoints are available for listing, unread counts, marking read/unread,
-        and registering devices. Requests through the `notification-read` middleware
-        (`app/Http/Middleware/MarkNotificationsAsRead.php`) mark the listed notifications as read.
-
-> See the `app/Notifications/` directory and related controllers/services for implementation details.
+-   Notifications are plain Laravel notification classes in `app/Notifications/` (e.g. `WelcomeUser`), delivered over mail/database channels
+-   OneSignal channel is installed for push notifications
+-   Add new types by creating additional classes in `app/Notifications/`
 
 ---
 
@@ -230,41 +186,55 @@ row, so anything never claimed is pruned by `media:delete-temp-files`.
 
 ### Developer Panel
 
--   `/developer/login` — Login for the developer tools
--   `/developer/dashboard` — Index of everything below
--   `/developer/telescope` — Laravel Telescope
--   `/developer/log-viewer` — Log Viewer
--   `/developer/horizon` — Laravel Horizon
--   `/developer/docs/api`, `/developer/docs/admin` — Scramble API documentation
--   **Authentication:** Protected by `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD` in `.env`,
-    enforced by the `developer` middleware alias
+All tooling sits behind the `developer` prefix, guarded by the `DeveloperAuth` middleware (session-based):
 
-### Pre-commit Checklist & Code Quality
+| Path                        | Tool                     |
+| --------------------------- | ------------------------ |
+| `/developer/login`          | Login for developer area |
+| `/developer/dashboard`      | Developer dashboard      |
+| `/developer/telescope`      | Laravel Telescope        |
+| `/developer/horizon`        | Laravel Horizon          |
+| `/developer/log-viewer`     | Log Viewer               |
+| `/developer/docs/api`       | API documentation UI     |
 
--   Code style check: `./vendor/bin/pint`
--   Static analysis: `./vendor/bin/phpstan --memory-limit=2G analyse`
--   Run tests: `php artisan test`
+-   **Authentication:** `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD` in `.env` (see `config/developer.php`)
 
-> If you have issues committing, ensure pre-commit hooks are executable:
+### Code Quality
+
+```bash
+./vendor/bin/pint                                   # auto-format (Laravel preset + custom rules)
+./vendor/bin/phpstan --memory-limit=2G analyse      # static analysis (level 5)
+composer test                                       # clear config + run the test suite
+```
+
+A Husky `pre-commit` hook runs Pint, re-stages the fixes, then blocks the commit if PHPStan fails.
+
+> If you have issues committing, ensure the hook is executable:
 >
 > ```bash
 > chmod ug+x .husky/pre-commit
 > ```
 
--   **Pint:** Run `./vendor/bin/pint` to auto-format code. VS Code users can bind Pint to `Ctrl+S` for instant formatting.
--   **Larastan/PHPStan:** Run `./vendor/bin/phpstan analyse` for static analysis.
+VS Code / Cursor users can bind Pint to `Ctrl+S` for instant formatting.
+
+### AI Assistance
+
+-   `.ai/guidelines/basic-guidelines.md` — project coding guidelines for AI agents
+-   `.ai/skills/laravel-api-generator` — scaffold API modules following this boilerplate's conventions
+-   `.ai/skills/php-guidelines-from-7span` — 7Span PHP standards
+-   Laravel Boost is installed (`composer require laravel/boost --dev` already done) and wired up for Claude Code & Cursor
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change. Make sure Pint, PHPStan, and the test suite pass before pushing.
 
 ---
 
 ## 📄 License
 
-[MIT](LICENSE)
+[MIT](https://opensource.org/licenses/MIT)
 
 ---
 
