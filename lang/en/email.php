@@ -10,6 +10,12 @@ return [
         'action' => 'Visit Website',
         'footer' => 'If you have any questions, please don\'t hesitate to contact us.',
     ],
+    'forgot_password' => [
+        'subject' => 'Forgot Password Request',
+        'line1' => 'We received a request to reset your password. If you did not make this request, please ignore this email.',
+        'line2' => 'Your OTP is :otp. Please note that it is valid for the next :valid_minutes minutes.',
+        'footer' => 'If you have any questions, please contact our support team.',
+    ],
     'app' => [
         'name' => config('app.name'),
     ],

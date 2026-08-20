@@ -7,18 +7,6 @@ use App\Traits\HasUserActions;
 use Plank\Mediable\Media as MediableMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-/**
- * @property int $id
- * @property string $disk
- * @property string $directory
- * @property string $filename
- * @property string $extension
- * @property string $mime_type
- * @property string $aggregate_type
- * @property int $size
- * @property int|null $created_at
- * @property int|null $updated_at
- */
 #[Fillable([
     'disk',
     'directory',

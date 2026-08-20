@@ -66,8 +66,12 @@ return [
      * Set this to `false` if you don't want that and keep the requested relationship names as-is and allows you to
      * request the fields using a camelCase relationship name:
      * GET /users?include=userOwner&fields[userOwner]=id,name
+     *
+     * Kept `false` so the `fields[...]` key is the `include` alias itself, which
+     * BaseModel::normalizeRelationFieldKeys() maps onto the relationship method:
+     * GET /notifications?include=sender&fields[sender]=id,first_name
      */
-    'convert_relation_names_to_snake_case_plural' => true,
+    'convert_relation_names_to_snake_case_plural' => false,
 
     /*
      * This is an alternative to the previous option if you don't want to use default snake case plural for fields[relationship].
