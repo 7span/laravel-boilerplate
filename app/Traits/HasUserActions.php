@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
 
 trait HasUserActions
 {
@@ -12,22 +13,17 @@ trait HasUserActions
      */
     protected static function bootHasUserActions(): void
     {
-        static::creating(function ($model) {
-            if (Auth::check() && Schema::hasColumn($model->getTable(), 'created_by')) {
-                $model->created_by = Auth::id();
-            }
-        });
+        static::creating(fn (Model $model) => self::setAuthUserId($model, 'created_by'));
+        static::updating(fn (Model $model) => self::setAuthUserId($model, 'updated_by'));
+        static::deleting(fn (Model $model) => self::setAuthUserId($model, 'deleted_by'));
+    }
 
-        static::updating(function ($model) {
-            if (Auth::check() && Schema::hasColumn($model->getTable(), 'updated_by')) {
-                $model->updated_by = Auth::id();
-            }
-        });
+    private static function setAuthUserId(Model $model, string $column): void
+    {
+        if (! Auth::check() || ! Schema::hasColumn($model->getTable(), $column)) {
+            return;
+        }
 
-        static::deleting(function ($model) {
-            if (Auth::check() && Schema::hasColumn($model->getTable(), 'deleted_by')) {
-                $model->deleted_by = Auth::id();
-            }
-        });
+        $model->setAttribute($column, Auth::id());
     }
 }

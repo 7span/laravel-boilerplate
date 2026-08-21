@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
+use Illuminate\Http\JsonResponse;
 use App\Services\SignedUrlService;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
-use App\Http\Requests\SignedUrl\Request as SignedUrlRequest;
+use App\Http\Requests\SignedUrl\GenerateSignedUrlRequest;
 
 /**
  * @tags SignedUrl
@@ -16,24 +17,22 @@ class SignedUrlController extends Controller
 {
     use ApiResponser;
 
-    private SignedUrlService $signedUrlService;
-
-    public function __construct()
-    {
-        $this->signedUrlService = new SignedUrlService;
-    }
+    public function __construct(private readonly SignedUrlService $signedUrlService) {}
 
     /**
      * Generate URL.
+     *
+     * Returns a temporary URL the client PUTs the file to, plus the metadata to
+     * send back on the endpoint that should own the file.
      *
      * @unauthenticated
      *
      * @response array{url: string, key: string, directory: string, filename: string}
      */
-    public function __invoke(SignedUrlRequest $request)
+    public function __invoke(GenerateSignedUrlRequest $request): JsonResponse
     {
-        $signedUrlObj = $this->signedUrlService->create($request->validated());
+        $data = $this->signedUrlService->create($request->validated());
 
-        return $this->success($signedUrlObj, 200);
+        return $this->success($data);
     }
 }

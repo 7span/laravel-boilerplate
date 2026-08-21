@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use App\Services\CountryService;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Http\Resources\Country\Resource as CountryResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
  * @tags Country
@@ -17,22 +19,19 @@ class CountryController extends Controller
 {
     use ApiResponser;
 
-    private CountryService $countryService;
-
-    public function __construct()
-    {
-        $this->countryService = new CountryService;
-    }
+    public function __construct(private readonly CountryService $countryService) {}
 
     /**
-     * List.
+     * List countries.
      *
      * @unauthenticated
+     *
+     * @response AnonymousResourceCollection<LengthAwarePaginator<CountryResource>>
      */
-    public function __invoke(Request $request)
+    public function __invoke(): ResourceCollection
     {
-        $countries = $this->countryService->collection($request->all());
+        $data = $this->countryService->collection();
 
-        return CountryResource::collection($countries);
+        return $this->collection(CountryResource::collection($data));
     }
 }

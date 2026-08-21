@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Setting;
 use App\Traits\PaginationTrait;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SettingService
 {
@@ -17,30 +19,37 @@ class SettingService
         $this->settingObj = new Setting;
     }
 
-    public function collection(array $inputs)
+    /**
+     * Fetch the settings through the query builder so `filter`, `sort` and
+     * `fields` apply. A guest only ever sees the public ones.
+     *
+     * @return LengthAwarePaginator<int, Setting>|Collection<int, Setting>
+     */
+    public function collection(): LengthAwarePaginator|Collection
     {
         $settings = $this->settingObj->getQB();
 
         if (! Auth::guard('api')->check()) {
-            $settings = $settings->where('is_public', true);
+            $settings->where('is_public', true);
         }
 
         return $this->paginationAttribute($settings);
     }
 
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string}
+     */
     public function update(array $inputs): array
     {
-        $settings = $this->settingObj->getQB()
+        $settings = $this->settingObj
             ->whereIn('key', array_keys($inputs))
-            ->get()
-            ->keyBy('key');
+            ->get();
 
-        foreach ($inputs as $key => $value) {
-            $settings[$key]->update(['value' => $value]);
+        foreach ($settings as $setting) {
+            $setting->update(['value' => $inputs[$setting->key]]);
         }
 
-        $data['message'] = __('entity.entityUpdated', ['entity' => 'Master Setting']);
-
-        return $data;
+        return ['message' => __('message.entity.entityUpdated', ['entity' => 'Setting'])];
     }
 }

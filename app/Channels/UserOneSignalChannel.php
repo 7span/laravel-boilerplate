@@ -11,14 +11,12 @@ use NotificationChannels\OneSignal\Exceptions\CouldNotSendNotification;
 
 class UserOneSignalChannel extends OneSignalChannel
 {
+    /** @var array<string, OneSignalClient> */
+    private array $clients = [];
+
     public function __construct()
     {
-        $oneSignal = new OneSignalClient(
-            config('site.onesignal.app_id'),
-            config('site.onesignal.api_key'),
-            null
-        );
-        parent::__construct($oneSignal);
+        // The credentials depend on the notifiable, so the client is set in send().
     }
 
     /**
@@ -31,25 +29,38 @@ class UserOneSignalChannel extends OneSignalChannel
     public function send($notifiable, Notification $notification): ResponseInterface
     {
         if (! config('site.notification_enabled')) {
-            // Return a dummy ResponseInterface (e.g., an empty response) if notification is disabled
-            return new Response(204); // No Content
+            return new Response(204);
         }
 
-        $userIds = $notifiable->user_devices()->pluck('onesignal_player_id')->toArray();
+        $userIds = $notifiable->routeNotificationFor('OneSignal', $notification);
 
         if (empty($userIds)) {
-            // Return a dummy ResponseInterface if no user IDs
-            return new Response(204); // No Content
+            return new Response(204);
         }
 
-        $response = $this->oneSignal->sendNotificationCustom(
-            $this->payload($notifiable, $notification, $userIds)
+        $this->oneSignal = $this->clientFor($notifiable, $notification);
+
+        return parent::send($notifiable, $notification);
+    }
+
+    /**
+     * Resolve the client of the OneSignal app this notification is sent through, once per app.
+     *
+     * A notification may declare `public string $oneSignalApp` to pick the app itself,
+     * which a user holding more than one role needs; otherwise the notifiable decides.
+     *
+     * @param  mixed  $notifiable
+     */
+    private function clientFor($notifiable, Notification $notification): OneSignalClient
+    {
+        $app = property_exists($notification, 'oneSignalApp')
+            ? $notification->oneSignalApp
+            : $notifiable->routeNotificationFor('OneSignalApp', $notification) ?? config('site.roles.user');
+
+        return $this->clients[$app] ??= new OneSignalClient(
+            config("services.onesignal.apps.{$app}.app_id"),
+            config("services.onesignal.apps.{$app}.api_key"),
+            null
         );
-
-        if ($response->getStatusCode() !== 200) {
-            throw CouldNotSendNotification::serviceRespondedWithAnError($response);
-        }
-
-        return $response;
     }
 }

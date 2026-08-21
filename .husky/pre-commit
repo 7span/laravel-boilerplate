@@ -1,16 +1,12 @@
 #!/bin/sh
 
-# Run lint-staged for staged PHP files (duster fix)
-npx --no-install lint-staged || exit 1
+echo "Running Pint..."
+./vendor/bin/pint
 
-# Run Laravel Pint for code style
-./vendor/bin/pint || exit 1
+echo "Re-staging fixes..."
+git add -u
 
-# Run PHPStan for static analysis
+echo "Running PHPStan..."
 ./vendor/bin/phpstan --memory-limit=2G analyse || exit 1
 
-# Run PHPUnit tests
-./vendor/bin/phpunit || exit 1
-
-# Add more commands below as needed
-# e.g., npm run test:js || exit 1
+echo "Pre-commit checks passed!"

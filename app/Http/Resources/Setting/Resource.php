@@ -16,6 +16,7 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string<Setting> */
     protected $model = Setting::class;
 
     /**
@@ -24,14 +25,12 @@ class Resource extends JsonResource
      *     key: string,
      *     value: mixed,
      *     collection: string|null,
-     *     is_public: bool|int,
+     *     is_public: bool,
      *     updated_by: int|null
      * }
      */
     public function toArray(Request $request): array
     {
-        $data = $this->fields();
-
-        return $data;
+        return $this->fields();
     }
 }

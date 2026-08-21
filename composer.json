@@ -1,62 +1,45 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
-        "aws/aws-sdk-php": "^3.341",
-        "dedoc/scramble-pro": "^0.8.12",
-        "dedoc/scramble": "^0.13.16",
-        "guzzlehttp/guzzle": "^7.9",
-        "guzzlehttp/psr7": "^2.7",
+        "php": "^8.4",
+        "aws/aws-sdk-php": "^3.390",
+        "dedoc/scramble": "^0.13.38",
         "laravel-notification-channels/onesignal": "^2.8",
-        "laravel/framework": "^12.7.2",
-        "laravel/horizon": "^5.31",
-        "laravel/passport": "^13.0",
-        "laravel/pulse": "^1.4",
-        "laravel/telescope": "^5.5",
-        "laravel/tinker": "^2.10.1",
-        "league/flysystem-aws-s3-v3": "^3.0",
-        "opcodesio/log-viewer": "^3.15",
-        "plank/laravel-mediable": "^6.3",
-        "predis/predis": "^2.3",
-        "spatie/laravel-littlegatekeeper": "^1.1",
-        "spatie/laravel-permission": "^6.16",
-        "spatie/laravel-query-builder": "^6.3"
+        "laravel/framework": "^13.8",
+        "laravel/horizon": "^5.48",
+        "laravel/passport": "^13.7",
+        "laravel/telescope": "^5.22",
+        "laravel/tinker": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.35",
+        "opcodesio/log-viewer": "^3.24",
+        "plank/laravel-mediable": "^7.0",
+        "predis/predis": "^3.5",
+        "spatie/laravel-permission": "^8.3",
+        "spatie/laravel-query-builder": "^7.3"
     },
     "require-dev": {
-        "beyondcode/laravel-query-detector": "^2.1",
-        "ekino/phpstan-banned-code": "^3.0",
+        "ekino/phpstan-banned-code": "^3.2",
         "fakerphp/faker": "^1.23",
-        "larastan/larastan": "^3.0",
-        "laravel/boost": "^2.0",
-        "laravel/pint": "^1.22",
-        "laravel/sail": "^1.41",
+        "larastan/larastan": "^3.10",
+        "laravel/boost": "^2.5",
+        "laravel/pail": "^1.2.5",
+        "laravel/pao": "^1.0.6",
+        "laravel/pint": "^1.27",
+        "laravel/sail": "^1.66",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^11.0",
-        "spatie/laravel-ignition": "^2.4",
-        "tightenco/duster": "^2.7"
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-laravel": "^5.0",
+        "phpstan/phpstan-strict-rules": "^2.0"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://satis.dedoc.co"
-        }
-    ],
     "autoload": {
-        "files": [
-            "app/Libraries/Helper.php"
-        ],
         "psr-4": {
             "App\\": "app/",
-            "App\\Console\\Commands\\": "app/Console/Commands/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
@@ -67,6 +50,22 @@
         }
     },
     "scripts": {
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install --ignore-scripts",
+            "npm run build"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi @no_additional_args",
+            "@php artisan test"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -80,13 +79,13 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --ansi"
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "11.x-dev"
-        },
         "laravel": {
             "dont-discover": []
         }

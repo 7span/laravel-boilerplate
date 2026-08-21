@@ -4,42 +4,43 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\MediaController;
-use App\Http\Middleware\MarkNotificationsAsRead;
 use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SignedUrlController;
 use App\Http\Controllers\Api\V1\NotificationController;
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('register', 'register');
-    Route::post('login', 'login');
-    Route::post('forgot-password', 'forgotPassword');
-    Route::post('forgot-password-otp-verify', 'forgotPasswordOTPVerify');
-    Route::post('reset-password', 'resetPassword');
+Route::controller(AuthController::class)->group(function (): void {
+    Route::post('register', 'register')->name('register');
+    Route::post('login', 'login')->name('login');
+
+    Route::post('forgot-password', 'forgotPassword')->name('forgot-password');
+    Route::post('forgot-password/verify-otp', 'verifyForgotPasswordOtp')->name('forgot-password.verify-otp');
+    Route::post('reset-password', 'resetPassword')->name('reset-password');
 });
 
 Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
 
-Route::group(['middleware' => ['auth:api', MarkNotificationsAsRead::class]], function () {
-    Route::controller(UserController::class)->group(function () {
-        Route::get('me', 'me');
-        Route::post('me', 'updateProfile');
-        Route::post('change-password', 'changePassword');
-        Route::post('locale', 'updateLocale');
+Route::get('countries', CountryController::class)->name('countries');
+
+Route::middleware(['auth:api', 'notification-read'])->group(function (): void {
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::controller(UserController::class)->group(function (): void {
+        Route::get('me', 'me')->name('me');
+        Route::post('me', 'updateProfile')->name('me.update');
+        Route::post('change-password', 'changePassword')->name('change-password');
+        Route::post('locale', 'updateLocale')->name('locale');
     });
 
-    Route::controller(NotificationController::class)->group(function () {
-        Route::get('notifications', 'index');
-        Route::get('notifications/unread-count', 'unreadCount');
-        Route::post('notifications/read', 'readAllNotification');
-        Route::post('notifications/unread', 'markAsUnread');
-        Route::post('onesignal-player-id', 'setOnesignalData');
+    Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)->group(function (): void {
+        Route::get('/', 'index')->name('index');
+        Route::get('unread-count', 'unreadCount')->name('unread-count');
+        Route::post('read', 'markAsRead')->name('read');
+        Route::post('unread', 'markAsUnread')->name('unread');
+        Route::post('onesignal', 'setOnesignalData')->name('onesignal');
     });
 
-    Route::delete('media/{media}', [MediaController::class, 'destroy']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
 
-Route::get('countries', CountryController::class);
-
-Route::post('generate-signed-url', SignedUrlController::class);
+Route::post('generate-signed-url', SignedUrlController::class)->name('generate-signed-url');

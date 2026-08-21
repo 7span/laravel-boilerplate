@@ -6,12 +6,13 @@
 <h1 align="center">Laravel Boilerplate</h1>
 
 <p align="center">
-  <b>A robust starter project using <code>Laravel 12</code> for rapid, modern API development.</b><br>
-  <i>Clean structure, best practices, authentication, and a suite of developer tools out of the box.</i>
+  <b>A robust starter project using <code>Laravel 13</code> for rapid, modern API development.</b><br>
+  <i>Clean structure, best practices, token authentication, and a suite of developer tools out of the box.</i>
 </p>
 
 <p align="center">
-  <img alt="Laravel" src="https://img.shields.io/badge/Laravel-12.x-red?logo=laravel&logoColor=white">
+  <img alt="Laravel" src="https://img.shields.io/badge/Laravel-13.x-red?logo=laravel&logoColor=white">
+  <img alt="PHP" src="https://img.shields.io/badge/PHP-8.3%2B-777bb4?logo=php&logoColor=white">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg">
   <img alt="Code Style" src="https://img.shields.io/badge/code%20style-pint-ff69b4">
 </p>
@@ -22,44 +23,51 @@
 
 ```bash
 # 1. Clone the repository
-$ git clone <your-repo-url>
-$ cd laravel-boilerplate
+git clone <your-repo-url>
+cd laravel-boilerplate
 
-# 2. Install dependencies
-$ composer install
-$ npm install && npm run build
+# 2. One-shot setup (install, .env, key, migrate, assets)
+composer setup
 
-# 3. Copy .env and configure
-$ cp .env.example .env
+# 3. Configure Git hooks (Husky)
+git config core.hooksPath .husky
 
-# 4. Configure Git hooks (Husky)
-$ git config core.hooksPath .husky
-
-# 5. Generate app key
-$ php artisan key:generate
-
-# 6. Run migrations and seeders
-$ php artisan migrate --seed
-
-# 7. Start the server
-$ php artisan serve
+# 4. Start everything (server + queue + logs + vite)
+composer dev
 ```
+
+<details>
+<summary>Manual setup (instead of <code>composer setup</code>)</summary>
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+npm install && npm run build
+php artisan serve
+```
+
+</details>
+
+> **Requirements:** PHP `^8.3`, Composer, Node.js. `DB_CONNECTION` defaults to `sqlite`; switch to MySQL/PostgreSQL in `.env` if needed. Redis (`predis`) is used for Horizon queues.
 
 ---
 
 ## ✨ Features & Packages
 
--   **[Authentication (Laravel Passport)](https://laravel.com/docs/12.x/passport)**
+-   **[Authentication (Laravel Sanctum)](https://laravel.com/docs/13.x/sanctum)** — token-based API auth
 -   **[Role & Permission Management (Spatie Laravel Permission)](https://spatie.be/docs/laravel-permission/v6/introduction)**
--   **[Media/File Management (Plank Mediable)](https://github.com/plank/laravel-mediable)**
--   **[API Documentation (L5-Swagger)](https://github.com/DarkaOnLine/L5-Swagger)**
--   **[Request Monitoring (Laravel Telescope)](https://laravel.com/docs/12.x/telescope)**
+-   **[Query Filtering & Sorting (Spatie Query Builder)](https://spatie.be/docs/laravel-query-builder)**
+-   **[Media/File Management (Plank Mediable)](https://github.com/plank/laravel-mediable)** + S3 via [Flysystem](https://github.com/thephpleague/flysystem-aws-s3-v3)
+-   **[API Documentation (Scramble)](https://scramble.dedoc.co/)** — generated from types, no annotations required
+-   **[Request Monitoring (Laravel Telescope)](https://laravel.com/docs/13.x/telescope)**
 -   **[Log Management (Log Viewer)](https://github.com/opcodesio/log-viewer)**
--   **[Queue Monitoring (Laravel Horizon)](https://laravel.com/docs/12.x/horizon)**
--   **[Performance Monitoring (Laravel Pulse)](https://laravel.com/docs/12.x/pulse)**
--   **[Code Style (Laravel Pint)](https://laravel.com/docs/12.x/pint)**
--   **[Static Analysis (Larastan/PHPStan)](https://github.com/larastan/larastan)**
--   **[Universal Developer Panel Protection (Littlegatekeeper)](https://github.com/spatie/laravel-littlegatekeeper)**
+-   **[Queue Monitoring (Laravel Horizon)](https://laravel.com/docs/13.x/horizon)**
+-   **[Push Notifications (OneSignal channel)](https://github.com/laravel-notification-channels/onesignal)**
+-   **[Code Style (Laravel Pint)](https://laravel.com/docs/13.x/pint)**
+-   **[Static Analysis (Larastan/PHPStan)](https://github.com/larastan/larastan)** — level 5 + strict & banned-code rules
+-   **[AI-assisted development (Laravel Boost)](https://laravel.com/docs/13.x/boost)** — plus `.ai/` guidelines & skills
 
 ---
 
@@ -70,39 +78,39 @@ $ php artisan serve
 -   `FRONT_WEBSITE_URL` — The URL of your frontend application
 -   `MASTER_PASSWORD` — Master password for privileged/admin operations
 -   `MASTER_OTP` — Master OTP code for bypassing OTP verification
--   `DEVELOPER_USERNAME` / `DEVELOPER_PASSWORD` — Credentials for the developer panel
--   `LOG_DAILY_DAYS` — Days to retain log files takes 30 days default
--   `TELESCOPE_ENABLED` — Enable/disable Laravel Telescope
+-   `SOFT_DELETE_RETENTION_DAYS` — Days to retain soft-deleted records (default `90`)
 -   `CDN_ENABLE` — Enable/disable CDN usage for media URLs
 -   `CDN_URL` — The base URL of your CDN for media assets
--   `ONESIGNAL_APP_ID` / `ONESIGNAL_API_KEY` — Your OneSignal App ID and API Key for push notifications
--   `NOTIFICATION_ENABLED` — Enable or disable the notification system (true/false)
+-   `TEMP_FILE_DELETE_AFTER_DAYS` — Days before unlinked/temp uploads are purged (default `2`)
+-   `DEVELOPER_USERNAME` / `DEVELOPER_PASSWORD` — Credentials for the developer panel
+-   `TELESCOPE_PATH` / `HORIZON_PATH` — Override developer tool paths (default `developer/telescope`, `developer/horizon`)
 
 ---
 
-## 🗂️ Custom Configuration File Structure
+## 🗂️ Custom Configuration Files
 
--   `site.php` — Site-wide settings (frontend URL, pagination, roles, OTP, user status)
--   `media.php` — Media/file upload settings (tags, directories, CDN, types, MIME mappings)
--   `aws.php` — AWS credentials/settings for S3 and related services
+-   `site.php` — Site-wide settings (frontend URL, pagination limit, master password, roles, OTP, soft-delete retention)
+-   `media.php` — Media/file upload settings (tags, directories, CDN, aggregate types, MIME mappings)
+-   `developer.php` — Developer panel credentials, session key, and auth redirect route
+-   `scramble.php` — API documentation generation settings
 
 ---
 
-## 🌍 Localization File Structure
+## 🌍 Localization
 
-Localization files are in `resources/lang/en/`:
+Localization files live in `lang/en/`:
 
 -   `email.php` — Email-related strings
 -   `entity.php` — Entity names/messages
 -   `message.php` — General messages
--   `status.php` — Status labels/messages
--   `notification.php` — Notification titles and descriptions
 
-Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` functions.
+Each file returns an array of key-value pairs for use with Laravel's `__()` and `trans()` helpers. Models can use the `HasTranslations` trait for per-locale attributes.
 
 ---
 
 ## 📦 API Overview
+
+All API routes are versioned and registered in `routes/api-v1.php` under the `api/v1` prefix (see `bootstrap/app.php`).
 
 ### Supported Endpoints
 
@@ -113,71 +121,64 @@ Each file returns an array of key-value pairs for use with Laravel's `__()` and 
 -   **Master Settings:** List and detail endpoints
 -   **Signed URL:** Generate signed URLs for file uploads
 
-> API documentation is auto-generated and available at `/api/documentation` via Swagger (L5-Swagger).
+### API Documentation
 
-### API Folder Structure
+Scramble generates the OpenAPI spec from your controllers, requests, and resources — no annotations needed. It is exposed behind the developer panel (configured in `app/Providers/AppServiceProvider.php`):
 
--   `app/Http/Controllers/Api/` — API controllers (RESTful, thin, service-driven)
--   `app/Http/Requests/` — FormRequest classes for validation
--   `app/Http/Resources/` — API resource and collection transformers
--   `app/Services/` — Business logic and service classes
+-   `/developer/docs/api` — Interactive UI
+-   `/developer/docs/api.json` — OpenAPI document
+
+Bearer-token security is applied to the whole document, and `#[Group]` / `#[SchemaName]` attributes are used to organise operations and schemas.
+
+### Folder Structure
+
+-   `app/Http/Controllers/Api/V1/` — API controllers (RESTful, thin, service-driven)
+-   `app/Http/Requests/` — FormRequest validation classes (grouped by domain)
+-   `app/Http/Resources/` — API resource & collection transformers
+-   `app/Services/` — Business logic (`AuthService`, `UserService`)
 -   `app/Models/` — Eloquent models
--   `app/Rules/` — Custom validation rules
--   `app/Libraries/` — Libraries classes
+-   `app/Enums/` — Enums for statuses and typed constants (`UserStatus`)
+-   `app/Traits/` — Reusable model/controller traits
+-   `app/Libraries/` — Helper classes (`Helper`)
+-   `app/Notifications/` — Notification classes (`WelcomeUser`)
+-   `app/Exceptions/` — `CustomException` for consistent API errors
 
-## 🛠️ Generate Custom Swagger Documentation with Minimal Code in Controllers
+### Reusable Traits
 
-Your custom Swagger setup lives in the `app/Swagger/` directory.
+-   `ApiResponser` — Standardised success/error JSON responses
+-   `BaseModel` — Shared model conventions
+-   `ResourceFilterable` — Filters, sorts, includes & appends via Spatie Query Builder
+-   `HasTranslations` — Locale-aware attribute accessors
+-   `HasUserActions` — Auto-fills created-by / updated-by user IDs
 
-📁 Folder Structure
+### Exception Handling
 
-- app/Swagger/Processors/
-Contains custom processors used to dynamically generate Swagger documentation (e.g., auto-generating request bodies, responses, etc.).
-
-⚙️ Setup Instructions
-
-- To enable your custom processors, add the following entry inside the processors array in the l5-swagger.php configuration file (located in config/):
-
-- new \App\Swagger\Processors\SuccessResponsesProcessor(),
-
-🚀 What This Provides
-
-- Automatically generates Swagger documentation based on Form Request rules.
-- Allows you to write minimal or no OpenAPI annotations in controllers.
-- Supports customizing, extending, or skipping auto-generation when needed.
+`bootstrap/app.php` converts API `404`s into localized `CustomException` messages — both missing models (`... data not found`) and unknown routes (`route ... not found`) — so clients always get a consistent JSON error shape.
 
 ---
 
 ## 🛠️ Custom Functionality
 
-### Custom Artisan Commands
+### Media Handling
 
--   `php artisan telescope:clear` — Clears all entries/data from Laravel Telescope
--   `php artisan pulse:clear` — Clears all entries/data from Laravel Pulse
-
-### Custom Validation Rules & Libraries
-
--   **MediaRule:** Reusable validation for media/image fields (tags, mime types, nullable/required)
--   **MediaHelper:** File naming, extension detection, media attachment/deletion, aggregate type detection
--   **Image Optimization:** Configured via `config/mediable.php` for automatic optimization (JPEG, PNG, GIF, WebP, AVIF)
+-   Uploads are managed through Mediable with tags/directories declared in `config/media.php`
+-   Optional CDN rewriting of media URLs (`CDN_ENABLE`, `CDN_URL`)
+-   Unattached/temp files are cleaned up after `TEMP_FILE_DELETE_AFTER_DAYS`
+-   `App\Http\Resources\Media\Resource` exposes a consistent media payload
 
 ### Mail Layout Customization
 
 -   All emails use a custom Blade layout: `resources/views/emails/layouts/master.blade.php`
-    -   Branded header with logo
+    -   Branded header (`emails/includes/header.blade.php`) with logo
     -   Localized greetings and sign-off
     -   Centralized content section (`@yield('content')`)
     -   Footer with copyright
 
-### Notification System
+### Notifications
 
--   This boilerplate includes a robust notification system using Laravel's native features.
-
-    -   **Channels Supported:** Database, Email, and optional custom channels (e.g., SMS).
-    -   **How It Works:** Notifications are created as classes in `app/Notifications/`. You can add new notification types by creating additional classes in this directory.
-    -   **API Integration:** Endpoints are available for listing, marking as read/unread, and managing user notifications.
-
-> See the `app/Notifications/` directory and related controllers/services for implementation details.
+-   Notifications are plain Laravel notification classes in `app/Notifications/` (e.g. `WelcomeUser`), delivered over mail/database channels
+-   OneSignal channel is installed for push notifications
+-   Add new types by creating additional classes in `app/Notifications/`
 
 ---
 
@@ -185,39 +186,55 @@ Contains custom processors used to dynamically generate Swagger documentation (e
 
 ### Developer Panel
 
--   `/developer/telescope` — Laravel Telescope
--   `/developer/log-viewer` — Log Viewer
--   `/developer/pulse` — Laravel Pulse
--   `/developer/login` — Login for developer tools
--   **Authentication:** Protected by `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD` in `.env`
+All tooling sits behind the `developer` prefix, guarded by the `DeveloperAuth` middleware (session-based):
 
-### Pre-commit Checklist & Code Quality
+| Path                        | Tool                     |
+| --------------------------- | ------------------------ |
+| `/developer/login`          | Login for developer area |
+| `/developer/dashboard`      | Developer dashboard      |
+| `/developer/telescope`      | Laravel Telescope        |
+| `/developer/horizon`        | Laravel Horizon          |
+| `/developer/log-viewer`     | Log Viewer               |
+| `/developer/docs/api`       | API documentation UI     |
 
--   Lint staged PHP files: `npx --no-install lint-staged`
--   Code style check: `./vendor/bin/pint`
--   Static analysis: `./vendor/bin/phpstan --memory-limit=2G analyse`
--   Run tests: `./vendor/bin/phpunit`
+-   **Authentication:** `DEVELOPER_USERNAME` and `DEVELOPER_PASSWORD` in `.env` (see `config/developer.php`)
 
-> If you have issues committing, ensure pre-commit hooks are executable:
+### Code Quality
+
+```bash
+./vendor/bin/pint                                   # auto-format (Laravel preset + custom rules)
+./vendor/bin/phpstan --memory-limit=2G analyse      # static analysis (level 5)
+composer test                                       # clear config + run the test suite
+```
+
+A Husky `pre-commit` hook runs Pint, re-stages the fixes, then blocks the commit if PHPStan fails.
+
+> If you have issues committing, ensure the hook is executable:
 >
 > ```bash
 > chmod ug+x .husky/pre-commit
 > ```
 
--   **Pint:** Run `./vendor/bin/pint` to auto-format code. VS Code users can bind Pint to `Ctrl+S` for instant formatting.
--   **Larastan/PHPStan:** Run `./vendor/bin/phpstan analyse` for static analysis.
+VS Code / Cursor users can bind Pint to `Ctrl+S` for instant formatting.
+
+### AI Assistance
+
+-   `.ai/guidelines/basic-guidelines.md` — project coding guidelines for AI agents
+-   `.ai/skills/laravel-api-generator` — scaffold API modules following this boilerplate's conventions
+-   `.ai/skills/php-guidelines-from-7span` — 7Span PHP standards
+-   Laravel Boost is installed (`composer require laravel/boost --dev` already done) and wired up for Claude Code & Cursor
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change. Make sure Pint, PHPStan, and the test suite pass before pushing.
 
 ---
 
 ## 📄 License
 
-[MIT](LICENSE)
+[MIT](https://opensource.org/licenses/MIT)
 
 ---
 

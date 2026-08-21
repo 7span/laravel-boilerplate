@@ -6,18 +6,16 @@ return [
     'master_password' => env('MASTER_PASSWORD'),
     'notification_enabled' => env('NOTIFICATION_ENABLED', false),
     'soft_delete_retention_days' => env('SOFT_DELETE_RETENTION_DAYS', 90),
-    'onesignal' => [
-        'app_id' => env('ONESIGNAL_APP_ID'),
-        'api_key' => env('ONESIGNAL_API_KEY'),
-    ],
     'roles' => [
         'admin' => 'admin',
         'user' => 'user',
     ],
-    'roleIds' => [
-        'admin' => 1,
-        'user' => 2,
-    ],
+
+    /*
+     * Keys of the `settings` table that PUT /api/v1/admin/settings may update.
+     * Every key listed here becomes a required field of the request.
+     */
+    'setting_keys' => [],
     'otp' => [
         'master_otp' => env('MASTER_OTP'),
         'expiration_time_in_minutes' => 10,

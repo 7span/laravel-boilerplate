@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Media;
 
 use App\Models\Media;
+use Illuminate\Http\Request;
 use App\Traits\ResourceFilterable;
 use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,6 +16,7 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string<Media> */
     protected $model = Media::class;
 
     /**
@@ -33,7 +35,7 @@ class Resource extends JsonResource
      *     cdn_url: string|null
      * }
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         $data = $this->fields();
         $data['url'] = $this->getUrl(); // @phpstan-ignore-line

@@ -4,8 +4,7 @@ return [
     'en' => [
         'id' => 'en',
         'name' => 'English',
-        'lable' => 'English',
+        'label' => 'English',
         'rtl' => false,
     ],
-
 ];

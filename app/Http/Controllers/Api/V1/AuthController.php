@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
-use App\Http\Requests\Auth\VerifyOtp;
-use App\Http\Requests\Auth\Login as LoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\LogoutRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\VerifyOtpRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Resources\User\Resource as UserResource;
-use App\Http\Requests\Auth\Register as RegisterRequest;
-use App\Http\Requests\Auth\ResetPassword as ResetPasswordRequest;
-use App\Http\Requests\Auth\ForgetPassword as ForgetPasswordRequest;
 
 /**
  * @tags Auth
@@ -23,39 +23,20 @@ class AuthController extends Controller
 {
     use ApiResponser;
 
-    private AuthService $authService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService;
-    }
+    public function __construct(private readonly AuthService $authService) {}
 
     /**
      * Register.
      *
      * @unauthenticated
      *
-     * @response array{message: string, data: UserResource, token: string}
+     * @response 201 array{message: string, data: UserResource, token: string}
      */
     public function register(RegisterRequest $request): JsonResponse
     {
         $data = $this->authService->register($request->validated());
 
-        return $this->success($data, 200);
-    }
-
-    /**
-     * Verify reset OTP.
-     *
-     * @unauthenticated
-     *
-     * @response array{message: string, token: string}
-     */
-    public function forgotPasswordOTPVerify(VerifyOtp $request): JsonResponse
-    {
-        $data = $this->authService->forgotPasswordOTPVerify($request->validated());
-
-        return $this->success($data);
+        return $this->success($data, 201);
     }
 
     /**
@@ -69,21 +50,39 @@ class AuthController extends Controller
     {
         $data = $this->authService->login($request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 
     /**
      * Forgot password.
      *
+     * Sends a one time password to the given email address.
+     *
      * @unauthenticated
      *
      * @response array{message: string}
      */
-    public function forgotPassword(ForgetPasswordRequest $request): JsonResponse
+    public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
         $data = $this->authService->forgotPassword($request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
+    }
+
+    /**
+     * Verify forgot password OTP.
+     *
+     * Returns the password reset token to be used by the reset password endpoint.
+     *
+     * @unauthenticated
+     *
+     * @response array{message: string, token: string}
+     */
+    public function verifyForgotPasswordOtp(VerifyOtpRequest $request): JsonResponse
+    {
+        $data = $this->authService->verifyForgotPasswordOtp($request->validated());
+
+        return $this->success($data);
     }
 
     /**
@@ -97,18 +96,21 @@ class AuthController extends Controller
     {
         $data = $this->authService->resetPassword($request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 
     /**
      * Logout.
      *
+     * Revokes the access token used to make the request. Pass the device's
+     * `onesignal_player_id` to also unregister it from push notifications.
+     *
      * @response array{message: string}
      */
-    public function logout(Request $request): JsonResponse
+    public function logout(LogoutRequest $request): JsonResponse
     {
-        $data = $this->authService->logout($request->all());
+        $data = $this->authService->logout(auth()->user(), $request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 }

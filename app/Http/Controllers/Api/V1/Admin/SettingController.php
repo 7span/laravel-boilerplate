@@ -3,47 +3,46 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use App\Services\SettingService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
-use Dedoc\Scramble\Attributes\QueryParameter;
-use App\Http\Requests\Setting\Request as SettingRequest;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Requests\Setting\UpdateSettingRequest;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Http\Resources\Setting\Resource as SettingResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
- * @tags Admin / Settings
+ * @tags Settings
  */
-#[Group('Admin / Settings', weight: 80)]
+#[Group('Settings', weight: 80)]
 class SettingController extends Controller
 {
     use ApiResponser;
 
-    private SettingService $settingService;
-
-    public function __construct()
-    {
-        $this->settingService = new SettingService;
-    }
+    public function __construct(private readonly SettingService $settingService) {}
 
     /**
-     * List.
+     * List settings.
+     *
+     * @response AnonymousResourceCollection<LengthAwarePaginator<SettingResource>>
      */
-    #[QueryParameter('appends')]
-    public function index(Request $request)
+    public function index(): ResourceCollection
     {
-        $settings = $this->settingService->collection($request->all());
+        $data = $this->settingService->collection();
 
-        return SettingResource::collection($settings);
+        return $this->collection(SettingResource::collection($data));
     }
 
     /**
-     * Update.
+     * Update settings.
+     *
+     * Accepts every key listed in `config/site.php` under `setting_keys`.
      *
      * @response array{message: string}
      */
-    public function update(SettingRequest $request): JsonResponse
+    public function update(UpdateSettingRequest $request): JsonResponse
     {
         $data = $this->settingService->update($request->validated());
 

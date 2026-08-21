@@ -9,9 +9,6 @@ enum UserOtpFor: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::FORGOT_PASSWORD => 'Forgot Password',
-            self::EMAIL_VERIFICATION => 'Email Verification',
-        };
+        return __('enum.' . $this->value);
     }
 }

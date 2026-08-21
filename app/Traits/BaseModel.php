@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Media;
+use Illuminate\Support\Str;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
@@ -10,160 +11,195 @@ use Spatie\QueryBuilder\AllowedInclude;
 /**
  * Shared query-related helpers for Eloquent models.
  *
- * The following dynamic properties are expected to be defined
- * on models that use this trait when needed:
+ * Models may optionally declare `$relationship`, `$scopedFilters`, `$exactFilters`,
+ * `$defaultSort` and `$queryable`. Never declare them on this trait: a model
+ * redeclaring a trait property with a different value is a fatal error.
  *
- * @property array<string, array<string, class-string>> $relationship Relationships configuration.
- * @property array<int, string> $scopedFilters List of filter names treated as scoped filters.
- * @property array<int, string> $exactFilters List of filter names treated as exact filters.
- * @property string|null $defaultSort Default sort field (e.g. "-created_at").
  * @property array<int, string> $queryable Additional queryable fields.
  */
 trait BaseModel
 {
     use HasTranslations;
 
+    /** @return array<int, string> */
     public function getQueryFields(): array
     {
-        $_this = new self;
-        $fields = [];
-
-        $default = $this->getQueryable();
-        foreach ($default as $field) {
-            $fields[] = $field;
-        }
-
-        foreach ($_this->getFillable() as $field) {
-            $fields[] = $field;
-        }
-
-        return $fields;
+        return array_merge($this->getQueryable(), $this->getFillable());
     }
 
+    /**
+     * Fields selectable through `fields[...]`, for this model and its includes.
+     * Related fields use the relation method as prefix, e.g. `userDevices.id`,
+     * because that is the key Spatie matches them against.
+     *
+     * @return array<int, string>
+     */
     public function getQueryFieldsWithRelationship(): array
     {
         $fields = $this->getQueryFields();
-        $relationships = $this->getRelationship();
 
-        foreach ($relationships as $relationship) {
-            $relationshipObj = new $relationship['model'];
-            $tableName = $relationshipObj->getTable();
-            foreach ($relationshipObj->getFillable() as $field) {
-                $fields[] = $tableName . '.' . $field;
-            }
-            if (isset($relationshipObj->queryable)) {
-                foreach ($relationshipObj->queryable as $field) {
-                    $fields[] = $tableName . '.' . $field;
-                }
+        foreach ($this->getRelationship() as $alias => $relationship) {
+            $relatedModel = new $relationship['model'];
+            $relationName = Str::camel($alias);
+
+            $relatedFields = method_exists($relatedModel, 'getQueryFields')
+                ? $relatedModel->getQueryFields()
+                : $relatedModel->getFillable();
+
+            // The key is always selectable, a relation without it never loads.
+            $relatedFields = array_merge([$relatedModel->getKeyName()], $relatedFields);
+
+            foreach ($relatedFields as $field) {
+                $fields[] = "{$relationName}.{$field}";
             }
         }
 
-        return $fields;
+        return array_values(array_unique($fields));
     }
 
+    /** @return array<string, array{model: class-string}> */
     public function getRelationship(): array
     {
-        $relationship = $this->relationship ?? [];
+        $relationship = property_exists($this, 'relationship') ? $this->relationship : [];
 
-        // Always add 'media' relationship if not present
-        if (! array_key_exists('media', $relationship)) {
-            $relationship['media'] = [
-                'model' => Media::class,
-            ];
+        if (! array_key_exists('media', $relationship) && method_exists($this, 'getMedia')) {
+            $relationship['media'] = ['model' => Media::class];
         }
 
         return $relationship;
     }
 
+    /** @return array<int, string> */
     public function getIncludes(): array
     {
         return array_keys($this->getRelationship());
     }
 
     /**
-     * Generate allowedIncludes array using snake_case keys as API aliases and camelCase as relationship methods.
+     * Build allowedIncludes using the snake_case key as the API alias and camelCase as the relationship method.
+     *
+     * @return array<int, AllowedInclude>
      */
     public function getAllowedIncludes(): array
     {
         $includes = [];
-        foreach ($this->getRelationship() as $alias => $rel) {
-            // Convert snake_case alias to camelCase method name
-            $camel = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $alias))));
-            $includes[] = AllowedInclude::relationship($alias, $camel);
+
+        foreach ($this->getIncludes() as $alias) {
+            $includes[] = AllowedInclude::relationship($alias, Str::camel($alias));
         }
 
         return $includes;
     }
 
+    /**
+     * Every query field filters partially, except the ones the model declares as
+     * a scope or an exact filter.
+     *
+     * @return array<int, string|AllowedFilter>
+     */
+    public function getAllowedFilters(): array
+    {
+        $scopedFilters = property_exists($this, 'scopedFilters') ? $this->scopedFilters : [];
+        $exactFilters = property_exists($this, 'exactFilters') ? $this->exactFilters : [];
+
+        $filters = array_values(array_diff($this->getQueryFields(), $scopedFilters, $exactFilters));
+
+        foreach ($scopedFilters as $scopedFilter) {
+            $filters[] = AllowedFilter::scope($scopedFilter);
+        }
+
+        foreach ($exactFilters as $exactFilter) {
+            $filters[] = AllowedFilter::exact($exactFilter);
+        }
+
+        return $filters;
+    }
+
+    /** @return QueryBuilder<static> */
     public function getQB(): QueryBuilder
     {
         $this->addMediaToIncludes();
+        $this->renameRelationFieldKeys();
 
-        $queryBuilder = QueryBuilder::for(self::class)
-            ->allowedFields($this->getQueryFieldsWithRelationship())
-            ->allowedIncludes($this->getAllowedIncludes());
+        $queryBuilder = QueryBuilder::for(static::class)
+            ->allowedFields(...$this->getQueryFieldsWithRelationship())
+            ->allowedIncludes(...$this->getAllowedIncludes())
+            ->allowedFilters(...$this->getAllowedFilters());
 
-        $filters = $this->getQueryFields();
-        if (isset($this->scopedFilters)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
-            foreach ($this->scopedFilters as $key => $value) {
-                // remove plain filter if scoped filter exists
-                $filters = array_filter($filters, fn ($v) => $v !== $value);
-                array_push($filters, AllowedFilter::scope($value));
-            }
-        }
-        if (isset($this->exactFilters)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
-            foreach ($this->exactFilters as $key => $value) {
-                array_push($filters, AllowedFilter::exact($value));
-            }
-        }
-        $queryBuilder->allowedFilters($filters);
-
-        if (isset($this->defaultSort)) { // @phpstan-ignore isset.property, function.alreadyNarrowedType
+        if (property_exists($this, 'defaultSort')) {
             $queryBuilder->defaultSort($this->defaultSort);
         }
 
-        $queryBuilder->allowedSorts($this->getQueryFields());
-
-        return $queryBuilder;
+        return $queryBuilder->allowedSorts(...$this->getQueryFields());
     }
 
     /**
-     * GET /users?append=display_status,display_name
-     * This will append this attributes to the response.
+     * GET /users?appends=display_status,display_mobile_no
+     * Appends the requested attributes on top of the model's own `$appends`.
      *
-     * If you define a protected property in model : protected $appends = ['display_status'];
-     * Then 'display_status' will be appended to the response by default.
+     * @return array<int, string>
      */
     public function getAppends(): array
     {
-        $appendParam = request()->get('appends', '');
-        $appendArray = is_string($appendParam) ? explode(',', $appendParam) : [];
+        $requestedAppends = explode(',', (string) request()->query('appends', ''));
 
-        $allowedAppends = array_filter($appendArray, function ($value) {
-            return ! empty($value) && $this->hasAttribute($value);
-        });
+        $allowedAppends = array_filter(
+            $requestedAppends,
+            fn (string $append): bool => $append !== '' && $this->hasAttribute($append),
+        );
 
         return array_merge($allowedAppends, $this->appends);
     }
 
     /**
-     * Example: GET /api/users?media=profile_image
-     *
-     * Dynamically adds the 'media' relationship to the 'include' query parameter
-     * if the 'media' parameter is present in the request that prevent from n+1 query.
+     * GET /users?media=profile
+     * Adds `media` to the `include` parameter, which prevents an N+1 query.
      */
     protected function addMediaToIncludes(): void
     {
         $request = request();
-        $includes = explode(',', $request->query('include', ''));
 
-        if ($request->filled('media') && ! in_array('media', $includes)) {
-            $includes[] = 'media';
-            $request->merge(['include' => implode(',', $includes)]);
+        if (! $request->filled('media')) {
+            return;
         }
+
+        $includes = explode(',', (string) $request->query('include', ''));
+
+        if (in_array('media', $includes, true)) {
+            return;
+        }
+
+        $includes[] = 'media';
+        $request->merge(['include' => implode(',', $includes)]);
     }
 
-    private function getQueryable()
+    /**
+     * The API takes `fields[user_devices]`, Spatie reads it as `fields[userDevices]`.
+     * Only include keys are renamed, this model's own table key stays as it is.
+     */
+    protected function renameRelationFieldKeys(): void
+    {
+        $request = request();
+        $parameter = (string) config('query-builder.parameters.fields', 'fields');
+        $fields = $request->input($parameter);
+
+        if (! is_array($fields)) {
+            return;
+        }
+
+        $includes = $this->getIncludes();
+        $renamedFields = [];
+
+        foreach ($fields as $key => $value) {
+            $isInclude = in_array((string) $key, $includes, true);
+            $renamedFields[$isInclude ? Str::camel((string) $key) : $key] = $value;
+        }
+
+        $request->merge([$parameter => $renamedFields]);
+    }
+
+    /** @return array<int, string> */
+    private function getQueryable(): array
     {
         return ! empty($this->queryable) ? $this->queryable : ['id'];
     }

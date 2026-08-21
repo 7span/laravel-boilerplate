@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\User\UpdateProfile;
-use Dedoc\Scramble\Attributes\QueryParameter;
+use App\Http\Requests\User\UpdateLocaleRequest;
+use App\Http\Requests\User\UpdateProfileRequest;
+use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Resources\User\Resource as UserResource;
-use App\Http\Requests\User\ChangePassword as UserChangePassword;
 
 /**
  * @tags Auth
@@ -22,20 +21,16 @@ class UserController extends Controller
 {
     use ApiResponser;
 
-    private UserService $userService;
-
-    public function __construct()
-    {
-        $this->userService = new UserService;
-    }
+    public function __construct(private readonly UserService $userService) {}
 
     /**
-     * Profile.
+     * My profile.
+     *
+     * @response UserResource
      */
-    #[QueryParameter('media')]
     public function me(): JsonResponse
     {
-        $user = $this->userService->resource(Auth::id());
+        $user = $this->userService->resource((int) auth()->id());
 
         return $this->resource(new UserResource($user));
     }
@@ -45,23 +40,25 @@ class UserController extends Controller
      *
      * @response array{message: string, user: UserResource}
      */
-    public function updateProfile(UpdateProfile $request): JsonResponse
+    public function updateProfile(UpdateProfileRequest $request): JsonResponse
     {
-        $data = $this->userService->update(Auth::id(), $request->validated());
+        $data = $this->userService->update(auth()->id(), $request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 
     /**
      * Change password.
      *
+     * Revokes every other access token and keeps the current one active.
+     *
      * @response array{message: string}
      */
-    public function changePassword(UserChangePassword $request): JsonResponse
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
-        $data = $this->userService->changePassword($request->validated());
+        $data = $this->userService->changePassword(auth()->user(), $request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 
     /**
@@ -69,10 +66,10 @@ class UserController extends Controller
      *
      * @response array{message: string}
      */
-    public function updateLocale(Request $request): JsonResponse
+    public function updateLocale(UpdateLocaleRequest $request): JsonResponse
     {
-        $data = $this->userService->updateLocale($request->all());
+        $data = $this->userService->updateLocale(auth()->user(), $request->validated());
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 }

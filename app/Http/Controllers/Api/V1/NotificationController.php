@@ -7,10 +7,12 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
 use App\Services\NotificationService;
-use Dedoc\Scramble\Attributes\QueryParameter;
-use App\Http\Requests\Notification\OneSignalData;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\Notification\OneSignalDataRequest;
+use App\Http\Requests\Notification\MarkNotificationRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\UserDevice\Resource as UserDeviceResource;
-use App\Http\Requests\Notification\Request as NotificationRequest;
 use App\Http\Resources\Notification\Resource as NotificationResource;
 
 /**
@@ -21,56 +23,56 @@ class NotificationController extends Controller
 {
     use ApiResponser;
 
-    private NotificationService $notificationService;
-
-    public function __construct()
-    {
-        $this->notificationService = new NotificationService;
-    }
+    public function __construct(private readonly NotificationService $notificationService) {}
 
     /**
-     * List.
+     * List notifications.
+     *
+     * @response AnonymousResourceCollection<LengthAwarePaginator<NotificationResource>>
      */
-    #[QueryParameter('appends')]
-    public function index()
+    public function index(): ResourceCollection
     {
-        $data = $this->notificationService->collection();
+        $data = $this->notificationService->collection(auth()->user());
 
-        return NotificationResource::collection($data);
+        return $this->collection(NotificationResource::collection($data));
     }
 
     /**
-     * Mark read.
+     * Mark as read.
+     *
+     * Marks every unread notification of the authenticated user, or only the given ids.
      *
      * @response array{message: string}
      */
-    public function readAllNotification(NotificationRequest $request)
+    public function markAsRead(MarkNotificationRequest $request): JsonResponse
     {
-        $data = $this->notificationService->readAllNotification($request->validated());
+        $data = $this->notificationService->markAsRead(auth()->user(), $request->validated());
 
-        return $data;
+        return $this->success($data);
     }
 
     /**
-     * Mark unread.
+     * Mark as unread.
+     *
+     * Marks every read notification of the authenticated user, or only the given ids.
      *
      * @response array{message: string}
      */
-    public function markAsUnread(NotificationRequest $request)
+    public function markAsUnread(MarkNotificationRequest $request): JsonResponse
     {
-        $data = $this->notificationService->markAsUnread($request->validated());
+        $data = $this->notificationService->markAsUnread(auth()->user(), $request->validated());
 
-        return $data;
+        return $this->success($data);
     }
 
     /**
-     * Save OneSignal.
+     * Save OneSignal player id.
      *
      * @response array{message: string, data: UserDeviceResource}
      */
-    public function setOnesignalData(OneSignalData $request)
+    public function setOnesignalData(OneSignalDataRequest $request): JsonResponse
     {
-        $data = $this->notificationService->setOnesignalData($request->validated());
+        $data = $this->notificationService->setOnesignalData(auth()->user(), $request->validated());
 
         return $this->success($data);
     }
@@ -82,7 +84,7 @@ class NotificationController extends Controller
      */
     public function unreadCount(): JsonResponse
     {
-        $data = $this->notificationService->unreadCount();
+        $data = $this->notificationService->unreadCount(auth()->user());
 
         return $this->success($data);
     }

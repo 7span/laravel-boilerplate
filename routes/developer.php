@@ -3,18 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Developer\DeveloperController;
 
-/*
-|--------------------------------------------------------------------------
-| Developer Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register developer routes for your application which
-| routes are used for development.
-|
-*/
+Route::redirect('/', 'developer/login');
 
-Route::redirect('/', 'login');
-Route::get('login', [DeveloperController::class, 'loginPage']);
-Route::post('login', [DeveloperController::class, 'login'])->name('developer.login');
-Route::get('dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard')->middleware('developer');
-Route::post('logout', [DeveloperController::class, 'logout'])->middleware('developer')->name('developer.logout');
+Route::controller(DeveloperController::class)->group(function (): void {
+    Route::get('login', 'loginPage')->name('developer.login');
+    Route::post('login', 'login')->name('developer.login.attempt');
+
+    Route::middleware('developer')->group(function (): void {
+        Route::get('dashboard', 'dashboard')->name('developer.dashboard');
+        Route::post('logout', 'logout')->name('developer.logout');
+    });
+});
