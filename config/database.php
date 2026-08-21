@@ -42,6 +42,7 @@ return [
             'journal_mode' => null,
             'synchronous' => null,
             'transaction_mode' => 'DEFERRED',
+            'pragmas' => [],
         ],
 
         'mysql' => [
@@ -97,6 +98,14 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'pooled' => env('DB_POOLED', false),
+            'direct' => array_filter([
+                'host' => env('DB_DIRECT_HOST'),
+                'port' => env('DB_DIRECT_PORT'),
+                'username' => env('DB_DIRECT_USERNAME'),
+                'password' => env('DB_DIRECT_PASSWORD'),
+                'sslmode' => env('DB_DIRECT_SSLMODE'),
+            ]),
         ],
 
         'sqlsrv' => [

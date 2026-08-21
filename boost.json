@@ -12,6 +12,8 @@
         "infer-conventions",
         "laravel-best-practices",
         "configuring-horizon",
+        "passport-development",
+        "pest-testing",
         "tailwindcss-development",
         "laravel-api-generator",
         "php-guidelines-from-7span"

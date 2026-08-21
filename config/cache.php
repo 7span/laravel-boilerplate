@@ -33,6 +33,10 @@ return [
     */
 
     'stores' => [
+        'session' => [
+            'driver' => 'session',
+            'key' => env('SESSION_CACHE_KEY', '_cache'),
+        ],
 
         'array' => [
             'driver' => 'array',
