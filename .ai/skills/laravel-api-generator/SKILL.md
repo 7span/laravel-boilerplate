@@ -1,6 +1,6 @@
 ---
 name: laravel-api-generator
-description: Build production-grade Laravel REST APIs using opinionated architecture patterns with Laravel best practices. Use when building, scaffoling, or reviewing Laravel APIs with specifications for stateless design, versioned endpoints, invokable controllers, and PSR-12 code quality standards. Triggers on "build a Laravel API", "create Laravel endpoints", "add API authentication", "review Laravel API code", "refactor Laravel API", or "improve Laravel code quality".
+description: Build production-grade Laravel REST APIs using opinionated architecture patterns with Laravel best practices. Use when building, scaffoling, or reviewing Laravel APIs with specifications for stateless design, invokable controllers, and PSR-12 code quality standards. Triggers on "build a Laravel API", "create Laravel endpoints", "add API authentication", "review Laravel API code", "refactor Laravel API", or "improve Laravel code quality".
 ---
 
 # Laravel API
@@ -24,25 +24,10 @@ Key principles:
 1. **Stateless by design** - No hidden dependencies, explicit data flow
 2. **Boundary-first** - Clear separation of HTTP, business logic, data layers
 3. **Resource-scoped** - Routes, controllers organized by resource
-4. **Version discipline** - Namespace-based versioning, HTTP Sunset headers
 
 ## Code Quality Standards
 
-All code must follow Laravel best practices and PSR-12 standards:
-
-1. **Preserve Functionality** - Refactorings change HOW code works, never WHAT it does
-2. **Explicit Over Implicit** - Prefer clear, readable code over clever shortcuts
-3. **Type Declarations** - Always use return types on methods, parameter types where beneficial
-4. **Avoid Nested Ternaries** - Use match expressions, switch, or if/else for clarity
-5. **Consistent Naming** - Follow PSR-12 and Laravel conventions strictly
-6. **Proper Namespacing** - Organize imports logically, use full type hints
-
-**When reviewing or refactoring code:**
-
--   Focus on clarity and maintainability over cleverness
--   Simplify complex nested logic into readable structures
--   Extract magic values into named constants or config
--   Remove unnecessary complexity while preserving exact behavior
+All code must follow `php-guidelines-from-7span`'s PSR-12 and type-safety rules. When reviewing or refactoring, use the checklist under "Code Review & Refactoring" below.
 
 ## Project Structure
 
@@ -87,26 +72,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'title',
+    'description',
+    'status',
+    'project_id',
+    'created_at',
+])]
 class Task extends Model
 {
     use BaseModel;
     use HasFactory;
     use HasUlids;
-    use SoftDelete;
-
-    protected $fillable = [
-        'title',
-        'description',
-        'status',
-        'project_id',
-        'created_at'
-    ];
-
-    protected $casts = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
-    ];
+    use SoftDeletes;
 
     /* Add relationship */
     protected $relationship = [
@@ -114,6 +94,14 @@ class Task extends Model
             'model' => Project::class,
         ],
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'timestamp',
+            'updated_at' => 'timestamp',
+        ];
+    }
 
     public function project(): BelongsTo
     {
@@ -124,13 +112,13 @@ class Task extends Model
 
 ### Step 2: Routes
 
-Create resource route file at `routes/{resource}-v1.php`:
+Add the resource's routes to `routes/api-v1.php` (the shared entry point — see Project Structure), not a new file per resource:
 
 ```php
-use App\Http\Controllers\V1\TaskController;
+use App\Http\Controllers\Api\TaskController;
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::resource('/tasks', TaskController::class);
+    Route::apiResource('/tasks', TaskController::class);
     Route::post('/tasks/{task}/change-status', TaskChangeStatusController::class);
 });
 ```
@@ -170,7 +158,7 @@ class StoreTaskRequest extends FormRequest
 
 ### Step 4: Controller
 
-Create controller at `app/Http/Controllers/Api/V1/{Operation}Controller.php`:
+Create controller at `app/Http/Controllers/Api/{Operation}Controller.php`:
 
 ```php
 <?php
@@ -219,7 +207,7 @@ namespace App\Services;
 use App\Models\Task;
 use App\Traits\PaginationTrait;
 use Illuminate\Database\Eloquent\Collection;
-use App\Http\Resources\Task\Resource as TaskResource;
+use App\Http\Resources\TaskResource;
 
 class TaskService
 {
@@ -258,7 +246,9 @@ class TaskService
 
 ## Step 6: Resource
 
-Create resource at `app/Http/Resources/{Operation}Resource.php`:
+Create resource at `app/Http/Resources/{Resource}Resource.php`:
+
+Name it `{Model}Resource` in `App\Http\Resources` — Laravel auto-discovers this for `$model->toResource()` / `$collection->toResourceCollection()`. Only add `#[UseResource]`/`#[UseResourceCollection]` on the model when a resource doesn't follow this naming (see `php-guidelines-from-7span`).
 
 ```php
 <?php
@@ -270,13 +260,13 @@ use Illuminate\Http\Request;
 use App\Traits\ResourceFilterable;
 use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\User\Resource as UserResource;
+use App\Http\Resources\UserResource;
 
 /**
  * @property Task $resource
  */
 #[SchemaName('Task')]
-class Resource extends JsonResource
+class TaskResource extends JsonResource
 {
     use ResourceFilterable;
 
@@ -334,16 +324,32 @@ Standard format for all responses:
 
 ## Query Building
 
-Add the `GetQB()` function into the collection method:
+List/filter endpoints go through `Spatie\QueryBuilder`, wired by the `BaseModel` trait's `getQB()` method — don't hand-roll filtering or sorting in the service.
+
+-   `getQB()` builds a `QueryBuilder::for(static::class)` with `allowedFields`, `allowedIncludes`, `allowedFilters`, and `allowedSorts` derived from the model's fillable/queryable fields and relationships.
+-   A model opts into extra behavior with optional properties: `$relationship` (includes), `$scopedFilters` / `$exactFilters` (filter types), `$defaultSort`, `$queryable` (extra filterable fields beyond fillable).
+-   Call it from the service's `collection()` method, then pass the result through `PaginationTrait::paginationAttribute()`:
+    ```php
+    public function collection(array $inputs): LengthAwarePaginator|Collection
+    {
+        $tasks = $this->taskObj->getQB();
+
+        return $this->paginationAttribute($tasks);
+    }
+    ```
+-   If a filter or sort isn't covered, extend the model's `$scopedFilters`/`$exactFilters`/`$queryable` — don't add ad-hoc `->where()`/`->orderBy()` calls in the service.
+
+## Rate Limiting
+
+Every API route already gets the `throttle:api` limiter from the `api` middleware group (60 requests/minute, segmented by user ID or IP, custom JSON 429 response — see `AppServiceProvider::configureRateLimiting()`). Don't stack another blanket throttle on top. Define a new named limiter only when an endpoint needs a different budget than the default (e.g. OTP send/verify), and attach it explicitly to that route.
 
 ## Authentication Setup
 
-Use passport for the authentication:
+Use Laravel Passport for OAuth2 API authentication — read the `passport-development` skill for grants, scopes, token lifetimes, and route protection. Don't duplicate that guidance here.
 
 ## Anti-Patterns to Avoid
 
 -   Hidden query scopes
--   Breaking changes without versioning
 -   Inconsistent response formats
 -   Nested ternary operators (use match expressions instead)
 -   Missing type declarations on methods and parameters

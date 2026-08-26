@@ -1,38 +1,44 @@
 ## General
 
-Do not tell me I am right all the time. Be critical. We're equals. Try to be neutral and objective.
+Don't tell me I'm right all the time. Be critical, we're equals. Stay neutral and objective.
 
-Do not excessively use emojis.
+Don't overuse emojis.
 
 ## Plan Mode
 
-When working in Plan mode, think through the approach fully and confirm it with me before writing any code.
+In Plan mode, think through the full approach before writing any code. Confirm it with me first.
 
-For non trivial tasks, save the finalized plan to docs/plans/ with the naming convention YYYY-MM-DD-short-description.md (e.g., 2026-03-19-user-authentication.md). Trivial tasks like typo fixes, single line changes, or simple config updates do not need a saved plan.
+For non-trivial tasks, save the finalized plan to docs/plans/ as YYYY-MM-DD-short-description.md (e.g., 2026-03-19-user-authentication.md). Skip the saved plan for trivial tasks: typo fixes, one-line changes, simple config edits.
 
-The plan format should match the complexity of the task. A small feature might just need a few paragraphs. A large refactor should include sections like objective, approach, files affected, and risks. Use your judgment.
+Match the plan's length to the task. A small feature needs a few paragraphs. A large refactor needs sections like objective, approach, files affected, and risks. Use judgment.
 
-In Plan Mode, describe outcomes, affected domains, database entities, fields, workflows, risks, and validation criteria. Do not include code snippets, class names, method names, migration names, file paths, framework commands, or implementation-level details unless explicitly requested.
+Describe outcomes, affected domains, database entities, fields, workflows, risks, and validation criteria. Leave out code snippets, class names, method names, migration names, file paths, and commands, unless I ask for them.
 
-If a plan already exists for the current task, read it before starting work. If the approach changes during implementation, update the plan file to reflect what actually happened.
+Read an existing plan before starting work on that task. If the approach changes during implementation, update the plan file to match what actually happened.
 
 ## Documentation
 
-Only create documentation files when explicitly requested, except for plan files which follow the Plan Mode rules. When writing any documentation or README, never use dashes (— or -) as punctuation. Rephrase sentences using periods, commas, or parentheses instead.
+Only create documentation files when I ask for them. Plan files are the exception, they follow the Plan Mode rules above.
+
+Never use dashes (— or -) as punctuation in documentation or a README. Use periods, commas, or parentheses instead.
 
 ## Coding Standards
 
-When working with Laravel/PHP projects, always use the php-guidelines-from-7span skill.
+For Laravel/PHP work, use the php-guidelines-from-7span and laravel-api-generator skills first. Laravel Boost's own skills (laravel-best-practices, testing-best-practices, and others) apply too. When they conflict with ours, check `.ai/rules` for the settled call before picking one.
 
 ## Git
 
-Never push, pull, commit, merge, rebase, or create branches without explicit approval. Read only operations (git status, git diff, git log) are allowed.
+Never push, pull, commit, merge, rebase, or create a branch without explicit approval. Read-only git commands (status, diff, log) are always fine.
 
 ## Typing Policy
 
-All new PHP files must have explicit type declarations on all method parameters, return types, and class properties. Use PHPDoc annotations for complex types (arrays, generics, union types) that Larastan needs. Run Larastan at level 5 as the baseline. The `declare(strict_types=1)` directive is enforced automatically by Laravel Pint and should not be added manually.
+Every new PHP file needs explicit types: method parameters, return types, and class properties. Add PHPDoc for complex types (arrays, generics, unions) that Larastan needs. Baseline is Larastan level 5.
 
-In case of conflict between the personal rules above and the Laravel Boost guidelines below, the personal rules take precedence.
+`declare(strict_types=1)` is added automatically by Laravel Pint. Never add it by hand.
+
+## Precedence
+
+If these personal rules conflict with the Laravel Boost guidelines below, the personal rules win.
 
 ## Behavioral Rules
 
