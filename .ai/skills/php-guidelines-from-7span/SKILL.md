@@ -155,6 +155,7 @@ $user->edit();
 -   Singular resource name + `Controller` suffix (`OrderController`, `UserController`)
 -   Stick to the resource methods (`index`, `store`, `show`, `update`, `destroy`; add `create` and `edit` only for web form-render routes, not APIs)
 -   Keep controllers thin: validate via a FormRequest, delegate business logic to a Service, return a Resource. No Eloquent queries or business rules in the controller.
+-   Apply middleware in the route file — `Route::middleware([...])->group(...)` for a group, `->middleware(SomeMiddleware::class)` for a single route — not as a controller attribute.
 -   For `apiResource` controllers, use `index()` for the list and `show()` for the detail. For non-resource controllers, use a concise plural noun for lists (`vendors()`) and a singular noun for detail (`vendor()`). Don't invent names like `getVendors()`, `vendorsList()`, or `listAllVendors()`.
 -   Every JSON response goes through an Eloquent API Resource — single item → Resource, list → a resource collection. Don't return raw arrays or `toArray()`.
 -   Extract new controllers for non-CRUD actions as a singleton controller
@@ -176,8 +177,18 @@ $user->edit();
 ### Models
 
 -   Set casts in the `casts()` method, not the `$casts` property.
+-   Declare `fillable`, `hidden`, and `appends` via `#[Fillable([...])]`, `#[Hidden([...])]`, `#[Appends([...])]` attributes on the class, not as `$fillable`/`$hidden`/`$appends` properties.
 -   Type-hint every relationship method's return type (`HasMany`, `BelongsTo`, …).
 -   Use `SoftDeletes` where rows should be recoverable rather than hard-deleted.
+-   A model's default resource is `{Model}Resource` / `{Model}Collection` in `App\Http\Resources` (Laravel auto-discovers this for `$model->toResource()` / `$collection->toResourceCollection()`). If a model's resource doesn't follow that naming or location, declare it explicitly:
+    ```php
+    use Illuminate\Database\Eloquent\Attributes\UseResource;
+    use Illuminate\Database\Eloquent\Attributes\UseResourceCollection;
+
+    #[UseResource(CustomOrderResource::class)]
+    #[UseResourceCollection(CustomOrderCollection::class)]
+    class Order extends Model
+    ```
 
 ### Enums
 
@@ -189,6 +200,7 @@ $user->edit();
 -   Files: kebab-case (`pdf-generator.php`)
 -   Keys: snake_case (`chrome_path`)
 -   Read config with `config('app.name')` — never call `env()` outside config files.
+-   When a config value feeds a typed parameter (int, string, bool, array), read it with `Config::integer()`/`Config::string()`/`Config::boolean()`/`Config::array()` instead of casting `config()`'s mixed return yourself.
 -   Add site configurations to `config/site.php` and do not create new files. Also, include the configuration keys in the `.env.example` file.
 
 ### Artisan Commands
@@ -289,7 +301,13 @@ $failedChecks = $site->checks()->where('status', 'failed')->get();
 
 -   Policies use camelCase: `Gate::define('editPost', ...)`
 -   Use CRUD words, but `view` instead of `show`
--   Run permission checks in the controller with `$this->authorize('gate-name')` at the top of the method — NOT inside the FormRequest `authorize()` (keep that returning `true`).
+-   Run permission checks with the `#[Authorize('gate-name', Model::class)]` attribute on the controller method — NOT inside the FormRequest `authorize()` (keep that returning `true`).
+    ```php
+    use Illuminate\Routing\Attributes\Controllers\Authorize;
+
+    #[Authorize('editPost', Post::class)]
+    public function update(UpdatePostRequest $request, Post $post): PostResource
+    ```
 
 ## Translations
 
@@ -332,13 +350,18 @@ $failedChecks = $site->checks()->where('status', 'failed')->get();
 ## FormRequest Rules
 
 -   Every `_id` field (e.g. `event_id`, `user_id`) must include an `exists:table,id` rule.
--   `authorize()` must return `true`. Authorization belongs in the controller via `$this->authorize()`.
+-   `authorize()` must return `true`. Authorization belongs in the controller via the `#[Authorize(...)]` attribute (see Authorization).
 
 ## Notifications and Email
 
 -   All notifications and emails must go through a Notification class dispatched via `$user->notify()` or `Notification::send()`.
 -   Never dispatch a `Mailable` directly from a controller or service.
 -   Every Notification class must implement `ShouldQueue`.
+
+## Caching & Sessions
+
+-   `config/cache.php` sets `serializable_classes` to a strict allow-list (empty by default). Caching a custom PHP object (not a scalar/array) will unserialize to `null` unless its FQCN is added there — add it explicitly if you need to cache an object.
+-   `config/session.php` sets `serialization` to `json`. Session data must be JSON-safe; don't put Eloquent models or other non-JSON-serializable objects in the session.
 
 ## API Documentation (Dedoc Scramble)
 
@@ -383,7 +406,7 @@ class Survey extends Model
 use Dedoc\Scramble\Attributes\SchemaName;
 
 #[SchemaName('Order')]
-class Resource extends JsonResource
+class OrderResource extends JsonResource
 {
     /**
      * @return array{
@@ -426,10 +449,7 @@ public function store(StoreRequest $request): JsonResponse
 
 -   **Classes**: PascalCase (`UserController`, `OrderStatus`)
 -   **Methods/Variables**: camelCase (`getUserName`, `$firstName`)
--   **Routes**: kebab-case (`/open-source`, `/user-profile`)
--   **Config files**: kebab-case (`pdf-generator.php`)
--   **Config keys**: snake_case (`chrome_path`)
--   **Artisan commands**: kebab-case (`php artisan delete-old-records`)
+-   Routes, config files/keys, and Artisan command naming are covered in their own sections above.
 
 ### Boolean Naming
 
@@ -449,12 +469,11 @@ Flag any boolean named without one of these prefixes (e.g. `$active`, `$paid`, `
 
 ### File Structure
 
--   Controllers: singular resource name + `Controller` (`OrderController`, `UserController`)
 -   Views: camelCase (`openSource.blade.php`)
 -   Jobs: action-based (`CreateUser`, `SendEmailNotification`)
 -   Commands: action + `Command` suffix (`PublishScheduledPostsCommand`)
 -   Mailables: purpose + `Mail` suffix (`AccountActivatedMail`)
--   Resources: a per-resource folder with a `Resource` class for single items and a `Collection` class for lists (`User/Resource.php`, `User/Collection.php`)
+-   Resources: flat, model-suffixed classes (`UserResource.php`, `UserCollection.php`) — see Models above
 -   Enums: descriptive name, no prefix (`OrderStatus`, `BookingType`)
 
 ### Migrations

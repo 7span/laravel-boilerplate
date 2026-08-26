@@ -11,11 +11,12 @@
     "skills": [
         "infer-conventions",
         "laravel-best-practices",
+        "testing-best-practices",
         "configuring-horizon",
         "passport-development",
-        "pest-testing",
         "tailwindcss-development",
         "laravel-api-generator",
+        "laravel-review-pr",
         "php-guidelines-from-7span"
     ]
 }
