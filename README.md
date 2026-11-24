@@ -12,7 +12,7 @@
 
 <p align="center">
   <img alt="Laravel" src="https://img.shields.io/badge/Laravel-13.x-red?logo=laravel&logoColor=white">
-  <img alt="PHP" src="https://img.shields.io/badge/PHP-8.3%2B-777bb4?logo=php&logoColor=white">
+  <img alt="PHP" src="https://img.shields.io/badge/PHP-8.5%2B-777bb4?logo=php&logoColor=white">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg">
   <img alt="Code Style" src="https://img.shields.io/badge/code%20style-pint-ff69b4">
 </p>
@@ -50,7 +50,7 @@ php artisan serve
 
 </details>
 
-> **Requirements:** PHP `^8.3`, Composer, Node.js. `DB_CONNECTION` defaults to `sqlite`; switch to MySQL/PostgreSQL in `.env` if needed. Redis (`predis`) is used for Horizon queues.
+> **Requirements:** PHP `^8.5`, Composer, Node.js. `DB_CONNECTION` defaults to `sqlite`; switch to MySQL/PostgreSQL in `.env` if needed. Redis (`predis`) is used for Horizon queues.
 
 ---
 

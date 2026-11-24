@@ -137,7 +137,7 @@ trait BaseModel
      * GET /users?appends=display_status,display_mobile_no
      * Appends the requested attributes on top of the model's own `$appends`.
      *
-     * @return array<int, string>
+     * @return list<string>
      */
     public function getAppends(): array
     {

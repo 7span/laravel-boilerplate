@@ -6,7 +6,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "aws/aws-sdk-php": "^3.390",
         "dedoc/scramble": "^0.13.38",
         "laravel-notification-channels/onesignal": "^2.8",

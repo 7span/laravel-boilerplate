@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Admin\SettingController;
 use App\Http\Controllers\Api\V1\Admin\UserStatusController;
 
-Route::middleware(['auth:api', 'notification-read'])->group(function (): void {
+Route::middleware(['auth:api', 'role:admin', 'notification-read'])->group(function (): void {
     Route::post('users/{user}/change-status', UserStatusController::class)->name('users.change-status');
 
     Route::controller(SettingController::class)->group(function (): void {
