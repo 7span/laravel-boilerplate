@@ -40,8 +40,7 @@ class Resource extends JsonResource
      *     display_status: string|null,
      *     display_mobile_no: string,
      *     profile_image: MediaResource|null,
-     *     user_devices: AnonymousResourceCollection<UserDeviceResource>,
-     *     media: AnonymousResourceCollection<MediaResource>
+     *     user_devices: AnonymousResourceCollection<UserDeviceResource>
      * }
      */
     public function toArray(Request $request): array
@@ -49,7 +48,6 @@ class Resource extends JsonResource
         $data = $this->fields();
         $data['profile_image'] = new MediaResource($this->whenLoadedMedia(config('media.tags.profile'), true));
         $data['user_devices'] = UserDeviceResource::collection($this->whenLoaded('userDevices'));
-        $data['media'] = MediaResource::collection($this->whenLoaded('media'));
 
         return $data;
     }
