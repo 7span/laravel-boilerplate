@@ -22,8 +22,8 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'string', 'max:120', 'unique:users,username'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'country_code' => ['nullable', 'string', 'max:5'],
-            'mobile_no' => ['nullable', 'string', 'digits_between:8,15'],
+            'country_code' => ['required_with:mobile_no', 'nullable', 'string', 'max:5'],
+            'mobile_no' => ['required_with:country_code', 'nullable', 'string', 'digits_between:8,15'],
         ];
     }
 }

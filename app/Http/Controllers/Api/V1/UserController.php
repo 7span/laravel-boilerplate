@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function me(): JsonResponse
     {
-        $user = $this->userService->resource((int) auth()->id());
+        $user = $this->userService->resource(auth()->id());
 
         return $this->resource(new UserResource($user));
     }
