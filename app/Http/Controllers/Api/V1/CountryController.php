@@ -30,8 +30,6 @@ class CountryController extends Controller
      */
     public function __invoke(): ResourceCollection
     {
-        $data = $this->countryService->collection();
-
-        return $this->collection(CountryResource::collection($data));
+        return CountryResource::collection($this->countryService->collection());
     }
 }

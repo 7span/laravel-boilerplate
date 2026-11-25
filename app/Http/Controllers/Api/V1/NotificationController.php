@@ -32,9 +32,7 @@ class NotificationController extends Controller
      */
     public function index(): ResourceCollection
     {
-        $data = $this->notificationService->collection(auth()->user());
-
-        return $this->collection(NotificationResource::collection($data));
+        return NotificationResource::collection($this->notificationService->collection(auth()->user()));
     }
 
     /**

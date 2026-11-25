@@ -30,9 +30,7 @@ class SettingController extends Controller
      */
     public function index(): ResourceCollection
     {
-        $data = $this->settingService->collection();
-
-        return $this->collection(SettingResource::collection($data));
+        return SettingResource::collection($this->settingService->collection());
     }
 
     /**
