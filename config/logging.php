@@ -73,14 +73,6 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'mail_failed' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/mail-failed.log'),
-            'level' => 'error',
-            'days' => 30,
-            'replace_placeholders' => true,
-        ],
-
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

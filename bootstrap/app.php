@@ -3,11 +3,9 @@
 use Illuminate\Support\Str;
 use App\Http\Middleware\SetLocale;
 use App\Exceptions\CustomException;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\DeveloperAuth;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Context;
 use App\Http\Middleware\MarkNotificationsAsRead;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,7 +13,6 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -52,13 +49,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->report(function (TransportExceptionInterface $exception): void {
-            Log::channel('mail_failed')->error('Mail failed', array_merge(
-                Context::getHidden('sending_mail', []),
-                ['error' => $exception->getMessage()],
-            ));
-        });
-
         $exceptions->render(function (Throwable $e, $request) {
             if ($request->is('api/*') && $e instanceof NotFoundHttpException && $e->getPrevious() instanceof ModelNotFoundException) {
                 $modelName = Str::headline(class_basename($e->getPrevious()->getModel()));
