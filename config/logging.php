@@ -73,9 +73,9 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'notification_failed' => [
+        'mail_failed' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/notification-failed.log'),
+            'path' => storage_path('logs/email-notification-failed.log'),
             'level' => 'error',
             'days' => 30,
             'replace_placeholders' => true,

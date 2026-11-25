@@ -53,8 +53,8 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->report(function (TransportExceptionInterface $exception): void {
-            Log::channel('notification_failed')->error('Notification failed', array_merge(
-                Context::getHidden('sending_notification', []),
+            Log::channel('mail_failed')->error('Email notification failed', array_merge(
+                Context::getHidden('sending_mail', []),
                 ['error' => $exception->getMessage()],
             ));
         });

@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureApiDocumentation();
         $this->configureNotificationChannels();
-        $this->configureNotificationFailureContext();
+        $this->configureMailFailureContext();
     }
 
     protected function configurePassport(): void
@@ -99,16 +99,16 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Note which notification (or Mailable) is being emailed and to whom, so `bootstrap/app.php`
-     * can log it if sending fails. Hidden context is not added to other log lines.
+     * Note which mail is being sent and to whom, so `bootstrap/app.php` can log it if sending fails.
+     * Hidden context is not added to other log lines.
      */
-    protected function configureNotificationFailureContext(): void
+    protected function configureMailFailureContext(): void
     {
         Event::listen(function (MessageSending $event): void {
-            $notification = $event->data['__laravel_notification'] ?? $event->data['__laravel_mailable'] ?? null;
+            $mail = $event->data['__laravel_notification'] ?? $event->data['__laravel_mailable'] ?? null;
 
-            Context::addHidden('sending_notification', [
-                'notification' => $notification,
+            Context::addHidden('sending_mail', [
+                'mail' => $mail,
                 'to' => collect($event->message->getTo())
                     ->map(fn (Address $address) => $address->getAddress())
                     ->all(),
@@ -117,7 +117,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Sent fine, so forget the note.
         Event::listen(function (MessageSent $event): void {
-            Context::forgetHidden('sending_notification');
+            Context::forgetHidden('sending_mail');
         });
     }
 
