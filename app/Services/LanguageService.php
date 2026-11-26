@@ -7,24 +7,35 @@ use Illuminate\Support\Facades\File;
 
 class LanguageService
 {
+    /**
+     * The languages the application ships, as declared in `config/language.php`.
+     *
+     * @return array{data: array<int, array<string, mixed>>}
+     */
     public function collection(): array
     {
-        $languages['data'] = collect(config('language'))->values()->all();
-        if (empty($languages['data'])) {
-            throw new CustomException(__('entity.entityNotFound', ['entity' => 'Languages']), 404);
+        $languages = array_values(config('language', []));
+
+        if ($languages === []) {
+            throw new CustomException(__('message.entity.entityNotFound', ['entity' => 'Languages']), 404);
         }
 
-        return $languages;
+        return ['data' => $languages];
     }
 
-    public function resource(?string $input = null): array
+    /**
+     * The translation strings of a language, read from `lang/{locale}.json`.
+     *
+     * @return array<string, mixed>
+     */
+    public function resource(string $language): array
     {
-        $path = base_path("lang/$input.json");
+        $path = lang_path("{$language}.json");
 
         if (! File::exists($path)) {
-            throw new CustomException(__('entity.entityNotFound', ['entity' => 'Language file']), 404);
+            throw new CustomException(__('message.entity.entityNotFound', ['entity' => 'Language file']), 404);
         }
 
-        return json_decode(File::get($path), true);
+        return json_decode(File::get($path), true) ?? [];
     }
 }

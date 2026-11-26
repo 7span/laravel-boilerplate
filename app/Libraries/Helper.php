@@ -2,12 +2,12 @@
 
 namespace App\Libraries;
 
+use Illuminate\Support\Str;
+
 class Helper
 {
-    public static function generateOTP(int $length): int|string
+    public static function generateOTP(int $length): string
     {
-        $otp = mt_rand(pow(10, $length - 1), pow(10, $length) - 1);
-
-        return $otp;
+        return Str::padLeft((string) random_int(0, 10 ** $length - 1), $length, '0');
     }
 }

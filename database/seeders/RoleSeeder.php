@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Schema;
 
 class RoleSeeder extends Seeder
 {
@@ -13,9 +13,9 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Role::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::withoutForeignKeyConstraints(function (): void {
+            Role::truncate();
+        });
 
         Role::insert([
             [

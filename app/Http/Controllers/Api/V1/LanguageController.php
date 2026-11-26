@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use App\Services\LanguageService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -17,15 +16,10 @@ class LanguageController extends Controller
 {
     use ApiResponser;
 
-    private LanguageService $langService;
-
-    public function __construct()
-    {
-        $this->langService = new LanguageService;
-    }
+    public function __construct(private readonly LanguageService $languageService) {}
 
     /**
-     * List.
+     * List languages.
      *
      * @unauthenticated
      *
@@ -38,15 +32,17 @@ class LanguageController extends Controller
      *     }>
      * }
      */
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
-        $data = $this->langService->collection();
+        $data = $this->languageService->collection();
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 
     /**
-     * Show.
+     * Show translations.
+     *
+     * Returns the translation strings of `lang/{language}.json`.
      *
      * @unauthenticated
      *
@@ -54,8 +50,8 @@ class LanguageController extends Controller
      */
     public function show(string $language): JsonResponse
     {
-        $data = $this->langService->resource($language);
+        $data = $this->languageService->resource($language);
 
-        return $this->success($data, 200);
+        return $this->success($data);
     }
 }

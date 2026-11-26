@@ -16,6 +16,7 @@ class Resource extends JsonResource
 {
     use ResourceFilterable;
 
+    /** @var class-string<Country> */
     protected $model = Country::class;
 
     /**
@@ -24,20 +25,16 @@ class Resource extends JsonResource
      *     name: string,
      *     iso: string|null,
      *     iso3: string|null,
-     *     iso_code: string|null,
      *     calling_code: string|null,
      *     currency: string|null,
      *     icon: string|null,
      *     status: string|null,
      *     created_at: int|null,
-     *     updated_at: int|null,
-     *     deleted_at: int|null
+     *     updated_at: int|null
      * }
      */
     public function toArray(Request $request): array
     {
-        $data = $this->fields();
-
-        return $data;
+        return $this->fields();
     }
 }

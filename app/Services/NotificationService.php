@@ -2,85 +2,108 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\UserDevice;
 use App\Models\Notification;
 use App\Traits\PaginationTrait;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Resources\UserDevice\Resource as UserDeviceResource;
 
 class NotificationService
 {
     use PaginationTrait;
 
-    private $notificationObj;
+    private Notification $notificationObj;
+
+    private UserDevice $userDeviceObj;
 
     public function __construct()
     {
         $this->notificationObj = new Notification;
+        $this->userDeviceObj = new UserDevice;
     }
 
-    public function collection()
+    /**
+     * Fetch the notifications through the query builder so `filter`, `include`, `sort` and `fields` apply.
+     *
+     * @return LengthAwarePaginator<int, Notification>|Collection<int, Notification>
+     */
+    public function collection(User $user): LengthAwarePaginator|Collection
     {
         $notifications = $this->notificationObj->getQB()
-            ->where('user_id', Auth::id());
+            ->where('user_id', $user->id);
 
         return $this->paginationAttribute($notifications);
     }
 
-    public function readAllNotification(array $inputs)
+    /**
+     * Mark every unread notification of the user as read, or only the given ids.
+     *
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string}
+     */
+    public function markAsRead(User $user, array $inputs): array
     {
-        $notifications = $this->notificationObj
-            ->where('user_id', Auth::id())
+        $this->notificationObj
+            ->where('user_id', $user->id)
             ->whereNull('read_at')
-            ->when(! empty($inputs['ids']), fn ($q) => $q->whereIn('id', $inputs['ids']));
+            ->when(! empty($inputs['ids']), fn ($query) => $query->whereIn('id', $inputs['ids']))
+            ->update(['read_at' => now()]);
 
-        $notifications->update(['read_at' => now()]);
-
-        $data['message'] = __('message.notification_read_success');
-
-        return $data;
+        return ['message' => __('message.notification_read_success')];
     }
 
-    public function markAsUnread(array $inputs)
+    /**
+     * Mark every read notification of the user as unread, or only the given ids.
+     *
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string}
+     */
+    public function markAsUnread(User $user, array $inputs): array
     {
-        $notifications = $this->notificationObj
-            ->where('user_id', Auth::id())
+        $this->notificationObj
+            ->where('user_id', $user->id)
             ->whereNotNull('read_at')
-            ->when(! empty($inputs['ids']), fn ($q) => $q->whereIn('id', $inputs['ids']));
+            ->when(! empty($inputs['ids']), fn ($query) => $query->whereIn('id', $inputs['ids']))
+            ->update(['read_at' => null]);
 
-        $notifications->update(['read_at' => null]);
-
-        $data['message'] = __('message.notification_unread_success');
-
-        return $data;
+        return ['message' => __('message.notification_unread_success')];
     }
 
-    public function setOnesignalData(array $data)
+    /**
+     * Register, or refresh, the OneSignal player id of the device making the request.
+     *
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string, data: UserDeviceResource}
+     */
+    public function setOnesignalData(User $user, array $inputs): array
     {
-        $device = UserDevice::updateOrCreate(
-            ['user_id' => Auth::id()],
+        $device = $this->userDeviceObj->updateOrCreate(
+            ['onesignal_player_id' => $inputs['onesignal_player_id']],
             [
-                'onesignal_player_id' => $data['onesignal_player_id'],
-                'device_id' => $data['device_id'] ?? null,
-                'device_type' => $data['device_type'] ?? null,
-            ]
+                'user_id' => $user->id,
+                'device_id' => $inputs['device_id'] ?? null,
+                'device_type' => $inputs['device_type'] ?? null,
+            ],
         );
 
-        $data['message'] = __('message.onesignal_data_success');
-        $data['data'] = new UserDeviceResource($device->refresh());
-
-        return $data;
+        return [
+            'message' => __('message.onesignal_data_success'),
+            'data' => new UserDeviceResource($device),
+        ];
     }
 
-    public function unreadCount(): array
+    /**
+     * @return array{unread_count: int}
+     */
+    public function unreadCount(User $user): array
     {
         $count = $this->notificationObj
-            ->where('user_id', Auth::id())
+            ->where('user_id', $user->id)
             ->whereNull('read_at')
             ->count();
 
-        $data['unread_count'] = $count;
-
-        return $data;
+        return ['unread_count' => $count];
     }
 }

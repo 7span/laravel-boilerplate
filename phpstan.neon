@@ -10,7 +10,7 @@ parameters:
         - resources/
         - routes/
 
-    level: 5
+    level: 6
 
     tips:
         treatPhpDocTypesAsCertain: false
@@ -51,6 +51,7 @@ parameters:
                     - debug_backtrace
                     - dump
                     - exec
+                    - env
                     - passthru
                     - phpinfo
                     - print_r

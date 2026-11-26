@@ -2,32 +2,41 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+
 trait HasTranslations
 {
     public function getTranslated(string $field): ?string
     {
-        $lang = app()->getLocale();
+        $locale = app()->getLocale();
 
-        $column = $field . '_' . $lang;
+        $column = "{$field}_{$locale}";
 
-        return $this->$column ?? $this->{$field . '_en'} ?? null;
+        return $this->$column ?? $this->{"{$field}_en"} ?? null;
     }
 
     /**
      * Handle calls like getNameAttribute() when a translatable field is appended.
+     *
+     * @param  string  $method
+     * @param  array<array-key, mixed>  $parameters
      */
-    public function __call($method, $parameters)
+    public function __call($method, $parameters): mixed
     {
-        if (str_starts_with($method, 'get') && str_ends_with($method, 'Attribute')) {
-            $studly = \Illuminate\Support\Str::after($method, 'get');
-            $studly = \Illuminate\Support\Str::before($studly, 'Attribute');
-            $field = \Illuminate\Support\Str::snake($studly);
-
-            if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($field, $this->translatable, true)) {
-                return $this->getTranslated($field);
-            }
+        if (! str_starts_with($method, 'get') || ! str_ends_with($method, 'Attribute')) {
+            return parent::__call($method, $parameters);
         }
 
-        return parent::__call($method, $parameters);
+        $field = Str::snake(Str::before(Str::after($method, 'get'), 'Attribute'));
+
+        if (! property_exists($this, 'translatable')) {
+            return parent::__call($method, $parameters);
+        }
+
+        if (! in_array($field, $this->translatable, true)) {
+            return parent::__call($method, $parameters);
+        }
+
+        return $this->getTranslated($field);
     }
 }

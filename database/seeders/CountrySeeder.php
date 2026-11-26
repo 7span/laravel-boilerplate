@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Country;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class CountrySeeder extends Seeder
@@ -14,15 +13,17 @@ class CountrySeeder extends Seeder
      */
     public function run(): void
     {
-        $data = File::get(database_path('data/countries.json'));
-        $countries = json_decode($data, true);
+        /** @var array<int, array<string, string>> $countries */
+        $countries = json_decode(File::get(database_path('data/countries.json')), true);
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Country::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        $timestamps = ['created_at' => now(), 'updated_at' => now()];
 
-        foreach ($countries as $country) {
-            Country::create($country);
-        }
+        $rows = array_map(
+            fn (array $country): array => array_merge($country, $timestamps),
+            $countries,
+        );
+
+        Country::query()->truncate();
+        Country::query()->insert($rows);
     }
 }

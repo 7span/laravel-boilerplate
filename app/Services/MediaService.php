@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Media;
 use App\Libraries\MediaHelper;
 
 class MediaService
 {
-    public function __construct() {}
-
-    public function destroy(object $media): array
+    /**
+     * @return array{message: string}
+     */
+    public function destroy(Media $media): array
     {
         return MediaHelper::destroyMedia($media);
     }

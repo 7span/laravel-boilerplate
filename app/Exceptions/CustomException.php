@@ -4,19 +4,23 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Traits\ApiResponser;
+use Illuminate\Http\JsonResponse;
 
 class CustomException extends Exception
 {
     use ApiResponser;
 
-    public function __construct(public string $messageStr, public int $resCode = 400) {}
-
-    public function report()
+    public function __construct(public string $messageStr, public int $resCode = 400)
     {
-        return '';
+        parent::__construct($messageStr, $resCode);
     }
 
-    public function render()
+    public function report(): bool
+    {
+        return true;
+    }
+
+    public function render(): JsonResponse
     {
         $data['message'] = $this->messageStr;
         $data['errors']['message'][] = $this->messageStr;

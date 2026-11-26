@@ -1,12 +1,23 @@
 {
     "agents": [
-        "cursor"
+        "cursor",
+        "claude_code"
     ],
+    "cloud": false,
     "guidelines": true,
-    "herd_mcp": false,
     "mcp": true,
+    "nightwatch": false,
     "sail": false,
     "skills": [
-        "livewire-development"
+        "infer-conventions",
+        "laravel-best-practices",
+        "testing-best-practices",
+        "configuring-horizon",
+        "passport-development",
+        "telescope-debugging",
+        "tailwindcss-development",
+        "laravel-api-generator",
+        "laravel-review-pr",
+        "php-guidelines-from-7span"
     ]
 }

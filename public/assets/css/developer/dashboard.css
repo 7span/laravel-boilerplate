@@ -153,6 +153,12 @@ body {
     height: 56px;
 }
 
+/* Wordmark logos are wider than tall, so they keep their aspect ratio. */
+.tool-icon svg.scramble-logo {
+    width: 56px;
+    height: auto;
+}
+
 .tool-content {
     flex: 1;
     display: flex;

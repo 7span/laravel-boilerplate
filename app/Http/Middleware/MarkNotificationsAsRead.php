@@ -3,21 +3,24 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Services\NotificationService;
 use Symfony\Component\HttpFoundation\Response;
 
 class MarkNotificationsAsRead
 {
     /**
-     * Handle an incoming request.
+     * Mark the notification a deep link was opened from as read.
      *
-     * @param  Closure(Request): (Response)  $next
+     * Any request carrying a `notify_id` marks that notification as read for the
+     * authenticated user, so the client does not need an extra round trip.
+     *
+     * @param  Closure(Request): Response  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         if (auth('api')->check() && $request->has('notify_id')) {
-            Notification::where('id', $request->get('notify_id'))->where('user_id', auth('api')->id())->whereNull('read_at')->update(['read_at' => now()]);
+            app(NotificationService::class)->markAsRead(auth('api')->user(), ['ids' => [$request->get('notify_id')]]);
         }
 
         return $next($request);

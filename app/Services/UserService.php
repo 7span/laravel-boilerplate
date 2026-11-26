@@ -5,8 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Libraries\MediaHelper;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\User\Resource;
+use App\Http\Resources\User\Resource as UserResource;
 
 class UserService
 {
@@ -17,65 +16,77 @@ class UserService
         $this->userObj = new User;
     }
 
-    public function resource(int $id)
+    /**
+     * Fetch a user through the query builder so `include`, `fields` and `appends` apply.
+     */
+    public function resource(int $id): User
+    {
+        return $this->userObj->getQB()->findOrFail($id);
+    }
+
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string, user: UserResource}
+     */
+    public function update(int $id, array $inputs): array
     {
         $user = $this->userObj->findOrFail($id);
 
-        return $user;
-    }
+        $profileTag = config('media.tags.profile');
 
-    public function update(int $id, array $inputs = []): array
-    {
-        $user = $this->resource($id);
-
-        if (isset($inputs[config('media.tags.profile')])) {
-            $mediaId = MediaHelper::attachMedia($inputs[config('media.tags.profile')]);
-            $user->syncMedia($mediaId, config('media.tags.profile'));
+        if (isset($inputs[$profileTag])) {
+            $user->syncMedia(MediaHelper::attachMedia($inputs[$profileTag]), $profileTag);
         }
 
-        unset($inputs[config('media.tags.profile')]);
-        $user->update($inputs);
-        App::setLocale($inputs['locale']);
+        unset($inputs[$profileTag]);
 
-        $data = [
+        $user->update($inputs);
+
+        if (isset($inputs['locale'])) {
+            App::setLocale($inputs['locale']);
+        }
+
+        return [
             'message' => __('message.user_profile_update'),
-            'user' => new Resource($user),
+            'user' => new UserResource($this->resource($user->id)),
         ];
-
-        return $data;
     }
 
-    public function changeStatus(object $user, array $inputs = [])
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string, user: UserResource}
+     */
+    public function changeStatus(User $user, array $inputs): array
     {
-        $user->update($inputs);
-        $data = [
-            'message' => __('entity.entityUpdated', ['entity' => 'User status']),
-            'user' => new Resource($user),
+        $user->update(['status' => $inputs['status']]);
+
+        return [
+            'message' => __('message.entity.entityUpdated', ['entity' => 'User status']),
+            'user' => new UserResource($user),
         ];
-
-        return $data;
     }
 
-    public function changePassword(array $inputs): array
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string}
+     */
+    public function changePassword(User $user, array $inputs): array
     {
-        $user = Auth::user();
+        $user->update(['password' => $inputs['password']]);
 
-        $user->update([
-            'password' => $inputs['password'],
-        ]);
-
-        $data['message'] = __('message.password_change_success');
-
-        return $data;
+        return ['message' => __('message.password_change_success')];
     }
 
-    public function updateLocale(array $inputs): array
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @return array{message: string}
+     */
+    public function updateLocale(User $user, array $inputs): array
     {
-        Auth::user()->update(['locale' => $inputs['locale']]);
+        $user->update(['locale' => $inputs['locale']]);
+
         App::setLocale($inputs['locale']);
 
-        $data['message'] = __('entity.entityUpdated', ['entity' => 'Language']);
-
-        return $data;
+        return ['message' => __('message.entity.entityUpdated', ['entity' => 'Language'])];
     }
 }

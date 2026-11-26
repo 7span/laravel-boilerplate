@@ -6,21 +6,25 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name', 128)->nullable();
             $table->string('last_name', 128)->nullable();
-            $table->string('username', 128)->index()->nullable();
+            $table->string('username', 128)->nullable()->index();
+            $table->string('email', 128)->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password', 128);
+            $table->string('locale', 8)->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active')->comment('See App\\Enums\\UserStatus');
             $table->string('country_code', 32)->nullable();
             $table->string('mobile_no', 32)->nullable();
-            $table->string('email', 128)->unique()->index();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 128);
             $table->rememberToken();
-            $table->timestamp('last_login_at')->default(now());
+            $table->timestamp('last_login_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
@@ -44,6 +48,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('users');

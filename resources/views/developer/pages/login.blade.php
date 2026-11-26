@@ -23,9 +23,14 @@
             
             <!-- Login Form -->
             <div class="login-card">
-                <form id="loginForm" action="{{ route('developer.login') }}" method="POST">
+                <form id="loginForm" action="{{ route('developer.login.attempt') }}" method="POST">
 					@csrf
 					<h3 class="welcome-text">Welcome Back !</h3>
+					@error('message')
+						<div class="error-message">
+							<p>{{ $message }}</p>
+						</div>
+					@enderror
                     <div class="form-group">
                         <label for="email" class="form-label">Username</label>
                         <div class="input-wrapper">

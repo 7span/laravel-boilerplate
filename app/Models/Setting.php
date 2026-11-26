@@ -6,24 +6,35 @@ use App\Traits\BaseModel;
 use App\Traits\HasUserActions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'key',
+    'value',
+    'collection',
+    'is_public',
+    'updated_by',
+])]
+#[Hidden(['created_at', 'updated_at', 'deleted_at'])]
 class Setting extends Model
 {
-    use BaseModel, HasUserActions, SoftDeletes;
+    use BaseModel;
+    use HasUserActions;
+    use SoftDeletes;
 
-    public $fillable = [
+    /** @var array<int, string> */
+    protected array $exactFilters = [
         'key',
-        'value',
         'collection',
-        'is_public', // If key is false, visible only for authenticated user. If true, visible for every user.
-        'updated_by',
+        'is_public',
     ];
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-
+    /** @return array<string, string> */
     protected function casts(): array
     {
         return [
+            'is_public' => 'boolean',
             'created_at' => 'timestamp',
             'updated_at' => 'timestamp',
             'deleted_at' => 'timestamp',

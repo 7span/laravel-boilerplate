@@ -17,10 +17,10 @@ class MediaController extends Controller
 {
     use ApiResponser;
 
-    public function __construct(private MediaService $mediaService) {}
+    public function __construct(private readonly MediaService $mediaService) {}
 
     /**
-     * Delete.
+     * Delete media.
      *
      * @response array{message: string}
      */

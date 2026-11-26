@@ -15,13 +15,30 @@ return [
     */
 
     'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
+        'key' => env('POSTMARK_API_KEY'),
+    ],
+
+    'resend' => [
+        'key' => env('RESEND_API_KEY'),
     ],
 
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
+
+    'onesignal' => [
+        'apps' => [
+            'user' => [
+                'app_id' => env('ONESIGNAL_APP_ID'),
+                'api_key' => env('ONESIGNAL_API_KEY'),
+            ],
+            'admin' => [
+                'app_id' => env('ONESIGNAL_ADMIN_APP_ID'),
+                'api_key' => env('ONESIGNAL_ADMIN_API_KEY'),
+            ],
+        ],
     ],
 
     'slack' => [
