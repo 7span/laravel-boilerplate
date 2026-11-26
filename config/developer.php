@@ -2,8 +2,8 @@
 
 return [
     // Login credentials
-    'username' => env('DEVELOPER_USERNAME', 'default_username'),
-    'password' => env('DEVELOPER_PASSWORD', 'default_password'),
+    'username' => env('DEVELOPER_USERNAME'),
+    'password' => env('DEVELOPER_PASSWORD'),
 
     // The key as which the developer session is stored
     'sessionKey' => 'developer.loggedin',

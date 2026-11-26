@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\NotificationService;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +22,10 @@ class MarkNotificationsAsRead
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth('api')->check() && $request->has('notify_id')) {
-            app(NotificationService::class)->markAsRead(auth('api')->user(), ['ids' => [$request->get('notify_id')]]);
+        $notificationId = $request->input('notify_id');
+
+        if (auth('api')->check() && is_string($notificationId) && Str::isUuid($notificationId)) {
+            app(NotificationService::class)->markAsRead(auth('api')->user(), ['ids' => [$notificationId]]);
         }
 
         return $next($request);

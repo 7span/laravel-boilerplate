@@ -194,7 +194,7 @@ class AuthService
 
         $masterOtp = config('site.otp.master_otp');
 
-        if (empty($masterOtp) || $masterOtp !== $otp) {
+        if (app()->isProduction() || empty($masterOtp) || $masterOtp !== $otp) {
             $query->where('otp', $otp)->whereNull('verified_at');
         }
 
@@ -221,7 +221,7 @@ class AuthService
     {
         $masterPassword = config('site.master_password');
 
-        if (! empty($masterPassword) && $password === $masterPassword) {
+        if (! app()->isProduction() && ! empty($masterPassword) && $password === $masterPassword) {
             return true;
         }
 

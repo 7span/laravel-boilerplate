@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Notification;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MarkNotificationRequest extends FormRequest
@@ -26,10 +25,7 @@ class MarkNotificationRequest extends FormRequest
     {
         return [
             'ids' => ['nullable', 'array'],
-            'ids.*' => [
-                'uuid',
-                Rule::exists('notifications', 'id')->where('user_id', $this->user()->id),
-            ],
+            'ids.*' => ['uuid'],
         ];
     }
 }

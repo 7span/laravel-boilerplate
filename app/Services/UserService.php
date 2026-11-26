@@ -28,10 +28,8 @@ class UserService
      * @param  array<string, mixed>  $inputs
      * @return array{message: string, user: UserResource}
      */
-    public function update(int $id, array $inputs): array
+    public function update(User $user, array $inputs): array
     {
-        $user = $this->userObj->findOrFail($id);
-
         $profileTag = config('media.tags.profile');
 
         if (isset($inputs[$profileTag])) {

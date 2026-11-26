@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\PermissionRegistrar;
 
 class RoleSeeder extends Seeder
 {
@@ -13,19 +15,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Schema::withoutForeignKeyConstraints(function (): void {
-            Role::truncate();
-        });
+        foreach ([config('site.roles.admin'), config('site.roles.user')] as $roleName) {
+            Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'api']);
+        }
 
-        Role::insert([
-            [
-                'name' => config('site.roles.admin'),
-                'guard_name' => 'api',
-            ],
-            [
-                'name' => config('site.roles.user'),
-                'guard_name' => 'api',
-            ],
-        ]);
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 }
