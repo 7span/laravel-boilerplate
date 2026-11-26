@@ -9,12 +9,16 @@ use Illuminate\Routing\Route;
 use Laravel\Passport\Passport;
 use App\Channels\DatabaseChannel;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Mime\Address;
 use Illuminate\Support\Facades\Event;
 use App\Channels\UserOneSignalChannel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification;
@@ -47,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureApiDocumentation();
         $this->configureNotificationChannels();
+        $this->configureMailFailureContext();
     }
 
     protected function configurePassport(): void
@@ -90,6 +95,29 @@ class AppServiceProvider extends ServiceProvider
 
             // false cancels the send, null leaves it to other listeners.
             return in_array($event->channel, ['database', 'onesignal'], true) ? false : null;
+        });
+    }
+
+    /**
+     * Note which mail is being sent and to whom, so `bootstrap/app.php` can log it if sending fails.
+     * Hidden context is not added to other log lines.
+     */
+    protected function configureMailFailureContext(): void
+    {
+        Event::listen(function (MessageSending $event): void {
+            $mail = $event->data['__laravel_notification'] ?? $event->data['__laravel_mailable'] ?? null;
+
+            Context::addHidden('sending_mail', [
+                'mail' => $mail,
+                'to' => collect($event->message->getTo())
+                    ->map(fn (Address $address) => $address->getAddress())
+                    ->all(),
+            ]);
+        });
+
+        // Sent fine, so forget the note.
+        Event::listen(function (MessageSent $event): void {
+            Context::forgetHidden('sending_mail');
         });
     }
 
