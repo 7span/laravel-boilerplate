@@ -49,16 +49,13 @@ All code must follow Laravel best practices and PSR-12 standards:
 ```php
 routes/
   api-v1.php            # Main entry point
-
   admin-v1.php          # All admin routes
 
 app/Http/
   Controllers/Api/
     {Resource}Controller.php           # e.g. TaskController.php
-
     Admin/
       {Resource}Controller.php         # e.g. Admin/TaskController.php
-
   Requests/
     {Resource}/
       Store.php

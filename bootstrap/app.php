@@ -52,12 +52,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Throwable $e, $request) {
             if ($request->is('api/*') && $e instanceof NotFoundHttpException && $e->getPrevious() instanceof ModelNotFoundException) {
                 $modelName = Str::headline(class_basename($e->getPrevious()->getModel()));
-                throw new CustomException(__('entity.entityNotFound', ['entity' => "$modelName data"]));
+                throw new CustomException(__('message.entity.entityNotFound', ['entity' => "$modelName data"]), 404);
             }
 
             if ($request->is('api/*') && $e instanceof NotFoundHttpException) {
                 $route = $request->path();
-                throw new CustomException(__('entity.entityNotFound', ['entity' => "route $route"]));
+                throw new CustomException(__('message.entity.entityNotFound', ['entity' => "route $route"]), 404);
             }
         });
     })->create();

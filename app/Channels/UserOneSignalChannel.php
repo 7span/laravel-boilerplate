@@ -44,10 +44,18 @@ class UserOneSignalChannel extends OneSignalChannel
     }
 
     /**
-     * Resolve the client of the OneSignal app this notification is sent through, once per app.
+     * Pick which OneSignal app to send to (each role has its own app).
      *
-     * A notification may declare `public string $oneSignalApp` to pick the app itself,
-     * which a user holding more than one role needs; otherwise the notifiable decides.
+     * Order of choice:
+     *  1. Notification says it:   public string $oneSignalApp = 'admin';
+     *  2. Notifiable says it:     routeNotificationForOneSignalApp() returns 'admin'
+     *  3. Otherwise:              the default user app
+     *
+     * If a user has multiple roles and you want to send the notification
+     * for a specific role, mention that app name in the notification class like:
+     *  public string $oneSignalApp = 'admin';
+     *
+     * Each app's client is created once and reused.
      *
      * @param  mixed  $notifiable
      */
