@@ -8,5 +8,7 @@ git add -u
 
 echo "Running PHPStan..."
 ./vendor/bin/phpstan --memory-limit=2G analyse || exit 1
+echo "Running architecture tests..."
+./vendor/bin/pest tests/Unit/ArchTest.php --compact || exit 1
 
 echo "Pre-commit checks passed!"
